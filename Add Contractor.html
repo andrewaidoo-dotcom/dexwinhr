@@ -1,0 +1,883 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Add Contractor · DexwinPay</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="colors_and_type.css">
+<link rel="icon" type="image/svg+xml" href="assets/dexwin-mark.svg">
+<style>
+  html, body { margin: 0; padding: 0; background: #fff; color: var(--fg-primary); height: 100%; }
+  body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; display: flex; flex-direction: column; overflow: hidden; }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--brand-100); color: var(--brand-900); }
+  *, *::before, *::after { box-sizing: border-box; }
+
+  .ic { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+  .ic-sm { width: 16px; height: 16px; }
+  .ic-lg { width: 24px; height: 24px; }
+
+  /* TOP BAR */
+  .topbar { flex-shrink: 0; height: 72px; display: flex; align-items: stretch; border-bottom: 1px solid var(--border-secondary); background: #fff; z-index: 40; }
+  .topbar-brand { width: 296px; flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 28px; border-right: 1px solid var(--border-secondary); }
+  .wordmark { display: inline-flex; align-items: flex-start; gap: 4px; }
+  .wordmark img { height: 30px; display: block; }
+  .wordmark .pay { font-family: var(--font-display); font-weight: 900; font-size: 12px; line-height: 1; color: var(--fg-primary); letter-spacing: 0.04em; margin-top: 3px; }
+  .collapse-btn { background: none; border: 0; cursor: pointer; color: var(--gray-400); width: 34px; height: 34px; border-radius: var(--radius-md); display: inline-flex; align-items: center; justify-content: center; transition: background 120ms, color 120ms; }
+  .collapse-btn:hover { background: var(--bg-secondary); color: var(--fg-secondary); }
+  .topbar-bar { flex: 1; display: flex; align-items: center; justify-content: space-between; padding: 0 48px; }
+  .breadcrumb { display: flex; align-items: center; gap: 12px; font-size: 16px; font-weight: 600; }
+  .breadcrumb .crumb { color: var(--fg-tertiary); }
+  .breadcrumb .sep { color: var(--gray-300); width: 18px; height: 18px; }
+  .breadcrumb .current { color: var(--brand-600); }
+  .bell { background: #fff; border: 1px solid var(--border-secondary); cursor: pointer; color: var(--fg-tertiary); width: 46px; height: 46px; border-radius: var(--radius-lg); display: inline-flex; align-items: center; justify-content: center; transition: background 120ms, color 120ms; position: relative; box-shadow: var(--shadow-xs); }
+  .bell:hover { background: var(--bg-secondary); color: var(--fg-primary); }
+  .bell::after { content: ""; position: absolute; top: 9px; right: 11px; width: 9px; height: 9px; border-radius: 999px; background: var(--error-500); border: 2px solid #fff; }
+
+  .wiz-head { flex-shrink: 0; height: 72px; display: flex; align-items: center; gap: 16px; padding: 0 48px; background: #fff; border-bottom: 1px solid var(--border-secondary); }
+  .back-btn { background: #fff; border: 1px solid var(--border-secondary); cursor: pointer; color: var(--fg-secondary); width: 40px; height: 40px; border-radius: var(--radius-md); display: inline-flex; align-items: center; justify-content: center; transition: background 120ms, border-color 120ms, color 120ms; box-shadow: var(--shadow-xs); flex-shrink: 0; }
+  .back-btn:hover { background: var(--bg-secondary); border-color: var(--gray-400); color: var(--fg-primary); }
+  .wiz-head h1 { font-family: var(--font-display); font-weight: 700; font-size: 24px; line-height: 32px; letter-spacing: -0.01em; margin: 0; color: var(--fg-primary); }
+
+  /* LAYOUT */
+  .layout { flex: 1; min-height: 0; display: grid; grid-template-columns: 296px 1fr; }
+  .sidebar { display: flex; flex-direction: column; min-height: 0; border-right: 1px solid var(--border-secondary); background: #fff; }
+  .step-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; overflow-y: auto; scrollbar-width: thin; }
+  .step { display: flex; align-items: center; gap: 16px; padding: 22px 8px 22px 24px; cursor: pointer; color: var(--fg-tertiary); font-family: var(--font-display); font-size: 16px; line-height: 24px; font-weight: 500; border-bottom: 1px solid var(--border-secondary); transition: color 120ms; user-select: none; }
+  .step:first-child { border-top: 1px solid var(--border-secondary); }
+  .step:hover { background: var(--bg-secondary); }
+  .step .num { width: 28px; height: 28px; border-radius: 999px; border: 1.5px solid var(--gray-300); display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: var(--fg-tertiary); background: #fff; flex-shrink: 0; transition: color 120ms, border-color 120ms; }
+  .step.is-done { color: var(--fg-primary); }
+  .step.is-done .num { background: var(--brand-50); border-color: var(--brand-200); color: var(--brand-700); }
+  .step.is-active { background: var(--brand-900); color: #fff; font-weight: 700; border-bottom-color: var(--brand-900); }
+  .step.is-active + .step { border-top: 0; }
+  .step.is-active .num { background: #fff; border-color: #fff; color: var(--brand-900); }
+  .step.is-done .num .tick { width: 15px; height: 15px; }
+
+  /* STAGE */
+  .stage { background: var(--gray-50); display: flex; flex-direction: column; min-height: 0; overflow: hidden; position: relative; }
+  .progress { flex-shrink: 0; height: 4px; background: var(--gray-200); width: 100%; overflow: hidden; }
+  .progress .bar { height: 100%; background: var(--brand-600); transition: width 250ms ease; border-top-right-radius: 999px; border-bottom-right-radius: 999px; }
+  .tab-head { flex-shrink: 0; padding: 32px 48px 20px; background: var(--gray-50); }
+  .tab-head h2 { font-family: var(--font-display); font-weight: 700; font-size: 24px; line-height: 32px; letter-spacing: -0.01em; color: var(--fg-primary); margin: 0 0 8px; }
+  .tab-head p { font-size: 15px; line-height: 22px; color: var(--fg-tertiary); margin: 0; max-width: 96ch; }
+  .tab-head.inline { padding: 32px 0 16px; background: transparent; }
+  .form-body { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 0 48px 32px; scrollbar-width: thin; }
+
+  .frow { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.3fr); gap: 56px; padding: 32px 0; border-top: 1px solid var(--border-secondary); }
+  .frow:first-child { border-top: 0; padding-top: 28px; }
+  .frow.full { grid-template-columns: 1fr; }
+  @media (max-width: 920px) { .frow { grid-template-columns: 1fr; gap: 20px; } }
+  .frow-q h3 { font-family: var(--font-display); font-weight: 700; font-size: 17px; line-height: 26px; letter-spacing: -0.005em; color: var(--fg-primary); margin: 0 0 6px; }
+  .frow-q p { font-size: 14px; line-height: 20px; color: var(--fg-tertiary); margin: 0; max-width: 50ch; }
+  .frow-a { display: flex; flex-direction: column; gap: 16px; }
+
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label { font-size: 14px; line-height: 20px; font-weight: 600; color: var(--fg-secondary); }
+  .field label .req { color: var(--fg-error); margin-left: 2px; }
+  .field .hint { font-size: 13px; color: var(--fg-tertiary); }
+  .fgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .fgrid .span2 { grid-column: 1 / -1; }
+  @media (max-width: 560px) { .fgrid { grid-template-columns: 1fr; } }
+
+  .input { width: 100%; padding: 12px 14px; font-family: inherit; font-size: 15px; line-height: 22px; color: var(--fg-primary); background: #fff; border: 1px solid var(--border-secondary); border-radius: var(--radius-md); box-shadow: var(--shadow-xs); transition: border-color 120ms ease, box-shadow 120ms ease; }
+  .input::placeholder { color: var(--fg-quaternary); }
+  .input:hover { border-color: var(--gray-400); }
+  .input:focus { outline: none; border-color: var(--border-brand); box-shadow: var(--ring-brand); }
+
+  /* custom dropdown */
+  .dd { position: relative; }
+  .dd-trigger { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 14px; font-family: inherit; font-size: 15px; line-height: 22px; text-align: left; background: #fff; border: 1px solid var(--border-secondary); border-radius: var(--radius-md); box-shadow: var(--shadow-xs); cursor: pointer; transition: border-color 120ms ease, box-shadow 120ms ease; }
+  .dd-trigger:hover { border-color: var(--gray-400); }
+  .dd-value { color: var(--fg-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dd-value.placeholder { color: var(--fg-quaternary); }
+  .dd-chev { color: var(--fg-quaternary); transition: transform 160ms ease; flex-shrink: 0; }
+  .dd.open .dd-trigger { border-color: var(--border-brand); box-shadow: var(--ring-brand); }
+  .dd.open .dd-chev { transform: rotate(180deg); }
+  .dd-menu { position: absolute; top: calc(100% + 8px); left: 0; right: 0; z-index: 50; background: #fff; border: 1px solid var(--border-secondary); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); padding: 8px; display: none; }
+  .dd.open .dd-menu { display: block; }
+  .dd-add { display: flex; align-items: center; gap: 10px; width: 100%; padding: 12px 12px; border: 0; background: none; cursor: pointer; color: var(--brand-600); font-weight: 600; font-size: 15px; font-family: inherit; border-radius: var(--radius-md); }
+  .dd-add:hover { background: var(--brand-25); }
+  .dd-add .ic { color: var(--brand-600); }
+  .dd-list { max-height: 240px; overflow-y: auto; scrollbar-width: thin; }
+  .dd-has-add .dd-list { border-top: 1px solid var(--border-tertiary); margin-top: 6px; padding-top: 6px; }
+  .dd-opt { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 11px 12px; border-radius: var(--radius-md); cursor: pointer; font-size: 15px; line-height: 22px; color: var(--fg-primary); }
+  .dd-opt:hover { background: var(--bg-secondary); }
+  .dd-opt.selected { background: var(--bg-secondary); }
+  .dd-opt .dd-check { width: 18px; height: 18px; stroke: var(--brand-600); stroke-width: 2.25; fill: none; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; opacity: 0; }
+  .dd-opt.selected .dd-check { opacity: 1; }
+  .dd-add-edit { display: flex; align-items: center; gap: 8px; padding: 4px 8px 10px; }
+  .dd-add-edit input { flex: 1; min-width: 0; padding: 10px 12px; font-family: inherit; font-size: 15px; line-height: 22px; color: var(--fg-primary); background: #fff; border: 1px solid var(--border-secondary); border-radius: var(--radius-md); box-shadow: var(--shadow-xs); }
+  .dd-add-edit input:focus { outline: none; border-color: var(--border-brand); box-shadow: var(--ring-brand); }
+  .dd-add-btn { width: 40px; height: 40px; border-radius: var(--radius-md); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid transparent; flex-shrink: 0; }
+  .dd-add-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .dd-add-ok { background: var(--brand-50); border-color: var(--brand-200); color: var(--brand-600); }
+  .dd-add-ok:hover { background: var(--brand-100); }
+  .dd-add-cancel { background: #fff; border-color: var(--border-secondary); color: var(--fg-tertiary); }
+  .dd-add-cancel:hover { background: var(--bg-secondary); color: var(--fg-primary); }
+
+  /* pill radios (gender) */
+  .pill-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .pill-radio { display: flex; align-items: center; gap: 10px; padding: 11px 16px; border: 1px solid var(--border-secondary); border-radius: var(--radius-md); background: #fff; cursor: pointer; box-shadow: var(--shadow-xs); font-size: 15px; font-weight: 500; color: var(--fg-secondary); transition: border-color 120ms, box-shadow 120ms; }
+  .pill-radio .dot { width: 18px; height: 18px; border-radius: 999px; border: 1.5px solid var(--gray-300); position: relative; flex-shrink: 0; transition: border-color 120ms; }
+  .pill-radio .dot::after { content: ""; position: absolute; inset: 0; margin: auto; width: 8px; height: 8px; border-radius: 999px; background: var(--brand-600); opacity: 0; transition: opacity 120ms; }
+  .pill-radio.selected { border-color: var(--brand-500); box-shadow: 0 0 0 1px var(--brand-500); color: var(--fg-primary); }
+  .pill-radio.selected .dot { border-color: var(--brand-600); }
+  .pill-radio.selected .dot::after { opacity: 1; }
+
+  /* toggle */
+  .toggle { display: inline-flex; align-items: center; gap: 12px; cursor: pointer; font-size: 15px; color: var(--fg-secondary); }
+  .toggle .tg { width: 44px; height: 26px; border-radius: 999px; background: var(--gray-300); position: relative; transition: background 140ms; flex-shrink: 0; }
+  .toggle .tg::after { content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 999px; background: #fff; box-shadow: var(--shadow-xs); transition: transform 140ms; }
+  .toggle.on .tg { background: var(--brand-600); }
+  .toggle.on .tg::after { transform: translateX(18px); }
+
+  /* date + amount + segmented */
+  .date-input { position: relative; }
+  .date-input .cal { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--fg-tertiary); pointer-events: none; }
+  .date-input .input { padding-left: 44px; color: var(--fg-quaternary); }
+  .date-input .input.filled { color: var(--fg-primary); }
+  .amt-wrap { display: flex; align-items: stretch; border: 1px solid var(--border-secondary); border-radius: var(--radius-md); box-shadow: var(--shadow-xs); overflow: hidden; background: #fff; }
+  .amt-wrap:focus-within { border-color: var(--border-brand); box-shadow: var(--ring-brand); }
+  .amt-wrap .prefix { display: inline-flex; align-items: center; padding: 0 14px; background: var(--gray-50); color: var(--fg-tertiary); font-size: 15px; font-weight: 600; border-right: 1px solid var(--border-secondary); }
+  .amt-wrap input { flex: 1; min-width: 0; border: 0; box-shadow: none; border-radius: 0; }
+  .amt-wrap input:focus { box-shadow: none; }
+  .seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 4px; padding: 4px; background: var(--gray-100); border-radius: var(--radius-md); margin-top: 10px; }
+  .seg button { padding: 9px 8px; border: 0; background: none; border-radius: var(--radius-sm); font-family: inherit; font-size: 14px; font-weight: 600; color: var(--fg-tertiary); cursor: pointer; transition: background 120ms, color 120ms; }
+  .seg button.active { background: #fff; color: var(--fg-primary); box-shadow: var(--shadow-xs); }
+
+  /* multi-select option cards */
+  .opt-card { display: flex; align-items: center; gap: 16px; padding: 15px 18px; background: #fff; border: 1px solid var(--border-secondary); border-radius: var(--radius-lg); cursor: pointer; transition: border-color 120ms, background 120ms, box-shadow 120ms; box-shadow: var(--shadow-xs); }
+  .opt-card:hover { border-color: var(--gray-400); }
+  .opt-card .o-icon { width: 38px; height: 38px; border-radius: 8px; border: 1px solid var(--border-secondary); background: #fff; display: inline-flex; align-items: center; justify-content: center; color: var(--fg-tertiary); flex-shrink: 0; }
+  .opt-card .o-body { flex: 1; min-width: 0; }
+  .opt-card .o-title { font-size: 15px; font-weight: 600; line-height: 22px; color: var(--fg-primary); }
+  .opt-card .o-sub { font-size: 13px; line-height: 18px; color: var(--fg-tertiary); }
+  .opt-card .o-check { width: 22px; height: 22px; border-radius: 6px; border: 1.5px solid var(--gray-300); background: #fff; flex-shrink: 0; position: relative; transition: border-color 120ms, background 120ms; }
+  .opt-card .o-check::after { content: ""; position: absolute; inset: 0; margin: auto; width: 11px; height: 6px; border: 2px solid #fff; border-top: 0; border-right: 0; transform: rotate(-45deg) translateY(-1px); opacity: 0; transition: opacity 120ms; }
+  .opt-card.selected { border-color: var(--brand-500); background: var(--brand-25); box-shadow: 0 0 0 1px var(--brand-500); }
+  .opt-card.selected .o-icon { color: var(--brand-700); border-color: var(--brand-300); }
+  .opt-card.selected .o-check { border-color: var(--brand-600); background: var(--brand-600); }
+  .opt-card.selected .o-check::after { opacity: 1; }
+
+  /* single-select vest-style cards */
+  .vest-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  .vest-card { display: flex; align-items: flex-start; gap: 14px; padding: 16px 20px; background: #fff; border: 1px solid var(--border-secondary); border-radius: var(--radius-lg); cursor: pointer; box-shadow: var(--shadow-xs); transition: border-color 120ms, box-shadow 120ms; }
+  .vest-card:hover { border-color: var(--gray-400); }
+  .vest-card .radio { width: 20px; height: 20px; border-radius: 999px; border: 1.5px solid var(--gray-300); background: #fff; flex-shrink: 0; margin-top: 2px; position: relative; transition: border-color 120ms; }
+  .vest-card .radio::after { content: ""; position: absolute; inset: 0; margin: auto; width: 9px; height: 9px; border-radius: 999px; background: var(--brand-600); opacity: 0; transition: opacity 120ms; }
+  .vest-card .vc-title { font-size: 15px; font-weight: 700; line-height: 22px; color: var(--fg-primary); }
+  .vest-card .vc-desc { font-size: 13.5px; line-height: 19px; color: var(--fg-tertiary); margin-top: 2px; }
+  .vest-card.selected { border-color: var(--brand-500); box-shadow: 0 0 0 1px var(--brand-500); }
+  .vest-card.selected .radio { border-color: var(--brand-600); }
+  .vest-card.selected .radio::after { opacity: 1; }
+  .choice-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 560px) { .choice-row { grid-template-columns: 1fr; } }
+
+  .info-banner { display: flex; gap: 14px; align-items: flex-start; padding: 16px 20px; background: var(--brand-50); border-radius: var(--radius-lg); }
+  .info-banner .ib-ic { width: 32px; height: 32px; border-radius: 999px; background: var(--brand-600); color: #fff; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .info-banner .ib-ic svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .info-banner h5 { font-size: 15px; font-weight: 700; margin: 0 0 2px; color: var(--brand-900); }
+  .info-banner p { font-size: 14px; line-height: 20px; margin: 0; color: var(--brand-800); }
+
+  /* deduction list + drawer */
+  .list-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+  .list-head h4 { font-family: var(--font-display); font-weight: 700; font-size: 19px; margin: 0; color: var(--fg-primary); }
+  .btn-sm { padding: 10px 18px; font-size: 14px; }
+  .btn-sm .arrow { width: 16px; height: 16px; }
+  .alw-cols { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1.2fr 1.1fr 40px; gap: 16px; padding: 0 18px 10px; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--fg-quaternary); }
+  .alw-rows { display: flex; flex-direction: column; gap: 12px; }
+  .alw-row { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1.2fr 1.1fr 40px; gap: 16px; align-items: center; padding: 16px 18px; background: #fff; border: 1px solid var(--border-secondary); border-radius: var(--radius-lg); box-shadow: var(--shadow-xs); }
+  .alw-row .nm { font-size: 15px; font-weight: 700; color: var(--fg-primary); }
+  .cell { font-size: 14px; color: var(--fg-primary); }
+  .cell .sub { font-size: 13px; color: var(--fg-tertiary); margin-top: 2px; }
+  .cell .sub.warn { color: var(--warning-700); }
+  .cat-pill { display: inline-flex; align-items: center; padding: 4px 11px; border-radius: 999px; font-size: 12.5px; font-weight: 700; }
+  .cat-pill.welfare { color: var(--info-700); background: var(--info-50); }
+  .cat-pill.advance { color: var(--warning-700); background: var(--warning-50); }
+  .cat-pill.union { color: var(--warning-700); background: var(--warning-50); }
+  .cat-pill.other { color: var(--warning-700); background: var(--warning-50); }
+  .tg-kebab { position: relative; justify-self: end; }
+  .kebab-btn { width: 32px; height: 32px; border-radius: 8px; background: none; border: 0; cursor: pointer; color: var(--fg-tertiary); display: inline-flex; align-items: center; justify-content: center; }
+  .kebab-btn:hover { background: var(--bg-secondary); color: var(--fg-primary); }
+  .kebab-menu { position: absolute; right: 0; top: calc(100% + 4px); background: #fff; border: 1px solid var(--border-secondary); border-radius: var(--radius-md); box-shadow: var(--shadow-lg); padding: 6px; min-width: 160px; z-index: 30; }
+  .kebab-menu[hidden] { display: none; }
+  .kebab-menu button { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px; border: 0; background: none; cursor: pointer; font-family: inherit; font-size: 14px; font-weight: 600; color: var(--fg-secondary); border-radius: var(--radius-sm); text-align: left; }
+  .kebab-menu button:hover { background: var(--bg-secondary); }
+  .kebab-menu button.danger { color: var(--error-600); }
+  .kebab-menu svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+  .ded-empty { border: 2px dashed var(--brand-300); border-radius: var(--radius-xl); padding: 36px 24px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; background: #fff; }
+  .ded-empty[hidden], [data-ded-filled][hidden] { display: none; }
+  .ded-empty-icon { width: 48px; height: 48px; border-radius: 10px; border: 1px solid var(--border-secondary); display: inline-flex; align-items: center; justify-content: center; color: var(--fg-tertiary); margin-bottom: 4px; }
+  .ded-empty h4 { font-family: var(--font-display); font-weight: 700; font-size: 17px; margin: 4px 0 0; color: var(--fg-primary); }
+  .ded-empty p { font-size: 14px; line-height: 20px; color: var(--fg-tertiary); margin: 0; max-width: 44ch; }
+  .ded-empty .btn { margin-top: 14px; }
+  /* Tier 3 trustee table */
+  .t3-cols { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.1fr 40px; gap: 16px; padding: 0 18px 10px; font-size: 12.5px; font-weight: 600; color: var(--fg-tertiary); }
+  .t3-row { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.1fr 40px; gap: 16px; align-items: center; padding: 14px 18px; background: #fff; border: 1px solid var(--border-secondary); border-radius: var(--radius-lg); box-shadow: var(--shadow-xs); }
+  .t3-row .tname { font-size: 15px; font-weight: 700; color: var(--fg-primary); }
+  .t3-cell { font-size: 14px; color: var(--fg-primary); }
+  .t3-cell .sub { font-size: 13px; color: var(--fg-tertiary); margin-top: 2px; }
+
+  .drawer-scrim { position: fixed; inset: 0; background: var(--bg-overlay); z-index: 90; opacity: 0; pointer-events: none; transition: opacity 200ms; }
+  .drawer-scrim.show { opacity: 1; pointer-events: auto; }
+  .drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(1040px, 82vw); background: #fff; box-shadow: -24px 0 64px -16px rgba(15,23,30,0.25); display: flex; flex-direction: column; transform: translateX(100%); transition: transform 260ms cubic-bezier(.2,.8,.2,1); }
+  .drawer-scrim.show .drawer { transform: none; }
+  .drawer-head { flex-shrink: 0; padding: 24px 40px 20px; border-bottom: 1px solid var(--border-secondary); position: relative; }
+  .drawer-head h3 { font-family: var(--font-display); font-weight: 700; font-size: 22px; line-height: 30px; margin: 0; color: var(--fg-primary); }
+  .drawer-close { position: absolute; top: 20px; right: 32px; width: 36px; height: 36px; border-radius: 999px; border: 0; background: none; cursor: pointer; color: var(--fg-tertiary); display: inline-flex; align-items: center; justify-content: center; }
+  .drawer-close:hover { background: var(--bg-secondary); color: var(--fg-primary); }
+  .drawer-close svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .drawer-body { flex: 1; overflow-y: auto; padding: 0 40px 28px; scrollbar-width: thin; }
+  .drawer-foot { flex-shrink: 0; display: flex; justify-content: flex-end; gap: 12px; padding: 16px 40px 22px; border-top: 1px solid var(--border-secondary); }
+  .drawer-foot .btn { padding: 13px 30px; font-size: 16px; }
+
+  /* tax setup */
+  .rec-badge { font-size: 13px; font-weight: 600; color: var(--info-600); margin-left: 8px; }
+  .dd-lead { display: flex; align-items: center; min-width: 0; }
+  .helper-note { font-size: 13px; line-height: 19px; color: var(--fg-tertiary); margin-top: 8px; }
+  .uploader { border: 1.5px dashed var(--border-secondary); border-radius: var(--radius-lg); padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; background: #fff; text-align: center; transition: border-color 120ms; }
+  .uploader:hover { border-color: var(--brand-400); }
+  .uploader .up-ic { width: 40px; height: 40px; border-radius: 999px; background: var(--bg-secondary); display: inline-flex; align-items: center; justify-content: center; color: var(--fg-tertiary); }
+  .uploader .up-ic svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+  .uploader .up-main { font-size: 14px; color: var(--fg-tertiary); }
+  .uploader .up-main b { color: var(--brand-600); font-weight: 700; }
+  .uploader .up-sub { font-size: 12.5px; color: var(--fg-quaternary); }
+  .upload-grid { display: grid; grid-template-columns: 1fr 130px; gap: 16px; }
+  .upload-preview { border-radius: var(--radius-lg); background: var(--bg-secondary); border: 1px solid var(--border-secondary); }
+  .relief-list { display: flex; flex-direction: column; gap: 14px; margin-top: 4px; }
+  .relief-row { border: 1px solid var(--border-secondary); border-radius: var(--radius-lg); padding: 14px 18px; background: #fff; box-shadow: var(--shadow-xs); }
+  .relief-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+  .relief-info .r-title { font-size: 15px; font-weight: 700; color: var(--fg-primary); }
+  .relief-info .r-sub { font-size: 13px; color: var(--fg-tertiary); margin-top: 2px; }
+  .switch { width: 44px; height: 26px; border-radius: 999px; background: var(--gray-300); position: relative; cursor: pointer; border: 0; flex-shrink: 0; transition: background 140ms; padding: 0; }
+  .switch::after { content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 999px; background: #fff; box-shadow: var(--shadow-xs); transition: transform 140ms; }
+  .switch.on { background: var(--brand-500); }
+  .switch.on::after { transform: translateX(18px); }
+  .relief-dep { display: flex; align-items: stretch; margin-top: 14px; border: 1px solid var(--border-secondary); border-radius: var(--radius-md); overflow: hidden; }
+  .relief-dep[hidden] { display: none; }
+  .relief-dep .dep-label { display: inline-flex; align-items: center; padding: 0 14px; background: var(--gray-50); font-size: 14px; color: var(--fg-secondary); border-right: 1px solid var(--border-secondary); flex-shrink: 0; }
+  .relief-dep .dd { flex: 1; }
+  .relief-dep .dd-trigger { border: 0; box-shadow: none; border-radius: 0; }
+  [data-tax-show][hidden] { display: none; }
+  [data-bk-block][hidden] { display: none; }
+
+  /* compensation lists */
+  .comp-sec { padding: 28px 0; border-top: 1px solid var(--border-secondary); }
+  .comp-sec-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
+  .comp-sec-head .t h4 { font-family: var(--font-display); font-weight: 700; font-size: 19px; margin: 0 0 4px; color: var(--fg-primary); }
+  .comp-sec-head .t p { font-size: 14px; color: var(--fg-tertiary); margin: 0; }
+  .comp-cols { display: grid; gap: 16px; padding: 0 18px 10px; font-size: 12.5px; font-weight: 600; color: var(--fg-tertiary); }
+  .comp-rows { display: flex; flex-direction: column; gap: 12px; }
+  .comp-row { display: grid; gap: 16px; align-items: center; padding: 14px 18px; background: #fff; border: 1px solid var(--border-secondary); border-radius: var(--radius-lg); box-shadow: var(--shadow-xs); }
+  .cols-allow, .row-allow { grid-template-columns: 1.6fr 1fr 1.2fr 40px; }
+  .cols-bik, .row-bik { grid-template-columns: 1.6fr 1fr 1.2fr 40px; }
+  .cols-bonus, .row-bonus { grid-template-columns: 1.6fr 1fr 1.2fr 40px; }
+  .comp-name { display: flex; align-items: center; gap: 12px; }
+  .comp-name .ci { width: 38px; height: 38px; border-radius: 8px; border: 1px solid var(--border-secondary); background: #fff; display: inline-flex; align-items: center; justify-content: center; color: var(--fg-tertiary); flex-shrink: 0; }
+  .comp-name .ci.exempt { color: var(--info-600); border-color: var(--info-200); background: var(--info-50); }
+  .comp-name .nm { font-size: 15px; font-weight: 700; color: var(--fg-primary); }
+  .comp-cell { font-size: 14px; color: var(--fg-primary); }
+  .pill2 { display: inline-flex; align-items: center; padding: 4px 11px; border-radius: 999px; font-size: 12.5px; font-weight: 700; }
+  .pill2.taxable { color: var(--warning-700); background: var(--warning-50); }
+  .pill2.exempt { color: var(--info-700); background: var(--info-50); }
+  .pill2.motor { color: var(--indigo-700); background: var(--indigo-100); }
+  .pill2.accom { color: var(--pink-700); background: var(--pink-100); }
+  .pill2.other { color: var(--info-700); background: var(--info-50); }
+  .pill2.val-tce { color: var(--warning-700); background: var(--warning-50); }
+  .pill2.val-cash { color: var(--info-700); background: var(--info-50); }
+  .col-help { display: inline-flex; align-items: center; gap: 5px; }
+  .help-tip { position: relative; display: inline-flex; }
+  .help-tip .qm { width: 15px; height: 15px; border-radius: 999px; border: 1.2px solid var(--gray-400); color: var(--gray-500); font-size: 10px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; cursor: help; }
+  .help-tip .tip { position: absolute; bottom: calc(100% + 8px); right: -8px; width: 260px; background: var(--gray-900, #15201c); color: #fff; padding: 12px 14px; border-radius: var(--radius-md); font-size: 12.5px; line-height: 18px; font-weight: 400; box-shadow: var(--shadow-lg); opacity: 0; pointer-events: none; transition: opacity 120ms; z-index: 20; }
+  .help-tip .tip b { display: block; font-weight: 700; margin-bottom: 4px; }
+  .help-tip .tip::after { content: ""; position: absolute; top: 100%; right: 12px; border: 6px solid transparent; border-top-color: var(--gray-900, #15201c); }
+  .help-tip:hover .tip { opacity: 1; }
+
+  /* REVIEW */
+  .review-body { flex: 1; overflow-y: auto; padding: 0 48px 40px; scrollbar-width: thin; }
+  .review-layout { display: grid; grid-template-columns: 1fr 340px; gap: 24px; align-items: start; }
+  @media (max-width: 980px) { .review-layout { grid-template-columns: 1fr; } }
+  .review-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+  .tax-preview { position: sticky; top: 8px; background: #fff; border: 1px solid var(--border-secondary); border-radius: var(--radius-2xl); box-shadow: var(--shadow-sm); padding: 24px; }
+  .tax-preview .tp-label { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg-quaternary); margin-bottom: 16px; }
+  .tp-line { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--border-tertiary); font-size: 15px; }
+  .tp-line .k { color: var(--fg-secondary); }
+  .tp-line .v { font-weight: 600; color: var(--fg-primary); }
+  .tp-line.add .k, .tp-line.add .v { color: var(--brand-600); }
+  .tp-line.sub .v { color: var(--fg-secondary); }
+  .tp-line.subtotal .k, .tp-line.subtotal .v { font-weight: 700; color: var(--fg-primary); }
+  .tp-total { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding-top: 16px; margin-top: 6px; border-top: 2px solid var(--fg-primary); }
+  .tp-total .k { font-size: 16px; font-weight: 700; color: var(--fg-primary); }
+  .tp-total .v { font-family: var(--font-display); font-size: 22px; font-weight: 800; color: var(--fg-primary); }
+  .tp-note { font-size: 12.5px; line-height: 18px; color: var(--fg-tertiary); margin-top: 16px; }
+  .review-card { background: #fff; border: 1px solid var(--border-secondary); border-radius: var(--radius-xl); box-shadow: var(--shadow-xs); overflow: hidden; }
+  .review-card-head { display: flex; align-items: center; gap: 12px; padding: 16px 20px; border-bottom: 1px solid var(--border-tertiary); }
+  .review-card-head .card-icon { width: 34px; height: 34px; border-radius: 8px; background: var(--brand-50); color: var(--brand-700); display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .review-card-head h3 { flex: 1; font-family: var(--font-display); font-weight: 700; font-size: 16px; line-height: 24px; margin: 0; color: var(--fg-primary); }
+  .review-edit { display: inline-flex; align-items: center; gap: 6px; background: none; border: 0; cursor: pointer; color: var(--brand-600); font-size: 13px; font-weight: 600; font-family: var(--font-body); }
+  .review-edit:hover { color: var(--brand-700); }
+  .review-edit svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+  .review-card-body { padding: 8px 20px 16px; }
+  .rv-line { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--border-tertiary); }
+  .rv-line:last-child { border-bottom: 0; }
+  .rv-line .k { font-size: 13px; color: var(--fg-tertiary); }
+  .rv-line .v { font-size: 14px; font-weight: 600; color: var(--fg-primary); text-align: right; }
+  .rv-line .v.empty { color: var(--fg-quaternary); font-weight: 500; }
+
+  /* FOOTER + buttons */
+  .form-foot { flex-shrink: 0; padding: 16px 48px 24px; display: flex; align-items: center; justify-content: flex-end; gap: 12px; background: var(--gray-50); border-top: 1px solid var(--border-secondary); }
+  .form-foot .btn-back { margin-right: auto; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: inherit; font-weight: 600; font-size: 16px; line-height: 24px; padding: 14px 36px; border-radius: var(--radius-full); border: 0; cursor: pointer; transition: background 120ms ease, color 120ms, box-shadow 120ms; white-space: nowrap; }
+  .btn-primary { background: var(--brand-600); color: #fff; box-shadow: var(--shadow-xs); }
+  .btn-primary:hover { background: var(--brand-700); }
+  .btn-back { background: #fff; color: var(--fg-secondary); border: 1px solid var(--border-secondary); box-shadow: var(--shadow-xs); }
+  .btn-back:hover { background: var(--bg-secondary); border-color: var(--gray-400); color: var(--fg-primary); }
+  .btn .arrow { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+
+  [data-tab] { display: none; }
+  [data-tab].visible { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+
+  /* success modal */
+  .success-scrim { position: fixed; inset: 0; background: var(--bg-overlay); display: flex; align-items: center; justify-content: center; z-index: 100; opacity: 0; pointer-events: none; transition: opacity 180ms; padding: 24px; }
+  .success-scrim.show { opacity: 1; pointer-events: auto; }
+  .success-modal { width: min(460px, 100%); background: #fff; border-radius: var(--radius-3xl); box-shadow: var(--shadow-2xl); padding: 40px 40px 34px; text-align: center; transform: translateY(12px) scale(.97); transition: transform 200ms cubic-bezier(.2,.8,.2,1); }
+  .success-scrim.show .success-modal { transform: none; }
+  .success-icon { width: 64px; height: 64px; border-radius: 999px; background: var(--brand-100); color: var(--brand-700); display: inline-flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+  .success-icon svg { width: 30px; height: 30px; stroke: currentColor; fill: none; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+  .success-modal h3 { font-family: var(--font-display); font-weight: 700; font-size: 24px; line-height: 30px; margin: 0 0 12px; color: var(--fg-primary); }
+  .success-modal > p { font-size: 15px; line-height: 23px; color: var(--fg-tertiary); margin: 0 auto 26px; max-width: 40ch; }
+  .success-actions { display: flex; flex-direction: column; gap: 12px; }
+  .success-actions .btn { width: 100%; }
+
+  @media (max-width: 820px) { .layout { grid-template-columns: 1fr; } .sidebar { display: none; } .topbar-brand { width: auto; } }
+
+  /* ===== Contractor-specific ===== */
+  .frow[hidden] { display: none; }
+  #c-exempt-block { display: flex; flex-direction: column; gap: 16px; }
+  #c-exempt-block[hidden] { display: none; }
+  textarea.input { resize: vertical; min-height: 86px; line-height: 22px; font-family: inherit; }
+  .supply-dd .dd-menu { padding-top: 0; }
+  .dd-search { display: flex; align-items: center; gap: 8px; padding: 11px 12px; border-bottom: 1px solid var(--border-tertiary); position: sticky; top: 0; background: #fff; z-index: 2; }
+  .dd-search .ic { color: var(--fg-quaternary); }
+  .dd-search input { flex: 1; min-width: 0; border: 0; outline: 0; background: none; font-family: inherit; font-size: 15px; line-height: 22px; color: var(--fg-primary); }
+  .dd-search input::placeholder { color: var(--fg-quaternary); }
+  .dd-group { padding: 12px 12px 4px; font-size: 11.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--fg-quaternary); }
+  .dd-group:first-child { padding-top: 8px; }
+  .dd-opt .sup-left { display: flex; align-items: center; min-width: 0; }
+  .sup-rate { display: inline-flex; margin-left: 10px; padding: 2px 9px; border-radius: 999px; font-size: 12px; font-weight: 700; background: var(--brand-50); color: var(--brand-700); flex-shrink: 0; }
+  .dd-opt.hidden-opt, .dd-group.hidden-opt { display: none; }
+  .dd-no-res { padding: 16px 12px; font-size: 14px; color: var(--fg-tertiary); text-align: center; }
+  .dd-no-res[hidden] { display: none; }
+  .dd-value .sup-rate { margin-left: 8px; }
+  .wht-readout { display: flex; gap: 14px; align-items: flex-start; padding: 16px 18px; background: var(--brand-50); border-radius: var(--radius-lg); margin-top: 4px; }
+  .wht-readout .wr-ic { width: 32px; height: 32px; border-radius: 999px; background: var(--brand-600); color: #fff; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .wht-readout .wr-ic svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .wht-readout p { font-size: 14px; line-height: 20px; margin: 0; color: var(--brand-900); }
+  .wht-readout p b { font-weight: 800; }
+</style>
+</head>
+<body screen="Add Contractor">
+
+  <header class="topbar">
+    <div class="topbar-brand">
+      <a class="wordmark" href="Dashboard.html" aria-label="DexwinPay"><img src="assets/dexwin-logo.svg" alt="Dexwin"><span class="pay">PAY</span></a>
+      <button class="collapse-btn" aria-label="Collapse"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg></button>
+    </div>
+    <div class="topbar-bar">
+      <nav class="breadcrumb">
+        <a class="crumb" href="Dashboard.html">Dashboard</a>
+        <svg class="sep" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        <span class="current">Add Contractor</span>
+      </nav>
+      <button class="bell" aria-label="Notifications"><svg class="ic ic-lg" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></button>
+    </div>
+  </header>
+
+  <div class="wiz-head">
+    <a class="back-btn" href="Dashboard.html" aria-label="Back to dashboard"><svg class="ic" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></a>
+    <h1>Add Contractor</h1>
+  </div>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <ol class="step-list" id="step-list">
+        <li class="step is-active" data-step="1"><span class="num">1</span>Identity Details</li>
+        <li class="step" data-step="2"><span class="num">2</span>Compensation &amp; Contract</li>
+        <li class="step" data-step="3"><span class="num">3</span>Tax Setup</li>
+        <li class="step" data-step="4"><span class="num">4</span>Bank Details</li>
+        <li class="step" data-step="5"><span class="num">5</span>Review &amp; Submit</li>
+      </ol>
+    </aside>
+
+    <main class="stage">
+      <div class="progress"><div class="bar" id="progress-bar" style="width: 20%"></div></div>
+
+      <!-- ===================== STEP 1: Identity Details -->
+      <section data-tab="1" class="visible" data-screen-label="01 Identity Details">
+        <div class="form-body">
+          <div class="tab-head inline">
+            <h2>Let's set up this contractor's profile.</h2>
+            <p>Capture who you're paying and the tax identifiers the GRA needs to process Withholding Tax correctly.</p>
+          </div>
+
+          <div class="frow">
+            <div class="frow-q"><h3>What type of contractor are you hiring?</h3><p>Choose whether you are engaging an independent freelancer or a registered corporate entity.</p></div>
+            <div class="frow-a">
+              <div class="vest-grid" data-single id="c-type">
+                <div class="vest-card selected" data-radio data-val="individual"><span class="radio"></span><div class="vc-body"><div class="vc-title">Individual (Freelancer)</div><div class="vc-desc">A sole person providing services under their own name &mdash; identified by a Ghana Card.</div></div></div>
+                <div class="vest-card" data-radio data-val="business"><span class="radio"></span><div class="vc-body"><div class="vc-title">Registered Business</div><div class="vc-desc">An incorporated company or firm &mdash; identified by a TIN.</div></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="frow">
+            <div class="frow-q"><h3 id="c-name-q">What is their legal name?</h3></div>
+            <div class="frow-a">
+              <div class="field"><label id="c-name-label">Legal Name<span class="req">*</span></label><input type="text" class="input" id="c-name" placeholder='e.g. &ldquo;Kwame Mensah&rdquo;'></div>
+            </div>
+          </div>
+
+          <div class="frow">
+            <div class="frow-q"><h3>What is their primary Tax ID?</h3><p>Strictly required by the GRA to process Withholding Tax (WHT). Use a Ghana Card for individuals or a TIN for businesses.</p></div>
+            <div class="frow-a">
+              <div class="field"><label>TIN / Ghana Card Number<span class="req">*</span></label><input type="text" class="input" id="c-taxid" placeholder='e.g. &ldquo;GHA-123456789-0&rdquo; or &ldquo;C0001234567&rdquo;'></div>
+            </div>
+          </div>
+
+          <div class="frow">
+            <div class="frow-q"><h3>Where are they located?</h3><p>The official operating address or geographical location required for the GRA tax schedule.</p></div>
+            <div class="frow-a">
+              <div class="field"><label>Business Address / Location</label><textarea class="input" id="c-address" placeholder='e.g. &ldquo;No. 12 Independence Ave, Ridge, Accra&rdquo;'></textarea></div>
+            </div>
+          </div>
+
+          <div class="frow">
+            <div class="frow-q"><h3>What is their contact email?</h3><p>Where the system will send their remittance advices and payment receipts.</p></div>
+            <div class="frow-a">
+              <div class="field"><label>Email Address<span class="req">*</span></label><input type="email" class="input" id="c-email" placeholder='e.g. &ldquo;kwame@apexconsulting.com&rdquo;'></div>
+            </div>
+          </div>
+        </div>
+        <div class="form-foot">
+          <button class="btn btn-primary" data-next="2">Continue<svg class="arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+        </div>
+      </section>
+
+      <!-- ===================== STEP 2: Compensation & Contract -->
+      <section data-tab="2" data-screen-label="02 Compensation &amp; Contract">
+        <div class="form-body">
+          <div class="tab-head inline">
+            <h2>How is this contractor being paid?</h2>
+            <p>Set the contract value and the gross amount due this cycle. The system withholds tax from the gross before remitting.</p>
+          </div>
+
+          <div class="frow">
+            <div class="frow-q"><h3>What is the total value of this contract?</h3><p>The total lifetime financial value of the agreement. Leave this blank if this is an open-ended hourly or daily arrangement.</p></div>
+            <div class="frow-a">
+              <div class="field"><label>Total Contract Value</label><div class="amt-wrap"><span class="prefix">GHS</span><input type="number" min="0" class="input" id="c-total" placeholder="0.00"></div></div>
+            </div>
+          </div>
+
+          <div class="frow">
+            <div class="frow-q"><h3>What is their current gross payment?</h3><p>The exact amount being paid in the current billing cycle, before any taxes are withheld.</p></div>
+            <div class="frow-a">
+              <div class="field"><label>Current Gross Payment<span class="req">*</span></label><div class="amt-wrap"><span class="prefix">GHS</span><input type="number" min="0" class="input" id="c-gross" placeholder="0.00"></div></div>
+            </div>
+          </div>
+
+          <div class="frow">
+            <div class="frow-q"><h3>When does this contract end?</h3><p>The system will automatically pause payments and flag this contractor when the project timeline concludes.</p></div>
+            <div class="frow-a">
+              <div class="field"><label>End Date</label>
+                <div class="date-input"><svg class="ic cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><input id="c-end" type="text" class="input" placeholder="Select date" onfocus="this.type='date'" onblur="if(!this.value)this.type='text'"></div>
+                <div class="hint">Optional &mdash; leave blank for open-ended engagements.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-foot">
+          <button class="btn btn-back" data-next="1">Back</button>
+          <button class="btn btn-primary" data-next="3">Continue<svg class="arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+        </div>
+      </section>
+
+      <!-- ===================== STEP 3: Tax Setup -->
+      <section data-tab="3" data-screen-label="03 Tax Setup">
+        <div class="form-body">
+          <div class="tab-head inline">
+            <h2>Determine the Withholding Tax (WHT) rules.</h2>
+            <p>The GRA uses residency and the nature of the supply to set the exact rate withheld from each payment.</p>
+          </div>
+
+          <div class="frow">
+            <div class="frow-q"><h3>Is this contractor a tax resident in Ghana?</h3><p>Under GRA rules, non-residents are generally subject to a flat 20% withholding tax on most services.</p></div>
+            <div class="frow-a">
+              <div class="pill-row" data-single id="c-residency">
+                <div class="pill-radio selected" data-radio data-val="Resident"><span class="dot"></span>Resident</div>
+                <div class="pill-radio" data-radio data-val="Non-Resident"><span class="dot"></span>Non-Resident</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="frow">
+            <div class="frow-q"><h3>What exactly are they providing?</h3><p>The GRA uses this category to automatically determine the exact Withholding Tax percentage to deduct.</p></div>
+            <div class="frow-a">
+              <div class="field"><label>Nature of Supply<span class="req">*</span></label>
+                <div class="dd supply-dd" data-supply id="c-supply">
+                  <button type="button" class="dd-trigger"><span class="dd-value placeholder">Select nature of supply</span><svg class="ic dd-chev" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
+                  <div class="dd-menu" role="listbox">
+                    <div class="dd-search"><svg class="ic ic-sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" placeholder="Search supply type&hellip;"></div>
+                    <div class="dd-list"><div class="dd-group">General Services</div><div class="dd-opt" role="option" data-name="Services" data-rate="7.5"><span class="sup-left">Services<span class="sup-rate">7.5%</span></span><svg class="dd-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="dd-opt" role="option" data-name="Management & Technical Service Fees" data-rate="20"><span class="sup-left">Management & Technical Service Fees<span class="sup-rate">20%</span></span><svg class="dd-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="dd-opt" role="option" data-name="Directors Fees" data-rate="20"><span class="sup-left">Directors Fees<span class="sup-rate">20%</span></span><svg class="dd-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="dd-opt" role="option" data-name="Endorsement Fees" data-rate="15"><span class="sup-left">Endorsement Fees<span class="sup-rate">15%</span></span><svg class="dd-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="dd-opt" role="option" data-name="Commissions (Sales / Insurance / Lotto)" data-rate="10"><span class="sup-left">Commissions (Sales / Insurance / Lotto)<span class="sup-rate">10%</span></span><svg class="dd-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="dd-group">Works & Construction</div><div class="dd-opt" role="option" data-name="Works" data-rate="5"><span class="sup-left">Works<span class="sup-rate">5%</span></span><svg class="dd-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="dd-opt" role="option" data-name="Petroleum Subcontractor" data-rate="7.5"><span class="sup-left">Petroleum Subcontractor<span class="sup-rate">7.5%</span></span><svg class="dd-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="dd-group">Goods & Materials</div><div class="dd-opt" role="option" data-name="Goods" data-rate="3"><span class="sup-left">Goods<span class="sup-rate">3%</span></span><svg class="dd-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="dd-opt" role="option" data-name="Unprocessed Precious Minerals" data-rate="3"><span class="sup-left">Unprocessed Precious Minerals<span class="sup-rate">3%</span></span><svg class="dd-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="dd-group">Asset Income</div><div class="dd-opt" role="option" data-name="Rent (Residential)" data-rate="8"><span class="sup-left">Rent (Residential)<span class="sup-rate">8%</span></span><svg class="dd-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="dd-opt" role="option" data-name="Rent (Non-Residential)" data-rate="15"><span class="sup-left">Rent (Non-Residential)<span class="sup-rate">15%</span></span><svg class="dd-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="dd-opt" role="option" data-name="Royalties" data-rate="15"><span class="sup-left">Royalties<span class="sup-rate">15%</span></span><svg class="dd-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="dd-opt" role="option" data-name="Dividend" data-rate="8"><span class="sup-left">Dividend<span class="sup-rate">8%</span></span><svg class="dd-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="dd-opt" role="option" data-name="Interest" data-rate="8"><span class="sup-left">Interest<span class="sup-rate">8%</span></span><svg class="dd-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="dd-no-res" hidden>No matching supply type</div></div>
+                  </div>
+                </div>
+                <div class="helper-note" id="c-supply-note">Select a supply type to see the applicable WHT rate.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="frow">
+            <div class="frow-q"><h3>Does this contractor have a GRA Withholding Tax Exemption?</h3><p>If they possess a valid exemption certificate, the system will apply a 0% tax rate to their payments.</p></div>
+            <div class="frow-a">
+              <div class="toggle" id="c-exempt"><span class="tg"></span>This contractor holds a valid GRA exemption certificate.</div>
+              <div id="c-exempt-block" hidden>
+                <div class="field"><label>Exemption Certificate</label>
+                  <label class="uploader"><input type="file" accept=".pdf,.jpg,.jpeg,.png" hidden><span class="up-ic"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></span><span class="up-main"><b>Click to upload</b> or drag &amp; drop</span><span class="up-sub">PDF or JPG &middot; up to 10MB</span></label>
+                </div>
+                <div class="field"><label>Certificate Expiry Date<span class="req">*</span></label>
+                  <div class="date-input"><svg class="ic cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><input id="c-cert-expiry" type="text" class="input" placeholder="Select date" onfocus="this.type='date'" onblur="if(!this.value)this.type='text'"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-foot">
+          <button class="btn btn-back" data-next="2">Back</button>
+          <button class="btn btn-primary" data-next="4">Continue<svg class="arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+        </div>
+      </section>
+
+      <!-- ===================== STEP 4: Bank Details -->
+      <section data-tab="4" data-screen-label="04 Bank Details">
+        <div class="form-body">
+          <div class="tab-head inline">
+            <h2>Where should we send their money?</h2>
+            <p>Choose how this contractor receives payment. We remit the net amount after withholding tax to this destination.</p>
+          </div>
+
+          <div class="frow">
+            <div class="frow-q"><h3>How does this contractor want to be paid?</h3></div>
+            <div class="frow-a">
+              <div class="vest-grid" data-single id="c-paymethod">
+                <div class="vest-card selected" data-radio data-val="bank"><span class="radio"></span><div class="vc-body"><div class="vc-title">Direct Bank Transfer (ACH / RTGS)</div><div class="vc-desc">Pay straight into their bank account.</div></div></div>
+                <div class="vest-card" data-radio data-val="momo"><span class="radio"></span><div class="vc-body"><div class="vc-title">Mobile Money (MoMo)</div><div class="vc-desc">Pay into a mobile money wallet.</div></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="frow" data-pay-show="bank">
+            <div class="frow-q"><h3>Bank account details</h3></div>
+            <div class="frow-a">
+              <div class="fgrid">
+                <div class="field"><label>Bank Name<span class="req">*</span></label>
+                  <div class="dd" data-dd data-id="c-bank"><button type="button" class="dd-trigger"><span class="dd-value placeholder">Select bank</span><svg class="ic dd-chev" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button><div class="dd-menu" role="listbox"><div class="dd-list"><div class="dd-opt" role="option">GCB Bank<svg class="dd-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="dd-opt" role="option">Ecobank Ghana<svg class="dd-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="dd-opt" role="option">Absa Bank Ghana<svg class="dd-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="dd-opt" role="option">Stanbic Bank<svg class="dd-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="dd-opt" role="option">Fidelity Bank<svg class="dd-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="dd-opt" role="option">Cal Bank<svg class="dd-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="dd-opt" role="option">Zenith Bank Ghana<svg class="dd-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="dd-opt" role="option">Access Bank Ghana<svg class="dd-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div></div></div></div>
+                </div>
+                <div class="field"><label>Branch<span class="req">*</span></label>
+                  <div class="dd" data-dd data-id="c-branch"><button type="button" class="dd-trigger"><span class="dd-value placeholder">Select branch</span><svg class="ic dd-chev" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button><div class="dd-menu" role="listbox"><div class="dd-list"><div class="dd-opt" role="option">Accra Main<svg class="dd-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="dd-opt" role="option">Ridge<svg class="dd-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="dd-opt" role="option">Osu<svg class="dd-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="dd-opt" role="option">East Legon<svg class="dd-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="dd-opt" role="option">Tema<svg class="dd-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="dd-opt" role="option">Kumasi Adum<svg class="dd-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="dd-opt" role="option">Takoradi<svg class="dd-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div></div></div></div>
+                </div>
+                <div class="field span2"><label>Account Number<span class="req">*</span></label><input type="text" class="input" id="c-acct" placeholder='e.g. &ldquo;1234567890123&rdquo;'></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="frow" data-pay-show="momo" hidden>
+            <div class="frow-q"><h3>Mobile money details</h3></div>
+            <div class="frow-a">
+              <div class="fgrid">
+                <div class="field"><label>Mobile Network<span class="req">*</span></label>
+                  <div class="dd" data-dd data-id="c-network"><button type="button" class="dd-trigger"><span class="dd-value placeholder">Select network</span><svg class="ic dd-chev" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button><div class="dd-menu" role="listbox"><div class="dd-list"><div class="dd-opt" role="option">MTN MoMo<svg class="dd-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="dd-opt" role="option">Telecel Cash<svg class="dd-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="dd-opt" role="option">AirtelTigo Money<svg class="dd-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div></div></div></div>
+                </div>
+                <div class="field"><label>Mobile Number<span class="req">*</span></label><input type="tel" class="input" id="c-momo-num" placeholder='e.g. &ldquo;024 123 4567&rdquo;'></div>
+                <div class="field span2"><label>Registered Wallet Name<span class="req">*</span></label><input type="text" class="input" id="c-momo-name" placeholder='Name registered to the wallet'></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-foot">
+          <button class="btn btn-back" data-next="3">Back</button>
+          <button class="btn btn-primary" data-next="5">Continue<svg class="arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+        </div>
+      </section>
+
+      <!-- ===================== STEP 5: Review & Submit -->
+      <section data-tab="5" data-screen-label="05 Review &amp; Submit">
+        <div class="review-body">
+          <div class="tab-head inline">
+            <h2>Check the details before saving.</h2>
+            <p>Review everything below. The Withholding Tax preview shows exactly what will be deducted from each gross payment.</p>
+          </div>
+          <div class="review-layout">
+            <div class="review-grid">
+
+              <div class="review-card">
+                <div class="review-card-head"><span class="card-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span><h3>Identity Details</h3><button type="button" class="review-edit" data-jump="1"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button></div>
+                <div class="review-card-body" id="r-identity"></div>
+              </div>
+
+              <div class="review-card">
+                <div class="review-card-head"><span class="card-icon"><svg class="ic" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></span><h3>Compensation &amp; Contract</h3><button type="button" class="review-edit" data-jump="2"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button></div>
+                <div class="review-card-body" id="r-comp"></div>
+              </div>
+
+              <div class="review-card">
+                <div class="review-card-head"><span class="card-icon"><svg class="ic" viewBox="0 0 24 24"><path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6z"/></svg></span><h3>Tax Setup</h3><button type="button" class="review-edit" data-jump="3"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button></div>
+                <div class="review-card-body" id="r-tax"></div>
+              </div>
+
+              <div class="review-card">
+                <div class="review-card-head"><span class="card-icon"><svg class="ic" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg></span><h3>Bank Details</h3><button type="button" class="review-edit" data-jump="4"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button></div>
+                <div class="review-card-body" id="r-bank"></div>
+              </div>
+
+            </div>
+
+            <div class="tax-preview">
+              <div class="tp-label">Withholding Tax Preview</div>
+              <div id="wht-preview-body"></div>
+              <div class="wht-readout" id="wht-readout"><span class="wr-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></span><p id="wht-readout-text"></p></div>
+            </div>
+          </div>
+        </div>
+        <div class="form-foot">
+          <button class="btn btn-back" data-next="4">Back</button>
+          <button class="btn btn-primary" id="submit-contractor">Save Contractor<svg class="arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- success modal -->
+  <div class="success-scrim" id="success-modal">
+    <div class="success-modal" role="dialog" aria-modal="true">
+      <span class="success-icon"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg></span>
+      <h3 id="sm-title">Contractor added</h3>
+      <p id="sm-sub">They've been added to your company and are ready for their next payment.</p>
+      <div class="success-actions">
+        <a class="btn btn-primary" href="Dashboard.html">Back to Dashboard<svg class="arrow" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+        <a class="btn btn-back" href="Add Contractor.html">Add Another Contractor</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const steps = Array.from(document.querySelectorAll('.step'));
+    const sections = Array.from(document.querySelectorAll('[data-tab]'));
+    const bar = document.getElementById('progress-bar');
+    const TOTAL = 5;
+
+    function goTo(n) {
+      n = Math.max(1, Math.min(TOTAL, Number(n)));
+      steps.forEach((s) => { const i = Number(s.dataset.step); s.classList.toggle('is-active', i === n); s.classList.toggle('is-done', i < n); s.querySelector('.num').innerHTML = i < n ? '<svg class="ic tick" viewBox="0 0 24 24" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>' : i; });
+      sections.forEach((sec) => sec.classList.toggle('visible', Number(sec.dataset.tab) === n));
+      bar.style.width = (n / TOTAL * 100) + '%';
+      document.querySelectorAll('.form-body, .review-body').forEach((b) => { b.scrollTop = 0; });
+      if (n === 5) renderReview();
+    }
+    steps.forEach((s) => s.addEventListener('click', () => goTo(s.dataset.step)));
+    document.querySelectorAll('[data-next]').forEach((b) => b.addEventListener('click', () => goTo(b.dataset.next)));
+    document.addEventListener('click', (e) => { const j = e.target.closest('[data-jump]'); if (j) { e.preventDefault(); goTo(j.dataset.jump); } });
+
+    // custom dropdowns (single-select, add-support)
+    document.querySelectorAll('[data-dd]').forEach((dd) => {
+      const trigger = dd.querySelector('.dd-trigger');
+      const valueEl = dd.querySelector('.dd-value');
+      const list = dd.querySelector('.dd-list');
+      const preset = dd.querySelector('.dd-opt.selected');
+      if (preset) dd.dataset.value = preset.textContent.trim();
+      function selectOpt(opt) { list.querySelectorAll('.dd-opt').forEach((o) => o.classList.remove('selected')); opt.classList.add('selected'); valueEl.textContent = opt.textContent.trim(); valueEl.classList.remove('placeholder'); dd.dataset.value = opt.textContent.trim(); close(); }
+      function open() { document.querySelectorAll('[data-dd].open, [data-supply].open').forEach((d) => { if (d !== dd) d.classList.remove('open'); }); dd.classList.add('open'); }
+      function close() { dd.classList.remove('open'); }
+      trigger.addEventListener('click', (e) => { e.stopPropagation(); dd.classList.contains('open') ? close() : open(); });
+      list.querySelectorAll('.dd-opt').forEach((opt) => opt.addEventListener('click', () => selectOpt(opt)));
+    });
+
+    // searchable supply dropdown
+    (function supplyDD() {
+      const dd = document.getElementById('c-supply');
+      if (!dd) return;
+      const trigger = dd.querySelector('.dd-trigger');
+      const valueEl = dd.querySelector('.dd-value');
+      const search = dd.querySelector('.dd-search input');
+      const opts = Array.from(dd.querySelectorAll('.dd-opt'));
+      const groups = Array.from(dd.querySelectorAll('.dd-group'));
+      const noRes = dd.querySelector('.dd-no-res');
+      const note = document.getElementById('c-supply-note');
+      function open() { document.querySelectorAll('[data-dd].open').forEach((d) => d.classList.remove('open')); dd.classList.add('open'); search.value=''; filter(''); setTimeout(() => search.focus(), 30); }
+      function close() { dd.classList.remove('open'); }
+      trigger.addEventListener('click', (e) => { e.stopPropagation(); dd.classList.contains('open') ? close() : open(); });
+      function filter(q) {
+        q = q.toLowerCase().trim();
+        let any = false;
+        opts.forEach((o) => { const match = o.dataset.name.toLowerCase().indexOf(q) >= 0; o.classList.toggle('hidden-opt', !match); if (match) any = true; });
+        groups.forEach((g) => { let n = g.nextElementSibling; let vis = false; while (n && !n.classList.contains('dd-group')) { if (n.classList.contains('dd-opt') && !n.classList.contains('hidden-opt')) vis = true; n = n.nextElementSibling; } g.classList.toggle('hidden-opt', !vis); });
+        noRes.hidden = any;
+      }
+      search.addEventListener('input', () => filter(search.value));
+      search.addEventListener('click', (e) => e.stopPropagation());
+      opts.forEach((o) => o.addEventListener('click', () => {
+        opts.forEach((x) => x.classList.remove('selected')); o.classList.add('selected');
+        dd.dataset.value = o.dataset.name; dd.dataset.rate = o.dataset.rate;
+        valueEl.innerHTML = o.dataset.name + '<span class="sup-rate">' + o.dataset.rate + '%</span>'; valueEl.classList.remove('placeholder');
+        if (note) note.textContent = 'A ' + o.dataset.rate + '% withholding tax will be applied to gross payments for ' + o.dataset.name + '.';
+        close();
+      }));
+    })();
+
+    document.addEventListener('click', () => document.querySelectorAll('[data-dd].open, [data-supply].open').forEach((d) => d.classList.remove('open')));
+
+    // single-select groups (pills / vest cards)
+    document.querySelectorAll('[data-single]').forEach((group) => {
+      group.querySelectorAll('[data-radio]').forEach((c) => c.addEventListener('click', () => { group.querySelectorAll('[data-radio]').forEach((x) => x.classList.remove('selected')); c.classList.add('selected'); group.dispatchEvent(new CustomEvent('change-radio', { detail: c.dataset.val })); }));
+    });
+
+    // toggles
+    document.querySelectorAll('.toggle').forEach((t) => t.addEventListener('click', () => t.classList.toggle('on')));
+    // dates
+    document.querySelectorAll('.date-input .input').forEach((d) => d.addEventListener('change', () => d.classList.toggle('filled', !!d.value)));
+
+    // ----- contractor branching -----
+    // dynamic legal/business name label
+    (function nameLabel() {
+      const grp = document.getElementById('c-type');
+      const q = document.getElementById('c-name-q');
+      const lbl = document.getElementById('c-name-label');
+      const inp = document.getElementById('c-name');
+      grp.addEventListener('change-radio', (e) => {
+        if (e.detail === 'business') { q.textContent = 'What is the business name?'; lbl.innerHTML = 'Business Name<span class="req">*</span>'; inp.placeholder = 'e.g. \u201CApex Consulting Ltd\u201D'; }
+        else { q.textContent = 'What is their legal name?'; lbl.innerHTML = 'Legal Name<span class="req">*</span>'; inp.placeholder = 'e.g. \u201CKwame Mensah\u201D'; }
+      });
+    })();
+
+    // exemption reveal
+    (function exemption() {
+      const tg = document.getElementById('c-exempt');
+      const block = document.getElementById('c-exempt-block');
+      tg.addEventListener('click', () => { block.hidden = !tg.classList.contains('on'); try { renderReview(); } catch (e) {} });
+    })();
+
+    // file upload label
+    document.querySelectorAll('.uploader input[type="file"]').forEach((inp) => {
+      inp.addEventListener('change', () => { const lbl = inp.closest('.uploader').querySelector('.up-main'); if (inp.files[0]) lbl.innerHTML = '<b>' + inp.files[0].name + '</b>'; });
+    });
+
+    // pay-method reveal
+    (function payMethod() {
+      const grp = document.getElementById('c-paymethod');
+      const blocks = Array.from(document.querySelectorAll('[data-pay-show]'));
+      function apply(m) { blocks.forEach((b) => { b.hidden = b.dataset.payShow !== m; }); }
+      grp.addEventListener('change-radio', (e) => apply(e.detail));
+      apply('bank');
+    })();
+
+    // ----- review -----
+    function val(id, fb) { const e = document.getElementById(id); return e && e.value.trim() ? e.value.trim() : (fb || ''); }
+    function ddVal(id, fb) { const e = document.querySelector('[data-dd][data-id="' + id + '"], [data-supply][id="' + id + '"]'); return e && e.dataset.value ? e.dataset.value : (fb || ''); }
+    function radioVal(id, fb) { const e = document.querySelector('#' + id + ' [data-radio].selected'); return e ? e.dataset.val : (fb || ''); }
+    function lines(target, rows) { document.getElementById(target).innerHTML = rows.map((r) => '<div class="rv-line"><span class="k">' + r[0] + '</span><span class="v' + (r[1] ? '' : ' empty') + '">' + (r[1] || 'Not set') + '</span></div>').join(''); }
+    function money(n) { return 'GHS ' + Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+    function numv(s) { const n = parseFloat(String(s).replace(/[^0-9.]/g, '')); return isNaN(n) ? 0 : n; }
+    function fmtDate(v) { if (!v) return ''; const d = new Date(v); if (isNaN(d)) return v; return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }); }
+
+    function effRate() {
+      if (document.getElementById('c-exempt').classList.contains('on')) return { rate: 0, reason: 'exempt' };
+      if (radioVal('c-residency') === 'Non-Resident') return { rate: 20, reason: 'nonres' };
+      const dd = document.getElementById('c-supply');
+      return { rate: dd.dataset.rate ? parseFloat(dd.dataset.rate) : 0, reason: 'supply' };
+    }
+
+    function renderReview() {
+      const isBiz = radioVal('c-type') === 'business';
+      lines('r-identity', [
+        ['Type', isBiz ? 'Registered Business' : 'Individual (Freelancer)'],
+        [isBiz ? 'Business name' : 'Legal name', val('c-name')],
+        ['Tax ID', val('c-taxid')],
+        ['Location', val('c-address')],
+        ['Email', val('c-email')]
+      ]);
+      const total = val('c-total'); const gross = val('c-gross');
+      lines('r-comp', [
+        ['Total contract value', total ? money(total) : ''],
+        ['Current gross payment', gross ? money(gross) : ''],
+        ['Contract end', val('c-end') ? fmtDate(val('c-end')) : 'Open-ended']
+      ]);
+      const er = effRate();
+      const supply = ddVal('c-supply');
+      lines('r-tax', [
+        ['Residency', radioVal('c-residency')],
+        ['Nature of supply', supply],
+        ['WHT exemption', document.getElementById('c-exempt').classList.contains('on') ? 'Yes — certificate on file' : 'No'],
+        ['Effective WHT rate', er.rate + '%']
+      ]);
+      const method = radioVal('c-paymethod');
+      if (method === 'momo') {
+        lines('r-bank', [['Method', 'Mobile Money (MoMo)'], ['Network', ddVal('c-network')], ['Mobile number', val('c-momo-num')], ['Wallet name', val('c-momo-name')]]);
+      } else {
+        lines('r-bank', [['Method', 'Direct Bank Transfer'], ['Bank', ddVal('c-bank')], ['Branch', ddVal('c-branch')], ['Account number', val('c-acct')]]);
+      }
+      renderWHT();
+    }
+
+    function renderWHT() {
+      const gross = numv(val('c-gross'));
+      const er = effRate();
+      const wht = gross * er.rate / 100;
+      const net = gross - wht;
+      const supply = ddVal('c-supply', 'the selected category');
+      let html = '<div class="tp-line subtotal"><span class="k">Gross payment</span><span class="v">' + money(gross) + '</span></div>';
+      let rateLabel = 'WHT (' + er.rate + '%)';
+      html += '<div class="tp-line" style="font-size:13px;"><span class="k" style="color:var(--fg-tertiary)">' + (supply || 'No supply selected') + '</span><span class="v" style="font-weight:500;color:var(--fg-tertiary)">' + radioVal('c-residency', 'Resident') + '</span></div>';
+      html += '<div class="tp-line sub"><span class="k">' + rateLabel + '</span><span class="v">- ' + money(wht) + '</span></div>';
+      html += '<div class="tp-total"><span class="k">Net to contractor</span><span class="v">GHS ' + Number(Math.round(net)).toLocaleString('en-US') + '</span></div>';
+      document.getElementById('wht-preview-body').innerHTML = html;
+      const txt = document.getElementById('wht-readout-text');
+      if (er.reason === 'exempt') txt.innerHTML = 'A valid exemption certificate is on file, so <b>0% WHT</b> will be deducted from this contractor\'s payments.';
+      else if (er.reason === 'nonres') txt.innerHTML = 'As a non-resident, this contractor will have a flat <b>20% WHT</b> deducted from their gross payments.';
+      else if (supply && er.rate) txt.innerHTML = 'Contractor will have <b>' + er.rate + '% WHT</b> deducted from their gross payments based on the \u2018' + supply + '\u2019 category.';
+      else txt.innerHTML = 'Select a nature of supply to preview the exact withholding tax that will apply.';
+    }
+
+    // live recompute on tax-step changes
+    (function liveWHT() {
+      const sec = document.querySelector('[data-tab="3"]');
+      if (!sec) return;
+      sec.addEventListener('click', () => setTimeout(() => { try { renderWHT(); } catch (e) {} }, 0));
+      sec.addEventListener('input', () => { try { renderWHT(); } catch (e) {} });
+    })();
+
+    // seed mock data so Review shows a populated example
+    (function seedMock() {
+      function setVal(id, v) { const e = document.getElementById(id); if (e) e.value = v; }
+      function setDD(id, text) { const dd = document.querySelector('[data-dd][data-id="' + id + '"]'); if (!dd) return; dd.dataset.value = text; const v = dd.querySelector('.dd-value'); if (v) { v.textContent = text; v.classList.remove('placeholder'); } }
+      setVal('c-name', 'Apex Consulting Ltd');
+      setVal('c-taxid', 'C0001234567');
+      setVal('c-address', 'No. 12 Independence Avenue, Ridge, Accra');
+      setVal('c-email', 'accounts@apexconsulting.com');
+      setVal('c-total', '120000'); setVal('c-gross', '15000');
+      // pick Registered Business
+      const typeGrp = document.getElementById('c-type');
+      typeGrp.querySelectorAll('[data-radio]').forEach((c) => c.classList.toggle('selected', c.dataset.val === 'business'));
+      typeGrp.dispatchEvent(new CustomEvent('change-radio', { detail: 'business' }));
+      // supply = Management & Technical (20%)... use Services 7.5% to match blueprint example
+      const sup = document.getElementById('c-supply');
+      const opt = sup.querySelector('.dd-opt[data-name="Services"]');
+      if (opt) { sup.dataset.value = 'Services'; sup.dataset.rate = '7.5'; const v = sup.querySelector('.dd-value'); v.innerHTML = 'Services<span class="sup-rate">7.5%</span>'; v.classList.remove('placeholder'); opt.classList.add('selected'); const note = document.getElementById('c-supply-note'); if (note) note.textContent = 'A 7.5% withholding tax will be applied to gross payments for Services.'; }
+      setDD('c-bank', 'GCB Bank'); setDD('c-branch', 'Ridge'); setVal('c-acct', '1234567890123');
+    })();
+
+    document.getElementById('submit-contractor').addEventListener('click', () => {
+      document.getElementById('success-modal').classList.add('show');
+    });
+  </script>
+</body>
+</html>

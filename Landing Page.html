@@ -1,0 +1,987 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Dexwin HR — Run payroll in minutes, not days</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="colors_and_type.css">
+<link rel="icon" type="image/svg+xml" href="assets/dexwin-mark.svg">
+<style>
+  /* ------- Page primitives ------------------------------------------------ */
+  html, body { margin: 0; padding: 0; background: var(--bg-primary); color: var(--fg-primary); }
+  body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  img { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--brand-100); color: var(--brand-900); }
+
+  .container { max-width: 1280px; margin: 0 auto; padding: 0 80px; }
+  @media (max-width: 900px) { .container { padding: 0 24px; } }
+
+  /* ------- Buttons -------------------------------------------------------- */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: inherit; font-weight: 600; font-size: 16px; line-height: 24px;
+    padding: 12px 22px; border-radius: var(--radius-full);
+    border: 0; cursor: pointer;
+    transition: background 120ms ease, color 120ms ease, box-shadow 120ms ease;
+    white-space: nowrap;
+  }
+  .btn-lg { padding: 14px 24px; font-size: 16px; }
+  .btn-primary { background: var(--bg-brand-solid); color: #fff; box-shadow: var(--shadow-btn-primary); }
+  .btn-primary:hover { background: var(--bg-brand-solid-hover); }
+  .btn-secondary { background: #fff; color: var(--fg-secondary); border: 1px solid var(--border-primary); box-shadow: var(--shadow-xs); }
+  .btn-secondary:hover { background: var(--bg-secondary); }
+  .btn-ghost { background: transparent; color: var(--fg-secondary); padding: 10px 14px; }
+  .btn-ghost:hover { background: var(--bg-secondary); }
+  .btn-dark-secondary { background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.18); }
+  .btn-dark-secondary:hover { background: rgba(255,255,255,0.14); }
+  .ic { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+  .ic-sm { width: 16px; height: 16px; stroke-width: 1.75; }
+
+  /* ------- Top nav -------------------------------------------------------- */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(255,255,255,0.86);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-secondary);
+  }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 72px; }
+  .nav-logo { height: 24px; display: flex; align-items: center; }
+  .nav-logo img { height: 24px; }
+  .nav-links { display: flex; align-items: center; gap: 32px; }
+  .nav-links a { font-size: 15px; color: var(--fg-secondary); font-weight: 500; transition: color 120ms ease; }
+  .nav-links a:hover { color: var(--fg-primary); }
+  .nav-cta { display: flex; align-items: center; gap: 8px; }
+  @media (max-width: 900px) { .nav-links { display: none; } }
+
+  /* ------- Hero ----------------------------------------------------------- */
+  .hero { padding: 80px 0 96px; position: relative; overflow: hidden; }
+  .hero-inner { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 64px; align-items: center; }
+  @media (max-width: 1024px) { .hero-inner { grid-template-columns: 1fr; gap: 48px; } }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 4px 12px 4px 4px;
+    background: var(--bg-brand-subtle); color: var(--brand-700);
+    border-radius: var(--radius-full);
+    font-size: 13px; font-weight: 500; line-height: 20px;
+    margin-bottom: 24px;
+  }
+  .eyebrow-tag {
+    background: #fff; color: var(--brand-700);
+    padding: 2px 10px; border-radius: var(--radius-full);
+    font-size: 12px; font-weight: 600; border: 1px solid var(--brand-200);
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: 60px; line-height: 68px;
+    font-weight: 700; letter-spacing: -0.02em;
+    margin: 0 0 24px; color: var(--fg-primary);
+    text-wrap: balance;
+  }
+  .hero h1 .accent { color: var(--brand-600); }
+  .hero p.lede {
+    font-size: 20px; line-height: 30px;
+    color: var(--fg-secondary); margin: 0 0 36px;
+    max-width: 540px;
+  }
+  .hero-actions { display: flex; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
+  .hero-trust { display: flex; align-items: center; gap: 12px; color: var(--fg-tertiary); font-size: 14px; }
+  .hero-trust .avatars { display: flex; }
+  .hero-trust .avatars > div {
+    width: 32px; height: 32px; border-radius: 999px;
+    background-size: cover; background-position: center;
+    border: 2px solid #fff; margin-left: -8px;
+  }
+  .hero-trust .avatars > div:first-child { margin-left: 0; }
+  .hero-trust .stars { color: var(--warning-500); letter-spacing: 1px; font-size: 13px; }
+  @media (max-width: 720px) { .hero h1 { font-size: 44px; line-height: 52px; } }
+
+  /* Hero visual: layered product card + photo */
+  .hero-visual { position: relative; min-height: 540px; }
+  .hero-photo {
+    position: absolute; right: 0; top: 0;
+    width: 78%; height: 100%;
+    border-radius: var(--radius-2xl);
+    background: linear-gradient(135deg, var(--brand-50), var(--brand-100));
+    overflow: hidden;
+    box-shadow: var(--shadow-xl);
+  }
+  .hero-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .hero-card {
+    position: absolute; left: 0; bottom: 32px;
+    width: 60%;
+    background: #fff;
+    border: 1px solid var(--border-secondary);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-2xl);
+    padding: 20px;
+  }
+  .hero-card .label { font-size: 12px; color: var(--fg-quaternary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+  .hero-card .amt { font-family: var(--font-display); font-size: 32px; line-height: 40px; font-weight: 700; color: var(--fg-primary); margin: 4px 0 2px; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .hero-card .sub { font-size: 13px; color: var(--fg-tertiary); margin-bottom: 16px; }
+  .hero-card .bar { height: 8px; background: var(--gray-100); border-radius: 999px; overflow: hidden; margin-bottom: 16px; }
+  .hero-card .bar > div { height: 100%; width: 84%; background: var(--brand-500); border-radius: 999px; }
+  .hero-card .row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-top: 1px solid var(--border-secondary); font-size: 13px; }
+  .hero-card .row .l { color: var(--fg-secondary); display: flex; align-items: center; gap: 8px; }
+  .hero-card .row .v { color: var(--fg-primary); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .dot { width: 6px; height: 6px; border-radius: 999px; background: var(--brand-500); }
+  .hero-pill {
+    position: absolute; top: 36px; left: -16px;
+    background: #fff; border: 1px solid var(--border-secondary);
+    border-radius: var(--radius-full); padding: 10px 16px 10px 12px;
+    display: flex; align-items: center; gap: 10px;
+    box-shadow: var(--shadow-lg);
+    font-size: 14px; font-weight: 500;
+  }
+  .hero-pill .check { width: 28px; height: 28px; background: var(--brand-50); color: var(--brand-700); border-radius: 999px; display: flex; align-items: center; justify-content: center; }
+
+  /* ------- Logo strip ----------------------------------------------------- */
+  .logo-strip { padding: 32px 0 64px; border-bottom: 1px solid var(--border-secondary); }
+  .logo-strip .label { text-align: center; font-size: 13px; color: var(--fg-tertiary); font-weight: 500; margin-bottom: 32px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .logo-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 32px; align-items: center; }
+  .logo-row .l-item {
+    height: 32px; display: flex; align-items: center; justify-content: center;
+    color: var(--gray-500); font-weight: 600; font-size: 18px; letter-spacing: -0.01em;
+    opacity: 0.78;
+  }
+  .logo-row .l-item .mark {
+    width: 24px; height: 24px; border-radius: 6px; background: var(--gray-200);
+    display: inline-flex; align-items: center; justify-content: center;
+    margin-right: 8px; color: var(--gray-600); font-weight: 700; font-size: 12px;
+  }
+  @media (max-width: 900px) { .logo-row { grid-template-columns: repeat(3, 1fr); gap: 24px; } }
+
+  /* ------- Section primitives -------------------------------------------- */
+  section { padding: 96px 0; }
+  .section-head { text-align: center; max-width: 720px; margin: 0 auto 64px; }
+  .section-head .kicker { color: var(--brand-700); font-weight: 600; font-size: 14px; margin-bottom: 12px; letter-spacing: 0.02em; }
+  .section-head h2 {
+    font-family: var(--font-display);
+    font-size: 44px; line-height: 52px;
+    font-weight: 700; letter-spacing: -0.02em;
+    margin: 0 0 16px; color: var(--fg-primary);
+    text-wrap: balance;
+  }
+  .section-head p { font-size: 18px; line-height: 28px; color: var(--fg-secondary); margin: 0; text-wrap: pretty; }
+
+  /* ------- Features ------------------------------------------------------- */
+  .features { background: var(--bg-secondary); border-top: 1px solid var(--border-secondary); border-bottom: 1px solid var(--border-secondary); }
+  .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  @media (max-width: 900px) { .feature-grid { grid-template-columns: 1fr; } }
+  .feature-card {
+    background: #fff; border: 1px solid var(--border-secondary);
+    border-radius: var(--radius-xl); padding: 28px;
+    box-shadow: var(--shadow-xs);
+    transition: box-shadow 200ms ease, transform 200ms ease;
+  }
+  .feature-card:hover { box-shadow: var(--shadow-md); }
+  .feature-icon {
+    width: 48px; height: 48px; border-radius: 12px;
+    background: var(--brand-50); color: var(--brand-700);
+    display: inline-flex; align-items: center; justify-content: center;
+    margin-bottom: 20px;
+  }
+  .feature-icon .ic { width: 24px; height: 24px; }
+  .feature-card h3 { font-size: 20px; line-height: 28px; font-weight: 600; margin: 0 0 8px; }
+  .feature-card p { font-size: 15px; line-height: 24px; color: var(--fg-secondary); margin: 0 0 20px; }
+  .feature-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  .feature-list li { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--fg-secondary); }
+  .feature-list .ic { color: var(--brand-600); margin-top: 2px; }
+
+  /* ------- Product screenshot ------------------------------------------- */
+  .product-shot { padding: 32px 0 0; }
+  .shot-frame {
+    margin: 56px auto 0; max-width: 1120px;
+    background: #fff;
+    border: 1px solid var(--border-secondary);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-2xl);
+    overflow: hidden;
+  }
+  .shot-titlebar {
+    height: 40px; background: var(--gray-50);
+    border-bottom: 1px solid var(--border-secondary);
+    display: flex; align-items: center; padding: 0 16px; gap: 8px;
+  }
+  .shot-titlebar .dot { width: 10px; height: 10px; border-radius: 999px; background: var(--gray-300); }
+  .shot-titlebar .url {
+    margin-left: 16px; padding: 4px 12px;
+    background: #fff; border: 1px solid var(--border-secondary);
+    border-radius: 999px; font-size: 12px; color: var(--fg-tertiary);
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .shot-body { display: grid; grid-template-columns: 240px 1fr; min-height: 540px; }
+  .shot-sidebar { background: #fff; border-right: 1px solid var(--border-secondary); padding: 20px 12px; }
+  .shot-brand { display: flex; align-items: center; gap: 8px; padding: 4px 12px 24px; }
+  .shot-brand img { height: 20px; }
+  .shot-nav { display: flex; flex-direction: column; gap: 2px; }
+  .shot-nav .item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 12px; border-radius: 8px;
+    font-size: 14px; color: var(--fg-secondary); font-weight: 500;
+  }
+  .shot-nav .item.active { background: var(--brand-50); color: var(--brand-700); }
+  .shot-nav .item.active .ic { color: var(--brand-600); }
+  .shot-nav .item .ic { color: var(--gray-500); width: 16px; height: 16px; }
+  .shot-nav .item .badge {
+    margin-left: auto; background: var(--brand-100); color: var(--brand-700);
+    padding: 1px 8px; border-radius: 999px; font-size: 11px; font-weight: 600;
+  }
+  .shot-nav .sep { height: 1px; background: var(--border-secondary); margin: 12px 8px; }
+  .shot-main { padding: 24px; background: var(--bg-secondary); }
+  .shot-page-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  .shot-page-head h4 { font-size: 22px; font-weight: 600; margin: 0; }
+  .shot-page-head .sub { font-size: 13px; color: var(--fg-tertiary); }
+  .shot-page-head .right { display: flex; gap: 8px; }
+  .shot-metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+  .shot-metric { background: #fff; border: 1px solid var(--border-secondary); border-radius: 10px; padding: 14px; }
+  .shot-metric .l { font-size: 11px; color: var(--fg-quaternary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+  .shot-metric .v { font-size: 22px; font-weight: 700; margin: 6px 0 4px; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+  .shot-metric .d { font-size: 12px; color: var(--fg-tertiary); }
+  .shot-metric .d .up { color: var(--success-700); background: var(--success-50); padding: 1px 6px; border-radius: 999px; font-weight: 600; }
+  .shot-tbl { background: #fff; border: 1px solid var(--border-secondary); border-radius: 10px; overflow: hidden; }
+  .shot-tbl .thd { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr 0.8fr; gap: 16px; padding: 12px 16px; background: var(--gray-50); font-size: 11px; color: var(--fg-quaternary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+  .shot-tbl .trow { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr 0.8fr; gap: 16px; padding: 12px 16px; border-top: 1px solid var(--border-secondary); font-size: 13px; align-items: center; }
+  .shot-tbl .trow .nm { display: flex; align-items: center; gap: 10px; font-weight: 500; }
+  .shot-tbl .av { width: 28px; height: 28px; border-radius: 999px; background: var(--brand-100); color: var(--brand-800); display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; }
+  .shot-tbl .num { font-variant-numeric: tabular-nums; }
+  .pill { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: 999px; font-size: 12px; font-weight: 500; }
+  .pill .d { width: 6px; height: 6px; border-radius: 999px; }
+  .pill-ok { background: var(--success-50); color: var(--success-700); }
+  .pill-ok .d { background: var(--success-500); }
+  .pill-due { background: var(--warning-50); color: var(--warning-700); }
+  .pill-due .d { background: var(--warning-500); }
+
+  /* ------- Compliance ---------------------------------------------------- */
+  .compliance { background: var(--bg-brand-dark); color: #fff; }
+  .compliance .container { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 80px; align-items: center; }
+  @media (max-width: 1024px) { .compliance .container { grid-template-columns: 1fr; gap: 48px; } }
+  .compliance .kicker { color: var(--brand-300); }
+  .compliance h2 { color: #fff; font-family: var(--font-display); font-size: 40px; line-height: 48px; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 16px; text-wrap: balance; }
+  .compliance p.lede { font-size: 17px; line-height: 28px; color: var(--brand-100); margin: 0 0 24px; max-width: 480px; }
+  .compliance .cta-row { display: flex; gap: 12px; }
+  .compliance-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .comp-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: var(--radius-xl);
+    padding: 24px;
+  }
+  .comp-card .acro { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-display); font-size: 22px; font-weight: 700; color: #fff; letter-spacing: -0.01em; }
+  .comp-card .acro .mark { width: 28px; height: 28px; border-radius: 8px; background: var(--brand-500); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
+  .comp-card .full { font-size: 13px; color: var(--brand-200); margin-top: 4px; }
+  .comp-card .desc { font-size: 14px; color: rgba(255,255,255,0.78); line-height: 22px; margin-top: 12px; }
+  .comp-card .meta { display: flex; align-items: center; gap: 8px; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.10); font-size: 12px; color: var(--brand-200); }
+  .comp-card .meta .ic { color: var(--brand-300); }
+
+  /* ------- Pricing ------------------------------------------------------- */
+  .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; align-items: stretch; }
+  @media (max-width: 900px) { .pricing-grid { grid-template-columns: 1fr; } }
+  .price-card {
+    background: #fff; border: 1px solid var(--border-secondary);
+    border-radius: var(--radius-2xl); padding: 32px;
+    display: flex; flex-direction: column; gap: 24px;
+    box-shadow: var(--shadow-xs);
+  }
+  .price-card.featured {
+    border-color: var(--brand-300);
+    box-shadow: 0 0 0 2px var(--brand-100), var(--shadow-md);
+    position: relative;
+  }
+  .price-card.featured::before {
+    content: "Most popular"; position: absolute; top: -12px; left: 32px;
+    background: var(--brand-600); color: #fff; font-size: 12px; font-weight: 600;
+    padding: 4px 12px; border-radius: 999px;
+  }
+  .price-tier { font-size: 14px; font-weight: 600; color: var(--brand-700); letter-spacing: 0.02em; }
+  .price-head .desc { font-size: 14px; color: var(--fg-tertiary); line-height: 22px; margin-top: 4px; }
+  .price-amt { display: flex; align-items: baseline; gap: 6px; }
+  .price-amt .currency { font-size: 22px; font-weight: 600; color: var(--fg-secondary); }
+  .price-amt .n { font-family: var(--font-display); font-size: 56px; line-height: 1; font-weight: 700; letter-spacing: -0.02em; }
+  .price-amt .per { font-size: 14px; color: var(--fg-tertiary); margin-left: 4px; }
+  .price-min { font-size: 13px; color: var(--fg-tertiary); margin-top: 8px; }
+  .price-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; flex: 1; }
+  .price-list li { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--fg-secondary); }
+  .price-list .ic { color: var(--brand-600); margin-top: 2px; flex-shrink: 0; }
+  .price-card .btn { width: 100%; justify-content: center; }
+
+  /* ------- Testimonials -------------------------------------------------- */
+  .testimonials { background: var(--bg-secondary); border-top: 1px solid var(--border-secondary); border-bottom: 1px solid var(--border-secondary); }
+  .testi-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 24px; }
+  @media (max-width: 1024px) { .testi-grid { grid-template-columns: 1fr; } }
+  .testi {
+    background: #fff; border: 1px solid var(--border-secondary);
+    border-radius: var(--radius-xl); padding: 28px;
+    display: flex; flex-direction: column; gap: 20px;
+  }
+  .testi.feature { grid-row: span 1; }
+  .testi blockquote { margin: 0; font-size: 18px; line-height: 28px; font-weight: 500; color: var(--fg-primary); letter-spacing: -0.005em; text-wrap: pretty; }
+  .testi.feature blockquote { font-size: 22px; line-height: 32px; }
+  .testi-author { display: flex; align-items: center; gap: 12px; margin-top: auto; }
+  .testi-avatar { width: 44px; height: 44px; border-radius: 999px; background-size: cover; background-position: center; background-color: var(--brand-100); flex-shrink: 0; }
+  .testi-author .name { font-size: 14px; font-weight: 600; color: var(--fg-primary); }
+  .testi-author .role { font-size: 13px; color: var(--fg-tertiary); }
+  .testi .stars { color: var(--warning-500); font-size: 14px; letter-spacing: 2px; }
+
+  /* ------- FAQ ----------------------------------------------------------- */
+  .faq { padding-bottom: 96px; }
+  .faq-wrap { max-width: 800px; margin: 0 auto; }
+  .faq details {
+    background: #fff;
+    border: 1px solid var(--border-secondary);
+    border-radius: var(--radius-lg);
+    margin-bottom: 12px;
+    overflow: hidden;
+    transition: box-shadow 120ms ease, border-color 120ms ease;
+  }
+  .faq details[open] { box-shadow: var(--shadow-xs); border-color: var(--border-primary); }
+  .faq summary {
+    list-style: none; cursor: pointer;
+    padding: 20px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 16px; font-weight: 600; color: var(--fg-primary);
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary .ic { color: var(--fg-tertiary); transition: transform 200ms ease; }
+  .faq details[open] summary .ic { transform: rotate(180deg); }
+  .faq .answer { padding: 0 24px 20px; font-size: 15px; line-height: 24px; color: var(--fg-secondary); text-wrap: pretty; }
+
+  /* ------- Final CTA ----------------------------------------------------- */
+  .final-cta { padding: 96px 0; border-top: 1px solid var(--border-secondary); }
+  .cta-card {
+    background: var(--bg-brand-dark);
+    border-radius: var(--radius-3xl);
+    padding: 64px 64px;
+    position: relative;
+    overflow: hidden;
+    display: grid; grid-template-columns: 1.4fr 1fr; gap: 48px; align-items: center;
+  }
+  @media (max-width: 900px) { .cta-card { grid-template-columns: 1fr; padding: 40px; } }
+  .cta-card::after {
+    content: ""; position: absolute; right: -120px; bottom: -120px;
+    width: 360px; height: 360px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(2,170,105,0.35), transparent 70%);
+    pointer-events: none;
+  }
+  .cta-card h2 { font-family: var(--font-display); color: #fff; font-size: 40px; line-height: 48px; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 16px; text-wrap: balance; }
+  .cta-card p { color: var(--brand-100); font-size: 17px; line-height: 28px; margin: 0; max-width: 480px; }
+  .cta-actions { display: flex; flex-direction: column; gap: 12px; position: relative; z-index: 1; }
+  .cta-card ul { list-style: none; padding: 0; margin: 16px 0 0; display: flex; flex-direction: column; gap: 8px; }
+  .cta-card ul li { display: flex; gap: 8px; align-items: center; color: var(--brand-100); font-size: 14px; }
+  .cta-card ul .ic { color: var(--brand-300); }
+
+  /* ------- Footer -------------------------------------------------------- */
+  footer { padding: 64px 0 32px; background: #fff; border-top: 1px solid var(--border-secondary); }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 32px; margin-bottom: 48px; }
+  @media (max-width: 900px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+  .footer-brand img { height: 24px; margin-bottom: 16px; }
+  .footer-brand p { font-size: 14px; color: var(--fg-tertiary); line-height: 22px; margin: 0; max-width: 280px; }
+  .footer-col h5 { font-size: 13px; color: var(--fg-quaternary); font-weight: 600; margin: 0 0 16px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .footer-col ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  .footer-col li a { font-size: 14px; color: var(--fg-secondary); }
+  .footer-col li a:hover { color: var(--fg-primary); }
+  .footer-meta { display: flex; align-items: center; justify-content: space-between; padding-top: 24px; border-top: 1px solid var(--border-secondary); font-size: 13px; color: var(--fg-tertiary); }
+  .footer-meta .right { display: flex; gap: 20px; }
+</style>
+</head>
+<body>
+
+<!-- ============================================================= NAV === -->
+<nav class="nav" data-screen-label="Top nav">
+  <div class="container nav-inner">
+    <a href="#" class="nav-logo" aria-label="Dexwin HR">
+      <img src="assets/dexwin-logo.svg" alt="Dexwin">
+    </a>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#compliance">Compliance</a>
+      <a href="#customers">Customers</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="nav-cta">
+      <a href="Login.html" class="btn btn-ghost">Sign in</a>
+      <a href="Sign Up.html" class="btn btn-primary">Sign up</a>
+    </div>
+  </div>
+</nav>
+
+<!-- =========================================================== HERO ==== -->
+<section class="hero" data-screen-label="Hero">
+  <div class="container hero-inner">
+    <div>
+      <div class="eyebrow">
+        <span class="eyebrow-tag">New</span>
+        Auto-file SSNIT &amp; PAYE returns this April
+        <svg class="ic ic-sm" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </div>
+      <h1>Run payroll in&nbsp;minutes, <span class="accent">not days.</span></h1>
+      <p class="lede">
+        Dexwin HR is the payroll &amp; people platform built for Ghanaian companies.
+        Pay your team, file SSNIT and PAYE, and approve leave — all in one calm,
+        modern workspace.
+      </p>
+      <div class="hero-actions">
+        <a href="Sign Up.html" class="btn btn-primary btn-lg">
+          Sign up
+          <svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#" class="btn btn-secondary btn-lg">
+          <svg class="ic" viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+          Watch 2-min tour
+        </a>
+      </div>
+      <div class="hero-trust">
+        <div class="avatars" aria-hidden="true">
+          <div style="background-image:url(https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=200&amp;auto=format&amp;fit=crop)"></div>
+          <div style="background-image:url(https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&amp;auto=format&amp;fit=crop)"></div>
+          <div style="background-image:url(https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&amp;auto=format&amp;fit=crop)"></div>
+          <div style="background-image:url(https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200&amp;auto=format&amp;fit=crop)"></div>
+        </div>
+        <div>
+          <div class="stars">★★★★★</div>
+          <div>Trusted by 200+ teams across Accra, Kumasi &amp; Tema</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual" aria-hidden="true">
+      <div class="hero-photo">
+        <img src="assets/hero-payroll.png" alt="Payroll administrator at work">
+      </div>
+      <div class="hero-pill">
+        <span class="check">
+          <svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </span>
+        SSNIT filed automatically
+      </div>
+      <div class="hero-card">
+        <div class="label">March payroll · Kola Foods Ltd</div>
+        <div class="amt">GH₵&nbsp;248,900.00</div>
+        <div class="sub">42 employees · ready to approve</div>
+        <div class="bar"><div></div></div>
+        <div class="row">
+          <span class="l"><span class="dot"></span>SSNIT Tier 1</span>
+          <span class="v">GH₵ 32,357.40</span>
+        </div>
+        <div class="row">
+          <span class="l"><span class="dot"></span>PAYE</span>
+          <span class="v">GH₵ 48,902.10</span>
+        </div>
+        <div class="row">
+          <span class="l"><span class="dot"></span>Tier 2 Pension</span>
+          <span class="v">GH₵ 12,455.00</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================== LOGO STRIP =========== -->
+<div class="logo-strip">
+  <div class="container">
+    <div class="label">Trusted by growing teams across Ghana</div>
+    <div class="logo-row">
+      <div class="l-item"><span class="mark">K</span>Kola Foods</div>
+      <div class="l-item"><span class="mark">A</span>Adinkra Tech</div>
+      <div class="l-item"><span class="mark">M</span>Makola Logistics</div>
+      <div class="l-item"><span class="mark">S</span>Sankofa Bank</div>
+      <div class="l-item"><span class="mark">N</span>Nkrumah &amp; Co</div>
+      <div class="l-item"><span class="mark">B</span>Brafo Health</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================= FEATURES ============== -->
+<section class="features" id="features" data-screen-label="Features">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">Everything you need</div>
+      <h2>Built for Ghanaian payroll, end to end</h2>
+      <p>Three workflows, one quiet workspace. No spreadsheets, no late-night reconciliation, no penalty letters from the GRA.</p>
+    </div>
+
+    <div class="feature-grid">
+      <!-- Payroll -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg class="ic" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 12h.01M18 12h.01"/></svg>
+        </div>
+        <h3>Payroll</h3>
+        <p>Calculate, approve, and pay every employee in one run — with PAYE, SSNIT and pension already worked out.</p>
+        <ul class="feature-list">
+          <li><svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Automatic PAYE &amp; SSNIT calculations</li>
+          <li><svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>One-click bank transfers via partner banks</li>
+          <li><svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Payslips emailed in English &amp; Twi</li>
+          <li><svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Multi-currency for diaspora hires</li>
+        </ul>
+      </div>
+
+      <!-- Leave & time -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg class="ic" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <h3>Leave &amp; time</h3>
+        <p>Track annual, sick, casual, maternity and bereavement leave — with approval flows that match how your team actually works.</p>
+        <ul class="feature-list">
+          <li><svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Ghana public holidays loaded by default</li>
+          <li><svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Manager approval via web or WhatsApp</li>
+          <li><svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Balances roll into payroll automatically</li>
+          <li><svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Team calendar with conflict warnings</li>
+        </ul>
+      </div>
+
+      <!-- Statutory -->
+      <div class="feature-card">
+        <div class="feature-icon">
+          <svg class="ic" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+        </div>
+        <h3>Statutory filings</h3>
+        <p>SSNIT, PAYE, NHIL and GETFund — generated, reconciled, and filed on time. We track every deadline so you don't have to.</p>
+        <ul class="feature-list">
+          <li><svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Auto-filed to SSNIT &amp; GRA portals</li>
+          <li><svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Tier 2 &amp; Tier 3 pension support</li>
+          <li><svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Filing receipts stored against payroll runs</li>
+          <li><svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Annual tax certificates for every employee</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================================================== PRODUCT SHOT ==== -->
+<section class="product-shot" data-screen-label="Product screenshot">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">Inside Dexwin</div>
+      <h2>A workspace that feels quiet, even on payroll day</h2>
+      <p>Every screen is built for the rhythm of running payroll at a Ghanaian SME — clear numbers, fewer clicks, no surprises.</p>
+    </div>
+
+    <div class="shot-frame">
+      <div class="shot-titlebar">
+        <span class="dot" style="background:#ef6058"></span>
+        <span class="dot" style="background:#fdbc40"></span>
+        <span class="dot" style="background:#27c93f"></span>
+        <span class="url">
+          <svg class="ic ic-sm" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          app.dexwin.gh/payroll
+        </span>
+      </div>
+      <div class="shot-body">
+        <aside class="shot-sidebar">
+          <div class="shot-brand"><img src="assets/dexwin-logo.svg" alt="Dexwin"></div>
+          <div class="shot-nav">
+            <div class="item"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Dashboard</div>
+            <div class="item active"><svg class="ic" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/></svg>Payroll <span class="badge">Mar</span></div>
+            <div class="item"><svg class="ic" viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><circle cx="17" cy="7" r="4"/></svg>Employees</div>
+            <div class="item"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Leave</div>
+            <div class="item"><svg class="ic" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Statutory</div>
+            <div class="sep"></div>
+            <div class="item"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Settings</div>
+          </div>
+        </aside>
+
+        <main class="shot-main">
+          <div class="shot-page-head">
+            <div>
+              <h4>March 2025 payroll</h4>
+              <div class="sub">42 employees · approval needed by 28 Mar</div>
+            </div>
+            <div class="right">
+              <button class="btn btn-secondary" style="font-size:13px;padding:8px 14px;">
+                <svg class="ic ic-sm" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                Export
+              </button>
+              <button class="btn btn-primary" style="font-size:13px;padding:8px 14px;">
+                <svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                Approve run
+              </button>
+            </div>
+          </div>
+
+          <div class="shot-metrics">
+            <div class="shot-metric"><div class="l">Gross payroll</div><div class="v">GH₵ 248,900</div><div class="d"><span class="up">↑ 4.2%</span> vs Feb</div></div>
+            <div class="shot-metric"><div class="l">PAYE</div><div class="v">GH₵ 48,902</div><div class="d">19.6% of gross</div></div>
+            <div class="shot-metric"><div class="l">SSNIT Tier 1</div><div class="v">GH₵ 32,357</div><div class="d">Due 14 Apr</div></div>
+            <div class="shot-metric"><div class="l">Net to pay</div><div class="v">GH₵ 159,184</div><div class="d">42 transfers ready</div></div>
+          </div>
+
+          <div class="shot-tbl">
+            <div class="thd">
+              <div>Employee</div><div>Department</div><div>Gross</div><div>Net</div><div>Status</div>
+            </div>
+            <div class="trow">
+              <div class="nm"><span class="av">AM</span>Akua Mensah</div>
+              <div>Engineering</div>
+              <div class="num">GH₵ 6,250.00</div>
+              <div class="num">GH₵ 4,012.50</div>
+              <div><span class="pill pill-ok"><span class="d"></span>Ready</span></div>
+            </div>
+            <div class="trow">
+              <div class="nm"><span class="av">KO</span>Kwame Owusu</div>
+              <div>Sales</div>
+              <div class="num">GH₵ 3,100.00</div>
+              <div class="num">GH₵ 2,142.40</div>
+              <div><span class="pill pill-ok"><span class="d"></span>Ready</span></div>
+            </div>
+            <div class="trow">
+              <div class="nm"><span class="av">YA</span>Yaa Asantewaa</div>
+              <div>Finance</div>
+              <div class="num">GH₵ 8,800.00</div>
+              <div class="num">GH₵ 5,498.20</div>
+              <div><span class="pill pill-due"><span class="d"></span>On leave</span></div>
+            </div>
+            <div class="trow">
+              <div class="nm"><span class="av">KT</span>Kojo Tetteh</div>
+              <div>Engineering</div>
+              <div class="num">GH₵ 5,400.00</div>
+              <div class="num">GH₵ 3,612.80</div>
+              <div><span class="pill pill-ok"><span class="d"></span>Ready</span></div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ COMPLIANCE ============= -->
+<section class="compliance" id="compliance" data-screen-label="Compliance">
+  <div class="container">
+    <div>
+      <div class="kicker">Statutory compliance</div>
+      <h2>Sleep through the 14th of every month.</h2>
+      <p class="lede">
+        SSNIT and the GRA don't send reminders. We do — and we file the returns for you.
+        Every payroll run produces clean, audit-ready filings that match what the regulators expect.
+      </p>
+      <div class="cta-row">
+        <a href="Sign Up.html" class="btn btn-primary btn-lg">
+          Sign up
+          <svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#" class="btn btn-dark-secondary btn-lg">See compliance guide</a>
+      </div>
+    </div>
+
+    <div class="compliance-grid">
+      <div class="comp-card">
+        <div class="acro"><span class="mark">S</span>SSNIT</div>
+        <div class="full">Social Security &amp; National Insurance Trust</div>
+        <div class="desc">Tier 1 employer (13%) and employee (5.5%) contributions calculated per employee, filed by the 14th.</div>
+        <div class="meta">
+          <svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Auto-filed monthly
+        </div>
+      </div>
+      <div class="comp-card">
+        <div class="acro"><span class="mark">P</span>PAYE</div>
+        <div class="full">Pay-As-You-Earn income tax</div>
+        <div class="desc">Graduated tax bands applied per pay run, with year-to-date reconciliation and tax certificates in January.</div>
+        <div class="meta">
+          <svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Filed to GRA by the 15th
+        </div>
+      </div>
+      <div class="comp-card">
+        <div class="acro"><span class="mark">T</span>Tier 2 &amp; 3</div>
+        <div class="full">Mandatory &amp; voluntary pensions</div>
+        <div class="desc">Tier 2 (5%) routed to your chosen trustee. Optional Tier 3 voluntary deductions per employee.</div>
+        <div class="meta">
+          <svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Trustee-ready exports
+        </div>
+      </div>
+      <div class="comp-card">
+        <div class="acro"><span class="mark">N</span>NHIL &amp; GETFund</div>
+        <div class="full">Levies on employer obligations</div>
+        <div class="desc">NHIL (2.5%) and GETFund (2.5%) tracked where applicable and surfaced on every monthly summary.</div>
+        <div class="meta">
+          <svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Bundled with PAYE returns
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================== PRICING ============== -->
+<section id="pricing" data-screen-label="Pricing" hidden style="display:none;">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">Pricing</div>
+      <h2>Pay for the team you have today</h2>
+      <p>Simple per-employee pricing in Ghana Cedis. No setup fees, no statutory filing fees, no contracts. Add or remove employees any time.</p>
+    </div>
+
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-head">
+          <div class="price-tier">Starter</div>
+          <div class="desc">For small teams getting payroll out of spreadsheets.</div>
+        </div>
+        <div>
+          <div class="price-amt"><span class="currency">GH₵</span><span class="n">25</span><span class="per">/employee · month</span></div>
+          <div class="price-min">GH₵ 150 minimum · billed monthly</div>
+        </div>
+        <ul class="price-list">
+          <li><svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Up to 15 employees</li>
+          <li><svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Payroll, payslips, leave tracking</li>
+          <li><svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>SSNIT &amp; PAYE filings</li>
+          <li><svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Employee self-service portal</li>
+          <li><svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Email support</li>
+        </ul>
+        <a href="#cta" class="btn btn-secondary btn-lg">Start free trial</a>
+      </div>
+
+      <div class="price-card featured">
+        <div class="price-head">
+          <div class="price-tier">Growth</div>
+          <div class="desc">For growing companies that need approvals, integrations, and pensions.</div>
+        </div>
+        <div>
+          <div class="price-amt"><span class="currency">GH₵</span><span class="n">45</span><span class="per">/employee · month</span></div>
+          <div class="price-min">GH₵ 450 minimum · billed monthly</div>
+        </div>
+        <ul class="price-list">
+          <li><svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Everything in Starter</li>
+          <li><svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Multi-step approval workflows</li>
+          <li><svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Tier 2 &amp; Tier 3 pension support</li>
+          <li><svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Bank transfers via GCB, Ecobank, Stanbic</li>
+          <li><svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>QuickBooks &amp; Xero export</li>
+          <li><svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Priority WhatsApp support</li>
+        </ul>
+        <a href="#cta" class="btn btn-primary btn-lg">Start free trial</a>
+      </div>
+
+      <div class="price-card">
+        <div class="price-head">
+          <div class="price-tier">Scale</div>
+          <div class="desc">For 100+ headcount with multiple entities and audit needs.</div>
+        </div>
+        <div>
+          <div class="price-amt"><span class="n" style="font-size:40px;">Custom</span></div>
+          <div class="price-min">Annual contract · dedicated success manager</div>
+        </div>
+        <ul class="price-list">
+          <li><svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Everything in Growth</li>
+          <li><svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Multiple legal entities &amp; currencies</li>
+          <li><svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>SSO, audit logs, custom roles</li>
+          <li><svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Custom integrations &amp; APIs</li>
+          <li><svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Dedicated implementation</li>
+        </ul>
+        <a href="#" class="btn btn-secondary btn-lg">Talk to sales</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================== TESTIMONIALS ============= -->
+<section class="testimonials" id="customers" data-screen-label="Customers">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">Loved by payroll teams</div>
+      <h2>"We got our Saturdays back."</h2>
+      <p>From bakeries in Tema to fintech teams in Osu, payroll runs that used to take three days now take an afternoon.</p>
+    </div>
+
+    <div class="testi-grid">
+      <div class="testi feature">
+        <div class="stars">★★★★★</div>
+        <blockquote>
+          We used to budget three full days for month-end payroll, plus a panicked rush
+          to file SSNIT before the 14th. With Dexwin the whole run is done by lunch on the
+          25th, and the filings happen on their own. It changed how I plan the month.
+        </blockquote>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background-image:url(https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=200&amp;auto=format&amp;fit=crop)"></div>
+          <div>
+            <div class="name">Ama Serwah</div>
+            <div class="role">HR Lead · Kola Foods Ltd · 42 employees</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi">
+        <div class="stars">★★★★★</div>
+        <blockquote>
+          The PAYE bands and Tier 2 pensions used to trip us up every quarter.
+          Now they're just right.
+        </blockquote>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background-image:url(https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&amp;auto=format&amp;fit=crop)"></div>
+          <div>
+            <div class="name">Kwame Boateng</div>
+            <div class="role">Finance Controller · Adinkra Tech</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi">
+        <div class="stars">★★★★★</div>
+        <blockquote>
+          Switched from spreadsheets last quarter. My drivers get their payslips
+          on WhatsApp now — they love it.
+        </blockquote>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background-image:url(https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&amp;auto=format&amp;fit=crop)"></div>
+          <div>
+            <div class="name">Esi Boateng</div>
+            <div class="role">Operations · Makola Logistics</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================================================== FAQ ============= -->
+<section class="faq" id="faq" data-screen-label="FAQ">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">FAQ</div>
+      <h2>Questions, answered</h2>
+      <p>Still curious? Email <a href="mailto:hello@dexwin.gh" style="color:var(--brand-700);font-weight:500;">hello@dexwin.gh</a> — we usually reply within an hour during business days.</p>
+    </div>
+
+    <div class="faq-wrap">
+      <details open>
+        <summary>
+          Do you actually file SSNIT and PAYE returns on our behalf?
+          <svg class="ic" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="answer">
+          Yes — Dexwin submits SSNIT (by the 14th) and PAYE/NHIL/GETFund (by the 15th) directly to the SSNIT and GRA portals each month, using your company's registered credentials. Filing receipts are stored against the payroll run so you have an audit trail.
+        </div>
+      </details>
+      <details>
+        <summary>
+          How long does it take to set up?
+          <svg class="ic" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="answer">
+          Most teams are running their first payroll within a week. Import a CSV of employees (or upload your last payslip batch and we'll structure it), connect your bank, and verify your SSNIT and GRA credentials. Our implementation team walks you through it on a 45-minute call.
+        </div>
+      </details>
+      <details>
+        <summary>
+          Can employees see their payslips and request leave themselves?
+          <svg class="ic" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="answer">
+          Yes. Every employee gets a self-service portal (web + WhatsApp) where they can view payslips, download tax certificates, request leave, and update bank details. Managers approve from the same surface — no email back-and-forth.
+        </div>
+      </details>
+      <details>
+        <summary>
+          Which banks do you support for salary transfers?
+          <svg class="ic" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="answer">
+          Direct integrations with GCB, Ecobank, Stanbic, Absa, Zenith and Fidelity. For other banks, Dexwin generates a payment file in the format your bank accepts. Mobile money payouts via MTN, Telecel, and AirtelTigo are supported on all plans.
+        </div>
+      </details>
+      <details>
+        <summary>
+          What about employees we pay in USD or GBP?
+          <svg class="ic" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="answer">
+          Dexwin handles multi-currency salaries. We use the Bank of Ghana mid-rate on payroll day to compute PAYE and SSNIT contributions in Cedi while paying out in the contracted currency.
+        </div>
+      </details>
+      <details>
+        <summary>
+          Is our data secure?
+          <svg class="ic" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
+        <div class="answer">
+          All data is encrypted in transit and at rest, stored in audited data centres, and access-controlled by role. We're registered with the Data Protection Commission of Ghana and undergo annual third-party security reviews.
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================ FINAL CTA ============= -->
+<section class="final-cta" id="cta" data-screen-label="Final CTA">
+  <div class="container">
+    <div class="cta-card">
+      <div>
+        <h2>Pay only when you run payroll.</h2>
+        <p>No subscriptions, no setup fees, no minimums. You're charged a small fee per transaction — only when money actually moves. Bring your team across in an afternoon.</p>
+        <ul>
+          <li><svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Free to set up · free to invite your team</li>
+          <li><svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Per-transaction pricing — pay as you go</li>
+          <li><svg class="ic ic-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>WhatsApp support from day one</li>
+        </ul>
+      </div>
+      <div class="cta-actions">
+        <a href="Sign Up.html" class="btn btn-primary btn-lg" style="justify-content:center;">
+          Sign up
+          <svg class="ic" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#" class="btn btn-dark-secondary btn-lg" style="justify-content:center;">Book a 20-min demo</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================= FOOTER =========== -->
+<footer data-screen-label="Footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img src="assets/dexwin-logo.svg" alt="Dexwin">
+        <p>Payroll and HR for Ghanaian companies. Made in Accra.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Product</h5>
+        <ul>
+          <li><a href="#features">Payroll</a></li>
+          <li><a href="#features">Leave &amp; time</a></li>
+          <li><a href="#compliance">Statutory filings</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Customers</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Resources</h5>
+        <ul>
+          <li><a href="#">Compliance guide</a></li>
+          <li><a href="#">PAYE calculator</a></li>
+          <li><a href="#">Help centre</a></li>
+          <li><a href="#">API docs</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Legal</h5>
+        <ul>
+          <li><a href="#">Privacy</a></li>
+          <li><a href="#">Terms</a></li>
+          <li><a href="#">Data protection</a></li>
+          <li><a href="#">Security</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-meta">
+      <div>© 2025 Dexwin Ghana Ltd. Registered with the Data Protection Commission.</div>
+      <div class="right">
+        <a href="#">Accra HQ</a>
+        <a href="mailto:hello@dexwin.gh">hello@dexwin.gh</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
