@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<script src="./ds-base.js"></script>
+</helmet>
+<div style="min-height:100vh;background:#FBFDFC url(assets/topo-bg.png) center top / cover no-repeat;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 24px;font-family:var(--font-body);color:var(--fg-primary);box-sizing:border-box;">
+
+  <div style="width:100%;max-width:548px;background:#fff;border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-lg);padding:56px 56px 48px;box-sizing:border-box;text-align:center;">
+
+    <div style="display:flex;justify-content:center;margin-bottom:20px;">
+      <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <mask id="aa_mask" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="56" height="56"><rect width="56" height="56" fill="url(#aa_grad)"></rect></mask>
+        <g mask="url(#aa_mask)"><circle cx="28" cy="28" r="27.5" fill="#ECFDF3" stroke="#ABEFC6"></circle></g>
+        <rect x="10" y="10" width="36" height="36" rx="18" fill="#079455"></rect>
+        <path d="M28.0001 30.9167H24.2501C23.0871 30.9167 22.5056 30.9167 22.0325 31.0602C20.9671 31.3834 20.1334 32.217 19.8103 33.2824C19.6667 33.7555 19.6667 34.337 19.6667 35.5M31.3334 33L33.0001 34.6667L36.3334 31.3333M30.0834 24.25C30.0834 26.3211 28.4045 28 26.3334 28C24.2623 28 22.5834 26.3211 22.5834 24.25C22.5834 22.1789 24.2623 20.5 26.3334 20.5C28.4045 20.5 30.0834 22.1789 30.0834 24.25Z" stroke="white" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"></path>
+        <defs><linearGradient id="aa_grad" x1="28" y1="0" x2="28" y2="56" gradientUnits="userSpaceOnUse"><stop></stop><stop offset="1" stop-opacity="0"></stop></linearGradient></defs>
+      </svg>
+    </div>
+
+    <h1 style="font-family:var(--font-display);font-size:30px;line-height:38px;font-weight:800;letter-spacing:-0.02em;margin:0 0 12px;color:var(--fg-primary);">Account Activated</h1>
+    <p style="font-size:16px;line-height:24px;color:var(--fg-tertiary);margin:0 auto 32px;max-width:360px;">Your account has been successfully activated. Please sign in to continue.</p>
+
+    <div style="display:flex;justify-content:center;">
+      <a href="Login.dc.html" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;width:340px;max-width:100%;padding:14px 24px;font-family:var(--font-body);font-weight:600;font-size:16px;line-height:24px;color:#fff;background:var(--bg-brand-solid);border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);text-decoration:none;transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">
+        Sign In
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <div style="display:flex;justify-content:center;margin-top:40px;">
+      <img src="assets/dexwin-logo-full.png" alt="DexwinPay" style="height:28px;" />
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

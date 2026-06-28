@@ -1,0 +1,34 @@
+/* =========================================================================
+   DexwinPay — Webfonts
+   Maven Pro is the single brand typeface (display + body). Self-hosted TTF.
+   ========================================================================= */
+@font-face {
+  font-family: "Maven Pro";
+  src: url("MavenPro-Regular.ttf") format("truetype");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Maven Pro";
+  src: url("MavenPro-Medium.ttf") format("truetype");
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Maven Pro";
+  src: url("MavenPro-SemiBold.ttf") format("truetype");
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Maven Pro";
+  src: url("MavenPro-Bold.ttf") format("truetype");
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Maven Pro";
+  src: url("MavenPro-ExtraBold.ttf") format("truetype");
+  font-weight: 800; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Maven Pro";
+  src: url("MavenPro-Black.ttf") format("truetype");
+  font-weight: 900; font-style: normal; font-display: swap;
+}

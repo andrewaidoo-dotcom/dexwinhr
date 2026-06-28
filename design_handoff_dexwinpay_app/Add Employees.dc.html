@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/fonts/fonts.css">
+  <link rel="stylesheet" href="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/tokens/shadows.css">
+  <link rel="stylesheet" href="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/tokens/base.css">
+  <link rel="stylesheet" href="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/styles.css">
+  <script src="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/_ds_bundle.js"></script>
+  <script src="./app-state.js"></script>
+  <style>
+    * { scrollbar-width: thin; scrollbar-color: #D5D7DA transparent; }
+    *::-webkit-scrollbar { width: 10px; height: 10px; }
+    *::-webkit-scrollbar-track { background: transparent; }
+    *::-webkit-scrollbar-thumb { background: #D5D7DA; border-radius: 999px; border: 3px solid transparent; background-clip: padding-box; }
+    *::-webkit-scrollbar-thumb:hover { background: #C0C3C9; background-clip: padding-box; }
+    *::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+    @keyframes slideInRight { from { transform: translateX(24px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    @keyframes toastIn { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+  </style>
+</helmet>
+<div style="min-height:100vh;display:flex;flex-direction:column;background:var(--bg-secondary);font-family:var(--font-body);color:var(--fg-primary);">
+
+  <sc-if value="{{ showWizard }}" hint-placeholder-val="{{ true }}">
+    <header style="position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;height:80px;padding:0 40px;background:var(--bg-primary);border-bottom:1px solid var(--border-secondary);flex-shrink:0;">
+      <img src="assets/dexwin-logo-full.png" alt="DexwinPay" style="height:26px;" />
+      <span style="position:absolute;left:50%;transform:translateX(-50%);font-family:var(--font-display);font-size:20px;font-weight:800;letter-spacing:-0.01em;color:var(--fg-primary);">Adding employees</span>
+      <a href="Dashboard Page.dc.html" style="display:inline-flex;align-items:center;gap:8px;padding:9px 18px;font-weight:700;font-size:15px;color:var(--fg-secondary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);text-decoration:none;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        Save &amp; Exit
+      </a>
+    </header>
+
+    <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+      <div style="position:sticky;top:80px;z-index:25;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 40px;background:var(--brand-600);color:#fff;animation:toastIn 220ms ease;">
+        <div style="display:flex;align-items:center;gap:14px;font-size:16px;font-weight:600;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+          {{ toast }}
+        </div>
+        <span role="button" aria-label="Dismiss" onClick="{{ dismissToast }}" style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,0.9);transition:background 120ms ease;" style-hover="background:rgba(255,255,255,0.15);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </span>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isEmployees }}" hint-placeholder-val="{{ true }}">
+      <main style="flex:1;overflow-y:auto;padding:48px 24px 56px;box-sizing:border-box;">
+        <div style="max-width:720px;margin:0 auto;">
+
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:36px;">
+            <div>
+              <h1 style="font-family:var(--font-display);font-size:30px;line-height:38px;font-weight:800;letter-spacing:-0.02em;margin:0 0 6px;color:var(--fg-primary);">Employees</h1>
+              <p style="font-size:16px;line-height:24px;color:var(--fg-tertiary);margin:0;">Manage your team and onboard new people.</p>
+            </div>
+            <button onClick="{{ openMethod }}" style="flex-shrink:0;display:inline-flex;align-items:center;gap:9px;padding:13px 24px;font-family:var(--font-body);font-weight:700;font-size:15px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+              Add Employees
+            </button>
+          </div>
+
+          <sc-if value="{{ noEmployees }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:48px 24px 40px;">
+              <div style="margin-bottom:30px;">
+                <img src="assets/people-empty-illustration.svg" alt="" width="220" height="160" style="display:block;" />
+              </div>
+              <h2 style="font-family:var(--font-display);font-size:26px;line-height:32px;font-weight:800;letter-spacing:-0.02em;margin:0 0 10px;color:var(--fg-primary);">No people added yet</h2>
+              <p style="font-size:16px;line-height:24px;color:var(--fg-tertiary);margin:0 0 36px;max-width:400px;text-wrap:pretty;">Add your team to start running payroll. Pick how you'd like to bring them in.</p>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;width:100%;max-width:860px;">
+                <div onClick="{{ goUpload }}" style="display:flex;align-items:center;gap:16px;text-align:left;padding:22px 24px;background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-xs);cursor:pointer;transition:box-shadow 120ms ease,border-color 120ms ease;" style-hover="box-shadow:var(--shadow-md);border-color:var(--brand-300);">
+                  <span style="position:relative;flex-shrink:0;width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;">
+                    <svg width="38" height="44" viewBox="0 0 38 44" fill="#fff" stroke="var(--gray-300)" stroke-width="1.6" stroke-linejoin="round"><path d="M7 2 h16 l9 9 v29 a2 2 0 0 1 -2 2 H7 a2 2 0 0 1 -2 -2 V4 a2 2 0 0 1 2 -2 z"></path><path d="M23 2 v9 h9" fill="none"></path></svg>
+                    <span style="position:absolute;left:0;bottom:7px;background:var(--brand-600);color:#fff;font-family:var(--font-body);font-size:8px;font-weight:800;letter-spacing:0.04em;padding:2px 4px;border-radius:3px;line-height:1;">XLS</span>
+                  </span>
+                  <span style="min-width:0;">
+                    <span style="display:block;font-family:var(--font-display);font-size:16px;font-weight:700;letter-spacing:-0.01em;color:var(--fg-primary);">Upload PAYE schedule</span>
+                    <span style="display:block;font-size:14px;line-height:20px;color:var(--fg-tertiary);margin-top:3px;">We extract everyone from your file.</span>
+                  </span>
+                </div>
+                <div onClick="{{ addAnother }}" style="display:flex;align-items:center;gap:16px;text-align:left;padding:22px 24px;background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-xs);cursor:pointer;transition:box-shadow 120ms ease,border-color 120ms ease;" style-hover="box-shadow:var(--shadow-md);border-color:var(--brand-300);">
+                  <span style="flex-shrink:0;width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;color:var(--gray-500);">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>
+                  </span>
+                  <span style="min-width:0;">
+                    <span style="display:block;font-family:var(--font-display);font-size:16px;font-weight:700;letter-spacing:-0.01em;color:var(--fg-primary);">Add one by one</span>
+                    <span style="display:block;font-size:14px;line-height:20px;color:var(--fg-tertiary);margin-top:3px;">Fill in a quick form per person.</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ hasEmployees }}" hint-placeholder-val="{{ false }}">
+            <sc-if value="{{ isPaye }}" hint-placeholder-val="{{ true }}">
+              <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-xs);padding:24px 28px;margin-bottom:24px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:16px;">
+                  <span style="font-family:var(--font-display);font-size:18px;font-weight:700;letter-spacing:-0.01em;color:var(--fg-primary);">Employees set up</span>
+                  <span style="font-family:var(--font-display);font-size:17px;font-weight:700;color:var(--fg-secondary);font-variant-numeric:tabular-nums;">{{ doneCount }} of {{ total }}</span>
+                </div>
+                <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.ProgressBar" value="{{ progressValue }}" hint-size="100%,8px"></x-import>
+                <div style="display:flex;align-items:center;gap:9px;margin-top:16px;font-size:15px;color:var(--fg-tertiary);">
+                  <sc-if value="{{ allDone }}" hint-placeholder-val="{{ false }}">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--success-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                    All employee data added
+                  </sc-if>
+                  <sc-if value="{{ needsData }}" hint-placeholder-val="{{ true }}">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--warning-500)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    {{ remaining }} employees still need data.
+                  </sc-if>
+                </div>
+              </div>
+            </sc-if>
+
+            <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-xs);padding:4px 24px;">
+              <sc-for list="{{ employeesView }}" as="e" hint-placeholder-count="3">
+                <sc-if value="{{ e.notFirst }}" hint-placeholder-val="{{ false }}">
+                  <div style="height:1px;background:var(--border-secondary);margin:0 -24px;"></div>
+                </sc-if>
+                <div onClick="{{ e.onOpen }}" style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;cursor:pointer;">
+                  <div style="display:flex;align-items:center;gap:14px;min-width:0;">
+                    <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Avatar" initials="{{ e.initials }}" size="md" hint-size="40px,40px"></x-import>
+                    <div style="min-width:0;">
+                      <div style="font-size:16px;font-weight:700;color:var(--fg-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ e.name }}</div>
+                      <div style="font-size:14px;color:var(--fg-tertiary);font-variant-numeric:tabular-nums;">{{ e.ghanaCard }}</div>
+                    </div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:14px;flex-shrink:0;">
+                    <span style="display:inline-flex;align-items:center;padding:5px 14px;border-radius:var(--radius-full);font-size:14px;font-weight:600;background:{{ e.statusBg }};color:{{ e.statusColor }};">{{ e.statusLabel }}</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+
+            <sc-if value="{{ isOneByOne }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ addAnother }}" style="width:100%;margin-top:20px;display:flex;align-items:center;justify-content:center;gap:12px;padding:22px 24px;background:transparent;border:1.5px dashed var(--brand-500);border-radius:16px;cursor:pointer;font-family:var(--font-body);transition:background 120ms ease;" style-hover="background:var(--brand-50);">
+                <span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:var(--radius-full);background:var(--brand-50);color:var(--brand-600);">
+                  <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+                </span>
+                <span style="font-size:16px;font-weight:700;color:var(--brand-700);">Add an employee</span>
+              </button>
+            </sc-if>
+          </sc-if>
+
+        </div>
+      </main>
+
+      <sc-if value="{{ hasEmployees }}" hint-placeholder-val="{{ false }}">
+        <footer style="position:sticky;bottom:0;z-index:20;display:flex;align-items:center;justify-content:center;gap:16px;height:88px;padding:0 40px;border-top:1px solid var(--border-secondary);background:var(--bg-secondary);flex-shrink:0;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;max-width:720px;margin:0 auto;">
+          <sc-if value="{{ showBack }}" hint-placeholder-val="{{ true }}">
+            <button onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:9px;min-width:200px;justify-content:center;padding:14px 28px;font-family:var(--font-body);font-weight:700;font-size:16px;color:var(--fg-secondary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+              Back
+            </button>
+          </sc-if>
+          <sc-if value="{{ hideBack }}" hint-placeholder-val="{{ false }}"><span></span></sc-if>
+          <button onClick="{{ finish }}" style="display:inline-flex;align-items:center;gap:9px;min-width:200px;justify-content:center;padding:14px 28px;font-family:var(--font-body);font-weight:700;font-size:16px;color:{{ finishColor }};background:{{ finishBg }};border:none;border-radius:var(--radius-full);box-shadow:{{ finishShadow }};cursor:{{ finishCursor }};transition:background 120ms ease;">
+            Finish
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+        
+        </div>
+      </footer>
+      </sc-if>
+    </sc-if>
+
+    <sc-if value="{{ isUpload }}" hint-placeholder-val="{{ false }}">
+      <main style="flex:1;overflow-y:auto;padding:40px 24px 56px;box-sizing:border-box;">
+        <div style="max-width:720px;margin:0 auto;">
+          <button onClick="{{ chooseDifferent }}" style="display:inline-flex;align-items:center;gap:9px;margin:0 0 28px;padding:8px 4px;background:transparent;border:none;cursor:pointer;font-family:var(--font-body);font-size:16px;font-weight:600;color:var(--fg-tertiary);transition:color 120ms ease;" style-hover="color:var(--fg-primary);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            Choose a different method
+          </button>
+
+          <h1 style="font-family:var(--font-display);font-size:30px;line-height:38px;font-weight:800;letter-spacing:-0.02em;margin:0 0 10px;color:var(--fg-primary);">Upload PAYE schedule</h1>
+          <p style="font-size:16px;line-height:25px;color:var(--fg-tertiary);margin:0 0 36px;max-width:74ch;">We&rsquo;ll extract each employee&rsquo;s <strong style="color:var(--fg-secondary);font-weight:700;">Name</strong>, <strong style="color:var(--fg-secondary);font-weight:700;">Ghana Card</strong>, <strong style="color:var(--fg-secondary);font-weight:700;">worker type</strong> and <strong style="color:var(--fg-secondary);font-weight:700;">basic salary</strong>, and set every new profile&rsquo;s status to <strong style="color:var(--fg-secondary);font-weight:700;">Invited</strong>.</p>
+
+          <div onClick="{{ simulateUpload }}" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:48px 24px;background:var(--bg-primary);border:1.5px dashed var(--brand-400);border-radius:16px;cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--brand-50);">
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border:1px solid var(--border-secondary);border-radius:12px;box-shadow:var(--shadow-xs);color:var(--fg-secondary);margin-bottom:16px;background:var(--bg-primary);">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            </span>
+            <div style="font-size:16px;color:var(--fg-tertiary);"><span style="color:var(--brand-700);font-weight:700;">Click to upload</span> or drag and drop</div>
+            <div style="font-size:14px;color:var(--fg-quaternary);margin-top:4px;">XLSX, XLS or CSV (max. 10MB)</div>
+          </div>
+
+          <sc-if value="{{ uploaded }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:24px;padding:18px 22px;background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:14px;box-shadow:var(--shadow-xs);">
+              <div style="display:flex;align-items:center;gap:16px;min-width:0;">
+                <img src="assets/xls.svg" alt="" style="flex-shrink:0;width:38px;height:36px;" />
+                <div style="min-width:0;">
+                  <div style="font-size:16px;font-weight:600;color:var(--fg-primary);">paye-schedule.xlsx</div>
+                  <div style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--fg-tertiary);margin-top:2px;">
+                    200 KB
+                    <span style="color:var(--border-primary);">|</span>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--success-600)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                    100%
+                  </div>
+                </div>
+              </div>
+              <span style="font-size:16px;font-weight:700;color:var(--fg-primary);flex-shrink:0;">5 employees found</span>
+            </div>
+          </sc-if>
+        </div>
+      </main>
+
+      <footer style="position:sticky;bottom:0;z-index:20;display:flex;align-items:center;justify-content:center;height:88px;padding:0 40px;border-top:1px solid var(--border-secondary);background:var(--bg-secondary);flex-shrink:0;">
+        <div style="display:flex;align-items:center;justify-content:flex-end;gap:16px;width:100%;max-width:720px;margin:0 auto;">
+        <button onClick="{{ submitUpload }}" style="display:inline-flex;align-items:center;gap:9px;min-width:200px;justify-content:center;padding:14px 28px;font-family:var(--font-body);font-weight:700;font-size:16px;color:{{ submitColor }};background:{{ submitBg }};border:none;border-radius:var(--radius-full);box-shadow:{{ submitShadow }};cursor:{{ submitCursor }};transition:background 120ms ease;">
+          Submit
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      
+        </div>
+      </footer>
+    </sc-if>
+  </sc-if>
+
+  <sc-if value="{{ isDone }}" hint-placeholder-val="{{ false }}">
+    <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:48px 24px;background:var(--bg-secondary);background-image:url('assets/topo-bg.png');background-size:cover;background-position:center;">
+      <div style="width:100%;max-width:520px;background:var(--bg-primary);border-radius:20px;box-shadow:var(--shadow-lg);padding:56px 48px;text-align:center;">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:64px;height:64px;border-radius:var(--radius-full);background:var(--success-50);color:var(--success-600);box-shadow:0 0 0 8px rgba(2,170,105,0.10),0 0 0 16px rgba(2,170,105,0.05);margin-bottom:28px;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+        </span>
+        <h1 style="font-family:var(--font-display);font-size:26px;font-weight:800;letter-spacing:-0.02em;margin:0 0 8px;color:var(--fg-primary);">Employees Added</h1>
+        <p style="font-size:16px;line-height:24px;color:var(--fg-tertiary);margin:0 0 32px;">You can now set up payroll for them.</p>
+        <a href="People Page.dc.html?state=populated" style="display:inline-flex;align-items:center;justify-content:center;padding:14px 32px;font-family:var(--font-body);font-weight:700;font-size:16px;color:#fff;background:var(--bg-brand-solid);border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);text-decoration:none;transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">View your team</a>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ methodOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeMethod }}" style="position:fixed;inset:0;z-index:50;background:rgba(10,13,18,0.5);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:32px 24px;box-sizing:border-box;">
+      <div onClick="{{ stop }}" style="width:100%;max-width:660px;background:var(--bg-primary);border-radius:20px;box-shadow:var(--shadow-2xl);display:flex;flex-direction:column;overflow:hidden;">
+        <div style="display:flex;align-items:flex-start;gap:16px;padding:24px 28px 20px;flex-shrink:0;">
+          <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--border-secondary);border-radius:12px;box-shadow:var(--shadow-xs);color:var(--fg-secondary);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+          </span>
+          <div style="flex:1;">
+            <h2 style="font-size:20px;line-height:28px;font-weight:700;margin:0 0 2px;color:var(--fg-primary);">How would you like to add employees?</h2>
+            <p style="font-size:15px;line-height:22px;color:var(--fg-tertiary);margin:0;">Pick whichever matches what you already have.</p>
+          </div>
+          <span role="button" aria-label="Close" onClick="{{ closeMethod }}" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;cursor:pointer;color:var(--fg-quaternary);transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </span>
+        </div>
+
+        <div style="padding:4px 28px 8px;display:flex;flex-direction:column;gap:16px;">
+          <div onClick="{{ pickPaye }}" style="display:flex;align-items:flex-start;gap:16px;padding:18px 20px;border:1.5px solid {{ payeBorder }};background:{{ payeBg }};border-radius:14px;cursor:pointer;transition:border-color 120ms ease,background 120ms ease;">
+            <img src="assets/xls.svg" alt="" style="flex-shrink:0;width:38px;height:36px;" />
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:16px;font-weight:700;color:var(--fg-primary);">Upload most recent PAYE Schedule</div>
+              <div style="font-size:14px;line-height:21px;color:var(--fg-tertiary);margin-top:3px;">We pull everyone from the file &mdash; names, Ghana Card, worker type and basic salary.</div>
+            </div>
+            <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:var(--radius-full);border:1.5px solid {{ payeRadioBorder }};background:{{ payeRadioBg }};margin-top:2px;">
+              <sc-if value="{{ payeChecked }}" hint-placeholder-val="{{ true }}"><span style="width:7px;height:7px;border-radius:var(--radius-full);background:#fff;"></span></sc-if>
+            </span>
+          </div>
+
+          <div onClick="{{ pickOne }}" style="display:flex;align-items:flex-start;gap:16px;padding:18px 20px;border:1.5px solid {{ oneBorder }};background:{{ oneBg }};border-radius:14px;cursor:pointer;transition:border-color 120ms ease,background 120ms ease;">
+            <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--border-secondary);border-radius:10px;color:var(--fg-quaternary);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </span>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:16px;font-weight:700;color:var(--fg-primary);">Add employees one by one</div>
+              <div style="font-size:14px;line-height:21px;color:var(--fg-tertiary);margin-top:3px;">Fill in a short form for each person, then keep adding more.</div>
+            </div>
+            <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:var(--radius-full);border:1.5px solid {{ oneRadioBorder }};background:{{ oneRadioBg }};margin-top:2px;">
+              <sc-if value="{{ oneChecked }}" hint-placeholder-val="{{ false }}"><span style="width:7px;height:7px;border-radius:var(--radius-full);background:#fff;"></span></sc-if>
+            </span>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:20px 28px 24px;flex-shrink:0;">
+          <button onClick="{{ closeMethod }}" style="display:inline-flex;align-items:center;justify-content:center;padding:13px 24px;font-family:var(--font-body);font-weight:700;font-size:16px;color:var(--fg-secondary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">Cancel</button>
+          <button onClick="{{ methodContinue }}" style="display:inline-flex;align-items:center;justify-content:center;padding:13px 24px;font-family:var(--font-body);font-weight:700;font-size:16px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">Continue</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeDrawer }}" style="position:fixed;inset:0;z-index:60;background:rgba(10,13,18,0.5);backdrop-filter:blur(2px);display:flex;justify-content:flex-end;">
+      <div onClick="{{ stop }}" style="width:880px;max-width:94vw;height:100vh;background:var(--bg-primary);box-shadow:var(--shadow-2xl);display:flex;flex-direction:column;animation:slideInRight 240ms ease;">
+
+        <div style="display:flex;align-items:center;gap:16px;padding:24px 32px;border-bottom:1px solid var(--border-secondary);flex-shrink:0;">
+          <sc-if value="{{ isEdit }}" hint-placeholder-val="{{ true }}">
+            <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Avatar" initials="{{ drawerInitials }}" size="lg" hint-size="48px,48px"></x-import>
+          </sc-if>
+          <div style="flex:1;min-width:0;">
+            <h2 style="font-size:21px;line-height:28px;font-weight:800;font-family:var(--font-display);letter-spacing:-0.01em;margin:0;color:var(--fg-primary);">{{ drawerTitle }}</h2>
+            <p style="font-size:15px;color:var(--fg-tertiary);margin:2px 0 0;">Role, department &amp; how they finish setup</p>
+          </div>
+          <span role="button" aria-label="Close" onClick="{{ closeDrawer }}" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:8px;cursor:pointer;color:var(--fg-quaternary);transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </span>
+        </div>
+
+        <div style="flex:1;overflow-y:auto;padding:28px 32px 32px;background:var(--bg-secondary);">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px 24px;">
+            <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Input" label="Full Name" required="{{ true }}" value="{{ fv.fullName }}" on-change="{{ fh.fullName }}" error="{{ fe.fullName }}" size="lg" hint-size="100%,76px"></x-import>
+            <div style="position:relative;">
+              <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Select" label="Employment Type" required="{{ true }}" options="{{ etypeOptions }}" value="{{ fv.employmentType }}" on-change="{{ fh.employmentType }}" placeholder="Select type" size="lg" hint-size="100%,76px"></x-import>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;right:14px;bottom:15px;pointer-events:none;"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+                        <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Input" label="Ghana Card/TIN Number" required="{{ true }}" value="{{ fv.ghanaCard }}" on-change="{{ fh.ghanaCard }}" error="{{ fe.ghanaCard }}" size="lg" hint-size="100%,76px"></x-import>
+            <div style="position:relative;">
+              <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:6px;">Job role <span style="color:var(--error-600);">*</span></label>
+              <div role="button" onClick="{{ toggleRole }}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;background:var(--bg-primary);border:1px solid {{ roleBorder }};border-radius:var(--radius-md);box-shadow:{{ roleShadow }};cursor:pointer;transition:border-color 120ms ease,box-shadow 120ms ease;">
+                <span style="font-size:16px;line-height:24px;color:{{ roleTextColor }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ roleDisplay }}</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;transform:{{ roleChevron }};transition:transform 160ms ease;"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <sc-if value="{{ roleError }}" hint-placeholder-val="{{ false }}">
+                <div style="font-size:13px;color:var(--error-600);margin-top:6px;">{{ roleError }}</div>
+              </sc-if>
+
+              <sc-if value="{{ roleOpen }}" hint-placeholder-val="{{ false }}">
+                <div onClick="{{ closeRole }}" style="position:fixed;inset:0;z-index:5;"></div>
+                <div style="position:absolute;z-index:10;top:calc(100% + 8px);left:0;right:0;background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:14px;box-shadow:var(--shadow-lg);overflow:hidden;">
+                  <div style="display:flex;align-items:center;gap:10px;padding:14px;">
+                    <input value="{{ newRole }}" onInput="{{ onNewRole }}" onKeyDown="{{ onNewRoleKey }}" placeholder="Enter new job role" autoFocus="{{ true }}" style="flex:1;min-width:0;padding:11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;" />
+                    <button onClick="{{ addRole }}" aria-label="Add job role" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:var(--radius-full);background:var(--success-50);color:var(--success-600);border:none;cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--success-100);">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    </button>
+                    <button onClick="{{ clearNewRole }}" aria-label="Clear" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:var(--radius-full);background:var(--gray-100);color:var(--fg-secondary);border:none;cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--gray-200);">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                    </button>
+                  </div>
+                  <div style="height:1px;background:var(--border-secondary);"></div>
+                  <div style="max-height:220px;overflow-y:auto;padding:6px;">
+                    <sc-for list="{{ roleList }}" as="r" hint-placeholder-count="4">
+                      <div onClick="{{ r.onSelect }}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 12px;border-radius:8px;font-size:16px;color:var(--fg-primary);cursor:pointer;background:{{ r.bg }};transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+                        {{ r.label }}
+                        <sc-if value="{{ r.selected }}" hint-placeholder-val="{{ false }}">
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-600)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        </sc-if>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-if>
+            </div>
+
+            <div style="position:relative;">
+              <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:6px;">Department <span style="color:var(--error-600);">*</span></label>
+              <div role="button" onClick="{{ toggleDept }}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;background:var(--bg-primary);border:1px solid {{ deptBorder }};border-radius:var(--radius-md);box-shadow:{{ deptShadow }};cursor:pointer;transition:border-color 120ms ease,box-shadow 120ms ease;">
+                <span style="font-size:16px;line-height:24px;color:{{ deptTextColor }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ deptDisplay }}</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;transform:{{ deptChevron }};transition:transform 160ms ease;"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+              <sc-if value="{{ deptError }}" hint-placeholder-val="{{ false }}">
+                <div style="font-size:13px;color:var(--error-600);margin-top:6px;">{{ deptError }}</div>
+              </sc-if>
+
+              <sc-if value="{{ deptOpen }}" hint-placeholder-val="{{ false }}">
+                <div onClick="{{ closeDept }}" style="position:fixed;inset:0;z-index:5;"></div>
+                <div style="position:absolute;z-index:10;top:calc(100% + 8px);left:0;right:0;background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:14px;box-shadow:var(--shadow-lg);overflow:hidden;">
+                  <div style="display:flex;align-items:center;gap:10px;padding:14px;">
+                    <input value="{{ newDept }}" onInput="{{ onNewDept }}" onKeyDown="{{ onNewDeptKey }}" placeholder="Enter new department name" autoFocus="{{ true }}" style="flex:1;min-width:0;padding:11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;" />
+                    <button onClick="{{ addDept }}" aria-label="Add department" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:var(--radius-full);background:var(--success-50);color:var(--success-600);border:none;cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--success-100);">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    </button>
+                    <button onClick="{{ clearNewDept }}" aria-label="Clear" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:var(--radius-full);background:var(--gray-100);color:var(--fg-secondary);border:none;cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--gray-200);">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                    </button>
+                  </div>
+                  <div style="height:1px;background:var(--border-secondary);"></div>
+                  <div style="max-height:220px;overflow-y:auto;padding:6px;">
+                    <sc-for list="{{ deptList }}" as="d" hint-placeholder-count="4">
+                      <div onClick="{{ d.onSelect }}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 12px;border-radius:8px;font-size:16px;color:var(--fg-primary);cursor:pointer;background:{{ d.bg }};transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+                        {{ d.label }}
+                        <sc-if value="{{ d.selected }}" hint-placeholder-val="{{ false }}">
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-600)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        </sc-if>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-if>
+            </div>
+            <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Input" label="Staff Number" value="{{ fv.staffNumber }}" on-change="{{ fh.staffNumber }}" size="lg" hint-size="100%,76px"></x-import>
+          </div>
+
+          <h3 style="font-size:17px;font-weight:700;margin:30px 0 4px;color:var(--fg-primary);">Does this employee contribute to SSNIT Pension?</h3>
+          <p style="font-size:14px;color:var(--fg-tertiary);margin:0 0 16px;">If yes, we&rsquo;ll deduct and remit their SSNIT Tier 1 &amp; 2 each month.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div onClick="{{ pickSsnitYes }}" style="display:flex;align-items:center;gap:14px;padding:16px 18px;border:1.5px solid {{ ssnitYesBorder }};background:{{ ssnitYesBg }};border-radius:12px;cursor:pointer;transition:border-color 120ms ease,background 120ms ease;">
+              <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border:1px solid var(--border-secondary);border-radius:9px;color:var(--fg-secondary);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+              </span>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:15px;font-weight:700;color:var(--fg-primary);">Yes, enrolled</div>
+                <div style="font-size:13px;line-height:18px;color:var(--fg-tertiary);margin-top:1px;">Deduct SSNIT each month.</div>
+              </div>
+              <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:var(--radius-full);border:1.5px solid {{ ssnitYesRadioBorder }};background:{{ ssnitYesRadioBg }};">
+                <sc-if value="{{ modeSsnitYes }}" hint-placeholder-val="{{ false }}"><span style="width:7px;height:7px;border-radius:var(--radius-full);background:#fff;"></span></sc-if>
+              </span>
+            </div>
+            <div onClick="{{ pickSsnitNo }}" style="display:flex;align-items:center;gap:14px;padding:16px 18px;border:1.5px solid {{ ssnitNoBorder }};background:{{ ssnitNoBg }};border-radius:12px;cursor:pointer;transition:border-color 120ms ease,background 120ms ease;">
+              <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border:1px solid var(--border-secondary);border-radius:9px;color:var(--fg-secondary);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+              </span>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:15px;font-weight:700;color:var(--fg-primary);">Not enrolled</div>
+                <div style="font-size:13px;line-height:18px;color:var(--fg-tertiary);margin-top:1px;">No SSNIT deductions.</div>
+              </div>
+              <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:var(--radius-full);border:1.5px solid {{ ssnitNoRadioBorder }};background:{{ ssnitNoRadioBg }};">
+                <sc-if value="{{ modeSsnitNo }}" hint-placeholder-val="{{ true }}"><span style="width:7px;height:7px;border-radius:var(--radius-full);background:#fff;"></span></sc-if>
+              </span>
+            </div>
+          </div>
+
+          <sc-if value="{{ modeSsnitYes }}" hint-placeholder-val="{{ false }}">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px 24px;margin-top:22px;">
+              <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Input" label="SSNIT Number" required="{{ true }}" value="{{ fv.ssnitNumber }}" on-change="{{ fh.ssnitNumber }}" error="{{ fe.ssnitNumber }}" size="lg" hint-size="100%,76px"></x-import>
+            </div>
+          </sc-if>
+
+          <h3 style="font-size:17px;font-weight:700;margin:30px 0 16px;color:var(--fg-primary);">Contact Details</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px 24px;">
+            <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Input" label="Email" type="email" required="{{ true }}" value="{{ fv.email }}" on-change="{{ fh.email }}" error="{{ fe.email }}" size="lg" hint-size="100%,76px"></x-import>
+            <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Input" label="Phone (optional)" type="tel" addon="+233" value="{{ fv.phone }}" on-change="{{ fh.phone }}" size="lg" hint-size="100%,76px"></x-import>
+          </div>
+
+          <h3 style="font-size:17px;font-weight:700;margin:30px 0 4px;color:var(--fg-primary);">Do you have their bank details?</h3>
+          <p style="font-size:14px;color:var(--fg-tertiary);margin:0 0 16px;">If yes, add them now so they can be paid. If not, we&rsquo;ll invite the employee to add their own.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div onClick="{{ pickHasBank }}" style="display:flex;align-items:center;gap:14px;padding:16px 18px;border:1.5px solid {{ hasBankBorder }};background:{{ hasBankBg }};border-radius:12px;cursor:pointer;transition:border-color 120ms ease,background 120ms ease;">
+              <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border:1px solid var(--border-secondary);border-radius:9px;color:var(--fg-secondary);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>
+              </span>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:15px;font-weight:700;color:var(--fg-primary);">Yes, I have them</div>
+                <div style="font-size:13px;line-height:18px;color:var(--fg-tertiary);margin-top:1px;">Add their bank account now.</div>
+              </div>
+              <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:var(--radius-full);border:1.5px solid {{ hasBankRadioBorder }};background:{{ hasBankRadioBg }};">
+                <sc-if value="{{ modeHasBank }}" hint-placeholder-val="{{ false }}"><span style="width:7px;height:7px;border-radius:var(--radius-full);background:#fff;"></span></sc-if>
+              </span>
+            </div>
+            <div onClick="{{ pickNoBank }}" style="display:flex;align-items:center;gap:14px;padding:16px 18px;border:1.5px solid {{ noBankBorder }};background:{{ noBankBg }};border-radius:12px;cursor:pointer;transition:border-color 120ms ease,background 120ms ease;">
+              <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border:1px solid var(--border-secondary);border-radius:9px;color:var(--fg-secondary);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              </span>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:15px;font-weight:700;color:var(--fg-primary);">No, the employee will provide it</div>
+                <div style="font-size:13px;line-height:18px;color:var(--fg-tertiary);margin-top:1px;">They add bank details themselves.</div>
+              </div>
+              <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:var(--radius-full);border:1.5px solid {{ noBankRadioBorder }};background:{{ noBankRadioBg }};">
+                <sc-if value="{{ modeNoBank }}" hint-placeholder-val="{{ true }}"><span style="width:7px;height:7px;border-radius:var(--radius-full);background:#fff;"></span></sc-if>
+              </span>
+            </div>
+          </div>
+
+          <sc-if value="{{ modeHasBank }}" hint-placeholder-val="{{ false }}">
+            <h3 style="font-size:17px;font-weight:700;margin:30px 0 16px;color:var(--fg-primary);">Bank Details</h3>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px 24px;">
+              <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Input" label="Bank Name" required="{{ true }}" value="{{ fv.bankName }}" on-change="{{ fh.bankName }}" error="{{ fe.bankName }}" size="lg" hint-size="100%,76px"></x-import>
+              <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Input" label="Bank Branch" required="{{ true }}" value="{{ fv.bankBranch }}" on-change="{{ fh.bankBranch }}" error="{{ fe.bankBranch }}" size="lg" hint-size="100%,76px"></x-import>
+              <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Input" label="Account Name" required="{{ true }}" value="{{ fv.accountName }}" on-change="{{ fh.accountName }}" error="{{ fe.accountName }}" size="lg" hint-size="100%,76px"></x-import>
+              <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Input" label="Full Account Number" required="{{ true }}" value="{{ fv.accountNumber }}" on-change="{{ fh.accountNumber }}" error="{{ fe.accountNumber }}" size="lg" hint-size="100%,76px"></x-import>
+            </div>
+          </sc-if>
+
+          <div style="margin-top:26px;border:1px solid var(--border-secondary);border-radius:14px;overflow:hidden;">
+            <div style="padding:16px 20px 0;font-size:15px;font-weight:700;color:var(--fg-primary);">Preview &mdash; what {{ previewName }} receives</div>
+            <div style="padding:12px 20px 18px;">
+              <p style="font-size:15px;line-height:23px;color:var(--fg-secondary);margin:0 0 14px;">{{ previewMsg }}</p>
+              <span style="display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid var(--border-secondary);border-radius:var(--radius-full);font-size:13px;color:var(--fg-tertiary);background:var(--bg-secondary);">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                Email
+                <span style="color:var(--fg-secondary);font-weight:600;">{{ previewEmail }}</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:flex-end;gap:16px;padding:18px 32px;border-top:1px solid var(--border-secondary);flex-shrink:0;">
+          <button onClick="{{ closeDrawer }}" style="display:inline-flex;align-items:center;justify-content:center;min-width:150px;padding:13px 24px;font-family:var(--font-body);font-weight:700;font-size:16px;color:var(--fg-secondary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">Cancel</button>
+          <button onClick="{{ saveDetails }}" style="display:inline-flex;align-items:center;justify-content:center;min-width:180px;padding:13px 24px;font-family:var(--font-body);font-weight:700;font-size:16px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">Save Details</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+
+<sc-if value="{{ panelOpen }}" hint-placeholder-val="{{ true }}">
+  <div style="position:fixed;bottom:20px;right:20px;z-index:90;width:280px;display:flex;flex-direction:column;background:#fff;border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-2xl);overflow:hidden;font-family:var(--font-body);">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:13px 16px;border-bottom:1px solid var(--border-secondary);">
+      <span style="display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--fg-primary);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--brand-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+        Preview controls
+      </span>
+      <span role="button" onClick="{{ togglePanel }}" aria-label="Minimize" style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:28px;border-radius:8px;cursor:pointer;color:var(--fg-quaternary);transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      </span>
+    </div>
+    <div style="padding:14px 16px 16px;display:flex;flex-direction:column;gap:15px;">
+      <sc-for list="{{ panelGroups }}" as="g" hint-placeholder-count="1">
+        <div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--fg-quaternary);margin-bottom:8px;">{{ g.label }}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;">
+            <sc-for list="{{ g.options }}" as="o" hint-placeholder-count="3">
+              <button onClick="{{ o.onClick }}" style="padding:6px 12px;font-family:var(--font-body);font-size:13px;font-weight:600;border-radius:999px;cursor:pointer;background:{{ o.bg }};color:{{ o.color }};border:1px solid {{ o.border }};transition:background 120ms ease,color 120ms ease;">{{ o.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</sc-if>
+<sc-if value="{{ panelClosed }}" hint-placeholder-val="{{ false }}">
+  <button onClick="{{ togglePanel }}" aria-label="Preview controls" style="position:fixed;bottom:20px;right:20px;z-index:90;display:inline-flex;align-items:center;gap:8px;padding:12px 18px;font-family:var(--font-body);font-size:13px;font-weight:700;color:#fff;background:var(--brand-900);border:none;border-radius:999px;box-shadow:var(--shadow-2xl);cursor:pointer;transition:opacity 120ms ease;" style-hover="opacity:0.92;">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+    Controls
+  </button>
+</sc-if></x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 1440, &quot;height&quot;: 1024 },
+  &quot;employeeSetup&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;No employees&quot;, &quot;Needs details&quot;, &quot;Halfway&quot;, &quot;Complete&quot;], &quot;default&quot;: &quot;No employees&quot;, &quot;tsType&quot;: &quot;string&quot; }
+}">
+const DEPARTMENTS = [
+  { value: 'Engineering', label: 'Engineering' },
+  { value: 'Finance', label: 'Finance' },
+  { value: 'Operations', label: 'Operations' },
+  { value: 'Sales', label: 'Sales' },
+  { value: 'Human Resources', label: 'Human Resources' },
+  { value: 'Marketing', label: 'Marketing' },
+  { value: 'Customer Support', label: 'Customer Support' },
+];
+const ETYPES = [
+  { value: 'Full-time', label: 'Full-time' },
+  { value: 'Part-time', label: 'Part-time' },
+  { value: 'Contract', label: 'Contract' },
+  { value: 'National Service', label: 'National Service' },
+  { value: 'Intern', label: 'Intern' },
+];
+const JOB_ROLES = [
+  { value: 'Operations Lead', label: 'Operations Lead' },
+  { value: 'Accountant', label: 'Accountant' },
+  { value: 'Software Engineer', label: 'Software Engineer' },
+  { value: 'Sales Executive', label: 'Sales Executive' },
+  { value: 'HR Manager', label: 'HR Manager' },
+  { value: 'Customer Support', label: 'Customer Support' },
+  { value: 'Administrator', label: 'Administrator' },
+  { value: 'Driver', label: 'Driver' },
+];
+const PAYE_PEOPLE = [
+  { name: 'Kwame Nkrumah', card: 'GHA-472019835-6' },
+  { name: 'Leila Hassan', card: 'GHA-518340027-1' },
+  { name: 'Sofia Patel', card: 'GHA-209917744-8' },
+  { name: 'Mateo Rivera', card: 'GHA-663052198-4' },
+  { name: 'Aisha Suleiman', card: 'GHA-871246630-9' },
+];
+
+const STATUS = {
+  needs: { label: 'Needs Details', bg: '#FEF3F2', color: '#B42318' },
+  done: { label: 'Done', bg: '#ECFDF3', color: '#067647' },
+  invited: { label: 'Invited', bg: '#EFF8FF', color: '#175CD3' },
+};
+
+function initials(name) {
+  const p = (name || '').trim().split(/\s+/);
+  return (((p[0] || '')[0] || '') + ((p[1] || '')[0] || '')).toUpperCase() || '?';
+}
+function firstName(name) {
+  return (name || '').trim().split(/\s+/)[0] || 'they';
+}
+function emptyForm() {
+  return {
+    fullName: '', jobRole: '', ghanaCard: '', staffNumber: '',
+    department: '', employmentType: '', ssnitNumber: '', ssnitMember: 'no', hasBank: 'no',
+    bankName: '', bankBranch: '', accountName: '', accountNumber: '',
+    email: '', phone: '',
+  };
+}
+
+class Component extends DCLogic {
+  state = {
+    screen: (() => { try { return new URLSearchParams(location.search).get('screen') === 'upload' ? 'upload' : 'employees'; } catch (e) { return 'employees'; } })(), mode: null, employees: [],
+    methodOpen: false, method: 'paye', uploaded: false,
+    drawerOpen: false, editIndex: null, form: emptyForm(), errors: {},
+    toast: null,
+    departments: DEPARTMENTS.map(d => ({ ...d })), deptOpen: false, newDept: '',
+    jobRoles: JOB_ROLES.map(r => ({ ...r })), roleOpen: false, newRole: '',
+    ovSetup: null, panelOpen: true,
+  };
+  toastTimer = null;
+
+  componentWillUnmount() { if (this.toastTimer) clearTimeout(this.toastTimer); }
+  componentDidMount() {
+    this.syncSetup();
+    if (!window.AppState) {
+      let tries = 0;
+      const poll = () => {
+        if (window.AppState) { this.syncSetup(); return; }
+        if (tries++ < 20) setTimeout(poll, 30);
+      };
+      setTimeout(poll, 30);
+    }
+    try {
+      if (new URLSearchParams(location.search).get('screen') === 'add') {
+        this.setState({ mode: 'oneByOne' });
+        this.openDrawerNew();
+      }
+    } catch (e) {}
+  }
+  componentDidUpdate(prevProps) {
+    if (prevProps.employeeSetup !== this.props.employeeSetup) this.syncSetup();
+    try {
+      if (this.state.employees.length > 0) localStorage.setItem('dexwinpay_employeesAdded', '1');
+    } catch (e) {}
+  }
+  applySetupStatus(level, emps) {
+    const half = Math.floor(emps.length / 2);
+    return emps.map((e, i) => {
+      let status = 'needs';
+      if (level === 'Complete') status = i === 1 ? 'invited' : 'done';
+      else if (level === 'Halfway') status = i < half ? (i === 1 ? 'invited' : 'done') : 'needs';
+      return { ...e, status };
+    });
+  }
+  syncSetup() {
+    let level = this.state.ovSetup || this.props.employeeSetup || 'No employees';
+    if (!this.state.ovSetup) {
+      // Live: prefer the real roster a tester actually added.
+      const roster = (window.AppState && window.AppState.getEmployees && window.AppState.getEmployees()) || [];
+      if (roster.length) {
+        this.setState({ ovSetup: null, employees: roster, mode: 'paye', screen: 'employees' });
+        return;
+      }
+      const a = window.AppState && window.AppState.get();
+      if (a) level = a.employees === 'done' ? ((this.props.employeeSetup && this.props.employeeSetup !== 'No employees') ? this.props.employeeSetup : 'Needs details') : 'No employees';
+    }
+    if (level === 'No employees') { this.setState({ ovSetup: level, employees: [] }); return; }
+    let emps = this.state.employees;
+    if (emps.length === 0) {
+      emps = PAYE_PEOPLE.map(p => ({ ...emptyForm(), fullName: p.name, ghanaCard: p.card, status: 'needs', initials: initials(p.name) }));
+    }
+    this.setState({ ovSetup: level, employees: this.applySetupStatus(level, emps), mode: 'paye', screen: 'employees' });
+  }
+  setSetup = (v) => {
+    if (window.AppState) {
+      if (v === 'No employees') { window.AppState.set({ employees: 'todo', payroll: 'locked' }); window.AppState.clearEmployees(); }
+      else { const a = window.AppState.get(); window.AppState.set({ employees: 'done', payroll: a.payroll === 'locked' ? 'unlocked' : a.payroll }); }
+    }
+    this.setState({ ovSetup: v }, () => this.syncSetup());
+  };
+  togglePanel = () => this.setState(s => ({ panelOpen: !s.panelOpen }));
+  // Persist the real employees a tester adds so the People page picks them up.
+  commitRoster = () => {
+    const emps = this.state.employees || [];
+    if (!window.AppState) return;
+    window.AppState.setEmployees(emps);
+    if (emps.length) {
+      const a = window.AppState.get();
+      window.AppState.set({ employees: 'done', payroll: a.payroll === 'locked' ? 'unlocked' : a.payroll });
+    }
+  };
+  showToast(msg) {
+    if (this.toastTimer) clearTimeout(this.toastTimer);
+    this.setState({ toast: msg });
+    this.toastTimer = setTimeout(() => this.setState({ toast: null }), 4500);
+  }
+  dismissToast = () => { if (this.toastTimer) clearTimeout(this.toastTimer); this.setState({ toast: null }); };
+  stop = (ev) => ev.stopPropagation();
+
+  openMethod = () => this.setState({ methodOpen: true });
+  closeMethod = () => this.setState({ methodOpen: false });
+  pickPaye = () => this.setState({ method: 'paye' });
+  pickOne = () => this.setState({ method: 'oneByOne' });
+  methodContinue = () => {
+    if (this.state.method === 'paye') {
+      this.setState({ methodOpen: false, screen: 'upload', uploaded: false });
+    } else {
+      this.setState({ methodOpen: false, mode: 'oneByOne' });
+      this.openDrawerNew();
+    }
+  };
+
+  chooseDifferent = () => this.setState({ screen: 'employees', methodOpen: true, uploaded: false });
+  goUpload = () => this.setState({ screen: 'upload', uploaded: false });
+  simulateUpload = () => this.setState({ uploaded: true });
+  submitUpload = () => {
+    if (!this.state.uploaded) return;
+    const emps = PAYE_PEOPLE.map(p => ({ ...emptyForm(), fullName: p.name, ghanaCard: p.card, status: 'needs', initials: initials(p.name) }));
+    this.setState({ employees: emps, mode: 'paye', screen: 'employees', uploaded: false }, this.commitRoster);
+    this.showToast('5 employees extracted from PAYE schedule (paye-schedule.xlsx)');
+  };
+
+  openDrawerNew = () => this.setState({ drawerOpen: true, editIndex: 'new', form: emptyForm(), errors: {}, deptOpen: false, newDept: '', roleOpen: false, newRole: '' });
+  addAnother = () => this.openDrawerNew();
+  openDrawerAt(i) {
+    const e = this.state.employees[i];
+    this.setState({ drawerOpen: true, editIndex: i, form: { ...emptyForm(), ...e }, errors: {}, deptOpen: false, newDept: '', roleOpen: false, newRole: '' });
+  }
+
+  toggleDept = () => this.setState(s => ({ deptOpen: !s.deptOpen }));
+  closeDept = () => this.setState({ deptOpen: false });
+  selectDept = (v) => this.setState(s => ({ form: { ...s.form, department: v }, errors: { ...s.errors, department: '' }, deptOpen: false }));
+  onNewDept = (ev) => this.setState({ newDept: ev.target.value });
+  onNewDeptKey = (ev) => { if (ev.key === 'Enter') { ev.preventDefault(); this.addDept(); } };
+  clearNewDept = () => this.setState({ newDept: '' });
+  addDept = () => {
+    const name = (this.state.newDept || '').trim();
+    if (!name) return;
+    this.setState(s => {
+      const exists = s.departments.some(d => d.value.toLowerCase() === name.toLowerCase());
+      const departments = exists ? s.departments : [...s.departments, { value: name, label: name }];
+      return { departments, form: { ...s.form, department: name }, errors: { ...s.errors, department: '' }, deptOpen: false, newDept: '' };
+    });
+  };
+
+  toggleRole = () => this.setState(s => ({ roleOpen: !s.roleOpen }));
+  closeRole = () => this.setState({ roleOpen: false });
+  selectRole = (v) => this.setState(s => ({ form: { ...s.form, jobRole: v }, errors: { ...s.errors, jobRole: '' }, roleOpen: false }));
+  onNewRole = (ev) => this.setState({ newRole: ev.target.value });
+  onNewRoleKey = (ev) => { if (ev.key === 'Enter') { ev.preventDefault(); this.addRole(); } };
+  clearNewRole = () => this.setState({ newRole: '' });
+  addRole = () => {
+    const name = (this.state.newRole || '').trim();
+    if (!name) return;
+    this.setState(s => {
+      const exists = s.jobRoles.some(r => r.value.toLowerCase() === name.toLowerCase());
+      const jobRoles = exists ? s.jobRoles : [...s.jobRoles, { value: name, label: name }];
+      return { jobRoles, form: { ...s.form, jobRole: name }, errors: { ...s.errors, jobRole: '' }, roleOpen: false, newRole: '' };
+    });
+  };
+  closeDrawer = () => this.setState({ drawerOpen: false });
+  setField(name, val) { this.setState(s => ({ form: { ...s.form, [name]: val }, errors: { ...s.errors, [name]: '' } })); }
+  pickHasBank = () => this.setState(s => ({ form: { ...s.form, hasBank: 'yes' } }));
+  pickNoBank = () => this.setState(s => ({ form: { ...s.form, hasBank: 'no' } }));
+  pickSsnitYes = () => this.setState(s => ({ form: { ...s.form, ssnitMember: 'yes' } }));
+  pickSsnitNo = () => this.setState(s => ({ form: { ...s.form, ssnitMember: 'no' } }));
+
+  saveDetails = () => {
+    // No validation — mock any missing fields so a record is always added.
+    const f = this.state.form;
+    const name = f.fullName.trim() || 'Akua Mensah';
+    const mock = {
+      fullName: name,
+      jobRole: f.jobRole || 'Operations Lead',
+      ghanaCard: f.ghanaCard.trim() || 'GHA-472019835-6',
+      ssnitNumber: f.ssnitMember === 'yes' ? (f.ssnitNumber.trim() || 'C1234567890123') : '',
+      ssnitMember: f.ssnitMember,
+      staffNumber: f.staffNumber.trim() || 'EMP-0142',
+      department: f.department || 'Operations',
+      employmentType: f.employmentType || 'Full-time',
+      bankName: f.bankName.trim() || 'GCB Bank',
+      bankBranch: f.bankBranch.trim() || 'Accra Main',
+      accountName: f.accountName.trim() || name,
+      accountNumber: f.accountNumber.trim() || '1011234567890',
+      email: f.email.trim() || (name.toLowerCase().replace(/[^a-z]+/g, '.') + '@acmefoods.gh'),
+      phone: f.phone.trim() || '20 123 4567',
+      hasBank: f.hasBank,
+    };
+    const status = f.hasBank === 'yes' ? 'done' : 'invited';
+    const emp = { ...mock, status, initials: initials(name) };
+    const idx = this.state.editIndex;
+    if (idx === 'new') {
+      this.setState(s => ({ employees: [...s.employees, emp], drawerOpen: false, mode: s.mode || 'oneByOne', errors: {} }), this.commitRoster);
+      this.showToast('Employee has been added successfully');
+    } else {
+      this.setState(s => ({ employees: s.employees.map((e, i) => i === idx ? emp : e), drawerOpen: false, errors: {} }), this.commitRoster);
+      this.showToast('Successfully updated employee details');
+    }
+  };
+
+  back = () => this.setState({ screen: 'upload', uploaded: true });
+  finishEnabled() {
+    const t = this.state.employees.length;
+    if (!t) return false;
+    if (this.state.mode === 'paye') return this.state.employees.every(e => e.status !== 'needs');
+    return true;
+  }
+  finish = () => { if (this.finishEnabled()) { this.commitRoster(); this.setState({ screen: 'done' }); } };
+
+  renderVals() {
+    const s = this.state;
+    const BRAND = 'var(--brand-500)';
+    const employees = s.employees;
+    const total = employees.length;
+    const doneCount = employees.filter(e => e.status !== 'needs').length;
+    const remaining = total - doneCount;
+    const allDone = total > 0 && remaining === 0;
+    const progressValue = total ? Math.round((doneCount / total) * 100) : 0;
+
+    const employeesView = employees.map((e, i) => ({
+      name: e.fullName,
+      ghanaCard: e.ghanaCard || '—',
+      initials: e.initials || initials(e.fullName),
+      statusLabel: STATUS[e.status].label,
+      statusBg: STATUS[e.status].bg,
+      statusColor: STATUS[e.status].color,
+      notFirst: i > 0,
+      onOpen: () => this.openDrawerAt(i),
+    }));
+
+    const finishOn = this.finishEnabled();
+    const f = s.form;
+    const hasBank = f.hasBank === 'yes';
+    const ssnitYes = f.ssnitMember === 'yes';
+    const mk = (name) => (ev) => this.setField(name, ev.target.value);
+
+    const deptObj = this.state.departments.find(d => d.value === f.department);
+    const deptDisplay = deptObj ? deptObj.label : 'Select department';
+    const deptErr = s.errors.department || '';
+    const deptList = this.state.departments.map(d => ({
+      label: d.label,
+      selected: d.value === f.department,
+      bg: d.value === f.department ? 'var(--brand-50)' : 'transparent',
+      onSelect: () => this.selectDept(d.value),
+    }));
+
+    const roleObj = this.state.jobRoles.find(r => r.value === f.jobRole);
+    const roleDisplay = roleObj ? roleObj.label : 'Select job role';
+    const roleErr = s.errors.jobRole || '';
+    const roleList = this.state.jobRoles.map(r => ({
+      label: r.label,
+      selected: r.value === f.jobRole,
+      bg: r.value === f.jobRole ? 'var(--brand-50)' : 'transparent',
+      onSelect: () => this.selectRole(r.value),
+    }));
+
+    const fname = firstName(f.fullName);
+    const previewMsg = !hasBank
+      ? 'Hi ' + fname + ', you\u2019ve been added to DexwinPay. Set your password and add your bank details so you can be paid on time \u2014 and view your payslips anytime. Tap the link to get started.'
+      : 'Hi ' + fname + ', your DexwinPay account is ready. Sign up now to view your payslips anytime, track your pension and deductions, and keep your details up to date. Set your password to get started.';
+
+    const setupCur = s.ovSetup || this.props.employeeSetup || 'No employees';
+    const mkOpt = (value, label) => ({ label, onClick: () => this.setSetup(value),
+      bg: setupCur === value ? 'var(--brand-600)' : '#fff',
+      color: setupCur === value ? '#fff' : 'var(--fg-secondary)',
+      border: setupCur === value ? 'var(--brand-600)' : 'var(--border-primary)' });
+    const panelGroups = [
+      { label: 'Employee setup', options: [mkOpt('No employees', 'No employees'), mkOpt('Needs details', 'Needs details'), mkOpt('Halfway', 'Halfway'), mkOpt('Complete', 'Complete')] },
+    ];
+
+    return {
+      showWizard: s.screen !== 'done',
+      panelGroups, panelOpen: s.panelOpen, panelClosed: !s.panelOpen, togglePanel: this.togglePanel,
+      isEmployees: s.screen === 'employees',
+      isUpload: s.screen === 'upload',
+      isDone: s.screen === 'done',
+      hasEmployees: total > 0,
+      noEmployees: total === 0,
+      isPaye: s.mode === 'paye',
+      isOneByOne: s.mode === 'oneByOne',
+      showBack: s.mode === 'paye',
+      hideBack: s.mode !== 'paye',
+
+      toast: s.toast,
+      dismissToast: this.dismissToast,
+
+      openMethod: this.openMethod,
+      employeesView, total, doneCount, remaining, allDone, needsData: !allDone, progressValue,
+
+      addAnother: this.addAnother,
+      goUpload: this.goUpload,
+      back: this.back,
+      finish: this.finish,
+      finishColor: finishOn ? '#fff' : 'var(--fg-disabled)',
+      finishBg: finishOn ? 'var(--bg-brand-solid)' : 'var(--bg-disabled)',
+      finishShadow: finishOn ? 'var(--shadow-btn-primary)' : 'none',
+      finishCursor: finishOn ? 'pointer' : 'not-allowed',
+
+      uploaded: s.uploaded,
+      chooseDifferent: this.chooseDifferent,
+      simulateUpload: this.simulateUpload,
+      submitUpload: this.submitUpload,
+      submitColor: s.uploaded ? '#fff' : 'var(--fg-disabled)',
+      submitBg: s.uploaded ? 'var(--bg-brand-solid)' : 'var(--bg-disabled)',
+      submitShadow: s.uploaded ? 'var(--shadow-btn-primary)' : 'none',
+      submitCursor: s.uploaded ? 'pointer' : 'not-allowed',
+
+      methodOpen: s.methodOpen,
+      closeMethod: this.closeMethod,
+      methodContinue: this.methodContinue,
+      pickPaye: this.pickPaye,
+      pickOne: this.pickOne,
+      payeChecked: s.method === 'paye',
+      oneChecked: s.method === 'oneByOne',
+      payeBorder: s.method === 'paye' ? BRAND : 'var(--border-secondary)',
+      payeBg: s.method === 'paye' ? 'var(--brand-50)' : 'var(--bg-primary)',
+      payeRadioBorder: s.method === 'paye' ? 'var(--brand-600)' : 'var(--border-primary)',
+      payeRadioBg: s.method === 'paye' ? 'var(--brand-600)' : 'transparent',
+      oneBorder: s.method === 'oneByOne' ? BRAND : 'var(--border-secondary)',
+      oneBg: s.method === 'oneByOne' ? 'var(--brand-50)' : 'var(--bg-primary)',
+      oneRadioBorder: s.method === 'oneByOne' ? 'var(--brand-600)' : 'var(--border-primary)',
+      oneRadioBg: s.method === 'oneByOne' ? 'var(--brand-600)' : 'transparent',
+
+      drawerOpen: s.drawerOpen,
+      closeDrawer: this.closeDrawer,
+      saveDetails: this.saveDetails,
+      stop: this.stop,
+      isEdit: s.editIndex !== 'new',
+      drawerTitle: s.editIndex === 'new' ? 'Add employee' : (f.fullName || 'Employee'),
+      drawerInitials: initials(f.fullName),
+      etypeOptions: ETYPES,
+      deptOpen: s.deptOpen,
+      deptDisplay,
+      deptTextColor: deptObj ? 'var(--fg-primary)' : 'var(--fg-placeholder)',
+      deptBorder: s.deptOpen ? 'var(--brand-500)' : (deptErr ? 'var(--error-400)' : 'var(--border-primary)'),
+      deptShadow: s.deptOpen ? '0 0 0 4px rgba(2,170,105,0.18)' : 'var(--shadow-xs)',
+      deptChevron: s.deptOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+      deptError: deptErr,
+      deptList,
+      newDept: s.newDept,
+      toggleDept: this.toggleDept,
+      closeDept: this.closeDept,
+      onNewDept: this.onNewDept,
+      onNewDeptKey: this.onNewDeptKey,
+      clearNewDept: this.clearNewDept,
+      addDept: this.addDept,
+
+      roleOpen: s.roleOpen,
+      roleDisplay,
+      roleTextColor: roleObj ? 'var(--fg-primary)' : 'var(--fg-placeholder)',
+      roleBorder: s.roleOpen ? 'var(--brand-500)' : (roleErr ? 'var(--error-400)' : 'var(--border-primary)'),
+      roleShadow: s.roleOpen ? '0 0 0 4px rgba(2,170,105,0.18)' : 'var(--shadow-xs)',
+      roleChevron: s.roleOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+      roleError: roleErr,
+      roleList,
+      newRole: s.newRole,
+      toggleRole: this.toggleRole,
+      closeRole: this.closeRole,
+      onNewRole: this.onNewRole,
+      onNewRoleKey: this.onNewRoleKey,
+      clearNewRole: this.clearNewRole,
+      addRole: this.addRole,
+      fv: f,
+      fe: s.errors,
+      fh: {
+        fullName: mk('fullName'), jobRole: mk('jobRole'), ghanaCard: mk('ghanaCard'),
+        staffNumber: mk('staffNumber'), department: mk('department'), employmentType: mk('employmentType'), ssnitNumber: mk('ssnitNumber'),
+        bankName: mk('bankName'), bankBranch: mk('bankBranch'), accountName: mk('accountName'),
+        accountNumber: mk('accountNumber'), email: mk('email'), phone: mk('phone'),
+      },
+      pickHasBank: this.pickHasBank,
+      pickNoBank: this.pickNoBank,
+      pickSsnitYes: this.pickSsnitYes,
+      pickSsnitNo: this.pickSsnitNo,
+      modeSsnitYes: ssnitYes,
+      modeSsnitNo: !ssnitYes,
+      ssnitYesBorder: ssnitYes ? BRAND : 'var(--border-secondary)',
+      ssnitYesBg: ssnitYes ? 'var(--brand-50)' : 'var(--bg-primary)',
+      ssnitYesRadioBorder: ssnitYes ? 'var(--brand-600)' : 'var(--border-primary)',
+      ssnitYesRadioBg: ssnitYes ? 'var(--brand-600)' : 'transparent',
+      ssnitNoBorder: !ssnitYes ? BRAND : 'var(--border-secondary)',
+      ssnitNoBg: !ssnitYes ? 'var(--brand-50)' : 'var(--bg-primary)',
+      ssnitNoRadioBorder: !ssnitYes ? 'var(--brand-600)' : 'var(--border-primary)',
+      ssnitNoRadioBg: !ssnitYes ? 'var(--brand-600)' : 'transparent',
+      modeHasBank: hasBank,
+      modeNoBank: !hasBank,
+      hasBankBorder: hasBank ? BRAND : 'var(--border-secondary)',
+      hasBankBg: hasBank ? 'var(--brand-50)' : 'var(--bg-primary)',
+      hasBankRadioBorder: hasBank ? 'var(--brand-600)' : 'var(--border-primary)',
+      hasBankRadioBg: hasBank ? 'var(--brand-600)' : 'transparent',
+      noBankBorder: !hasBank ? BRAND : 'var(--border-secondary)',
+      noBankBg: !hasBank ? 'var(--brand-50)' : 'var(--bg-primary)',
+      noBankRadioBorder: !hasBank ? 'var(--brand-600)' : 'var(--border-primary)',
+      noBankRadioBg: !hasBank ? 'var(--brand-600)' : 'transparent',
+      previewName: f.fullName ? fname : 'the employee',
+      previewMsg,
+      previewEmail: f.email || 'name@company.com',
+    };
+  }
+}
+</script>
+</body>
+</html>

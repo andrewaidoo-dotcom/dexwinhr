@@ -1,0 +1,172 @@
+/* =========================================================================
+   DexwinPay — COLOR TOKENS
+   Built on the Untitled UI (Tailwind-based) palette, re-anchored on the
+   Dexwin brand green #018F58 / #02AA69. Two layers:
+     1. PRIMITIVES  — raw scales (--brand-500, --gray-700, …)
+     2. SEMANTIC    — role aliases (--fg-primary, --bg-brand-solid, …)
+   Always reference the semantic layer in product code; reach for a
+   primitive only when no semantic token fits.
+   ========================================================================= */
+
+:root {
+  /* ====================================================================
+     1 · PRIMITIVES
+     ==================================================================== */
+
+  /* Brand — Dexwin green (custom scale anchored on #018F58 / #02AA69) */
+  --brand-25:  #f3fdf8;
+  --brand-50:  #e8fbf1;
+  --brand-100: #c8f4dc;
+  --brand-200: #92e7bb;
+  --brand-300: #5cd99a;
+  --brand-400: #2dc77c;
+  --brand-500: #02aa69;   /* primary accent (icons, links, charts) */
+  --brand-600: #018f58;   /* PRIMARY — solid buttons, brand fills */
+  --brand-700: #016f45;   /* brand text on light, hover-press */
+  --brand-800: #014f32;
+  --brand-900: #013a25;   /* dark hero / sidebar banner */
+  --brand-950: #002618;
+
+  /* Gray (neutral — Untitled UI "Gray (modern)") */
+  --gray-25:  #fcfcfd;
+  --gray-50:  #fafafa;
+  --gray-100: #f5f5f5;
+  --gray-200: #e9eaeb;
+  --gray-300: #d5d7da;
+  --gray-400: #a4a7ae;
+  --gray-500: #717680;
+  --gray-600: #535862;
+  --gray-700: #414651;
+  --gray-800: #252b37;
+  --gray-900: #181d27;
+  --gray-950: #0a0d12;
+
+  /* Error (Red) */
+  --error-25:  #fffbfa;
+  --error-50:  #fef3f2;
+  --error-100: #fee4e2;
+  --error-200: #fecdca;
+  --error-300: #fda29b;
+  --error-400: #f97066;
+  --error-500: #f04438;
+  --error-600: #d92d20;
+  --error-700: #b42318;
+  --error-800: #912018;
+  --error-900: #7a271a;
+
+  /* Warning (Amber) */
+  --warning-25:  #fffcf5;
+  --warning-50:  #fffaeb;
+  --warning-100: #fef0c7;
+  --warning-200: #fedf89;
+  --warning-300: #fec84b;
+  --warning-400: #fdb022;
+  --warning-500: #f79009;
+  --warning-600: #dc6803;
+  --warning-700: #b54708;
+  --warning-800: #93370d;
+  --warning-900: #7a2e0e;
+
+  /* Success (independent green — slightly cooler than brand, for status) */
+  --success-25:  #f6fef9;
+  --success-50:  #ecfdf3;
+  --success-100: #d1fadf;
+  --success-200: #a6f4c5;
+  --success-300: #6ce9a6;
+  --success-400: #32d583;
+  --success-500: #12b76a;
+  --success-600: #039855;
+  --success-700: #027a48;
+  --success-800: #05603a;
+  --success-900: #054f31;
+
+  /* Info (Blue) */
+  --info-25:  #f5faff;
+  --info-50:  #eff8ff;
+  --info-100: #d1e9ff;
+  --info-200: #b2ddff;
+  --info-300: #84caff;
+  --info-400: #53b1fd;
+  --info-500: #2e90fa;
+  --info-600: #1570ef;
+  --info-700: #175cd3;
+  --info-800: #1849a9;
+  --info-900: #194185;
+
+  /* Accents — tags, charts, avatars */
+  --orange-100: #fde6cf; --orange-500: #ef6820; --orange-700: #b93815;
+  --pink-100:   #fce7f6; --pink-500:   #ee46bc; --pink-700:   #c11574;
+  --indigo-100: #e0eaff; --indigo-500: #6172f3; --indigo-700: #3538cd;
+  --teal-100:   #ccfbef; --teal-500:   #15b79e; --teal-700:   #107569;
+  --purple-100: #ebe9fe; --purple-500: #7a5af8; --purple-700: #5925dc;
+
+  /* Alpha utilities */
+  --alpha-white-10: rgba(255,255,255,0.10);
+  --alpha-white-20: rgba(255,255,255,0.20);
+  --alpha-white-50: rgba(255,255,255,0.50);
+  --alpha-white-80: rgba(255,255,255,0.80);
+  --alpha-black-10: rgba(10,13,18,0.10);
+  --alpha-black-20: rgba(10,13,18,0.20);
+  --alpha-black-50: rgba(10,13,18,0.50);
+
+  --white: #ffffff;
+  --black: #0a0d12;
+
+  /* ====================================================================
+     2 · SEMANTIC — Foreground (text & icons)
+     ==================================================================== */
+  --fg-primary:     var(--gray-900);  /* headings, body */
+  --fg-secondary:   var(--gray-700);  /* secondary text, labels */
+  --fg-tertiary:    var(--gray-600);  /* supporting / meta */
+  --fg-quaternary:  var(--gray-500);  /* muted, table headers */
+  --fg-disabled:    var(--gray-400);
+  --fg-placeholder: var(--gray-500);
+  --fg-on-brand:    #ffffff;
+  --fg-brand:       var(--brand-700); /* brand-coloured text on light */
+  --fg-brand-soft:  var(--brand-600);
+  --fg-error:       var(--error-600);
+  --fg-warning:     var(--warning-700);
+  --fg-success:     var(--success-700);
+  --fg-white:       #ffffff;
+
+  /* SEMANTIC — Background / surface */
+  --bg-primary:           #ffffff;       /* app & card base */
+  --bg-secondary:         var(--gray-50);/* page canvas behind cards */
+  --bg-tertiary:          var(--gray-100);
+  --bg-quaternary:        var(--gray-200);
+  --bg-active:            var(--gray-50);
+  --bg-disabled:          var(--gray-100);
+  --bg-overlay:          rgba(10,13,18,0.50);
+  --surface-card:         #ffffff;
+  --surface-canvas:       var(--gray-50);
+  --bg-brand-primary:     var(--brand-500);
+  --bg-brand-hover:       var(--brand-600);
+  --bg-brand-solid:       var(--brand-600);  /* default solid-button fill */
+  --bg-brand-solid-hover: var(--brand-700);
+  --bg-brand-subtle:      var(--brand-50);   /* active nav, soft chips */
+  --bg-brand-dark:        var(--brand-900);  /* dark banners & CTAs */
+  --bg-error-primary:     var(--error-500);
+  --bg-error-subtle:      var(--error-50);
+  --bg-warning-subtle:    var(--warning-50);
+  --bg-success-subtle:    var(--success-50);
+  --bg-info-subtle:       var(--info-50);
+
+  /* SEMANTIC — Border */
+  --border-primary:    var(--gray-300);  /* inputs, dividers w/ emphasis */
+  --border-secondary:  var(--gray-200);  /* default card & section border */
+  --border-tertiary:   var(--gray-100);
+  --border-disabled:   var(--gray-200);
+  --border-brand:      var(--brand-500);
+  --border-brand-solid:var(--brand-600);
+  --border-error:      var(--error-500);
+  --border-on-dark:    rgba(255,255,255,0.12);
+
+  /* Focus rings */
+  --ring-brand: 0 0 0 4px rgba(2,170,105,0.24);
+  --ring-error: 0 0 0 4px rgba(240,68,56,0.24);
+  --ring-gray:  0 0 0 4px rgba(152,162,179,0.14);
+
+  /* Text selection */
+  --selection-bg: var(--brand-100);
+  --selection-fg: var(--brand-900);
+}

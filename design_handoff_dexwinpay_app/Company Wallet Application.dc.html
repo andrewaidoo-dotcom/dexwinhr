@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<script src="./ds-base.js"></script>
+<script src="./app-state.js"></script>
+<style>
+  * { scrollbar-width: thin; scrollbar-color: #D5D7DA transparent; }
+  *::-webkit-scrollbar { width: 10px; height: 10px; }
+  *::-webkit-scrollbar-track { background: transparent; }
+  *::-webkit-scrollbar-thumb { background: #D5D7DA; border-radius: 999px; border: 3px solid transparent; background-clip: padding-box; }
+  *::-webkit-scrollbar-thumb:hover { background: #C0C3C9; background-clip: padding-box; }
+  *::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pulseRing { 0% { box-shadow: 0 0 0 0 rgba(2,170,105,0.35); } 70% { box-shadow: 0 0 0 14px rgba(2,170,105,0); } 100% { box-shadow: 0 0 0 0 rgba(2,170,105,0); } }
+</style>
+</helmet>
+<div style="min-height:100vh;display:flex;flex-direction:column;background:var(--bg-secondary);font-family:var(--font-body);color:var(--fg-primary);">
+
+  <sc-if value="{{ showChrome }}" hint-placeholder-val="{{ true }}">
+  <header style="position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;height:72px;padding:0 32px;background:var(--bg-primary);border-bottom:1px solid var(--border-secondary);flex-shrink:0;">
+    <span style="display:flex;align-items:baseline;gap:3px;">
+      <img src="assets/dexwin-logo.svg" alt="Dexwin" style="height:22px;" />
+      <span style="font-family:var(--font-display);font-weight:900;font-size:10px;letter-spacing:0.04em;color:var(--fg-primary);">PAY</span>
+    </span>
+    <span style="position:absolute;left:50%;transform:translateX(-50%);font-family:var(--font-display);font-size:18px;font-weight:800;letter-spacing:-0.01em;color:var(--fg-primary);white-space:nowrap;">Company wallet application</span>
+    <a href="Company Wallet.dc.html" style="display:inline-flex;align-items:center;gap:8px;padding:9px 18px;font-weight:700;font-size:14px;color:var(--fg-secondary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);text-decoration:none;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+      Save &amp; Exit
+    </a>
+  </header>
+  </sc-if>
+
+  <main style="flex:1;overflow-y:auto;padding:48px 32px 40px;box-sizing:border-box;">
+
+    <sc-if value="{{ showStepper }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width:{{ footMaxWidth }};margin:0 auto 28px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:12px;">
+          <span style="font-size:15px;font-weight:700;color:var(--fg-secondary);">{{ stageName }}</span>
+          <span style="font-size:15px;font-weight:600;color:var(--fg-tertiary);">{{ stepLabel }}</span>
+        </div>
+        <div style="height:8px;border-radius:999px;background:var(--gray-100);overflow:hidden;">
+          <div style="height:100%;width:{{ progressPct }};border-radius:999px;background:var(--brand-600);transition:width 320ms ease;"></div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- INTRO -->
+    <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+      <div style="max-width:720px;margin:0 auto;">
+        <h1 style="font-family:var(--font-display);font-size:34px;line-height:42px;font-weight:800;letter-spacing:-0.02em;margin:0 0 12px;">Apply for your company wallet</h1>
+        <p style="font-size:17px;line-height:27px;color:var(--fg-tertiary);margin:0 0 8px;max-width:64ch;">We&rsquo;ll verify your business with our payments partner, <strong style="color:var(--fg-secondary);font-weight:700;">Affinity</strong>, before the wallet is activated. You&rsquo;ll confirm business details, upload a few documents, and add anyone who owns or controls the company.</p>
+        <p style="font-size:15px;font-weight:600;color:var(--fg-secondary);margin:28px 0 16px;">How do you want to start?</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+          <div onClick="{{ pickUpload }}" style="position:relative;background:var(--bg-primary);border:1.5px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);padding:26px;cursor:pointer;transition:border-color 120ms ease,box-shadow 120ms ease;" style-hover="border-color:var(--brand-400);box-shadow:var(--shadow-md);">
+            <span style="position:absolute;top:24px;right:24px;display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--info-700);background:var(--info-50);border:1px solid var(--info-200);border-radius:var(--radius-full);padding:4px 11px;">Fastest</span>
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border:1px solid var(--border-secondary);border-radius:12px;box-shadow:var(--shadow-xs);color:var(--brand-600);margin-bottom:28px;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M12 18v-6"/><path d="m9 15 3-3 3 3"/></svg>
+            </span>
+            <div style="font-family:var(--font-display);font-size:21px;font-weight:800;letter-spacing:-0.01em;margin-bottom:6px;">Use Company&rsquo;s Form 3</div>
+            <p style="font-size:15px;line-height:23px;color:var(--fg-tertiary);margin:0 0 18px;">We&rsquo;ll read your Form 3 and fill in your business details automatically.</p>
+            <span style="display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:700;color:var(--brand-700);">Upload Form 3 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+          </div>
+          <div onClick="{{ pickManual }}" style="background:var(--bg-primary);border:1.5px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);padding:26px;cursor:pointer;transition:border-color 120ms ease,box-shadow 120ms ease;" style-hover="border-color:var(--brand-400);box-shadow:var(--shadow-md);">
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border:1px solid var(--border-secondary);border-radius:12px;box-shadow:var(--shadow-xs);color:var(--fg-secondary);margin-bottom:28px;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+            </span>
+            <div style="font-family:var(--font-display);font-size:21px;font-weight:800;letter-spacing:-0.01em;margin-bottom:6px;">Fill the form myself</div>
+            <p style="font-size:15px;line-height:23px;color:var(--fg-tertiary);margin:0 0 18px;">Enter your business details manually. We&rsquo;ll show you what to have ready first.</p>
+            <span style="display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:700;color:var(--brand-700);">Enter manually <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- UPLOAD FORM 3 -->
+    <sc-if value="{{ isUpload }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width:720px;margin:0 auto;">
+        <h1 style="font-family:var(--font-display);font-size:30px;line-height:38px;font-weight:800;letter-spacing:-0.02em;margin:0 0 10px;">Upload your Form 3</h1>
+        <p style="font-size:16px;line-height:25px;color:var(--fg-tertiary);margin:0 0 30px;max-width:70ch;">Your Form 3 is the company particulars filed at the Registrar-General. We&rsquo;ll read it and pre-fill your business details.</p>
+        <div onClick="{{ doUploadForm3 }}" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:64px 24px;background:var(--bg-primary);border:1.5px dashed var(--brand-400);border-radius:20px;cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--brand-50);">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;border:1px solid var(--border-secondary);border-radius:14px;box-shadow:var(--shadow-xs);color:var(--brand-600);background:var(--bg-primary);margin-bottom:18px;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </span>
+          <div style="font-size:18px;font-weight:700;color:var(--fg-primary);margin-bottom:6px;">Drop your Form 3 here</div>
+          <div style="font-size:15px;color:var(--fg-tertiary);">PDF, JPG or PNG up to 10MB &mdash; <span style="color:var(--brand-700);font-weight:700;">click to browse</span></div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- READING -->
+    <sc-if value="{{ isReading }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width:720px;margin:0 auto;">
+        <h1 style="font-family:var(--font-display);font-size:30px;line-height:38px;font-weight:800;letter-spacing:-0.02em;margin:0 0 10px;">Upload your Form 3</h1>
+        <p style="font-size:16px;line-height:25px;color:var(--fg-tertiary);margin:0 0 30px;max-width:70ch;">Your Form 3 is the company particulars filed at the Registrar-General. We&rsquo;ll read it and pre-fill your business details.</p>
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:56px 24px;background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);">
+          <span style="width:46px;height:46px;border-radius:var(--radius-full);border:3px solid var(--brand-100);border-top-color:var(--brand-600);animation:spin 800ms linear infinite;margin-bottom:22px;"></span>
+          <div style="font-size:19px;font-weight:700;color:var(--fg-primary);margin-bottom:8px;">Reading your Form 3&hellip;</div>
+          <p style="font-size:15px;line-height:23px;color:var(--fg-tertiary);margin:0 0 22px;max-width:42ch;">Extracting legal name, registration number, business type and address. This takes a few seconds.</p>
+          <span style="display:inline-flex;align-items:center;gap:9px;font-size:14px;color:var(--fg-secondary);background:var(--bg-secondary);border:1px solid var(--border-secondary);border-radius:var(--radius-full);padding:8px 16px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--fg-quaternary)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+            form3-northside-medical.pdf
+          </span>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- EXTRACTED REVIEW -->
+    <sc-if value="{{ isExtracted }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width:720px;margin:0 auto;">
+        <h1 style="font-family:var(--font-display);font-size:30px;line-height:38px;font-weight:800;letter-spacing:-0.02em;margin:0 0 10px;">Upload your Form 3</h1>
+        <p style="font-size:16px;line-height:25px;color:var(--fg-tertiary);margin:0 0 24px;max-width:70ch;">Your Form 3 is the company particulars filed at the Registrar-General. We&rsquo;ll read it and pre-fill your business details.</p>
+        <div style="display:flex;align-items:center;gap:14px;padding:16px 20px;background:var(--brand-50);border:1px solid var(--brand-200);border-radius:14px;margin-bottom:18px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--brand-600)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M12 3l1.9 5.8a2 2 0 0 0 1.3 1.3L21 12l-5.8 1.9a2 2 0 0 0-1.3 1.3L12 21l-1.9-5.8a2 2 0 0 0-1.3-1.3L3 12l5.8-1.9a2 2 0 0 0 1.3-1.3z"/></svg>
+          <span style="font-size:15px;font-weight:600;color:var(--brand-800);">Details extracted from your Form 3 &mdash; check them and edit anything that looks off.</span>
+        </div>
+        <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);overflow:hidden;">
+          <sc-for list="{{ extractedRows }}" as="r" hint-placeholder-count="5">
+            <sc-if value="{{ r.notFirst }}" hint-placeholder-val="{{ false }}"><div style="height:1px;background:var(--border-secondary);"></div></sc-if>
+            <div style="display:flex;align-items:center;gap:20px;padding:18px 24px;">
+              <span style="width:180px;flex-shrink:0;font-size:14px;color:var(--fg-tertiary);">{{ r.label }}</span>
+              <input value="{{ r.value }}" onInput="{{ r.onInput }}" style="flex:1;min-width:0;padding:8px 10px;font-family:var(--font-body);font-size:16px;font-weight:700;color:var(--fg-primary);background:transparent;border:1px solid transparent;border-radius:8px;outline:none;transition:border-color 120ms ease,background 120ms ease;" style-focus="border-color:var(--brand-400);background:var(--bg-secondary);" />
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- MANUAL INFO -->
+    <sc-if value="{{ isManual }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width:720px;margin:0 auto;">
+        <h1 style="font-family:var(--font-display);font-size:30px;line-height:38px;font-weight:800;letter-spacing:-0.02em;margin:0 0 10px;">What you&rsquo;ll need</h1>
+        <p style="font-size:16px;line-height:25px;color:var(--fg-tertiary);margin:0 0 28px;max-width:64ch;">Gather these before you start so you can finish in one go. You can save and come back to a draft at any time.</p>
+        <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);overflow:hidden;">
+          <div style="display:flex;align-items:flex-start;gap:16px;padding:20px 24px;">
+            <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:11px;background:var(--bg-primary);border:1px solid var(--border-secondary);box-shadow:var(--shadow-xs);color:var(--fg-secondary);">
+              <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h4"/></svg>
+            </span>
+            <div style="min-width:0;">
+              <div style="font-size:16px;font-weight:700;color:var(--fg-primary);">Business registration documents</div>
+              <div style="font-size:14px;line-height:21px;color:var(--fg-tertiary);margin-top:2px;">Certificate of Incorporation, Form 3, or the equivalent for your business type.</div>
+            </div>
+          </div>
+          <div style="height:1px;background:var(--border-secondary);"></div>
+          <div style="display:flex;align-items:flex-start;gap:16px;padding:20px 24px;">
+            <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:11px;background:var(--bg-primary);border:1px solid var(--border-secondary);box-shadow:var(--shadow-xs);color:var(--fg-secondary);">
+              <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1.5L8 22l2-1.5L12 22l2-1.5L16 22l2-1.5L20 22V2l-2 1.5L16 2l-2 1.5L12 2l-2 1.5L8 2 6 3.5 4 2Z"/><path d="M12 7.5v9M14 9.5h-3a1.5 1.5 0 0 0 0 3h2a1.5 1.5 0 0 1 0 3H10"/></svg>
+            </span>
+            <div style="min-width:0;">
+              <div style="font-size:16px;font-weight:700;color:var(--fg-primary);">Tax &amp; turnover details</div>
+              <div style="font-size:14px;line-height:21px;color:var(--fg-tertiary);margin-top:2px;">TIN and your most recent annual turnover figure.</div>
+            </div>
+          </div>
+          <div style="height:1px;background:var(--border-secondary);"></div>
+          <div style="display:flex;align-items:flex-start;gap:16px;padding:20px 24px;">
+            <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:11px;background:var(--bg-primary);border:1px solid var(--border-secondary);box-shadow:var(--shadow-xs);color:var(--fg-secondary);">
+              <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </span>
+            <div style="min-width:0;">
+              <div style="font-size:16px;font-weight:700;color:var(--fg-primary);">Stakeholder information</div>
+              <div style="font-size:14px;line-height:21px;color:var(--fg-tertiary);margin-top:2px;">Names, IDs and contact details for everyone who owns or controls the business.</div>
+            </div>
+          </div>
+          <div style="height:1px;background:var(--border-secondary);"></div>
+          <div style="display:flex;align-items:flex-start;gap:16px;padding:20px 24px;">
+            <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:11px;background:var(--bg-primary);border:1px solid var(--border-secondary);box-shadow:var(--shadow-xs);color:var(--fg-secondary);">
+              <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+            </span>
+            <div style="min-width:0;">
+              <div style="font-size:16px;font-weight:700;color:var(--fg-primary);">Signatory details</div>
+              <div style="font-size:14px;line-height:21px;color:var(--fg-tertiary);margin-top:2px;">Who can authorise payouts, and a signature for each.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- BUSINESS DETAILS PART 1 -->
+    <sc-if value="{{ isBiz1 }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width:720px;margin:0 auto;">
+        <h1 style="font-family:var(--font-display);font-size:28px;line-height:36px;font-weight:800;letter-spacing:-0.02em;margin:0 0 4px;">Business details</h1>
+        <p style="font-size:15px;color:var(--fg-tertiary);margin:0 0 28px;">Part 1 of 2 &mdash; who the business is.</p>
+        <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);padding:30px;">
+          <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Legal name <span style="color:var(--error-600);">*</span></label>
+          <input value="{{ b.legalName }}" onInput="{{ bf.legalName }}" placeholder="Registered company name" style="width:100%;box-sizing:border-box;padding:12px 14px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);margin-bottom:22px;" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);" />
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:22px;">
+            <div>
+              <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Registration date <span style="color:var(--error-600);">*</span></label>
+              <input value="{{ b.regDate }}" onInput="{{ bf.regDate }}" placeholder="DD / MM / YYYY" style="width:100%;box-sizing:border-box;padding:12px 14px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);" />
+            </div>
+            <div>
+              <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Registration number <span style="color:var(--error-600);">*</span></label>
+              <input value="{{ b.regNumber }}" onInput="{{ bf.regNumber }}" placeholder="e.g. CS123456789" style="width:100%;box-sizing:border-box;padding:12px 14px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);" />
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
+            <div>
+              <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Business type <span style="color:var(--error-600);">*</span></label>
+              <div style="position:relative;">
+                <select value="{{ b.businessType }}" onChange="{{ bf.businessType }}" style="width:100%;box-sizing:border-box;padding:12px 38px 12px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);appearance:none;-webkit-appearance:none;-moz-appearance:none;cursor:pointer;" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);">
+                  <sc-for list="{{ bizTypeList }}" as="o" hint-placeholder-count="5"><option value="{{ o.value }}">{{ o.label }}</option></sc-for>
+                </select>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;right:13px;top:50%;transform:translateY(-50%);pointer-events:none;"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div>
+              <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Registration type</label>
+              <div style="position:relative;">
+                <select value="{{ b.regType }}" onChange="{{ bf.regType }}" style="width:100%;box-sizing:border-box;padding:12px 38px 12px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);appearance:none;-webkit-appearance:none;-moz-appearance:none;cursor:pointer;" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);">
+                  <sc-for list="{{ regTypeList }}" as="o" hint-placeholder-count="3"><option value="{{ o.value }}">{{ o.label }}</option></sc-for>
+                </select>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;right:13px;top:50%;transform:translateY(-50%);pointer-events:none;"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div>
+              <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Ownership type</label>
+              <div style="position:relative;">
+                <select value="{{ b.ownership }}" onChange="{{ bf.ownership }}" style="width:100%;box-sizing:border-box;padding:12px 38px 12px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);appearance:none;-webkit-appearance:none;-moz-appearance:none;cursor:pointer;" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);">
+                  <sc-for list="{{ ownTypeList }}" as="o" hint-placeholder-count="2"><option value="{{ o.value }}">{{ o.label }}</option></sc-for>
+                </select>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;right:13px;top:50%;transform:translateY(-50%);pointer-events:none;"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:7px;font-size:13px;color:var(--fg-quaternary);margin-top:10px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            Business type decides which document we ask for later.
+          </div>
+
+          <div style="height:1px;background:var(--border-secondary);margin:26px 0 20px;"></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:20px;">
+            <div>
+              <div style="font-size:16px;font-weight:700;color:var(--fg-primary);">Does this business require a license?</div>
+              <div style="font-size:14px;color:var(--fg-tertiary);margin-top:2px;">e.g. financial services, health, education sectors.</div>
+            </div>
+            <button onClick="{{ toggleLicense }}" aria-label="Toggle license" style="flex-shrink:0;position:relative;width:52px;height:30px;border-radius:var(--radius-full);border:none;cursor:pointer;background:{{ licenseTrack }};transition:background 160ms ease;">
+              <span style="position:absolute;top:3px;left:{{ licenseKnob }};width:24px;height:24px;border-radius:var(--radius-full);background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.2);transition:left 160ms ease;"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- BUSINESS DETAILS PART 2 -->
+    <sc-if value="{{ isBiz2 }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width:720px;margin:0 auto;">
+        <h1 style="font-family:var(--font-display);font-size:28px;line-height:36px;font-weight:800;letter-spacing:-0.02em;margin:0 0 4px;">Business details</h1>
+        <p style="font-size:15px;color:var(--fg-tertiary);margin:0 0 28px;">Part 2 of 2 &mdash; where it operates and how it&rsquo;s funded.</p>
+        <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);padding:30px;">
+          <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:9px;">Business address <span style="color:var(--error-600);">*</span></label>
+          <div style="display:grid;grid-template-columns:1fr 2fr;gap:14px;margin-bottom:14px;">
+            <input value="{{ b.addr1 }}" onInput="{{ bf.addr1 }}" placeholder="No." style="width:100%;box-sizing:border-box;padding:12px 14px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);" />
+            <input value="{{ b.addr2 }}" onInput="{{ bf.addr2 }}" placeholder="Street" style="width:100%;box-sizing:border-box;padding:12px 14px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);" />
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+            <input value="{{ b.city }}" onInput="{{ bf.city }}" placeholder="Suburb / town" style="width:100%;box-sizing:border-box;padding:12px 14px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);" />
+            <input value="{{ b.region }}" onInput="{{ bf.region }}" placeholder="City / region" style="width:100%;box-sizing:border-box;padding:12px 14px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);" />
+          </div>
+          <div style="position:relative;margin-bottom:22px;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <input value="{{ b.digital }}" onInput="{{ bf.digital }}" placeholder="Ghana Post GPS (e.g. GA-183-4471)" style="width:100%;box-sizing:border-box;padding:12px 14px 12px 42px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);" />
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:22px;">
+            <div>
+              <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Phone number <span style="color:var(--error-600);">*</span></label>
+              <input value="{{ b.phone }}" onInput="{{ bf.phone }}" placeholder="+233 24 000 0000" style="width:100%;box-sizing:border-box;padding:12px 14px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);" />
+            </div>
+            <div>
+              <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">TIN <span style="color:var(--error-600);">*</span></label>
+              <input value="{{ b.tin }}" onInput="{{ bf.tin }}" placeholder="e.g. C0012345678" style="width:100%;box-sizing:border-box;padding:12px 14px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);" />
+            </div>
+          </div>
+
+          <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Annual turnover (GHS) <span style="color:var(--error-600);">*</span></label>
+          <div style="display:flex;align-items:stretch;border:1px solid var(--border-primary);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);overflow:hidden;margin-bottom:22px;">
+            <span style="display:inline-flex;align-items:center;padding:0 14px;background:var(--bg-secondary);border-right:1px solid var(--border-primary);font-size:15px;font-weight:600;color:var(--fg-tertiary);">GH&#8373;</span>
+            <input value="{{ b.turnover }}" onInput="{{ bf.turnover }}" placeholder="0.00" style="flex:1;min-width:0;padding:12px 14px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:none;outline:none;font-variant-numeric:tabular-nums;" />
+          </div>
+
+          <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:9px;">Source of funds <span style="color:var(--error-600);">*</span></label>
+          <div style="display:flex;flex-wrap:wrap;gap:9px;">
+            <sc-for list="{{ fundOpts }}" as="o" hint-placeholder-count="2">
+              <button onClick="{{ o.onClick }}" style="padding:9px 16px;font-family:var(--font-body);font-weight:600;font-size:14px;color:{{ o.color }};background:{{ o.bg }};border:1px solid {{ o.border }};border-radius:var(--radius-full);cursor:pointer;box-shadow:{{ o.shadow }};transition:all 120ms ease;">{{ o.label }}</button>
+            </sc-for>
+          </div>
+
+          <div style="height:1px;background:var(--border-secondary);margin:26px 0 20px;"></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:20px;">
+            <div>
+              <div style="font-size:16px;font-weight:700;color:var(--fg-primary);">Number of required signatories</div>
+              <div style="font-size:14px;color:var(--fg-tertiary);margin-top:2px;">People who must authorise payouts from the wallet.</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:18px;flex-shrink:0;">
+              <button onClick="{{ decSig }}" aria-label="Decrease" style="width:40px;height:40px;border-radius:var(--radius-full);border:1px solid var(--border-primary);background:var(--bg-primary);color:var(--fg-secondary);font-size:22px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;box-shadow:var(--shadow-xs);transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">&minus;</button>
+              <span style="font-size:20px;font-weight:800;color:var(--fg-primary);min-width:18px;text-align:center;font-variant-numeric:tabular-nums;">{{ b.signatories }}</span>
+              <button onClick="{{ incSig }}" aria-label="Increase" style="width:40px;height:40px;border-radius:var(--radius-full);border:1px solid var(--border-primary);background:var(--bg-primary);color:var(--fg-secondary);font-size:20px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;box-shadow:var(--shadow-xs);transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- DOCUMENTS -->
+    <sc-if value="{{ isDocs }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width:720px;margin:0 auto;">
+        <h1 style="font-family:var(--font-display);font-size:28px;line-height:36px;font-weight:800;letter-spacing:-0.02em;margin:0 0 8px;">Upload your documents</h1>
+        <p style="font-size:16px;line-height:25px;color:var(--fg-tertiary);margin:0 0 18px;max-width:64ch;">Based on your business type, we need the document below. Make sure it&rsquo;s clear and shows all four corners.</p>
+        <span style="display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:700;color:var(--fg-secondary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-full);padding:7px 14px;margin-bottom:20px;box-shadow:var(--shadow-xs);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--fg-quaternary)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg>
+          {{ b.businessType }}
+        </span>
+        <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);padding:26px;">
+          <div style="display:flex;align-items:flex-start;gap:16px;margin-bottom:20px;">
+            <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border:1px solid var(--border-secondary);border-radius:12px;box-shadow:var(--shadow-xs);color:var(--brand-600);">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="m9 15 2 2 4-4"/></svg>
+            </span>
+            <div>
+              <div style="font-size:17px;font-weight:700;color:var(--fg-primary);">{{ requiredDoc }}</div>
+              <div style="font-size:14px;color:var(--fg-tertiary);margin-top:2px;">Required for {{ b.businessType }} &middot; PDF, JPG or PNG</div>
+            </div>
+          </div>
+
+          <sc-if value="{{ docNotUploaded }}" hint-placeholder-val="{{ true }}">
+            <div onClick="{{ doUploadDoc }}" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 24px;background:var(--bg-secondary);border:1.5px dashed var(--border-primary);border-radius:14px;cursor:pointer;transition:background 120ms ease,border-color 120ms ease;" style-hover="background:var(--brand-50);border-color:var(--brand-400);">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--fg-secondary)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:12px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <div style="font-size:16px;font-weight:700;color:var(--fg-primary);">Drag &amp; drop or click to browse</div>
+              <div style="font-size:14px;color:var(--fg-quaternary);margin-top:4px;">Accepted: PDF, JPG, PNG &mdash; up to 10MB</div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ docUploaded }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;align-items:center;gap:14px;padding:16px 18px;border:1px solid var(--border-secondary);border-radius:14px;background:var(--bg-secondary);">
+              <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border:1px solid var(--border-secondary);border-radius:10px;background:var(--bg-primary);color:var(--fg-secondary);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+              </span>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:15px;font-weight:700;color:var(--fg-primary);">{{ docFileName }}</div>
+                <div style="display:flex;align-items:center;gap:7px;font-size:13px;color:var(--fg-tertiary);margin-top:2px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--success-600)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                  Uploaded &middot; 1.8 MB
+                </div>
+              </div>
+              <button onClick="{{ removeDoc }}" aria-label="Remove" style="flex-shrink:0;width:38px;height:38px;border-radius:9px;border:none;background:transparent;color:var(--fg-quaternary);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:background 120ms ease,color 120ms ease;" style-hover="background:var(--error-50);color:var(--error-600);">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              </button>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- STAKEHOLDERS: INDIVIDUAL ASK -->
+    <sc-if value="{{ isIndAsk }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width:720px;margin:0 auto;">
+        <h1 style="font-family:var(--font-display);font-size:28px;line-height:36px;font-weight:800;letter-spacing:-0.02em;margin:0 0 8px;">Individual stakeholders</h1>
+        <p style="font-size:16px;line-height:25px;color:var(--fg-tertiary);margin:0 0 26px;max-width:60ch;">Anyone who owns 25% or more, or otherwise controls the business, must be verified.</p>
+        <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);padding:40px 28px;text-align:center;">
+          <div style="font-size:19px;font-weight:700;color:var(--fg-primary);margin-bottom:20px;">Are there individual stakeholders to add?</div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:14px;">
+            <button onClick="{{ setIndYes }}" style="display:inline-flex;align-items:center;gap:8px;padding:13px 30px;font-family:var(--font-body);font-weight:700;font-size:16px;color:{{ indYes.color }};background:{{ indYes.bg }};border:1px solid {{ indYes.border }};border-radius:var(--radius-full);cursor:pointer;box-shadow:{{ indYes.shadow }};transition:all 120ms ease;">
+              <sc-if value="{{ indYesActive }}" hint-placeholder-val="{{ true }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></sc-if>
+              Yes
+            </button>
+            <button onClick="{{ setIndNo }}" style="padding:13px 30px;font-family:var(--font-body);font-weight:700;font-size:16px;color:{{ indNo.color }};background:{{ indNo.bg }};border:1px solid {{ indNo.border }};border-radius:var(--radius-full);cursor:pointer;box-shadow:{{ indNo.shadow }};transition:all 120ms ease;">No, skip</button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- STAKEHOLDERS: INDIVIDUAL LIST -->
+    <sc-if value="{{ isIndList }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width:720px;margin:0 auto;">
+        <h1 style="font-family:var(--font-display);font-size:28px;line-height:36px;font-weight:800;letter-spacing:-0.02em;margin:0 0 8px;">Individual stakeholders</h1>
+        <p style="font-size:16px;line-height:25px;color:var(--fg-tertiary);margin:0 0 26px;max-width:60ch;">Anyone who owns 25% or more, or otherwise controls the business, must be verified.</p>
+
+        <sc-if value="{{ noIndividuals }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:48px 24px;background:var(--bg-primary);border:1.5px dashed var(--border-primary);border-radius:20px;margin-bottom:16px;">
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:var(--radius-full);border:1px solid var(--border-secondary);color:var(--fg-secondary);margin-bottom:16px;">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+            </span>
+            <div style="font-size:17px;font-weight:700;color:var(--fg-primary);margin-bottom:6px;">No individual stakeholders yet</div>
+            <p style="font-size:14px;line-height:21px;color:var(--fg-tertiary);margin:0;max-width:40ch;">Add the first person &mdash; invite them to fill in their own details, or enter the information yourself.</p>
+          </div>
+          <button onClick="{{ openAddModal }}" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:18px;background:var(--bg-primary);border:1.5px dashed var(--brand-400);border-radius:16px;cursor:pointer;font-family:var(--font-body);font-size:16px;font-weight:700;color:var(--brand-700);transition:background 120ms ease;" style-hover="background:var(--brand-50);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            Add first stakeholder
+          </button>
+        </sc-if>
+
+        <sc-if value="{{ hasIndividuals }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:16px;">
+            <sc-for list="{{ individualsView }}" as="p" hint-placeholder-count="2">
+              <div style="display:flex;align-items:center;gap:14px;padding:18px 20px;background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-xs);">
+                <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:var(--radius-full);background:{{ p.avatarBg }};color:{{ p.avatarColor }};font-weight:700;font-size:16px;">{{ p.initials }}</span>
+                <div style="flex:1;min-width:0;">
+                  <div style="font-size:16px;font-weight:700;color:var(--fg-primary);">{{ p.name }}</div>
+                  <div style="font-size:14px;color:var(--fg-tertiary);">{{ p.sub }}</div>
+                </div>
+                <span style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:5px 12px;border-radius:var(--radius-full);color:{{ p.chipColor }};background:{{ p.chipBg }};border:1px solid {{ p.chipBorder }};">
+                  <span innerHTML="{{ p.chipIcon }}" style="display:inline-flex;"></span>
+                  {{ p.chipLabel }}
+                </span>
+                <button onClick="{{ p.onRemove }}" aria-label="Remove" style="flex-shrink:0;width:36px;height:36px;border-radius:9px;border:none;background:transparent;color:var(--fg-quaternary);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:background 120ms ease,color 120ms ease;" style-hover="background:var(--error-50);color:var(--error-600);">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                </button>
+              </div>
+            </sc-for>
+          </div>
+          <button onClick="{{ openAddModal }}" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:16px;background:transparent;border:1.5px dashed var(--brand-400);border-radius:16px;cursor:pointer;font-family:var(--font-body);font-size:15px;font-weight:700;color:var(--brand-700);transition:background 120ms ease;" style-hover="background:var(--brand-50);">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            Add another individual stakeholder
+          </button>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <!-- STAKEHOLDERS: INVITE -->
+    <sc-if value="{{ isInvite }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width:680px;margin:0 auto;">
+        <button onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:8px;margin-bottom:14px;padding:4px;background:transparent;border:none;cursor:pointer;font-family:var(--font-body);font-size:15px;font-weight:600;color:var(--fg-tertiary);transition:color 120ms ease;" style-hover="color:var(--fg-primary);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          Individual stakeholders
+        </button>
+        <h1 style="font-family:var(--font-display);font-size:28px;line-height:36px;font-weight:800;letter-spacing:-0.02em;margin:0 0 8px;">Invite stakeholders</h1>
+        <p style="font-size:16px;line-height:25px;color:var(--fg-tertiary);margin:0 0 24px;max-width:60ch;">We&rsquo;ll send each person a secure link to fill in their own identity details. Add everyone, then send the invites in one go.</p>
+        <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);padding:28px;">
+          <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Full name</label>
+          <input value="{{ invite.name }}" onInput="{{ inviteName }}" placeholder="e.g. Abena Owusu" style="width:100%;box-sizing:border-box;padding:12px 14px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);margin-bottom:20px;" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);" />
+          <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Email or phone number</label>
+          <input value="{{ invite.contact }}" onInput="{{ inviteContact }}" placeholder="name@company.com  or  +233 ..." style="width:100%;box-sizing:border-box;padding:12px 14px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);margin-bottom:18px;" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);" />
+          <button onClick="{{ addInvitee }}" style="display:inline-flex;align-items:center;gap:8px;padding:11px 18px;font-family:var(--font-body);font-weight:700;font-size:15px;color:{{ addInviteeColor }};background:{{ addInviteeBg }};border:none;border-radius:var(--radius-full);cursor:{{ addInviteeCursor }};box-shadow:{{ addInviteeShadow }};transition:background 120ms ease;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            Add another person to invite
+          </button>
+        </div>
+
+        <sc-if value="{{ hasInvitees }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:14px;font-weight:600;color:var(--fg-tertiary);margin:24px 0 12px;">{{ inviteeCount }} ready to invite</div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <sc-for list="{{ inviteeView }}" as="p" hint-placeholder-count="2">
+              <div style="display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:14px;box-shadow:var(--shadow-xs);">
+                <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:var(--radius-full);background:var(--gray-100);color:var(--fg-secondary);font-weight:700;font-size:15px;">{{ p.initials }}</span>
+                <div style="flex:1;min-width:0;">
+                  <div style="font-size:15px;font-weight:700;color:var(--fg-primary);">{{ p.name }}</div>
+                  <div style="font-size:13px;color:var(--fg-tertiary);">{{ p.contact }}</div>
+                </div>
+                <button onClick="{{ p.onRemove }}" aria-label="Remove" style="flex-shrink:0;width:34px;height:34px;border-radius:8px;border:none;background:transparent;color:var(--fg-quaternary);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                </button>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <!-- STAKEHOLDERS: PROVIDE INFO -->
+    <sc-if value="{{ isProvide }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width:720px;margin:0 auto;">
+        <button onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:8px;margin-bottom:14px;padding:4px;background:transparent;border:none;cursor:pointer;font-family:var(--font-body);font-size:15px;font-weight:600;color:var(--fg-tertiary);transition:color 120ms ease;" style-hover="color:var(--fg-primary);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          Individual stakeholders
+        </button>
+        <h1 style="font-family:var(--font-display);font-size:28px;line-height:36px;font-weight:800;letter-spacing:-0.02em;margin:0 0 8px;">Add stakeholder details</h1>
+        <p style="font-size:16px;line-height:25px;color:var(--fg-tertiary);margin:0 0 24px;max-width:60ch;">You&rsquo;re entering this person&rsquo;s information yourself.</p>
+
+        <div style="display:flex;align-items:center;gap:11px;margin-bottom:14px;">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:var(--radius-full);background:var(--brand-600);color:#fff;font-size:13px;font-weight:800;">1</span>
+          <span style="font-family:var(--font-display);font-size:16px;font-weight:700;letter-spacing:-0.01em;color:var(--fg-primary);">Role &amp; identity</span>
+        </div>
+        <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);padding:28px;margin-bottom:24px;">
+          <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:9px;">Role in the company <span style="color:var(--error-600);">*</span></label>
+          <div style="display:flex;flex-wrap:wrap;gap:9px;margin-bottom:22px;">
+            <sc-for list="{{ roleOpts }}" as="o" hint-placeholder-count="5">
+              <button onClick="{{ o.onClick }}" style="padding:9px 16px;font-family:var(--font-body);font-weight:600;font-size:14px;color:{{ o.color }};background:{{ o.bg }};border:1px solid {{ o.border }};border-radius:var(--radius-full);cursor:pointer;box-shadow:{{ o.shadow }};transition:all 120ms ease;">{{ o.label }}</button>
+            </sc-for>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+            <div><label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Full name <span style="color:var(--error-600);">*</span></label><input value="{{ sh.fullName }}" onInput="{{ shf.fullName }}" placeholder="As on ID" style="width:100%;box-sizing:border-box;padding:12px 14px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);" /></div>
+            <div><label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Date of birth</label><input value="{{ sh.dob }}" onInput="{{ shf.dob }}" placeholder="DD / MM / YYYY" style="width:100%;box-sizing:border-box;padding:12px 14px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);" /></div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:11px;margin-bottom:14px;">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:var(--radius-full);background:var(--brand-600);color:#fff;font-size:13px;font-weight:800;">2</span>
+          <span style="font-family:var(--font-display);font-size:16px;font-weight:700;letter-spacing:-0.01em;color:var(--fg-primary);">Contact, address &amp; connection</span>
+        </div>
+        <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);padding:28px;margin-bottom:24px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
+            <div><label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Phone number</label><input value="{{ sh.phone }}" onInput="{{ shf.phone }}" placeholder="+233 ..." style="width:100%;box-sizing:border-box;padding:12px 14px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);" /></div>
+            <div><label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Email</label><input value="{{ sh.email }}" onInput="{{ shf.email }}" placeholder="name@company.com" style="width:100%;box-sizing:border-box;padding:12px 14px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);" /></div>
+          </div>
+          <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Residential address</label>
+          <input value="{{ sh.address }}" onInput="{{ shf.address }}" placeholder="Street, area, city / region" style="width:100%;box-sizing:border-box;padding:12px 14px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);margin-bottom:20px;" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);" />
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;">
+            <div><label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Position in the business</label><input value="{{ sh.position }}" onInput="{{ shf.position }}" placeholder="e.g. Managing Director" style="width:100%;box-sizing:border-box;padding:12px 14px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);" /></div>
+            <div>
+              <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:9px;">Connection to the business</label>
+              <div style="display:flex;flex-wrap:wrap;gap:9px;">
+                <sc-for list="{{ connOpts }}" as="o" hint-placeholder-count="3">
+                  <button onClick="{{ o.onClick }}" style="padding:9px 16px;font-family:var(--font-body);font-weight:600;font-size:14px;color:{{ o.color }};background:{{ o.bg }};border:1px solid {{ o.border }};border-radius:var(--radius-full);cursor:pointer;box-shadow:{{ o.shadow }};transition:all 120ms ease;">{{ o.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:20px;"><label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Source of income</label><input value="{{ sh.sourceOfIncome }}" onInput="{{ shf.sourceOfIncome }}" placeholder="e.g. Salary &amp; dividends" style="width:100%;box-sizing:border-box;padding:12px 14px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);" /></div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:11px;margin-bottom:14px;">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:var(--radius-full);background:var(--brand-600);color:#fff;font-size:13px;font-weight:800;">3</span>
+          <span style="font-family:var(--font-display);font-size:16px;font-weight:700;letter-spacing:-0.01em;color:var(--fg-primary);">Identity verification</span>
+        </div>
+        <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);padding:28px;margin-bottom:24px;">
+          <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:9px;">ID type</label>
+          <div style="display:flex;flex-wrap:wrap;gap:9px;margin-bottom:22px;">
+            <sc-for list="{{ idTypeOpts }}" as="o" hint-placeholder-count="4">
+              <button onClick="{{ o.onClick }}" style="padding:9px 16px;font-family:var(--font-body);font-weight:600;font-size:14px;color:{{ o.color }};background:{{ o.bg }};border:1px solid {{ o.border }};border-radius:var(--radius-full);cursor:pointer;box-shadow:{{ o.shadow }};transition:all 120ms ease;">{{ o.label }}</button>
+            </sc-for>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:22px;">
+            <div><label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">ID number</label><input value="{{ sh.idNumber }}" onInput="{{ shf.idNumber }}" placeholder="e.g. GHA-123456789-0" style="width:100%;box-sizing:border-box;padding:12px 14px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);" /></div>
+            <div><label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Expiry date</label><input value="{{ sh.idExpiry }}" onInput="{{ shf.idExpiry }}" placeholder="DD / MM / YYYY" style="width:100%;box-sizing:border-box;padding:12px 14px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);" /></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+            <div>
+              <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:9px;">ID document image</label>
+              <sc-if value="{{ idNotUploaded }}" hint-placeholder-val="{{ true }}">
+                <div onClick="{{ uploadId }}" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;height:118px;box-sizing:border-box;background:var(--bg-secondary);border:1.5px dashed var(--border-primary);border-radius:14px;cursor:pointer;transition:background 120ms ease,border-color 120ms ease;" style-hover="background:var(--brand-50);border-color:var(--brand-400);">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--fg-secondary)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:8px;"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="m21 15-3.5-3.5L14 15"/></svg>
+                  <div style="font-size:14px;font-weight:700;color:var(--fg-primary);">Upload front of ID</div>
+                </div>
+              </sc-if>
+              <sc-if value="{{ idUploaded }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;height:118px;box-sizing:border-box;background:var(--success-50);border:1.5px solid var(--success-300);border-radius:14px;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--success-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:6px;"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                  <div style="font-size:14px;font-weight:700;color:var(--success-800);">ID uploaded</div>
+                  <button onClick="{{ removeId }}" style="margin-top:4px;background:transparent;border:none;color:var(--success-700);font-size:13px;font-weight:700;cursor:pointer;">Replace</button>
+                </div>
+              </sc-if>
+            </div>
+            <div>
+              <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:9px;">Selfie (liveness check)</label>
+              <sc-if value="{{ selfieNotDone }}" hint-placeholder-val="{{ true }}">
+                <button onClick="{{ captureSelfie }}" style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:118px;box-sizing:border-box;background:var(--gray-900);border:none;border-radius:14px;cursor:pointer;font-family:var(--font-body);transition:background 120ms ease;" style-hover="background:var(--gray-800);">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:8px;"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+                  <span style="font-size:14px;font-weight:700;color:#fff;">Open camera &amp; capture</span>
+                </button>
+              </sc-if>
+              <sc-if value="{{ selfieDone }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:118px;box-sizing:border-box;background:var(--success-50);border:1.5px solid var(--success-300);border-radius:14px;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--success-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:6px;"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+                  <div style="font-size:14px;font-weight:700;color:var(--success-800);">Selfie captured</div>
+                  <button onClick="{{ captureSelfie }}" style="margin-top:4px;background:transparent;border:none;color:var(--success-700);font-size:13px;font-weight:700;cursor:pointer;">Retake</button>
+                </div>
+              </sc-if>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:11px;margin-bottom:14px;">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:var(--radius-full);background:var(--brand-600);color:#fff;font-size:13px;font-weight:800;">4</span>
+          <span style="font-family:var(--font-display);font-size:16px;font-weight:700;letter-spacing:-0.01em;color:var(--fg-primary);">Signatory</span>
+        </div>
+        <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);padding:28px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:20px;">
+            <div>
+              <div style="font-size:16px;font-weight:700;color:var(--fg-primary);">Is this person a signatory?</div>
+              <div style="font-size:14px;color:var(--fg-tertiary);margin-top:2px;">Signatories must authorise payouts from the wallet.</div>
+            </div>
+            <button onClick="{{ toggleSignatory }}" aria-label="Toggle signatory" style="flex-shrink:0;position:relative;width:52px;height:30px;border-radius:var(--radius-full);border:none;cursor:pointer;background:{{ signatoryTrack }};transition:background 160ms ease;">
+              <span style="position:absolute;top:3px;left:{{ signatoryKnob }};width:24px;height:24px;border-radius:var(--radius-full);background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.2);transition:left 160ms ease;"></span>
+            </button>
+          </div>
+          <sc-if value="{{ isSignatory }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:22px;">
+              <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:9px;">Signature <span style="font-weight:500;color:var(--fg-quaternary);">&mdash; draw below</span></label>
+              <div style="position:relative;border:1.5px solid var(--border-primary);border-radius:14px;background:var(--bg-secondary);overflow:hidden;">
+                <canvas ref="{{ sigRef }}" style="display:block;width:100%;height:160px;touch-action:none;cursor:crosshair;"></canvas>
+                <sc-if value="{{ sigEmpty }}" hint-placeholder-val="{{ true }}">
+                  <span style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:15px;color:var(--fg-quaternary);pointer-events:none;">Sign here</span>
+                </sc-if>
+                <button onClick="{{ clearSig }}" style="position:absolute;top:10px;right:10px;padding:6px 14px;font-family:var(--font-body);font-size:13px;font-weight:700;color:var(--fg-secondary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-full);cursor:pointer;box-shadow:var(--shadow-xs);">Clear</button>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- STAKEHOLDERS: CORPORATE ASK -->
+    <sc-if value="{{ isCorpAsk }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width:720px;margin:0 auto;">
+        <h1 style="font-family:var(--font-display);font-size:28px;line-height:36px;font-weight:800;letter-spacing:-0.02em;margin:0 0 8px;">Corporate stakeholders</h1>
+        <p style="font-size:16px;line-height:25px;color:var(--fg-tertiary);margin:0 0 26px;max-width:60ch;">Other companies that own a share of this business &mdash; add each one and a contact person.</p>
+        <sc-if value="{{ noCorpYet }}" hint-placeholder-val="{{ true }}">
+        <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);padding:40px 28px;text-align:center;">
+          <div style="font-size:19px;font-weight:700;color:var(--fg-primary);margin-bottom:20px;">Are there corporate stakeholders to add?</div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:14px;">
+            <button onClick="{{ setCorpYes }}" style="display:inline-flex;align-items:center;gap:8px;padding:13px 30px;font-family:var(--font-body);font-weight:700;font-size:16px;color:{{ corpYes.color }};background:{{ corpYes.bg }};border:1px solid {{ corpYes.border }};border-radius:var(--radius-full);cursor:pointer;box-shadow:{{ corpYes.shadow }};transition:all 120ms ease;">
+              <sc-if value="{{ corpYesActive }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></sc-if>
+              Yes
+            </button>
+            <button onClick="{{ setCorpNo }}" style="padding:13px 30px;font-family:var(--font-body);font-weight:700;font-size:16px;color:{{ corpNo.color }};background:{{ corpNo.bg }};border:1px solid {{ corpNo.border }};border-radius:var(--radius-full);cursor:pointer;box-shadow:{{ corpNo.shadow }};transition:all 120ms ease;">No, skip</button>
+          </div>
+        </div>
+        </sc-if>
+        <sc-if value="{{ hasCorporates }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:14px;margin-top:20px;">
+            <sc-for list="{{ corporatesView }}" as="c" hint-placeholder-count="1">
+              <div style="display:flex;align-items:center;gap:14px;padding:18px 20px;background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-xs);">
+                <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;background:var(--brand-50);color:var(--brand-600);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg></span>
+                <div style="flex:1;min-width:0;">
+                  <div style="font-size:16px;font-weight:700;color:var(--fg-primary);">{{ c.name }}</div>
+                  <div style="font-size:14px;color:var(--fg-tertiary);">{{ c.sub }}</div>
+                </div>
+                <button onClick="{{ c.onRemove }}" aria-label="Remove" style="flex-shrink:0;width:36px;height:36px;border-radius:9px;border:none;background:transparent;color:var(--fg-quaternary);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:background 120ms ease,color 120ms ease;" style-hover="background:var(--error-50);color:var(--error-600);">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                </button>
+              </div>
+            </sc-for>
+          </div>
+          <button onClick="{{ addCorp }}" style="width:100%;margin-top:14px;display:flex;align-items:center;justify-content:center;gap:10px;padding:16px;background:transparent;border:1.5px dashed var(--brand-400);border-radius:16px;cursor:pointer;font-family:var(--font-body);font-size:15px;font-weight:700;color:var(--brand-700);transition:background 120ms ease;" style-hover="background:var(--brand-50);">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            Add another corporate stakeholder
+          </button>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <!-- STAKEHOLDERS: CORPORATE FORM -->
+    <sc-if value="{{ isCorpForm }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width:720px;margin:0 auto;">
+        <button onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:8px;margin-bottom:14px;padding:4px;background:transparent;border:none;cursor:pointer;font-family:var(--font-body);font-size:15px;font-weight:600;color:var(--fg-tertiary);transition:color 120ms ease;" style-hover="color:var(--fg-primary);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          Corporate stakeholders
+        </button>
+        <h1 style="font-family:var(--font-display);font-size:28px;line-height:36px;font-weight:800;letter-spacing:-0.02em;margin:0 0 24px;">Add corporate stakeholder</h1>
+
+        <div style="display:flex;align-items:center;gap:11px;margin-bottom:14px;">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:var(--radius-full);background:var(--brand-600);color:#fff;font-size:13px;font-weight:800;">1</span>
+          <span style="font-family:var(--font-display);font-size:16px;font-weight:700;letter-spacing:-0.01em;color:var(--fg-primary);">Company details</span>
+        </div>
+        <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);padding:28px;margin-bottom:24px;">
+          <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Legal name <span style="color:var(--error-600);">*</span></label>
+          <input value="{{ corp.legalName }}" onInput="{{ cf.legalName }}" placeholder="Registered company name" style="width:100%;box-sizing:border-box;padding:12px 14px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);margin-bottom:22px;" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);" />
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:22px;">
+            <div><label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Registration date</label><input value="{{ corp.regDate }}" onInput="{{ cf.regDate }}" placeholder="DD / MM / YYYY" style="width:100%;box-sizing:border-box;padding:12px 14px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);" /></div>
+            <div><label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Registration number</label><input value="{{ corp.regNumber }}" onInput="{{ cf.regNumber }}" placeholder="e.g. CS987654321" style="width:100%;box-sizing:border-box;padding:12px 14px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);" /></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:10px;">
+            <div>
+              <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Business type</label>
+              <div style="position:relative;">
+                <select value="{{ corp.businessType }}" onChange="{{ cf.businessType }}" style="width:100%;box-sizing:border-box;padding:12px 38px 12px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);appearance:none;-webkit-appearance:none;-moz-appearance:none;cursor:pointer;" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);">
+                  <sc-for list="{{ corpBizTypeList }}" as="o" hint-placeholder-count="5"><option value="{{ o.value }}">{{ o.label }}</option></sc-for>
+                </select>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;right:13px;top:50%;transform:translateY(-50%);pointer-events:none;"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div>
+              <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Registration type</label>
+              <div style="position:relative;">
+                <select value="{{ corp.regType }}" onChange="{{ cf.regType }}" style="width:100%;box-sizing:border-box;padding:12px 38px 12px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);appearance:none;-webkit-appearance:none;-moz-appearance:none;cursor:pointer;" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);">
+                  <sc-for list="{{ corpRegTypeList }}" as="o" hint-placeholder-count="3"><option value="{{ o.value }}">{{ o.label }}</option></sc-for>
+                </select>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;right:13px;top:50%;transform:translateY(-50%);pointer-events:none;"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+            <div>
+              <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Ownership type</label>
+              <div style="position:relative;">
+                <select value="{{ corp.ownership }}" onChange="{{ cf.ownership }}" style="width:100%;box-sizing:border-box;padding:12px 38px 12px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);appearance:none;-webkit-appearance:none;-moz-appearance:none;cursor:pointer;" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);">
+                  <sc-for list="{{ corpOwnTypeList }}" as="o" hint-placeholder-count="3"><option value="{{ o.value }}">{{ o.label }}</option></sc-for>
+                </select>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;right:13px;top:50%;transform:translateY(-50%);pointer-events:none;"><polyline points="6 9 12 15 18 9"/></svg>
+              </div>
+            </div>
+          </div>
+          <div style="height:1px;background:var(--border-secondary);margin:24px 0 18px;"></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:20px;">
+            <div style="font-size:16px;font-weight:700;color:var(--fg-primary);">Does this business require a license?</div>
+            <button onClick="{{ toggleCorpLicense }}" aria-label="Toggle license" style="flex-shrink:0;position:relative;width:52px;height:30px;border-radius:var(--radius-full);border:none;cursor:pointer;background:{{ corpLicenseTrack }};transition:background 160ms ease;">
+              <span style="position:absolute;top:3px;left:{{ corpLicenseKnob }};width:24px;height:24px;border-radius:var(--radius-full);background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.2);transition:left 160ms ease;"></span>
+            </button>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:11px;margin-bottom:14px;">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:var(--radius-full);background:var(--brand-600);color:#fff;font-size:13px;font-weight:800;">2</span>
+          <span style="font-family:var(--font-display);font-size:16px;font-weight:700;letter-spacing:-0.01em;color:var(--fg-primary);">Financials &amp; signatories</span>
+        </div>
+        <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);padding:28px;margin-bottom:24px;">
+          <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Address</label>
+          <input value="{{ corp.address }}" onInput="{{ cf.address }}" placeholder="Street, area, city / region" style="width:100%;box-sizing:border-box;padding:12px 14px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);margin-bottom:20px;" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);" />
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
+            <div><label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">TIN</label><input value="{{ corp.tin }}" onInput="{{ cf.tin }}" placeholder="e.g. C0098765432" style="width:100%;box-sizing:border-box;padding:12px 14px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);" /></div>
+            <div>
+              <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Required signatories</label>
+              <div style="display:flex;align-items:center;gap:16px;">
+                <button onClick="{{ decCorpSig }}" aria-label="Decrease" style="width:40px;height:40px;border-radius:var(--radius-full);border:1px solid var(--border-primary);background:var(--bg-primary);color:var(--fg-secondary);font-size:22px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;box-shadow:var(--shadow-xs);">&minus;</button>
+                <span style="font-size:18px;font-weight:800;color:var(--fg-primary);min-width:16px;text-align:center;font-variant-numeric:tabular-nums;">{{ corp.signatories }}</span>
+                <button onClick="{{ incCorpSig }}" aria-label="Increase" style="width:40px;height:40px;border-radius:var(--radius-full);border:1px solid var(--border-primary);background:var(--bg-primary);color:var(--fg-secondary);font-size:20px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;box-shadow:var(--shadow-xs);">+</button>
+              </div>
+            </div>
+          </div>
+          <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Annual turnover (GHS)</label>
+          <div style="display:flex;align-items:stretch;border:1px solid var(--border-primary);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);overflow:hidden;margin-bottom:22px;">
+            <span style="display:inline-flex;align-items:center;padding:0 14px;background:var(--bg-secondary);border-right:1px solid var(--border-primary);font-size:15px;font-weight:600;color:var(--fg-tertiary);">GH&#8373;</span>
+            <input value="{{ corp.turnover }}" onInput="{{ cf.turnover }}" placeholder="e.g. 1,800,000" style="flex:1;min-width:0;padding:12px 14px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:none;outline:none;font-variant-numeric:tabular-nums;" />
+          </div>
+          <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:9px;">Source of funds</label>
+          <div style="display:flex;flex-wrap:wrap;gap:9px;">
+            <sc-for list="{{ corpFundOpts }}" as="o" hint-placeholder-count="3">
+              <button onClick="{{ o.onClick }}" style="padding:9px 16px;font-family:var(--font-body);font-weight:600;font-size:14px;color:{{ o.color }};background:{{ o.bg }};border:1px solid {{ o.border }};border-radius:var(--radius-full);cursor:pointer;box-shadow:{{ o.shadow }};transition:all 120ms ease;">{{ o.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:11px;margin-bottom:14px;">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:var(--radius-full);background:var(--brand-600);color:#fff;font-size:13px;font-weight:800;">3</span>
+          <span style="font-family:var(--font-display);font-size:16px;font-weight:700;letter-spacing:-0.01em;color:var(--fg-primary);">Associated person</span>
+        </div>
+        <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);padding:28px;">
+          <p style="font-size:14px;color:var(--fg-tertiary);margin:0 0 20px;">Identification details of the individual who represents this corporate stakeholder.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
+            <div><label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Full name <span style="color:var(--error-600);">*</span></label><input value="{{ corp.contactName }}" onInput="{{ cf.contactName }}" placeholder="Representative name" style="width:100%;box-sizing:border-box;padding:12px 14px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);" /></div>
+            <div>
+              <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:9px;">ID type</label>
+              <div style="display:flex;flex-wrap:wrap;gap:9px;">
+                <sc-for list="{{ corpIdOpts }}" as="o" hint-placeholder-count="3">
+                  <button onClick="{{ o.onClick }}" style="padding:9px 14px;font-family:var(--font-body);font-weight:600;font-size:14px;color:{{ o.color }};background:{{ o.bg }};border:1px solid {{ o.border }};border-radius:var(--radius-full);cursor:pointer;box-shadow:{{ o.shadow }};transition:all 120ms ease;">{{ o.label }}</button>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+            <div><label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">ID number</label><input value="{{ corp.contactId }}" onInput="{{ cf.contactId }}" placeholder="e.g. GHA-123456789-0" style="width:100%;box-sizing:border-box;padding:12px 14px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);" /></div>
+            <div><label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Email or phone</label><input value="{{ corp.contactInfo }}" onInput="{{ cf.contactInfo }}" placeholder="Contact" style="width:100%;box-sizing:border-box;padding:12px 14px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;box-shadow:var(--shadow-xs);" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);" /></div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- REVIEW -->
+    <sc-if value="{{ isReview }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width:720px;margin:0 auto;">
+        <h1 style="font-family:var(--font-display);font-size:30px;line-height:38px;font-weight:800;letter-spacing:-0.02em;margin:0 0 8px;">Review &amp; submit</h1>
+        <p style="font-size:16px;line-height:25px;color:var(--fg-tertiary);margin:0 0 24px;max-width:64ch;">Check everything before it goes to Affinity for verification.</p>
+
+        <sc-if value="{{ hasPending }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;align-items:flex-start;gap:14px;padding:18px 20px;background:var(--warning-50);border:1px solid var(--warning-200);border-radius:16px;margin-bottom:22px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--warning-600)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <div style="flex:1;">
+              <div style="font-size:15px;font-weight:700;color:var(--warning-800);">{{ pendingCount }} waiting to complete their details</div>
+              <div style="font-size:14px;line-height:21px;color:var(--warning-700);margin-top:2px;">All invited stakeholders must finish before you can submit. We&rsquo;ll remind them automatically.</div>
+              <button onClick="{{ markPendingDone }}" style="margin-top:10px;background:transparent;border:none;padding:0;font-family:var(--font-body);font-size:14px;font-weight:700;color:var(--warning-800);text-decoration:underline;cursor:pointer;">Mark invites as completed (demo)</button>
+            </div>
+          </div>
+        </sc-if>
+
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:18px;box-shadow:var(--shadow-xs);overflow:hidden;">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid var(--border-secondary);">
+              <span style="font-family:var(--font-display);font-size:17px;font-weight:700;color:var(--fg-primary);">Business details</span>
+              <button onClick="{{ editBiz }}" style="display:inline-flex;align-items:center;gap:6px;background:transparent;border:none;font-family:var(--font-body);font-size:14px;font-weight:700;color:var(--brand-700);cursor:pointer;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>Edit</button>
+            </div>
+            <div style="padding:6px 24px 14px;">
+              <sc-for list="{{ bizSummary }}" as="r" hint-placeholder-count="4">
+                <div style="display:flex;gap:20px;padding:10px 0;border-bottom:1px solid var(--border-tertiary);">
+                  <span style="width:180px;flex-shrink:0;font-size:14px;color:var(--fg-tertiary);">{{ r.label }}</span>
+                  <span style="flex:1;font-size:15px;font-weight:600;color:var(--fg-primary);">{{ r.value }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:18px;box-shadow:var(--shadow-xs);overflow:hidden;">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid var(--border-secondary);">
+              <span style="font-family:var(--font-display);font-size:17px;font-weight:700;color:var(--fg-primary);">Documents</span>
+              <button onClick="{{ editDocs }}" style="display:inline-flex;align-items:center;gap:6px;background:transparent;border:none;font-family:var(--font-body);font-size:14px;font-weight:700;color:var(--brand-700);cursor:pointer;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>Edit</button>
+            </div>
+            <div style="padding:16px 24px;display:flex;align-items:center;gap:12px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--success-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+              <span style="font-size:15px;font-weight:600;color:var(--fg-primary);">{{ requiredDoc }}</span>
+              <span style="font-size:14px;color:var(--fg-tertiary);">{{ docFileName }}</span>
+            </div>
+          </div>
+
+          <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:18px;box-shadow:var(--shadow-xs);overflow:hidden;">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid var(--border-secondary);">
+              <span style="font-family:var(--font-display);font-size:17px;font-weight:700;color:var(--fg-primary);">Stakeholders</span>
+              <button onClick="{{ editStake }}" style="display:inline-flex;align-items:center;gap:6px;background:transparent;border:none;font-family:var(--font-body);font-size:14px;font-weight:700;color:var(--brand-700);cursor:pointer;"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>Edit</button>
+            </div>
+            <div style="padding:8px 24px 16px;">
+              <sc-if value="{{ noStakeholders }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:12px 0;font-size:15px;color:var(--fg-tertiary);">No stakeholders added.</div>
+              </sc-if>
+              <sc-for list="{{ allStakeView }}" as="p" hint-placeholder-count="2">
+                <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border-tertiary);">
+                  <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:{{ p.avatarRadius }};background:{{ p.avatarBg }};color:{{ p.avatarColor }};font-weight:700;font-size:14px;">{{ p.initials }}</span>
+                  <div style="flex:1;min-width:0;">
+                    <div style="font-size:15px;font-weight:700;color:var(--fg-primary);">{{ p.name }}</div>
+                    <div style="font-size:13px;color:var(--fg-tertiary);">{{ p.sub }}</div>
+                  </div>
+                  <span style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:4px 11px;border-radius:var(--radius-full);color:{{ p.chipColor }};background:{{ p.chipBg }};border:1px solid {{ p.chipBorder }};">{{ p.chipLabel }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- SUBMITTED (pending) -->
+    <sc-if value="{{ isPending }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width:560px;margin:40px auto;text-align:center;">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:84px;height:84px;border-radius:var(--radius-full);border:1.5px solid var(--border-primary);color:var(--brand-600);margin-bottom:26px;">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </span>
+        <h1 style="font-family:var(--font-display);font-size:28px;line-height:36px;font-weight:800;letter-spacing:-0.02em;margin:0 0 12px;">Application submitted</h1>
+        <p style="font-size:16px;line-height:25px;color:var(--fg-tertiary);margin:0 auto 24px;max-width:48ch;">Your details have been sent to Affinity for verification. We&rsquo;ll let you know as soon as your company wallet is ready &mdash; you can track the status from your dashboard.</p>
+        <div style="margin-bottom:26px;">
+          <span style="display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--warning-700);background:var(--warning-50);border:1px solid var(--warning-200);border-radius:var(--radius-full);padding:8px 16px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Verification pending &middot; 1&ndash;2 business days
+          </span>
+        </div>
+        <a href="Dashboard Page.dc.html" onClick="{{ setWalletReview }}" style="display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:14px 28px;font-family:var(--font-body);font-weight:700;font-size:16px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);text-decoration:none;transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+          Back to dashboard
+        </a>
+      </div>
+    </sc-if>
+
+    <!-- VERIFIED / REJECTED terminal -->
+    <sc-if value="{{ isTerminal }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width:560px;margin:24px auto;">
+        <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:24px;box-shadow:var(--shadow-lg);padding:48px 44px;text-align:center;">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:72px;height:72px;border-radius:var(--radius-full);background:{{ termIconBg }};color:{{ termIconColor }};margin-bottom:24px;" innerHTML="{{ termIcon }}"></span>
+          <h1 style="font-family:var(--font-display);font-size:26px;line-height:34px;font-weight:800;letter-spacing:-0.02em;margin:0 0 10px;">{{ termTitle }}</h1>
+          <p style="font-size:16px;line-height:25px;color:var(--fg-tertiary);margin:0 0 24px;">{{ termBody }}</p>
+
+          <sc-if value="{{ termHasReasons }}" hint-placeholder-val="{{ false }}">
+            <div style="text-align:left;background:var(--error-50);border:1px solid var(--error-200);border-radius:16px;padding:18px 20px;margin-bottom:24px;">
+              <div style="font-size:14px;font-weight:700;color:var(--error-800);margin-bottom:10px;">Why it was rejected</div>
+              <sc-for list="{{ rejectReasons }}" as="r" hint-placeholder-count="3">
+                <div style="display:flex;gap:10px;padding:6px 0;">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--error-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:2px;"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                  <span style="font-size:14px;line-height:21px;color:var(--error-800);">{{ r.text }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <sc-if value="{{ termShowReapply }}" hint-placeholder-val="{{ false }}">
+              <button onClick="{{ reapply }}" style="display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:14px 28px;font-family:var(--font-body);font-weight:700;font-size:16px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">Reapply with corrections</button>
+            </sc-if>
+            <a href="Dashboard Page.dc.html" onClick="{{ termDashClick }}" style="display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:14px 28px;font-family:var(--font-body);font-weight:700;font-size:16px;color:{{ termDashColor }};background:{{ termDashBg }};border:1px solid {{ termDashBorder }};border-radius:var(--radius-full);box-shadow:{{ termDashShadow }};text-decoration:none;transition:background 120ms ease;">{{ termDashLabel }}</a>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+  </main>
+
+  <!-- FOOTER -->
+  <sc-if value="{{ showFooter }}" hint-placeholder-val="{{ true }}">
+    <footer style="position:sticky;bottom:0;z-index:20;display:flex;align-items:center;justify-content:center;height:84px;padding:0 32px;border-top:1px solid var(--border-secondary);background:var(--bg-primary);flex-shrink:0;">
+      <div style="width:100%;max-width:{{ footMaxWidth }};margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;">
+      <sc-if value="{{ footBackShow }}" hint-placeholder-val="{{ true }}">
+        <button onClick="{{ back }}" style="display:inline-flex;align-items:center;gap:9px;padding:13px 26px;font-family:var(--font-body);font-weight:700;font-size:15px;color:var(--fg-secondary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          {{ footBackLabel }}
+        </button>
+      </sc-if>
+      <sc-if value="{{ footBackHide }}" hint-placeholder-val="{{ false }}"><span></span></sc-if>
+      <sc-if value="{{ footNextShow }}" hint-placeholder-val="{{ true }}">
+        <button onClick="{{ next }}" style="display:inline-flex;align-items:center;gap:9px;padding:13px 30px;font-family:var(--font-body);font-weight:700;font-size:15px;color:{{ footNextColor }};background:{{ footNextBg }};border:none;border-radius:var(--radius-full);box-shadow:{{ footNextShadow }};cursor:{{ footNextCursor }};transition:background 120ms ease;">
+          {{ footNextLabel }}
+          <span innerHTML="{{ footNextIcon }}" style="display:inline-flex;"></span>
+        </button>
+      </sc-if>
+      </div>
+    </footer>
+  </sc-if>
+
+  <!-- ADD STAKEHOLDER MODAL -->
+  <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeAddModal }}" style="position:fixed;inset:0;z-index:50;background:rgba(10,13,18,0.5);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:24px;box-sizing:border-box;">
+      <div onClick="{{ stop }}" style="width:100%;max-width:560px;background:var(--bg-primary);border-radius:22px;box-shadow:var(--shadow-2xl);padding:28px;animation:fadeUp 200ms ease;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:6px;">
+          <h2 style="font-family:var(--font-display);font-size:21px;font-weight:800;letter-spacing:-0.01em;margin:0;">Add an individual stakeholder</h2>
+          <button onClick="{{ closeAddModal }}" aria-label="Close" style="flex-shrink:0;width:34px;height:34px;border-radius:8px;border:none;background:transparent;color:var(--fg-quaternary);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+        </div>
+        <p style="font-size:15px;color:var(--fg-tertiary);margin:0 0 22px;">How do you want to capture their details?</p>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <button onClick="{{ chooseInvite }}" style="display:flex;align-items:center;gap:16px;text-align:left;padding:18px 20px;background:var(--bg-primary);border:1.5px solid var(--border-secondary);border-radius:16px;cursor:pointer;transition:border-color 120ms ease,background 120ms ease;" style-hover="border-color:var(--brand-400);background:var(--brand-50);">
+            <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border:1px solid var(--border-secondary);border-radius:11px;color:var(--brand-600);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></span>
+            <span style="flex:1;min-width:0;">
+              <span style="display:block;font-size:16px;font-weight:700;color:var(--fg-primary);">Invite them to provide their info</span>
+              <span style="display:block;font-size:14px;line-height:20px;color:var(--fg-tertiary);margin-top:2px;">Send a secure link &mdash; they fill in their own details.</span>
+            </span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
+          <button onClick="{{ chooseProvide }}" style="display:flex;align-items:center;gap:16px;text-align:left;padding:18px 20px;background:var(--bg-primary);border:1.5px solid var(--border-secondary);border-radius:16px;cursor:pointer;transition:border-color 120ms ease,background 120ms ease;" style-hover="border-color:var(--brand-400);background:var(--brand-50);">
+            <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border:1px solid var(--border-secondary);border-radius:11px;color:var(--brand-600);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h.01M10 12h.01M14 12h.01M18 12h.01M8 16h8"/></svg></span>
+            <span style="flex:1;min-width:0;">
+              <span style="display:block;font-size:16px;font-weight:700;color:var(--fg-primary);">Provide the information myself</span>
+              <span style="display:block;font-size:14px;line-height:20px;color:var(--fg-tertiary);margin-top:2px;">Enter ID, contact, selfie and signatory details now.</span>
+            </span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+
+<sc-if value="{{ panelOpen }}" hint-placeholder-val="{{ true }}">
+  <div style="position:fixed;bottom:20px;right:20px;z-index:90;width:280px;display:flex;flex-direction:column;background:#fff;border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-2xl);overflow:hidden;font-family:var(--font-body);">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:13px 16px;border-bottom:1px solid var(--border-secondary);">
+      <span style="display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--fg-primary);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--brand-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+        Preview controls
+      </span>
+      <span role="button" onClick="{{ togglePanel }}" aria-label="Minimize" style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:28px;border-radius:8px;cursor:pointer;color:var(--fg-quaternary);transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      </span>
+    </div>
+    <div style="padding:14px 16px 16px;display:flex;flex-direction:column;gap:15px;">
+      <sc-for list="{{ panelGroups }}" as="g" hint-placeholder-count="1">
+        <div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--fg-quaternary);margin-bottom:8px;">{{ g.label }}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;">
+            <sc-for list="{{ g.options }}" as="o" hint-placeholder-count="4">
+              <button onClick="{{ o.onClick }}" style="padding:6px 12px;font-family:var(--font-body);font-size:13px;font-weight:600;border-radius:999px;cursor:pointer;background:{{ o.bg }};color:{{ o.color }};border:1px solid {{ o.border }};transition:background 120ms ease,color 120ms ease;">{{ o.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</sc-if>
+<sc-if value="{{ panelClosed }}" hint-placeholder-val="{{ false }}">
+  <button onClick="{{ togglePanel }}" aria-label="Preview controls" style="position:fixed;bottom:20px;right:20px;z-index:90;display:inline-flex;align-items:center;gap:8px;padding:12px 18px;font-family:var(--font-body);font-size:13px;font-weight:700;color:#fff;background:var(--brand-900);border:none;border-radius:999px;box-shadow:var(--shadow-2xl);cursor:pointer;transition:opacity 120ms ease;" style-hover="opacity:0.92;">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+    Controls
+  </button>
+</sc-if></x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 1440, &quot;height&quot;: 1024 },
+  &quot;view&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;Apply flow&quot;, &quot;Submitted (pending)&quot;, &quot;Verified&quot;, &quot;Rejected&quot;], &quot;default&quot;: &quot;Apply flow&quot;, &quot;tsType&quot;: &quot;string&quot; }
+}">
+const FORM3 = {
+  legalName: 'Northside Medical Centre Ltd',
+  regDate: '14 / 03 / 2017',
+  regNumber: 'CS123456789',
+  address: '12 Ring Road East, Osu, Accra',
+  tin: 'C0012345678',
+};
+const BIZ_TYPES = ['Sole Proprietor', 'Partnership', 'Limited Liability', 'Government Organisation', 'Non-Profit'];
+const REG_TYPES = ['Unregistered', 'Limited by guarantee', 'Registered'];
+const OWN_TYPES = ['Private', 'Public'];
+const FUND_TYPES = ['Business proceeds', 'Remittances', 'Investment', 'Loans'];
+const ID_TYPES = ['Ghana Card', 'Passport', "Driver's Licence", "Voter's ID"];
+const ROLE_OPTIONS = ['Director', 'Owner', 'Shareholder', 'Beneficial owner', 'Officer'];
+const CONN_OPTIONS = ['Shareholder', 'Director', 'Both'];
+const CORP_REG_TYPES = ['New', 'Renewal', 'Conversion'];
+const CORP_OWN_TYPES = ['Private', 'Public', 'Foreign-owned'];
+const CORP_FUND_TYPES = ['Business revenue', 'Investor funding', 'Loan / financing'];
+const CORP_ID_TYPES = ['Ghana Card', 'Passport', "Driver's Licence"];
+const DOC_BY_TYPE = {
+  'Sole Proprietor': 'Certificate of Registration',
+  'Partnership': 'Partnership Agreement',
+  'Limited Liability': 'Certificate of Incorporation',
+  'Government Organisation': 'Proof of public verification',
+  'Non-Profit': 'Endorsed Constitution',
+};
+const DOC_FILE_BY_TYPE = {
+  'Sole Proprietor': 'certificate-of-registration.pdf',
+  'Partnership': 'partnership-agreement.pdf',
+  'Limited Liability': 'certificate-of-incorporation.pdf',
+  'Government Organisation': 'public-verification.pdf',
+  'Non-Profit': 'endorsed-constitution.pdf',
+};
+const REJECT_REASONS = [
+  'The uploaded Certificate of Incorporation was unclear \u2014 two corners were cut off.',
+  "A director's Ghana Card number did not match the Registrar-General records.",
+  'Declared annual turnover could not be verified against the submitted documents.',
+];
+const STAGE_OF = { biz1: 0, biz2: 0, docs: 1, indAsk: 2, indList: 2, invite: 2, provide: 2, corpAsk: 2, corpForm: 2, review: 3, pending: 4 };
+const CHECK_SVG = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+const CLOCK_SVG = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
+const ARROW_SVG = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
+const SEND_SVG = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>';
+const SHIELD_SVG = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>';
+
+function initials(name) {
+  const p = (name || '').trim().split(/\s+/);
+  return (((p[0] || '')[0] || '') + ((p[1] || '')[0] || '')).toUpperCase() || '?';
+}
+function uid() { return Math.random().toString(36).slice(2, 9); }
+function emptyStakeholder() {
+  return { role: 'Director', fullName: '', dob: '', idType: 'Ghana Card', idNumber: '', idExpiry: '', position: '', connection: 'Shareholder', sourceOfIncome: '', phone: '', email: '', address: '', idUploaded: false, selfieDone: false, isSignatory: false, signed: false };
+}
+function emptyCorp() {
+  return { legalName: '', regDate: '', regNumber: '', businessType: 'Limited Liability', regType: 'New', ownership: 'Private', needsLicense: false, address: '', tin: '', turnover: '', sourceOfFunds: 'Business revenue', signatories: 2, contactName: '', contactIdType: 'Ghana Card', contactId: '', contactInfo: '' };
+}
+
+class Component extends DCLogic {
+  state = {
+    screen: 'intro',
+    panelOpen: true, ovView: null,
+    path: 'upload',
+    biz: {
+      legalName: '', regDate: '', regNumber: '',
+      businessType: 'Limited Liability', regType: 'Registered', ownership: 'Private', needsLicense: true,
+      addr1: '12', addr2: 'Ring Road East', city: 'Osu', region: 'Accra', digital: 'GA-183-4471',
+      phone: '+233 24 555 0192', tin: 'C0012345678', turnover: '4,200,000', sourceOfFunds: 'Business proceeds', signatories: 2,
+    },
+    docUploaded: false,
+    addIndividual: true, addCorporate: false,
+    individuals: [], corporates: [],
+    modalOpen: false,
+    invite: { name: '', contact: '' }, inviteList: [],
+    sh: emptyStakeholder(),
+    corp: emptyCorp(),
+    pendingResolved: false,
+  };
+  readTimer = null;
+
+  componentDidMount() { this.applyView(); }
+  componentDidUpdate(prevProps) { if (prevProps.view !== this.props.view) this.applyView(); }
+  componentWillUnmount() { if (this.readTimer) clearTimeout(this.readTimer); }
+
+  applyView() {
+    const v = this.state.ovView || this.props.view || 'Apply flow';
+    const a = !this.state.ovView && window.AppState && window.AppState.get();
+    const vv = a ? (a.wallet === 'active' ? 'Verified' : (a.wallet === 'review' ? 'Submitted (pending)' : (a.wallet === 'rejected' ? 'Rejected' : 'Apply flow'))) : v;
+    const patch = a ? { ovView: vv } : {};
+    if (vv === 'Verified') patch.screen = 'verified';
+    else if (vv === 'Rejected') patch.screen = 'rejected';
+    else if (vv === 'Submitted (pending)') patch.screen = 'pending';
+    else patch.screen = 'intro';
+    this.setState(patch);
+  }
+  setView = (v) => {
+    if (window.AppState) window.AppState.set({ wallet: v === 'Verified' ? 'active' : (v === 'Submitted (pending)' ? 'review' : (v === 'Rejected' ? 'rejected' : 'none')) });
+    this.setState({ ovView: v }, () => this.applyView());
+  };
+  togglePanel = () => this.setState(s => ({ panelOpen: !s.panelOpen }));
+
+  go = (screen) => { window.scrollTo(0, 0); this.setState({ screen }); };
+  stop = (e) => e.stopPropagation();
+
+  // intro
+  pickUpload = () => this.setState({ path: 'upload' }, () => this.go('upload'));
+  pickManual = () => this.setState({ path: 'manual' }, () => this.go('manual'));
+
+  // upload -> reading -> extracted
+  doUploadForm3 = () => {
+    this.go('reading');
+    if (this.readTimer) clearTimeout(this.readTimer);
+    this.readTimer = setTimeout(() => this.setState({ screen: 'extracted' }), 2000);
+  };
+  setExtract = (k) => (e) => this.setState(s => ({ biz: { ...s.biz, [k]: e.target.value } }));
+  applyExtracted() {
+    // map FORM3 derived address into structured fields already defaulted
+    this.setState(s => ({ biz: { ...s.biz,
+      legalName: s.biz.legalName || FORM3.legalName,
+      regDate: s.biz.regDate || FORM3.regDate,
+      regNumber: s.biz.regNumber || FORM3.regNumber,
+      tin: s.biz.tin || FORM3.tin } }));
+  }
+
+  // business fields
+  setBiz = (k, v) => this.setState(s => ({ biz: { ...s.biz, [k]: v } }));
+  bizInput = (k) => (e) => this.setBiz(k, e.target.value);
+  toggleLicense = () => this.setState(s => ({ biz: { ...s.biz, needsLicense: !s.biz.needsLicense } }));
+  incSig = () => this.setState(s => ({ biz: { ...s.biz, signatories: Math.min(9, s.biz.signatories + 1) } }));
+  decSig = () => this.setState(s => ({ biz: { ...s.biz, signatories: Math.max(1, s.biz.signatories - 1) } }));
+
+  // docs
+  doUploadDoc = () => this.setState({ docUploaded: true });
+  removeDoc = () => this.setState({ docUploaded: false });
+
+  // individual ask
+  setIndYes = () => this.setState({ addIndividual: true });
+  setIndNo = () => this.setState({ addIndividual: false });
+
+  // modal
+  openAddModal = () => this.setState({ modalOpen: true });
+  closeAddModal = () => this.setState({ modalOpen: false });
+  chooseInvite = () => this.setState({ modalOpen: false, invite: { name: '', contact: '' }, inviteList: [] }, () => this.go('invite'));
+  chooseProvide = () => this.setState({ modalOpen: false, sh: emptyStakeholder() }, () => this.go('provide'));
+
+  // invite
+  inviteSet = (k) => (e) => this.setState(s => ({ invite: { ...s.invite, [k]: e.target.value } }));
+  inviteFilled() { const i = this.state.invite; return i.name.trim() && i.contact.trim(); }
+  addInvitee = () => {
+    if (!this.inviteFilled()) return;
+    this.setState(s => ({ inviteList: [...s.inviteList, { id: uid(), ...s.invite }], invite: { name: '', contact: '' } }));
+  };
+  removeInvitee = (id) => this.setState(s => ({ inviteList: s.inviteList.filter(x => x.id !== id) }));
+  sendInvites = () => {
+    const all = [...this.state.inviteList];
+    if (this.inviteFilled()) all.push({ id: uid(), ...this.state.invite });
+    if (!all.length) { this.go('indList'); return; }
+    const added = all.map(p => ({ id: p.id, name: p.name, sub: 'Invited stakeholder', status: 'invited' }));
+    this.setState(s => ({ individuals: [...s.individuals, ...added], inviteList: [], invite: { name: '', contact: '' } }), () => this.go('indList'));
+  };
+
+  // provide
+  shInput = (k) => (e) => this.setState(s => ({ sh: { ...s.sh, [k]: e.target.value } }));
+  setIdType = (v) => this.setState(s => ({ sh: { ...s.sh, idType: v } }));
+  setShRole = (v) => this.setState(s => ({ sh: { ...s.sh, role: v } }));
+  setShConn = (v) => this.setState(s => ({ sh: { ...s.sh, connection: v } }));
+  uploadId = () => this.setState(s => ({ sh: { ...s.sh, idUploaded: true } }));
+  removeId = () => this.setState(s => ({ sh: { ...s.sh, idUploaded: false } }));
+  captureSelfie = () => this.setState(s => ({ sh: { ...s.sh, selfieDone: !s.sh.selfieDone } }));
+  toggleSignatory = () => this.setState(s => ({ sh: { ...s.sh, isSignatory: !s.sh.isSignatory } }));
+  sigRef = (el) => {
+    if (!el) { this._sigClear = null; return; }
+    if (el._wired) return;
+    el._wired = true;
+    const ctx = el.getContext('2d');
+    const resize = () => { const r = el.getBoundingClientRect(); el.width = r.width; el.height = r.height; };
+    resize();
+    let drawing = false, last = null;
+    const pos = (e) => { const r = el.getBoundingClientRect(); const t = e.touches ? e.touches[0] : e; return { x: t.clientX - r.left, y: t.clientY - r.top }; };
+    const start = (e) => { drawing = true; last = pos(e); e.preventDefault(); };
+    const move = (e) => {
+      if (!drawing) return;
+      const p = pos(e);
+      ctx.strokeStyle = '#181d27'; ctx.lineWidth = 2.5; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      ctx.beginPath(); ctx.moveTo(last.x, last.y); ctx.lineTo(p.x, p.y); ctx.stroke();
+      last = p;
+      if (!this.state.sh.signed) this.setState(s => ({ sh: { ...s.sh, signed: true } }));
+      e.preventDefault();
+    };
+    const end = () => { drawing = false; };
+    el.addEventListener('mousedown', start);
+    window.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', end);
+    el.addEventListener('touchstart', start, { passive: false });
+    el.addEventListener('touchmove', move, { passive: false });
+    window.addEventListener('touchend', end);
+    this._sigClear = () => { ctx.clearRect(0, 0, el.width, el.height); this.setState(s => ({ sh: { ...s.sh, signed: false } })); };
+  };
+  clearSig = () => { if (this._sigClear) this._sigClear(); };
+  saveStakeholder = () => {
+    const sh = this.state.sh;
+    const name = sh.fullName.trim() || 'Unnamed stakeholder';
+    const added = { id: uid(), name, sub: sh.role.trim() || 'Individual stakeholder', status: 'complete' };
+    this.setState(s => ({ individuals: [...s.individuals, added], sh: emptyStakeholder() }), () => this.go('indList'));
+  };
+
+  // corporate
+  setCorpYes = () => this.setState({ addCorporate: true });
+  setCorpNo = () => this.setState({ addCorporate: false });
+  corpInput = (k) => (e) => this.setState(s => ({ corp: { ...s.corp, [k]: e.target.value } }));
+  setCorp = (k, v) => this.setState(s => ({ corp: { ...s.corp, [k]: v } }));
+  toggleCorpLicense = () => this.setState(s => ({ corp: { ...s.corp, needsLicense: !s.corp.needsLicense } }));
+  incCorpSig = () => this.setState(s => ({ corp: { ...s.corp, signatories: Math.min(9, s.corp.signatories + 1) } }));
+  decCorpSig = () => this.setState(s => ({ corp: { ...s.corp, signatories: Math.max(1, s.corp.signatories - 1) } }));
+  saveCorp = () => {
+    const c = this.state.corp;
+    const added = { id: uid(), name: c.legalName.trim() || 'Unnamed company', sub: c.businessType };
+    this.setState(s => ({ corporates: [...s.corporates, added], corp: emptyCorp() }), () => this.go('corpAsk'));
+  };
+  removeIndividual = (id) => this.setState(s => ({ individuals: s.individuals.filter(x => x.id !== id) }));
+  removeCorporate = (id) => this.setState(s => ({ corporates: s.corporates.filter(x => x.id !== id) }));
+  addCorp = () => this.go('corpForm');
+
+  // review / submit
+  markPendingDone = () => this.setState(s => ({ pendingResolved: true, individuals: s.individuals.map(p => ({ ...p, status: 'complete' })) }));
+  hasPendingInvites() { return !this.state.pendingResolved && this.state.individuals.some(p => p.status === 'invited'); }
+  editBiz = () => this.go('biz1');
+  editDocs = () => this.go('docs');
+  editStake = () => this.go('indList');
+  submit = () => {
+    if (this.hasPendingInvites()) return;
+    try { localStorage.setItem('dexwinpay_walletState', 'In review'); } catch (e) {}
+    this.go('pending');
+  };
+  reapply = () => { this.setState({ pendingResolved: false }); this.go('biz1'); };
+  setWalletActive = () => { try { localStorage.setItem('dexwinpay_walletState', 'Active'); } catch (e) {} };
+  setWalletReview = () => { try { localStorage.setItem('dexwinpay_walletState', 'In review'); } catch (e) {} };
+
+  // navigation
+  next = () => {
+    const s = this.state.screen;
+    if (s === 'extracted') { this.applyExtracted(); this.go('biz1'); }
+    else if (s === 'manual') this.go('biz1');
+    else if (s === 'biz1') this.go('biz2');
+    else if (s === 'biz2') this.go('docs');
+    else if (s === 'docs') { if (this.state.docUploaded) this.go('indAsk'); }
+    else if (s === 'indAsk') this.go(this.state.addIndividual ? 'indList' : 'corpAsk');
+    else if (s === 'indList') this.go('corpAsk');
+    else if (s === 'invite') this.sendInvites();
+    else if (s === 'provide') this.saveStakeholder();
+    else if (s === 'corpAsk') this.go((this.state.addCorporate && this.state.corporates.length === 0) ? 'corpForm' : 'review');
+    else if (s === 'corpForm') this.saveCorp();
+    else if (s === 'review') this.submit();
+  };
+  back = () => {
+    const s = this.state.screen;
+    if (s === 'intro') { window.location.href = 'Company Wallet.dc.html'; return; }
+    if (s === 'upload') this.go('intro');
+    else if (s === 'reading') this.go('upload');
+    else if (s === 'extracted') this.go('upload');
+    else if (s === 'manual') this.go('intro');
+    else if (s === 'biz1') this.go(this.state.path === 'upload' ? 'extracted' : 'manual');
+    else if (s === 'biz2') this.go('biz1');
+    else if (s === 'docs') this.go('biz2');
+    else if (s === 'indAsk') this.go('docs');
+    else if (s === 'indList') this.go('indAsk');
+    else if (s === 'invite') this.go('indList');
+    else if (s === 'provide') this.go('indList');
+    else if (s === 'corpAsk') this.go(this.state.addIndividual ? 'indList' : 'indAsk');
+    else if (s === 'corpForm') this.go('corpAsk');
+    else if (s === 'review') this.go('corpAsk');
+  };
+
+  segOpts(list, current, setter) {
+    return list.map(v => {
+      const active = current === v;
+      return {
+        label: v, active,
+        bg: active ? 'var(--brand-600)' : 'var(--bg-primary)',
+        color: active ? '#fff' : 'var(--fg-secondary)',
+        border: active ? 'var(--brand-600)' : 'var(--border-primary)',
+        shadow: active ? 'var(--shadow-btn-primary)' : 'var(--shadow-xs)',
+        onClick: () => setter(v),
+      };
+    });
+  }
+
+  footerFor(screen) {
+    const F = (backShow, backLabel, nextShow, nextLabel, nextOn, nextIcon) => ({
+      show: true, backShow, backLabel, backHide: !backShow, nextShow, nextLabel, nextOn: nextOn !== false, nextIcon,
+    });
+    switch (screen) {
+      case 'intro': return { show: true, backShow: true, backLabel: 'Back', backHide: false, nextShow: false };
+      case 'upload': return { show: true, backShow: true, backLabel: 'Back', backHide: false, nextShow: false };
+      case 'reading': return { show: false };
+      case 'extracted': return F(true, 'Back', true, 'Confirm & continue', true, ARROW_SVG);
+      case 'manual': return F(true, 'Back', true, 'Start application', true, ARROW_SVG);
+      case 'biz1': return F(true, 'Back', true, 'Save & continue', true, ARROW_SVG);
+      case 'biz2': return F(true, 'Back', true, 'Save & continue', true, ARROW_SVG);
+      case 'docs': return F(true, 'Back', true, 'Save & continue', this.state.docUploaded, ARROW_SVG);
+      case 'indAsk': return F(true, 'Back', true, 'Continue', true, ARROW_SVG);
+      case 'indList': return F(true, 'Back', true, 'Continue', true, ARROW_SVG);
+      case 'invite': return F(true, 'Cancel', true, this.inviteCountLabel(), true, SEND_SVG);
+      case 'provide': return F(true, 'Cancel', true, 'Save stakeholder', true, CHECK_SVG);
+      case 'corpAsk': return F(true, 'Back', true, 'Continue to review', true, ARROW_SVG);
+      case 'corpForm': return F(true, 'Back', true, 'Save corporate stakeholder', true, CHECK_SVG);
+      case 'review': return F(true, 'Back', true, 'Submit to Affinity', !this.hasPendingInvites(), SEND_SVG);
+      default: return { show: false };
+    }
+  }
+  inviteCount() { return this.state.inviteList.length + (this.inviteFilled() ? 1 : 0); }
+  inviteCountLabel() { const n = this.inviteCount(); return n > 0 ? ('Send ' + n + (n === 1 ? ' invite' : ' invites')) : 'Send invites'; }
+
+  renderVals() {
+    const s = this.state;
+    const screen = s.screen;
+    const b = s.biz;
+    const stage = STAGE_OF[screen];
+    const stageNames = ['Business details', 'Documents', 'Stakeholders', 'Review', 'Submit'];
+    const stageName = stage !== undefined ? stageNames[stage] : '';
+    const stepLabel = stage !== undefined ? ('Step ' + (stage + 1) + ' of 5') : '';
+    const progressPct = stage !== undefined ? (Math.round(((stage + 1) / 5) * 100) + '%') : '0%';
+
+    const requiredDoc = DOC_BY_TYPE[b.businessType] || 'Business registration document';
+    const docFileName = DOC_FILE_BY_TYPE[b.businessType] || 'document.pdf';
+
+    const extractedRows = [
+      { label: 'Legal name', value: b.legalName || FORM3.legalName, onInput: this.setExtract('legalName') },
+      { label: 'Registration date', value: b.regDate || FORM3.regDate, onInput: this.setExtract('regDate') },
+      { label: 'Registration number', value: b.regNumber || FORM3.regNumber, onInput: this.setExtract('regNumber') },
+      { label: 'Business address', value: FORM3.address, onInput: () => {} },
+      { label: 'TIN', value: b.tin || FORM3.tin, onInput: this.setExtract('tin') },
+    ].map((r, i) => ({ ...r, notFirst: i > 0 }));
+
+    const needList = [
+      { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h4"/></svg>', title: 'Business registration documents', desc: 'Certificate of Incorporation, Form 3, or the equivalent for your business type.' },
+      { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1.5L8 22l2-1.5L12 22l2-1.5L16 22l2-1.5L20 22V2l-2 1.5L16 2l-2 1.5L12 2l-2 1.5L8 2 6 3.5 4 2Z"/><path d="M12 7v10M9.5 9h3.5a1.5 1.5 0 0 1 0 3h-2a1.5 1.5 0 0 0 0 3H14"/></svg>', title: 'Tax & turnover details', desc: 'TIN and your most recent annual turnover figure.' },
+      { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>', title: 'Stakeholder information', desc: 'Names, IDs and contact details for everyone who owns or controls the business.' },
+      { icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>', title: 'Signatory details', desc: 'Who can authorise payouts, and a signature for each.' },
+    ].map((n, i) => ({ ...n, notFirst: i > 0 }));
+
+    const chip = (status) => {
+      if (status === 'invited') return { chipLabel: 'Invited \u00b7 pending', chipColor: 'var(--warning-700)', chipBg: 'var(--warning-50)', chipBorder: 'var(--warning-200)', chipIcon: CLOCK_SVG };
+      return { chipLabel: 'Complete', chipColor: 'var(--success-700)', chipBg: 'var(--success-50)', chipBorder: 'var(--success-200)', chipIcon: CHECK_SVG };
+    };
+    const individualsView = s.individuals.map(p => ({
+      name: p.name, sub: p.sub, initials: initials(p.name),
+      avatarBg: p.status === 'invited' ? 'var(--gray-100)' : 'var(--brand-50)',
+      avatarColor: p.status === 'invited' ? 'var(--fg-secondary)' : 'var(--brand-700)',
+      ...chip(p.status),
+      onRemove: () => this.removeIndividual(p.id),
+    }));
+
+    const inviteeView = s.inviteList.map(p => ({ name: p.name, contact: p.contact, initials: initials(p.name), onRemove: () => this.removeInvitee(p.id) }));
+
+    const corporatesView = s.corporates.map(c => ({ name: c.name, sub: c.sub, onRemove: () => this.removeCorporate(c.id) }));
+
+    const bizSummary = [
+      { label: 'Legal name', value: b.legalName || FORM3.legalName },
+      { label: 'Registration no.', value: b.regNumber || FORM3.regNumber },
+      { label: 'Business type', value: b.businessType },
+      { label: 'TIN', value: b.tin },
+      { label: 'Turnover', value: 'GH\u20b5 ' + (b.turnover || '\u2014') },
+      { label: 'Address', value: [b.addr1, b.addr2, b.city, b.region].filter(Boolean).join(', ') },
+      { label: 'Ghana GPS', value: b.digital || '\u2014' },
+      { label: 'Signatories', value: String(b.signatories) },
+    ];
+
+    const allStakeView = [
+      ...s.individuals.map(p => ({ name: p.name, sub: p.sub, initials: initials(p.name), avatarRadius: '50%', avatarBg: p.status === 'invited' ? 'var(--gray-100)' : 'var(--brand-50)', avatarColor: p.status === 'invited' ? 'var(--fg-secondary)' : 'var(--brand-700)', chipLabel: chip(p.status).chipLabel, chipColor: chip(p.status).chipColor, chipBg: chip(p.status).chipBg, chipBorder: chip(p.status).chipBorder })),
+      ...s.corporates.map(c => ({ name: c.name, sub: c.sub, initials: initials(c.name), avatarRadius: '11px', avatarBg: 'var(--brand-50)', avatarColor: 'var(--brand-600)', chipLabel: 'Company', chipColor: 'var(--fg-tertiary)', chipBg: 'var(--bg-secondary)', chipBorder: 'var(--border-secondary)' })),
+    ];
+
+    // footer
+    const ft = this.footerFor(screen);
+    const nextOn = ft.nextOn !== false;
+    const MAXW = { intro: '920px', upload: '920px', extracted: '920px', manual: '760px', biz1: '760px', biz2: '760px', docs: '760px', indAsk: '760px', indList: '760px', invite: '680px', provide: '760px', corpAsk: '760px', corpForm: '760px', review: '820px' };
+    const footMaxWidth = MAXW[screen] || '760px';
+
+    // terminal screens
+    const isTerminal = screen === 'verified' || screen === 'rejected';
+    let term = {};
+    if (screen === 'verified') {
+      term = {
+        termIconBg: 'var(--success-50)', termIconColor: 'var(--success-600)',
+        termIcon: '<svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>',
+        termTitle: 'Company wallet activated',
+        termBody: 'Your business is verified. You can now load funds into your DexwinPay wallet and pay employees directly.',
+        termHasReasons: false, termShowReapply: false,
+        termDashLabel: 'Go to dashboard', termDashColor: '#fff', termDashBg: 'var(--bg-brand-solid)', termDashBorder: 'transparent', termDashShadow: 'var(--shadow-btn-primary)', termDashClick: this.setWalletActive,
+      };
+    } else if (screen === 'rejected') {
+      term = {
+        termIconBg: 'var(--error-50)', termIconColor: 'var(--error-600)',
+        termIcon: '<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>',
+        termTitle: 'Application not approved',
+        termBody: 'Affinity couldn\u2019t verify your business this time. Fix the items below and reapply \u2014 your details are saved.',
+        termHasReasons: true, rejectReasons: REJECT_REASONS.map(t => ({ text: t })), termShowReapply: true, reapply: this.reapply,
+        termDashLabel: 'Back to dashboard', termDashColor: 'var(--fg-secondary)', termDashBg: 'var(--bg-primary)', termDashBorder: 'var(--border-primary)', termDashShadow: 'var(--shadow-xs)', termDashClick: () => {},
+      };
+    }
+
+    const showChrome = !isTerminal;
+    const showStepper = STAGE_OF[screen] !== undefined && !isTerminal;
+    const viewCur = s.ovView || this.props.view || 'Apply flow';
+    const mkOpt = (value, label) => ({ label, onClick: () => this.setView(value),
+      bg: viewCur === value ? 'var(--brand-600)' : '#fff',
+      color: viewCur === value ? '#fff' : 'var(--fg-secondary)',
+      border: viewCur === value ? 'var(--brand-600)' : 'var(--border-primary)' });
+    const panelGroups = [
+      { label: 'View', options: [mkOpt('Apply flow', 'Apply flow'), mkOpt('Submitted (pending)', 'Pending'), mkOpt('Verified', 'Verified'), mkOpt('Rejected', 'Rejected')] },
+    ];
+    return {
+      showChrome, showStepper, stageName, stepLabel, progressPct,
+      panelGroups, panelOpen: s.panelOpen, panelClosed: !s.panelOpen, togglePanel: this.togglePanel,
+      isIntro: screen === 'intro', isUpload: screen === 'upload', isReading: screen === 'reading',
+      isExtracted: screen === 'extracted', isManual: screen === 'manual',
+      isBiz1: screen === 'biz1', isBiz2: screen === 'biz2', isDocs: screen === 'docs',
+      isIndAsk: screen === 'indAsk', isIndList: screen === 'indList', isInvite: screen === 'invite',
+      isProvide: screen === 'provide', isCorpAsk: screen === 'corpAsk', isCorpForm: screen === 'corpForm',
+      isReview: screen === 'review', isPending: screen === 'pending', isTerminal,
+      setWalletReview: this.setWalletReview,
+
+      pickUpload: this.pickUpload, pickManual: this.pickManual,
+      doUploadForm3: this.doUploadForm3,
+      extractedRows, needList,
+
+      b, bf: {
+        legalName: this.bizInput('legalName'), regDate: this.bizInput('regDate'), regNumber: this.bizInput('regNumber'),
+        businessType: this.bizInput('businessType'), regType: this.bizInput('regType'), ownership: this.bizInput('ownership'),
+        addr1: this.bizInput('addr1'), addr2: this.bizInput('addr2'), city: this.bizInput('city'), region: this.bizInput('region'),
+        digital: this.bizInput('digital'), phone: this.bizInput('phone'), tin: this.bizInput('tin'), turnover: this.bizInput('turnover'),
+      },
+      bizTypeList: BIZ_TYPES.map(v => ({ value: v, label: v })),
+      regTypeList: REG_TYPES.map(v => ({ value: v, label: v })),
+      ownTypeList: OWN_TYPES.map(v => ({ value: v, label: v })),
+      bizTypeOpts: this.segOpts(BIZ_TYPES, b.businessType, v => this.setBiz('businessType', v)),
+      regTypeOpts: this.segOpts(REG_TYPES, b.regType, v => this.setBiz('regType', v)),
+      ownTypeOpts: this.segOpts(OWN_TYPES, b.ownership, v => this.setBiz('ownership', v)),
+      fundOpts: this.segOpts(FUND_TYPES, b.sourceOfFunds, v => this.setBiz('sourceOfFunds', v)),
+      toggleLicense: this.toggleLicense,
+      licenseTrack: b.needsLicense ? 'var(--brand-600)' : 'var(--gray-300)',
+      licenseKnob: b.needsLicense ? '25px' : '3px',
+      incSig: this.incSig, decSig: this.decSig,
+
+      requiredDoc, docFileName,
+      docNotUploaded: !s.docUploaded, docUploaded: s.docUploaded,
+      doUploadDoc: this.doUploadDoc, removeDoc: this.removeDoc,
+
+      setIndYes: this.setIndYes, setIndNo: this.setIndNo,
+      indYesActive: s.addIndividual,
+      indYes: { color: s.addIndividual ? 'var(--brand-700)' : 'var(--fg-secondary)', bg: s.addIndividual ? 'var(--brand-50)' : 'var(--bg-primary)', border: s.addIndividual ? 'var(--brand-600)' : 'var(--border-primary)', shadow: 'var(--shadow-xs)' },
+      indNo: { color: !s.addIndividual ? 'var(--brand-700)' : 'var(--fg-secondary)', bg: !s.addIndividual ? 'var(--brand-50)' : 'var(--bg-primary)', border: !s.addIndividual ? 'var(--brand-600)' : 'var(--border-primary)', shadow: 'var(--shadow-xs)' },
+
+      noIndividuals: s.individuals.length === 0, hasIndividuals: s.individuals.length > 0, individualsView,
+      openAddModal: this.openAddModal,
+
+      modalOpen: s.modalOpen, closeAddModal: this.closeAddModal, chooseInvite: this.chooseInvite, chooseProvide: this.chooseProvide, stop: this.stop,
+
+      invite: s.invite, inviteName: this.inviteSet('name'), inviteContact: this.inviteSet('contact'),
+      addInvitee: this.addInvitee,
+      addInviteeColor: this.inviteFilled() ? '#fff' : 'var(--fg-disabled)',
+      addInviteeBg: this.inviteFilled() ? 'var(--gray-700)' : 'var(--bg-disabled)',
+      addInviteeCursor: this.inviteFilled() ? 'pointer' : 'not-allowed',
+      addInviteeShadow: this.inviteFilled() ? 'var(--shadow-xs)' : 'none',
+      hasInvitees: s.inviteList.length > 0, inviteeView, inviteeCount: s.inviteList.length + ' ' + (s.inviteList.length === 1 ? 'person' : 'people'),
+
+      sh: s.sh, shf: {
+        fullName: this.shInput('fullName'), role: this.shInput('role'), position: this.shInput('position'),
+        connection: this.shInput('connection'), sourceOfIncome: this.shInput('sourceOfIncome'), dob: this.shInput('dob'),
+        phone: this.shInput('phone'), email: this.shInput('email'), address: this.shInput('address'), idNumber: this.shInput('idNumber'),
+      },
+      idTypeOpts: this.segOpts(ID_TYPES, s.sh.idType, v => this.setIdType(v)),
+      idNotUploaded: !s.sh.idUploaded, idUploaded: s.sh.idUploaded, uploadId: this.uploadId, removeId: this.removeId,
+      selfieNotDone: !s.sh.selfieDone, selfieDone: s.sh.selfieDone, captureSelfie: this.captureSelfie,
+      selfieFrameBg: s.sh.selfieDone ? 'var(--success-50)' : 'var(--bg-secondary)',
+      selfieFrameBorder: s.sh.selfieDone ? 'var(--success-300)' : 'var(--border-primary)',
+      selfiePulse: s.sh.selfieDone ? '' : 'animation:pulseRing 2s ease-out infinite;',
+      selfieStatus: s.sh.selfieDone ? 'Selfie captured' : 'No selfie yet',
+      selfieStatusColor: s.sh.selfieDone ? 'var(--success-700)' : 'var(--fg-primary)',
+      selfieBtnLabel: s.sh.selfieDone ? 'Retake selfie' : 'Capture selfie',
+      selfieBtnColor: s.sh.selfieDone ? 'var(--fg-secondary)' : '#fff',
+      selfieBtnBg: s.sh.selfieDone ? 'var(--bg-primary)' : 'var(--bg-brand-solid)',
+      selfieBtnBorder: s.sh.selfieDone ? 'var(--border-primary)' : 'var(--brand-600)',
+      toggleSignatory: this.toggleSignatory, isSignatory: s.sh.isSignatory,
+      signatoryTrack: s.sh.isSignatory ? 'var(--brand-600)' : 'var(--gray-300)',
+      signatoryKnob: s.sh.isSignatory ? '25px' : '3px',
+      sigRef: this.sigRef, clearSig: this.clearSig, sigEmpty: !s.sh.signed,
+
+      setCorpYes: this.setCorpYes, setCorpNo: this.setCorpNo, corpYesActive: s.addCorporate,
+      corpYes: { color: s.addCorporate ? 'var(--brand-700)' : 'var(--fg-secondary)', bg: s.addCorporate ? 'var(--brand-50)' : 'var(--bg-primary)', border: s.addCorporate ? 'var(--brand-600)' : 'var(--border-primary)', shadow: 'var(--shadow-xs)' },
+      corpNo: { color: !s.addCorporate ? 'var(--brand-700)' : 'var(--fg-secondary)', bg: !s.addCorporate ? 'var(--brand-50)' : 'var(--bg-primary)', border: !s.addCorporate ? 'var(--brand-600)' : 'var(--border-primary)', shadow: 'var(--shadow-xs)' },
+      hasCorporates: s.corporates.length > 0, noCorpYet: s.corporates.length === 0, corporatesView, addCorp: this.addCorp,
+      corp: s.corp, cf: {
+        legalName: this.corpInput('legalName'), regDate: this.corpInput('regDate'), regNumber: this.corpInput('regNumber'), tin: this.corpInput('tin'),
+        businessType: this.corpInput('businessType'), regType: this.corpInput('regType'), ownership: this.corpInput('ownership'),
+        address: this.corpInput('address'), turnover: this.corpInput('turnover'), contactName: this.corpInput('contactName'), contactId: this.corpInput('contactId'), contactInfo: this.corpInput('contactInfo'),
+      },
+      corpBizTypeList: BIZ_TYPES.map(v => ({ value: v, label: v })),
+      corpRegTypeList: CORP_REG_TYPES.map(v => ({ value: v, label: v })),
+      corpOwnTypeList: CORP_OWN_TYPES.map(v => ({ value: v, label: v })),
+      corpFundOpts: this.segOpts(CORP_FUND_TYPES, s.corp.sourceOfFunds, v => this.setCorp('sourceOfFunds', v)),
+      corpIdOpts: this.segOpts(CORP_ID_TYPES, s.corp.contactIdType, v => this.setCorp('contactIdType', v)),
+      toggleCorpLicense: this.toggleCorpLicense,
+      corpLicenseTrack: s.corp.needsLicense ? 'var(--brand-600)' : 'var(--gray-300)',
+      corpLicenseKnob: s.corp.needsLicense ? '25px' : '3px',
+      incCorpSig: this.incCorpSig, decCorpSig: this.decCorpSig,
+
+      bizSummary, allStakeView, noStakeholders: allStakeView.length === 0,
+      hasPending: this.hasPendingInvites(), pendingCount: s.individuals.filter(p => p.status === 'invited').length + ' ' + (s.individuals.filter(p => p.status === 'invited').length === 1 ? 'stakeholder' : 'stakeholders'),
+      markPendingDone: this.markPendingDone,
+      editBiz: this.editBiz, editDocs: this.editDocs, editStake: this.editStake,
+
+      ...term,
+
+      showFooter: ft.show,
+      footMaxWidth,
+      footBackShow: !!ft.backShow, footBackHide: !ft.backShow, footBackLabel: ft.backLabel,
+      footNextShow: !!ft.nextShow, footNextLabel: ft.nextLabel,
+      footNextColor: nextOn ? '#fff' : 'var(--fg-disabled)',
+      footNextBg: nextOn ? 'var(--bg-brand-solid)' : 'var(--bg-disabled)',
+      footNextShadow: nextOn ? 'var(--shadow-btn-primary)' : 'none',
+      footNextCursor: nextOn ? 'pointer' : 'not-allowed',
+      footNextIcon: nextOn ? (ft.nextIcon || '') : '',
+      next: this.next, back: this.back,
+    };
+  }
+}
+</script>
+</body>
+</html>
