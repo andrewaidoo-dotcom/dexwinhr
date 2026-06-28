@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#018F58"></rect><g fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="38" r="13"></circle><path d="M26 76v-4a18 18 0 0 1 48 0v4"></path></g></svg></template>
+<script src="./ds-base.js"></script>
+<script src="./app-state.js"></script>
+<style>
+  * { scrollbar-width: thin; scrollbar-color: #D5D7DA transparent; }
+  *::-webkit-scrollbar { width: 10px; height: 10px; }
+  *::-webkit-scrollbar-track { background: transparent; }
+  *::-webkit-scrollbar-thumb { background: #D5D7DA; border-radius: 999px; border: 3px solid transparent; background-clip: padding-box; }
+  *::-webkit-scrollbar-thumb:hover { background: #C0C3C9; background-clip: padding-box; }
+  *::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+  @keyframes toastIn { from { transform: translate(-50%, -16px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
+</style>
+</helmet>
+<div style="display:flex;min-height:100vh;background:var(--bg-primary);font-family:var(--font-body);color:var(--fg-primary);">
+
+  <dc-import name="Sidebar" active="people" top-height="72" hint-size="288px,100vh" style="display:contents"></dc-import>
+
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;">
+    <header style="height:72px;flex-shrink:0;padding:0 40px;display:flex;align-items:center;justify-content:space-between;background:#fff;border-bottom:1px solid var(--border-secondary);">
+      <div style="display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600;">
+        <a href="People Page.dc.html" style="color:var(--fg-tertiary);text-decoration:none;transition:color 120ms ease;" style-hover="color:var(--fg-primary);">People</a>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
+        <span style="color:var(--brand-700);">{{ headerName }}</span>
+      </div>
+      <span role="button" aria-label="Notifications" style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--border-secondary);border-radius:var(--radius-full);color:var(--fg-secondary);cursor:pointer;box-shadow:var(--shadow-xs);transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
+      </span>
+    </header>
+
+    <div style="flex:1;overflow-y:auto;background:var(--bg-secondary);">
+
+      <sc-if value="{{ notFound }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:96px 40px;">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:var(--radius-full);background:var(--gray-100);color:var(--gray-500);margin-bottom:20px;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          </span>
+          <h2 style="font-family:var(--font-display);font-size:24px;font-weight:800;letter-spacing:-0.02em;margin:0 0 8px;color:var(--fg-primary);">Employee not found</h2>
+          <p style="font-size:16px;color:var(--fg-tertiary);margin:0 0 28px;max-width:380px;text-wrap:pretty;">We couldn’t find this person. They may have been removed.</p>
+          <a href="People Page.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:12px 24px;font-weight:700;font-size:15px;color:#fff;background:var(--bg-brand-solid);border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);text-decoration:none;transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">Back to people</a>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ found }}" hint-placeholder-val="{{ true }}">
+        <div style="max-width: 980px; margin: 0 auto; padding: 24px 40px 64px; width: 720px">
+
+          <a href="People Page.dc.html" style="display:inline-flex;align-items:center;gap:8px;margin-bottom:20px;font-size:15px;font-weight:600;color:var(--fg-tertiary);text-decoration:none;transition:color 120ms ease;" style-hover="color:var(--fg-primary);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            Back to people
+          </a>
+
+          <!-- PROFILE HEADER -->
+          <div style="background:#fff;border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);padding:28px 32px;margin-bottom:24px;">
+            <div style="display:flex;align-items:flex-start;gap:22px;flex-wrap:wrap;">
+              <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:76px;height:76px;border-radius:999px;background:var(--brand-50);color:var(--brand-700);font-family:var(--font-display);font-weight:800;font-size:28px;letter-spacing:-0.01em;">{{ initials }}</span>
+              <div style="flex:1;min-width:200px;">
+                <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                  <sc-if value="{{ viewing }}" hint-placeholder-val="{{ true }}">
+                    <h1 style="font-family:var(--font-display);font-size:28px;line-height:34px;font-weight:800;letter-spacing:-0.02em;margin:0;color:var(--fg-primary);">{{ name }}</h1>
+                  </sc-if>
+                  <sc-if value="{{ editing }}" hint-placeholder-val="{{ false }}">
+                    <input value="{{ nameVal }}" onChange="{{ onName }}" placeholder="Full name" style="font-family:var(--font-display);font-size:24px;font-weight:800;letter-spacing:-0.02em;color:var(--fg-primary);padding:7px 13px;background:#fff;border:1px solid var(--border-primary);border-radius:10px;outline:none;min-width:280px;box-shadow:var(--shadow-xs);">
+                  </sc-if>
+                  <span style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:4px 12px;color:{{ statusColor }};background:{{ statusBg }};border:1px solid {{ statusBorder }};border-radius:999px;"><span style="width:6px;height:6px;border-radius:999px;background:{{ statusDot }};"></span>{{ statusLabel }}</span>
+                </div>
+                <sc-if value="{{ viewing }}" hint-placeholder-val="{{ true }}">
+                  <p style="font-size:16px;line-height:24px;color:var(--fg-tertiary);margin:6px 0 0;">{{ roleDept }}</p>
+                  <sc-if value="{{ grossShow }}" hint-placeholder-val="{{ false }}">
+                    <p style="font-size:15px;color:var(--fg-secondary);margin:10px 0 0;">Monthly gross <strong style="font-weight:700;color:var(--fg-primary);font-variant-numeric:tabular-nums;">{{ grossText }}</strong></p>
+                  </sc-if>
+                </sc-if>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;flex-shrink:0;">
+                <sc-if value="{{ viewing }}" hint-placeholder-val="{{ true }}">
+                  <sc-if value="{{ isInvited }}" hint-placeholder-val="{{ false }}">
+                    <button onClick="{{ onResend }}" style="display:inline-flex;align-items:center;gap:8px;padding:11px 20px;font-family:var(--font-body);font-weight:700;font-size:15px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">
+                      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"></path><path d="M22 2 11 13"></path></svg>
+                      Resend invite
+                    </button>
+                  </sc-if>
+                  <button onClick="{{ onEdit }}" style="display:inline-flex;align-items:center;gap:8px;padding:11px 20px;font-family:var(--font-body);font-weight:700;font-size:15px;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>
+                    Edit
+                  </button>
+                </sc-if>
+                <sc-if value="{{ editing }}" hint-placeholder-val="{{ false }}">
+                  <button onClick="{{ onCancel }}" style="display:inline-flex;align-items:center;justify-content:center;padding:11px 22px;font-family:var(--font-body);font-weight:700;font-size:15px;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">Cancel</button>
+                  <button onClick="{{ onSave }}" style="display:inline-flex;align-items:center;gap:8px;padding:11px 22px;font-family:var(--font-body);font-weight:700;font-size:15px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    Save changes
+                  </button>
+                </sc-if>
+              </div>
+            </div>
+
+            <sc-if value="{{ isInvited }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;align-items:flex-start;gap:12px;margin-top:22px;padding:14px 18px;background:var(--brand-50);border:1px solid var(--brand-200);border-radius:14px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--brand-600)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                <p style="font-size:14px;line-height:21px;color:var(--brand-900);margin:0;">Invitation sent to <strong style="font-weight:700;">{{ email }}</strong>. We’re waiting for {{ firstName }} to set a password and add their bank details before they can be paid.</p>
+              </div>
+            </sc-if>
+          </div>
+
+          <!-- PAY ITEMS -->
+          <div style="background:#fff;border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-xs);overflow:hidden;margin-bottom:24px;">
+            <div onClick="{{ payToggle }}" style="display:flex;align-items:center;gap:10px;padding:16px 22px;cursor:pointer;transition:background 120ms ease;">
+              <span style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;background:var(--bg-secondary);border:1px solid var(--border-secondary);color:var(--fg-secondary);flex-shrink:0;" dangerouslySetInnerHTML="{{ payIconHtml }}"></span>
+              <h3 style="flex:1;font-family:var(--font-display);font-size:16px;font-weight:700;letter-spacing:-0.01em;margin:0;color:var(--fg-primary);">Pay items</h3>
+              <span style="font-size:13px;font-weight:600;color:var(--fg-tertiary);">{{ payCountLabel }}</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;transform:{{ payChevron }};transition:transform 200ms ease;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </div>
+            <sc-if value="{{ payOpen }}" hint-placeholder-val="{{ true }}">
+              <sc-if value="{{ payShow }}" hint-placeholder-val="{{ true }}">
+                <div style="padding:0 22px 10px;">
+                  <sc-for list="{{ payItems }}" as="p" hint-placeholder-count="3">
+                    <div style="display:flex;align-items:center;gap:14px;padding:13px 0;border-top:1px solid var(--border-tertiary);min-height:48px;">
+                      <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:{{ p.iconBg }};color:{{ p.iconColor }};" dangerouslySetInnerHTML="{{ p.iconHtml }}"></span>
+                      <div style="flex:1;min-width:0;">
+                        <span style="display:block;font-size:15px;font-weight:600;color:var(--fg-primary);">{{ p.name }}</span>
+                        <span style="display:block;font-size:13px;color:var(--fg-tertiary);">{{ p.sub }}</span>
+                      </div>
+                      <span style="display:inline-flex;align-items:center;font-size:12px;font-weight:600;padding:3px 10px;border-radius:999px;color:{{ p.tagColor }};background:{{ p.tagBg }};">{{ p.tag }}</span>
+                      <span style="font-size:15px;font-weight:700;color:var(--fg-primary);font-variant-numeric:tabular-nums;min-width:104px;text-align:right;">{{ p.amount }}</span>
+                    </div>
+                  </sc-for>
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:15px 0 8px;border-top:2px solid var(--border-secondary);margin-top:2px;">
+                    <span style="font-size:15px;font-weight:700;color:var(--fg-primary);">Monthly gross</span>
+                    <span style="font-size:18px;font-weight:800;color:var(--fg-primary);font-variant-numeric:tabular-nums;">{{ payTotal }}</span>
+                  </div>
+                </div>
+              </sc-if>
+              <sc-if value="{{ payEmpty }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:6px 22px 24px;border-top:1px solid var(--border-tertiary);">
+                  <p style="font-size:14px;line-height:21px;color:var(--fg-tertiary);margin:14px 0 0;text-wrap:pretty;">No recurring pay items yet. They’ll appear here once this employee’s salary and allowances are set.</p>
+                </div>
+              </sc-if>
+            </sc-if>
+          </div>
+
+          <!-- DETAIL CARDS -->
+          <div style="display:grid;grid-template-columns:{{ cardsGrid }};gap:24px;align-items:start;">
+            <sc-for list="{{ cards }}" as="c" hint-placeholder-count="4">
+              <div style="background:#fff;border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-xs);overflow:hidden;">
+                <div onClick="{{ c.onToggle }}" style="display:flex;align-items:center;gap:10px;padding:16px 22px;cursor:{{ c.cursor }};transition:background 120ms ease;">
+                  <span style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;background:var(--bg-secondary);border:1px solid var(--border-secondary);color:var(--fg-secondary);flex-shrink:0;" dangerouslySetInnerHTML="{{ c.iconHtml }}"></span>
+                  <h3 style="flex:1;font-family:var(--font-display);font-size:16px;font-weight:700;letter-spacing:-0.01em;margin:0;color:var(--fg-primary);">{{ c.title }}</h3>
+                  <sc-if value="{{ c.collapsible }}" hint-placeholder-val="{{ false }}">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;transform:{{ c.chevron }};transition:transform 200ms ease;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  </sc-if>
+                </div>
+                <sc-if value="{{ c.open }}" hint-placeholder-val="{{ true }}">
+                <div style="padding:0 22px 8px;">
+                  <sc-for list="{{ c.rows }}" as="r" hint-placeholder-count="3">
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:11px 0;border-top:1px solid var(--border-tertiary);min-height:44px;">
+                      <span style="font-size:14px;color:var(--fg-tertiary);flex-shrink:0;">{{ r.label }}</span>
+                      <sc-if value="{{ r.isStatic }}" hint-placeholder-val="{{ true }}">
+                        <span style="font-size:15px;font-weight:600;color:{{ r.color }};text-align:right;font-variant-numeric:tabular-nums;word-break:break-word;">{{ r.value }}</span>
+                      </sc-if>
+                      <sc-if value="{{ r.isText }}" hint-placeholder-val="{{ false }}">
+                        <input value="{{ r.fieldVal }}" onChange="{{ r.onChange }}" placeholder="{{ r.placeholder }}" style="flex:1;max-width:300px;padding:8px 12px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:#fff;border:1px solid var(--border-primary);border-radius:8px;outline:none;box-shadow:var(--shadow-xs);">
+                      </sc-if>
+                      <sc-if value="{{ r.isSelect }}" hint-placeholder-val="{{ false }}">
+                        <select value="{{ r.fieldVal }}" onChange="{{ r.onChange }}" style="flex:1;max-width:300px;padding:8px 12px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:#fff;border:1px solid var(--border-primary);border-radius:8px;outline:none;box-shadow:var(--shadow-xs);cursor:pointer;">
+                          <sc-for list="{{ r.options }}" as="o" hint-placeholder-count="2">
+                            <option value="{{ o.value }}">{{ o.label }}</option>
+                          </sc-for>
+                        </select>
+                      </sc-if>
+                      <sc-if value="{{ r.isDept }}" hint-placeholder-val="{{ false }}">
+                        <div style="position:relative;flex:1;max-width:300px;">
+                          <div role="button" onClick="{{ r.onToggle }}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 12px;background:#fff;border:1px solid {{ r.border }};border-radius:8px;box-shadow:{{ r.shadow }};cursor:pointer;transition:border-color 120ms ease,box-shadow 120ms ease;">
+                            <span style="font-size:15px;color:{{ r.textColor }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ r.display }}</span>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;transform:{{ r.chevron }};transition:transform 160ms ease;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                          </div>
+                          <sc-if value="{{ r.open }}" hint-placeholder-val="{{ false }}">
+                            <div onClick="{{ r.onClose }}" style="position:fixed;inset:0;z-index:5;"></div>
+                            <div style="position:absolute;z-index:10;top:calc(100% + 6px);left:0;right:0;background:#fff;border:1px solid var(--border-secondary);border-radius:12px;box-shadow:var(--shadow-lg);overflow:hidden;">
+                              <div style="display:flex;align-items:center;gap:8px;padding:10px;">
+                                <input value="{{ r.newVal }}" onInput="{{ r.onNew }}" onKeyDown="{{ r.onNewKey }}" placeholder="Enter new department" autoFocus="{{ true }}" style="flex:1;min-width:0;padding:9px 12px;font-family:var(--font-body);font-size:14px;color:var(--fg-primary);background:#fff;border:1px solid var(--border-primary);border-radius:8px;outline:none;">
+                                <button onClick="{{ r.onAdd }}" aria-label="Add department" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:var(--radius-full);background:var(--success-50);color:var(--success-600);border:none;cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--success-100);">
+                                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </button>
+                                <button onClick="{{ r.onClear }}" aria-label="Clear" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:var(--radius-full);background:var(--gray-100);color:var(--fg-secondary);border:none;cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--gray-200);">
+                                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+                                </button>
+                              </div>
+                              <div style="height:1px;background:var(--border-secondary);"></div>
+                              <div style="max-height:200px;overflow-y:auto;padding:5px;">
+                                <sc-for list="{{ r.list }}" as="o" hint-placeholder-count="4">
+                                  <div onClick="{{ o.onSelect }}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 11px;border-radius:7px;font-size:15px;color:var(--fg-primary);cursor:pointer;background:{{ o.bg }};transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+                                    {{ o.label }}
+                                    <sc-if value="{{ o.selected }}" hint-placeholder-val="{{ false }}">
+                                      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--brand-600)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    </sc-if>
+                                  </div>
+                                </sc-for>
+                              </div>
+                            </div>
+                          </sc-if>
+                        </div>
+                      </sc-if>
+                    </div>
+                  </sc-for>
+                </div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+
+        </div>
+      </sc-if>
+
+    </div>
+  </div>
+
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:80;display:flex;align-items:center;gap:12px;padding:14px 20px;background:var(--brand-600);color:#fff;border-radius:12px;box-shadow:var(--shadow-lg);font-size:15px;font-weight:600;animation:toastIn 220ms ease;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
+      {{ toast }}
+      <span role="button" onClick="{{ dismissToast }}" style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;cursor:pointer;color:rgba(255,255,255,0.85);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></span>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1440, &quot;height&quot;: 1024}}">
+const SEED_PEOPLE = [
+  { initials: 'AM', name: 'Akua Mensah', email: 'akua.mensah@acmefoods.gh', phone: '24 501 8832', role: 'Operations lead', gross: 'GH\u20b5 8,400', status: 'Active', tone: 'success' },
+  { initials: 'KO', name: 'Kwame Owusu', email: 'kwame.owusu@acmefoods.gh', phone: '20 774 1290', role: 'Warehouse', gross: 'GH\u20b5 3,200', status: 'Active', tone: 'success' },
+  { initials: 'EA', name: 'Efua Asante', email: 'efua.asante@acmefoods.gh', phone: '55 318 6047', role: 'Accounts', gross: 'GH\u20b5 6,100', status: 'On leave', tone: 'warning' },
+  { initials: 'YB', name: 'Yaw Boateng', email: 'yaw.boateng@acmefoods.gh', phone: '27 902 4416', role: 'Sales', gross: 'GH\u20b5 4,750', status: 'Active', tone: 'success' },
+  { initials: 'AA', name: 'Adwoa Addo', email: 'adwoa.addo@acmefoods.gh', phone: '54 663 7728', role: 'Driver', gross: 'GH\u20b5 2,900', status: 'Pending', tone: 'gray' },
+  { initials: 'KB', name: 'Kofi Baah', email: 'kofi.baah@acmefoods.gh', phone: '24 188 9053', role: 'Kitchen', gross: 'GH\u20b5 3,050', status: 'Active', tone: 'success' },
+];
+
+function initials(name) {
+  const p = (name || '').trim().split(/\s+/);
+  return (((p[0] || '')[0] || '') + ((p[1] || '')[0] || '')).toUpperCase() || '?';
+}
+function firstName(name) {
+  return (name || '').trim().split(/\s+/)[0] || 'them';
+}
+function statusView(rec, demo) {
+  if (demo) {
+    const T = {
+      success: { color: 'var(--success-700)', bg: 'var(--success-50)', border: 'var(--success-200)', dot: 'var(--success-500)' },
+      warning: { color: 'var(--warning-700)', bg: 'var(--warning-50)', border: 'var(--warning-200)', dot: 'var(--warning-500)' },
+      gray: { color: 'var(--fg-tertiary)', bg: 'var(--gray-100)', border: 'var(--border-secondary)', dot: 'var(--gray-400)' },
+    };
+    return { label: rec.status || 'Active', invited: false, ...(T[rec.tone] || T.success) };
+  }
+  const st = rec.status || 'needs';
+  if (st === 'done') return { label: 'Active', invited: false, color: 'var(--success-700)', bg: 'var(--success-50)', border: 'var(--success-200)', dot: 'var(--success-500)' };
+  if (st === 'invited') return { label: 'Invited', invited: true, color: 'var(--brand-700)', bg: 'var(--brand-50)', border: 'var(--brand-200)', dot: 'var(--brand-500)' };
+  return { label: 'Pending', invited: false, color: 'var(--fg-tertiary)', bg: 'var(--gray-100)', border: 'var(--border-secondary)', dot: 'var(--gray-400)' };
+}
+function maskAccount(n) {
+  const d = (n || '').replace(/\s+/g, '');
+  if (!d) return '';
+  return '\u2022\u2022\u2022\u2022 ' + d.slice(-4);
+}
+
+const ICON = {
+  employment: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>',
+  statutory: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>',
+  contact: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>',
+  bank: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>',
+};
+
+const PAY_ICON = {
+  header: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></svg>',
+  earn: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>',
+};
+function parseAmount(g) { const n = parseFloat(String(g || '').replace(/[^0-9.]/g, '')); return isNaN(n) ? 0 : n; }
+function fmtGh(n) { return 'GH\u20b5 ' + Math.round(n).toLocaleString('en-US'); }
+function payItemsFor(rec) {
+  const gross = parseAmount(rec && rec.gross);
+  if (gross <= 0) return [];
+  const basic = Math.round(gross * 0.6);
+  const transport = Math.round(gross * 0.15);
+  const housing = gross - basic - transport;
+  const earn = (name, sub, amt) => ({
+    name, sub, amount: fmtGh(amt),
+    tag: 'Earning', tagColor: 'var(--success-700)', tagBg: 'var(--success-50)',
+    iconBg: 'var(--success-50)', iconColor: 'var(--success-600)', iconHtml: { __html: PAY_ICON.earn },
+  });
+  return [
+    earn('Basic salary', 'Monthly \u00b7 fixed', basic),
+    earn('Transport allowance', 'Monthly \u00b7 fixed', transport),
+    earn('Housing allowance', 'Monthly \u00b7 fixed', housing),
+  ];
+}
+
+const ETYPE_OPTS = [
+  { value: '', label: 'Select type' },
+  { value: 'Full-time', label: 'Full-time' },
+  { value: 'Part-time', label: 'Part-time' },
+  { value: 'Contract', label: 'Contract' },
+  { value: 'National Service', label: 'National Service' },
+  { value: 'Intern', label: 'Intern' },
+];
+const SSNIT_OPTS = [
+  { value: 'yes', label: 'Enrolled (Tier 1 & 2)' },
+  { value: 'no', label: 'Not enrolled' },
+];
+const BANK_OPTS = [
+  { value: 'yes', label: 'Yes, on file' },
+  { value: 'no', label: 'No, employee provides' },
+];
+const DEPARTMENTS = ['Engineering', 'Finance', 'Operations', 'Sales', 'Human Resources', 'Marketing', 'Customer Support'];
+
+function formFromRec(rec, demo) {
+  if (!rec) return {};
+  if (demo) {
+    return {
+      fullName: rec.name || '', jobRole: rec.role || '', email: rec.email || '',
+      department: '', employmentType: '', staffNumber: '', ghanaCard: '',
+      ssnitMember: 'no', ssnitNumber: '', phone: '',
+      hasBank: 'no', bankName: '', bankBranch: '', accountName: '', accountNumber: '',
+      gross: rec.gross || '',
+    };
+  }
+  return {
+    fullName: rec.fullName || '', jobRole: rec.jobRole || '', email: rec.email || '',
+    department: rec.department || '', employmentType: rec.employmentType || '',
+    staffNumber: rec.staffNumber || '', ghanaCard: rec.ghanaCard || '',
+    ssnitMember: rec.ssnitMember || 'no', ssnitNumber: rec.ssnitNumber || '', phone: rec.phone || '',
+    hasBank: rec.hasBank || 'no', bankName: rec.bankName || '', bankBranch: rec.bankBranch || '',
+    accountName: rec.accountName || '', accountNumber: rec.accountNumber || '',
+    gross: rec.gross || '',
+  };
+}
+
+class Component extends DCLogic {
+  state = { rec: null, demo: false, idx: 0, ready: false, toast: null, editing: false, form: {}, expanded: {}, departments: DEPARTMENTS.slice(), deptOpen: false, newDept: '' };
+  toastTimer = null;
+
+  componentDidMount() {
+    this.resolve();
+    if (!window.AppState) {
+      let tries = 0;
+      const poll = () => {
+        if (window.AppState) { this.resolve(); return; }
+        if (tries++ < 20) setTimeout(poll, 30);
+      };
+      setTimeout(poll, 30);
+    }
+  }
+  componentWillUnmount() { if (this.toastTimer) clearTimeout(this.toastTimer); }
+
+  resolve() {
+    let i = 0;
+    try { i = parseInt(new URLSearchParams(location.search).get('i'), 10); } catch (e) {}
+    if (isNaN(i)) i = 0;
+    const roster = (window.AppState && window.AppState.getEmployees && window.AppState.getEmployees()) || [];
+    if (roster.length && i >= 0 && i < roster.length) { this.setState({ rec: roster[i], demo: false, idx: i, ready: true }); return; }
+    if (i >= 0 && i < SEED_PEOPLE.length) { this.setState({ rec: SEED_PEOPLE[i], demo: true, idx: i, ready: true }); return; }
+    this.setState({ rec: null, demo: false, idx: i, ready: true });
+  }
+
+  setField(k, val) { this.setState(s => ({ form: { ...s.form, [k]: val } })); }
+  onName = (ev) => this.setField('fullName', ev.target.value);
+  onEdit = () => this.setState(s => {
+    const dept = (s.rec && (s.rec.department || '')).trim();
+    let departments = DEPARTMENTS.slice();
+    if (dept && !departments.some(d => d.toLowerCase() === dept.toLowerCase())) departments = [...departments, dept];
+    return { editing: true, form: formFromRec(s.rec, s.demo), expanded: {}, departments, deptOpen: false, newDept: '' };
+  });
+  onCancel = () => this.setState({ editing: false, deptOpen: false });
+  toggleDept = () => this.setState(s => ({ deptOpen: !s.deptOpen }));
+  closeDept = () => this.setState({ deptOpen: false });
+  selectDept = (v) => this.setState(s => ({ form: { ...s.form, department: v }, deptOpen: false }));
+  onNewDept = (ev) => this.setState({ newDept: ev.target.value });
+  onNewDeptKey = (ev) => { if (ev.key === 'Enter') { ev.preventDefault(); this.addDept(); } };
+  clearNewDept = () => this.setState({ newDept: '' });
+  addDept = () => {
+    const name = (this.state.newDept || '').trim();
+    if (!name) return;
+    this.setState(s => {
+      const exists = s.departments.some(d => d.toLowerCase() === name.toLowerCase());
+      const departments = exists ? s.departments : [...s.departments, name];
+      return { departments, form: { ...s.form, department: name }, deptOpen: false, newDept: '' };
+    });
+  };
+  toggleCard = (title) => this.setState(s => {
+    const cur = s.expanded[title] !== false;
+    return { expanded: { ...s.expanded, [title]: !cur } };
+  });
+  onSave = () => {
+    const f = this.state.form;
+    const name = (f.fullName || '').trim() || (this.state.rec && (this.state.rec.fullName || this.state.rec.name)) || 'Employee';
+    const hasBank = f.hasBank === 'yes';
+    const status = hasBank ? 'done' : 'invited';
+    const emp = {
+      fullName: name,
+      jobRole: (f.jobRole || '').trim(),
+      email: (f.email || '').trim(),
+      department: f.department || '',
+      employmentType: f.employmentType || '',
+      staffNumber: (f.staffNumber || '').trim(),
+      ghanaCard: (f.ghanaCard || '').trim(),
+      ssnitMember: f.ssnitMember || 'no',
+      ssnitNumber: f.ssnitMember === 'yes' ? (f.ssnitNumber || '').trim() : '',
+      phone: (f.phone || '').trim(),
+      hasBank: f.hasBank || 'no',
+      bankName: hasBank ? (f.bankName || '').trim() : '',
+      bankBranch: hasBank ? (f.bankBranch || '').trim() : '',
+      accountName: hasBank ? (f.accountName || '').trim() : '',
+      accountNumber: hasBank ? (f.accountNumber || '').trim() : '',
+      gross: f.gross || (this.state.rec && this.state.rec.gross) || '',
+      status,
+      initials: initials(name),
+    };
+    if (!this.state.demo && window.AppState) {
+      const roster = window.AppState.getEmployees();
+      const idx = this.state.idx;
+      if (roster.length && idx >= 0 && idx < roster.length) {
+        const updated = roster.map((e, i) => i === idx ? emp : e);
+        window.AppState.setEmployees(updated);
+      }
+    }
+    this.setState({ rec: emp, editing: false });
+    this.showToast('Employee details updated');
+  };
+
+  showToast(msg) {
+    if (this.toastTimer) clearTimeout(this.toastTimer);
+    this.setState({ toast: msg });
+    this.toastTimer = setTimeout(() => this.setState({ toast: null }), 4000);
+  }
+  dismissToast = () => { if (this.toastTimer) clearTimeout(this.toastTimer); this.setState({ toast: null }); };
+
+  onResend = () => {
+    const rec = this.state.rec || {};
+    const email = rec.email || 'the employee';
+    this.showToast('Invite re-sent to ' + email);
+  };
+
+  renderVals() {
+    const s = this.state;
+    if (!s.ready) return { found: false, notFound: false, headerName: '', cards: [], toast: null, dismissToast: this.dismissToast };
+    const rec = s.rec;
+    if (!rec) return { found: false, notFound: true, headerName: 'Not found', cards: [], toast: s.toast, dismissToast: this.dismissToast };
+
+    const name = rec.fullName || rec.name || 'Employee';
+    const role = rec.jobRole || rec.role || '\u2014';
+    const dept = rec.department || '';
+    const sv = statusView(rec, s.demo);
+    const muted = 'var(--fg-quaternary)';
+    const solid = 'var(--fg-primary)';
+    const v = (x) => (x && String(x).trim()) ? { value: x, color: solid } : { value: '\u2014', color: muted };
+
+    const editing = s.editing;
+    const F = s.form || {};
+    const setT = (k) => (ev) => this.setField(k, ev.target.value);
+    const base = { isStatic: true, isText: false, isSelect: false, value: '', color: solid, fieldVal: '', placeholder: '', options: [], onChange: null };
+    const tRow = (label, key, staticDisplay) => {
+      if (editing) return { ...base, label, isStatic: false, isText: true, fieldVal: F[key] == null ? '' : String(F[key]), onChange: setT(key), placeholder: label };
+      const vv = v(staticDisplay);
+      return { ...base, label, value: vv.value, color: vv.color };
+    };
+    const sRow = (label, key, options, staticDisplay, staticColor) => {
+      if (editing) return { ...base, label, isStatic: false, isSelect: true, fieldVal: F[key] == null ? '' : String(F[key]), onChange: setT(key), options };
+      return { ...base, label, value: staticDisplay, color: staticColor || solid };
+    };
+    const stRow = (label, value, color) => ({ ...base, label, value, color: color || solid });
+    const deptRow = (label, staticDisplay) => {
+      if (!editing) { const vv = v(staticDisplay); return { ...base, label, value: vv.value, color: vv.color }; }
+      const cur = F.department || '';
+      const list = s.departments.map(d => ({ label: d, selected: d === cur, bg: d === cur ? 'var(--brand-50)' : 'transparent', onSelect: () => this.selectDept(d) }));
+      return {
+        ...base, label, isStatic: false, isDept: true,
+        display: cur || 'Select department',
+        textColor: cur ? 'var(--fg-primary)' : 'var(--fg-placeholder)',
+        border: s.deptOpen ? 'var(--brand-500)' : 'var(--border-primary)',
+        shadow: s.deptOpen ? '0 0 0 4px rgba(2,170,105,0.18)' : 'var(--shadow-xs)',
+        chevron: s.deptOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+        open: s.deptOpen, list, newVal: s.newDept,
+        onToggle: this.toggleDept, onClose: this.closeDept,
+        onNew: this.onNewDept, onNewKey: this.onNewDeptKey, onAdd: this.addDept, onClear: this.clearNewDept,
+      };
+    };
+
+    const employmentRows = [
+      tRow('Job role', 'jobRole', role),
+      deptRow('Department', dept),
+      sRow('Employment type', 'employmentType', ETYPE_OPTS, v(rec.employmentType).value, v(rec.employmentType).color),
+      tRow('Staff number', 'staffNumber', rec.staffNumber),
+      tRow('Ghana Card / TIN', 'ghanaCard', rec.ghanaCard),
+    ];
+
+    const ssnitOn = (editing ? F.ssnitMember : rec.ssnitMember) === 'yes';
+    const statutoryRows = [
+      sRow('Social Security (Tier 2 Pension)', 'ssnitMember', SSNIT_OPTS, (s.demo && !editing) ? '\u2014' : (rec.ssnitMember === 'yes' ? 'Enrolled (Tier 1 & 2)' : 'Not enrolled'), (s.demo && !editing) ? muted : solid),
+    ];
+    if (ssnitOn) statutoryRows.push(tRow('SSNIT number', 'ssnitNumber', rec.ssnitMember === 'yes' ? rec.ssnitNumber : ''));
+    statutoryRows.push(stRow('PAYE (income tax)', 'Deducted monthly', solid));
+
+    const contactRows = [
+      tRow('Email', 'email', rec.email),
+      tRow('Phone', 'phone', rec.phone ? ('+233 ' + rec.phone) : ''),
+    ];
+
+    const showBank = (editing ? F.hasBank : rec.hasBank) === 'yes';
+    const bankRows = [ sRow('Bank on file', 'hasBank', BANK_OPTS, rec.hasBank === 'yes' ? 'Yes' : 'No', solid) ];
+    if (showBank) {
+      bankRows.push(tRow('Bank', 'bankName', rec.bankName));
+      bankRows.push(tRow('Branch', 'bankBranch', rec.bankBranch));
+      bankRows.push(tRow('Account name', 'accountName', rec.accountName));
+      if (editing) bankRows.push(tRow('Account number', 'accountNumber', ''));
+      else { const a = v(maskAccount(rec.accountNumber)); bankRows.push(stRow('Account number', a.value, a.color)); }
+    } else if (!editing) {
+      bankRows.push(stRow('Status', s.demo ? 'On record' : 'Not yet provided', s.demo ? solid : 'var(--warning-700)'));
+      bankRows.push(stRow('Note', s.demo ? 'Paid to file' : 'Employee invited to add their own', muted));
+    }
+
+    const exp = s.expanded || {};
+    const cardDef = [
+      { title: 'Employment', iconHtml: { __html: ICON.employment }, rows: employmentRows },
+      { title: 'Statutory & pension', iconHtml: { __html: ICON.statutory }, rows: statutoryRows },
+      { title: 'Contact', iconHtml: { __html: ICON.contact }, rows: contactRows },
+      { title: 'Bank details', iconHtml: { __html: ICON.bank }, rows: bankRows },
+    ];
+    const cards = cardDef.map(c => {
+      const open = exp[c.title] !== false;
+      return {
+        ...c,
+        open,
+        collapsible: true,
+        cursor: 'pointer',
+        chevron: open ? 'rotate(180deg)' : 'rotate(0deg)',
+        onToggle: () => this.toggleCard(c.title),
+      };
+    });
+    const cardsGrid = '1fr';
+
+    const grossShow = !editing && !!(rec.gross && rec.gross !== '\u2014');
+
+    const payItems = payItemsFor(rec);
+    const payShow = payItems.length > 0;
+    const payOpen = (s.expanded || {})['Pay items'] !== false;
+
+    return {
+      payOpen,
+      payChevron: payOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+      payToggle: () => this.toggleCard('Pay items'),
+      payIconHtml: { __html: PAY_ICON.header },
+      payItems,
+      payShow,
+      payEmpty: !payShow,
+      payTotal: fmtGh(parseAmount(rec.gross)),
+      payCountLabel: payShow ? (payItems.length + (payItems.length === 1 ? ' item' : ' items')) : '\u2014',
+      found: true,
+      notFound: false,
+      viewing: !editing,
+      editing,
+      headerName: name,
+      name,
+      nameVal: F.fullName == null ? '' : F.fullName,
+      initials: rec.initials || initials(name),
+      roleDept: rec.phone ? ('+233 ' + rec.phone) : (dept ? (role + '  \u00b7  ' + dept) : role),
+      statusLabel: sv.label,
+      statusColor: sv.color, statusBg: sv.bg, statusBorder: sv.border, statusDot: sv.dot,
+      isInvited: sv.invited,
+      email: rec.email || '\u2014',
+      firstName: firstName(name),
+      grossShow,
+      grossText: rec.gross || '',
+      cards,
+      cardsGrid,
+      onResend: this.onResend,
+      onEdit: this.onEdit,
+      onCancel: this.onCancel,
+      onSave: this.onSave,
+      onName: this.onName,
+      toast: s.toast,
+      dismissToast: this.dismissToast,
+    };
+  }
+}
+</script>
+</body>
+</html>

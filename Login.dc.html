@@ -9,21 +9,22 @@
 <x-dc>
 <helmet>
 <script src="./ds-base.js"></script>
+<script src="./app-state.js"></script>
 </helmet>
 <div style="display:grid;grid-template-columns:600px 1fr;min-height:100vh;background:var(--bg-primary);font-family:var(--font-body);color:var(--fg-primary);">
 
   <div style="position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;padding:48px;min-height:100vh;">
-    <img src="assets/signup-couple.jpg" alt="" fetchpriority="high" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 22%;z-index:0;" />
+    <img src="assets/signup-couple.jpg" alt="" fetchpriority="high" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 22%;z-index:0;">
     <div style="position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,rgba(4,58,40,0.10) 0%,rgba(4,58,40,0.40) 50%,rgba(3,46,32,0.86) 100%);"></div>
     <a href="Landing Page.dc.html" style="display:inline-flex;align-items:flex-start;gap:5px;text-decoration:none;align-self:flex-start;position:relative;z-index:1;">
-      <img src="assets/dexwin-logo-onphoto.svg" alt="Dexwin" style="height:30px;" />
+      <img src="assets/dexwin-logo-onphoto.svg" alt="Dexwin" style="height:30px;">
       <span style="font-family:var(--font-display);font-weight:800;font-size:12px;letter-spacing:0.04em;color:#fff;margin-top:3px;">PAY</span>
     </a>
     <div style="position:relative;z-index:1;">
       <h2 style="font-family:var(--font-display);color:#fff;font-size:52px;line-height:60px;font-weight:800;letter-spacing:-0.02em;margin:0 0 16px;max-width:560px;text-wrap:balance;">Comprehensive HR and Payroll Management from One Platform</h2>
       <p style="color:rgba(210,230,220,0.88);font-size:20px;line-height:30px;margin:0 0 36px;font-weight:500;">Designed to streamline your administrative processes</p>
       <div style="display:flex;align-items:center;gap:16px;">
-        <img src="assets/signup-avatars.png" alt="Customers" style="height:48px;" />
+        <img src="assets/signup-avatars.png" alt="Customers" style="height:48px;">
         <div style="display:flex;align-items:center;gap:10px;">
           <span style="color:var(--warning-400);letter-spacing:2px;font-size:18px;">★★★★★</span>
           <span style="color:#fff;font-weight:700;font-size:18px;">5.0</span>
@@ -39,7 +40,7 @@
       <p style="font-size:16px;line-height:24px;color:var(--fg-tertiary);margin:0 0 40px;">Get into your DexwinPay account</p>
 
       <div style="margin-bottom:24px;">
-        <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Input" label="Email/Phone Number" required="{{ true }}" placeholder="eg. &ldquo;admin@dexwin.net&rdquo; or &ldquo;0545457854&rdquo;" size="lg" hint-size="100%,76px"></x-import>
+        <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Input" label="Email/Phone Number" required="{{ true }}" placeholder="eg. “admin@dexwin.net” or “0545457854”" size="lg" hint-size="100%,76px"></x-import>
       </div>
 
       <div style="margin-bottom:20px;">
@@ -51,7 +52,7 @@
         <a href="#" style="font-size:15px;color:var(--brand-700);font-weight:700;text-decoration:none;">Forgot password</a>
       </div>
 
-      <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Button" full-width="{{ true }}" size="xl" href="Dashboard Page.dc.html" hint-size="100%,56px">Sign In</x-import>
+      <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Button" full-width="{{ true }}" size="xl" on-click="{{ doSignIn }}" hint-size="100%,56px">Sign In</x-import>
 
       <p style="font-size:15px;color:var(--fg-tertiary);margin:28px 0 0;text-align:center;">Don't have an account? <a href="Sign Up.dc.html" style="color:var(--brand-700);font-weight:700;text-decoration:none;">Sign Up</a></p>
     </div>
@@ -62,6 +63,15 @@
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
   state = { show: false, remember: true };
+
+  componentDidMount() {
+    const check = () => {
+      if (!window.AppState) return false;
+      if (window.AppState.isSignedIn()) window.location.replace('Dashboard Page.dc.html');
+      return true;
+    };
+    if (!check()) { let n = 0; const poll = () => { if (check() || n++ > 20) return; setTimeout(poll, 30); }; poll(); }
+  }
 
   eyeNode() {
     const open = this.state.show;
@@ -91,6 +101,7 @@ class Component extends DCLogic {
       eye: this.eyeNode(),
       remember: this.state.remember,
       toggleRemember: (v) => this.setState({ remember: typeof v === 'boolean' ? v : !this.state.remember }),
+      doSignIn: () => { if (window.AppState && window.AppState.signIn) window.AppState.signIn(); window.location.href = 'Dashboard Page.dc.html'; },
     };
   }
 }

@@ -1,0 +1,55 @@
+/* =========================================================================
+   DexwinPay — SPACING, RADII, WIDTHS & CONTAINERS
+   4px base grid. Radii run small→full; Dexwin favours generous rounding
+   (cards 12–16px, pill buttons & chips at radius-full).
+   ========================================================================= */
+
+:root {
+  /* ---- Spacing (4px base) ------------------------------------------- */
+  --space-0:    0px;
+  --space-0-5:  2px;
+  --space-1:    4px;
+  --space-1-5:  6px;
+  --space-2:    8px;
+  --space-3:   12px;
+  --space-4:   16px;
+  --space-5:   20px;
+  --space-6:   24px;
+  --space-8:   32px;
+  --space-10:  40px;
+  --space-12:  48px;
+  --space-16:  64px;
+  --space-20:  80px;
+  --space-24:  96px;
+
+  /* ---- Radii -------------------------------------------------------- */
+  --radius-none: 0px;
+  --radius-xxs:  2px;
+  --radius-xs:   4px;
+  --radius-sm:   6px;
+  --radius-md:   8px;    /* inputs, small buttons, nav items */
+  --radius-lg:  10px;
+  --radius-xl:  12px;    /* default card */
+  --radius-2xl: 16px;    /* large card, banner */
+  --radius-3xl: 20px;
+  --radius-4xl: 24px;    /* CTA panels */
+  --radius-full: 9999px; /* pills, chips, avatars, buttons */
+
+  /* ---- Content widths ---------------------------------------------- */
+  --width-xs:   320px;
+  --width-sm:   384px;
+  --width-md:   448px;
+  --width-lg:   512px;
+  --width-xl:   576px;
+  --width-2xl:  672px;
+  --width-3xl:  768px;
+  --width-4xl:  896px;
+  --width-5xl: 1024px;
+  --width-6xl: 1152px;
+  --width-7xl: 1280px;
+
+  /* ---- Layout containers ------------------------------------------- */
+  --container-max-desktop: 1280px;
+  --container-pad-desktop:   80px;
+  --container-pad-mobile:    24px;
+}
