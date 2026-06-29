@@ -48,12 +48,12 @@
     </header>
 
     <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 40px;background:{{ toastBg }};color:{{ toastColor }};animation:toastIn 220ms ease;">
+      <div style="position:fixed;top:88px;right:40px;z-index:60;display:flex;align-items:center;justify-content:space-between;gap:16px;max-width:440px;padding:13px 16px 13px 18px;border-radius:12px;background:{{ toastBg }};color:{{ toastColor }};box-shadow:var(--shadow-lg);animation:toastIn 220ms ease;">
         <div style="display:flex;align-items:center;gap:12px;font-size:15px;font-weight:600;">
-          <span innerHTML="{{ toastIcon }}" style="display:inline-flex;"></span>
+          <span innerHTML="{{ toastIcon }}" style="display:inline-flex;flex-shrink:0;"></span>
           {{ toast }}
         </div>
-        <span role="button" onClick="{{ dismissToast }}" style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,0.85);">
+        <span role="button" onClick="{{ dismissToast }}" style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,0.85);flex-shrink:0;">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg>
         </span>
       </div>
@@ -1487,7 +1487,7 @@ const TASK_DED_SVG = '<svg width="48" height="48" viewBox="0 0 48 48" fill="none
 const TASK_PERM_SVG = '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">' + FRAME + '<circle cx="21" cy="19" r="4" stroke="#414651" stroke-width="1.5"/><path d="M14 32.5a7 7 0 0 1 14 0" stroke="#414651" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M28 27.6L30.3 29.9L35 25.2" stroke="#414651" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
 const SETUP_TASKS = [
-  { id: 'additions',   title: 'Add allowances, non-cash benefits, reimbursements etc.',     sub: 'Company benefits that employees enjoy', icon: TASK_ADD_SVG,  href: 'Set Up Payroll.dc.html' },
+  { id: 'additions',   title: 'Add allowances, non-cash benefits, etc.',     sub: 'Company benefits that employees enjoy', icon: TASK_ADD_SVG,  href: 'Set Up Payroll.dc.html' },
   { id: 'deductions',  title: 'Add recurring company deductions',    sub: 'Welfare, union dues and other default deductions from employee pay',                            icon: TASK_DED_SVG,  href: 'Set Up Payroll.dc.html' },
   { id: 'permissions', title: 'Setup payroll permissions', sub: 'Set who approves payrolls before payments.',         icon: TASK_PERM_SVG, href: 'Set Up Payroll.dc.html' },
 ];

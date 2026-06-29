@@ -37,15 +37,15 @@
       </div>
     </header>
 
-    <div style="flex:1;overflow-y:auto;padding:8px 40px 56px;background:var(--bg-secondary);">
-      <div style="max-width:1240px;display:flex;flex-direction:column;gap:24px;">
+    <div style="flex: 1; overflow-y: auto; padding: 8px 40px 56px; background: var(--bg-secondary); padding-top: 56px; display: flex; align-items: flex-start; justify-content: center">
+      <div style="max-width: 960px; display: flex; flex-direction: column; gap: 24px">
 
         
 
         <div data-tour="checklist" style="background:#fff;border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);padding:24px 28px;">
           <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 24px">
             <div style="display: flex; flex-direction: column">
-          <h2 style="font-family:var(--font-display);font-weight:800;font-size:30px;line-height:38px;letter-spacing:-0.02em;margin:0 0 6px;color:var(--fg-primary);">Welcome to DexwinPay, {{ firstName }}</h2>
+          <h2 style="font-family:var(--font-display);font-weight:800;font-size:30px;line-height:38px;letter-spacing:-0.02em;margin:0 0 6px;color:var(--fg-primary);">Welcome to DexwinPay, {{ firstName }} 👋</h2>
           <p style="font-size:17px;line-height:26px;margin:0;color:var(--fg-tertiary);">Complete these steps to fully {{ companyName }} on DexwinPay.</p>
         </div><div style="min-width:0;">
               
@@ -338,7 +338,7 @@ class Component extends DCLogic {
         badge: 'To do', badgeColor: 'var(--warning-700)', badgeBg: 'var(--warning-50)', badgeBorder: 'var(--warning-200)', badgeBorderStyle: 'solid',
         showCheck: false, showClock: false, showDot: true,
         desc: 'Complete KYB to open a DexwinPay wallet so you can pay salaries directly.',
-        cta: 'Start verification', ctaColor: '#fff', ctaBg: 'var(--bg-brand-solid)', ctaBorder: 'transparent', ctaBorderStyle: 'solid',
+        cta: 'Apply Now', ctaColor: '#fff', ctaBg: 'var(--bg-brand-solid)', ctaBorder: 'transparent', ctaBorderStyle: 'solid',
         ctaShadow: 'var(--shadow-btn-primary)', ctaCursor: 'pointer', ctaDisabled: false, ctaShield: true, ctaArrow: false,
       },
       'In review': {
@@ -370,7 +370,7 @@ class Component extends DCLogic {
 
     const step1 = empDone
       ? { done: true, notDone: false, cardBg: 'var(--bg-secondary)', cardBorder: '1px solid var(--border-secondary)', cardShadow: 'none', label: 'Done', color: 'var(--success-700)', bg: 'var(--success-50)', border: 'var(--success-200)', dot: 'var(--success-500)', cta: 'Manage employees', iconBg: 'var(--brand-50)', iconColor: 'var(--brand-600)' }
-      : { done: false, notDone: true, cardBg: '#fff', cardBorder: '1px solid var(--border-secondary)', cardShadow: 'var(--shadow-xs)', label: 'To do', color: 'var(--warning-700)', bg: 'var(--warning-50)', border: 'var(--warning-200)', dot: 'var(--warning-500)', cta: 'Add employees', iconBg: 'var(--gray-100)', iconColor: 'var(--gray-500)' };
+      : { done: false, notDone: true, cardBg: '#fff', cardBorder: '1px solid var(--border-secondary)', cardShadow: 'var(--shadow-xs)', label: 'To do', color: 'var(--warning-700)', bg: 'var(--warning-50)', border: 'var(--warning-200)', dot: 'var(--warning-500)', cta: 'Add Employees', iconBg: 'var(--gray-100)', iconColor: 'var(--gray-500)' };
 
     const payrollPref = this.state.ovPayroll ?? this.props.payrollStep ?? 'Auto';
     let step3State;

@@ -108,7 +108,7 @@
       <!-- EMPTY STATE -->
       <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ true }}">
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;padding:48px 40px 64px;background:var(--bg-secondary);">
-          <div data-tour="choose-method" onClick="{{ coachClose }}" style="box-sizing:border-box;width:100%;max-width:980px;background:#fff;border:1px solid var(--border-secondary);border-radius:24px;box-shadow:var(--shadow-xs);padding:56px 64px 60px;text-align:left;">
+          <div data-tour="choose-method" onClick="{{ coachClose }}" style="box-sizing: border-box; width: 100%; max-width: 980px; border: 1px solid var(--border-secondary); border-radius: 24px; padding: 56px 64px 60px; text-align: left; border-style: none">
             <h3 style="font-family:var(--font-display);font-size:40px;line-height:48px;font-weight:800;letter-spacing:-0.02em;margin:0 0 12px;color:var(--fg-primary);">How do you want to add your employees?</h3>
             <p style="font-size:18px;line-height:28px;color:var(--fg-tertiary);margin:0 0 40px;">Pick the route that works best for you.</p>
             <div style="display:flex;flex-direction:column;gap:20px;">
@@ -1312,16 +1312,18 @@ class Component extends DCLogic {
       this.setState({ dataPref: 'Populated', employees: roster.map(rosterToRow) });
       return;
     }
-    let pref = this.props.state || 'Empty';
+    let pref = 'Empty';
     try { if (new URLSearchParams(location.search).get('state') === 'populated') pref = 'Populated'; } catch (e) {}
-    const a = window.AppState && window.AppState.get();
-    if (a) pref = a.employees === 'done' ? 'Populated' : 'Empty';
+    if (this.props.state === 'Populated') pref = 'Populated';
+    // No real roster → show the empty state. (The prop/url override above is only
+    // for design-tool previews; the running app is driven purely by the roster.)
     this.setState({ dataPref: pref, employees: pref === 'Populated' ? SEED_PEOPLE.map(p => ({ ...p })) : [] });
   }
   setData = (v) => {
     if (v === 'Populated') {
-      if (window.AppState) { const a = window.AppState.get(); window.AppState.set({ employees: 'done', payroll: a.payroll === 'locked' ? 'unlocked' : a.payroll }); }
-      this.setState({ dataPref: 'Populated', employees: SEED_PEOPLE.map(p => ({ ...p })) });
+      if (window.AppState) { const a = window.AppState.get(); window.AppState.set({ employees: 'done', payroll: a.payroll === 'locked' ? 'unlocked' : a.payroll }); if (window.AppState.seedSampleRoster) window.AppState.seedSampleRoster(); }
+      const roster = (window.AppState && window.AppState.getEmployees && window.AppState.getEmployees()) || [];
+      this.setState({ dataPref: 'Populated', employees: roster.length ? roster.map(rosterToRow) : SEED_PEOPLE.map(p => ({ ...p })) });
     } else {
       if (window.AppState) { window.AppState.set({ employees: 'todo', payroll: 'locked' }); window.AppState.clearEmployees(); }
       this.setState({ dataPref: 'Empty', employees: [] });

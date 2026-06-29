@@ -32,6 +32,20 @@
   function clearEmployees() {
     try { localStorage.removeItem(RKEY); } catch (e) {}
   }
+  // A canonical sample roster used to populate demo scenarios. Names match the
+  // payroll register (EMP_EARNINGS) so People and Payroll stay consistent.
+  var SAMPLE_ROSTER = [
+    { fullName: 'Akua Mensah',  initials: 'AM', employmentType: 'Full Time', jobRole: 'Operations Lead',   phone: '24 555 0101', status: 'Active' },
+    { fullName: 'Kwame Owusu',  initials: 'KO', employmentType: 'Full Time', jobRole: 'Accountant',        phone: '24 555 0102', status: 'Active' },
+    { fullName: 'Ama Boateng',  initials: 'AB', employmentType: 'Full Time', jobRole: 'Software Engineer', phone: '24 555 0103', status: 'Active' },
+    { fullName: 'Yaw Asante',   initials: 'YA', employmentType: 'Full Time', jobRole: 'Sales Executive',   phone: '24 555 0104', status: 'needs' },
+    { fullName: 'Adwoa Nyarko', initials: 'AN', employmentType: 'Full Time', jobRole: 'HR Manager',        phone: '24 555 0105', status: 'needs' },
+    { fullName: 'Kofi Boadi',   initials: 'KB', employmentType: 'Full Time', jobRole: 'Customer Support',  phone: '24 555 0106', status: 'Active' },
+  ];
+  function seedSampleRoster() {
+    if (getEmployees().length === 0) setEmployees(SAMPLE_ROSTER.map(function (p) { var o = {}; for (var k in p) o[k] = p[k]; return o; }));
+    return getEmployees();
+  }
 
   // Account owner — captured during sign up, reused across the app.
   var AKEY = 'dxp_account';
@@ -188,6 +202,7 @@
     get: get, set: set,
     getEmployees: getEmployees, setEmployees: setEmployees,
     addEmployees: addEmployees, clearEmployees: clearEmployees,
+    seedSampleRoster: seedSampleRoster, SAMPLE_ROSTER: SAMPLE_ROSTER,
     getAccount: getAccount, setAccount: setAccount, clearAccount: clearAccount,
     isSignedIn: isSignedIn, signIn: signIn, signOut: signOut,
     getApproval: getApproval, setApproval: setApproval, clearApproval: clearApproval,
