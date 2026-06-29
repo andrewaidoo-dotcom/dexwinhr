@@ -138,6 +138,20 @@
     return add - ded;
   }
 
+  // Company-wide pay additions configured in Set Up Payroll → Pay additions.
+  //   { id, name, type, typeLabel, value, valueMode, freq, taxable, applyLabel, count }
+  var CADD = 'dxp_company_additions';
+  function getCompanyAdditions() {
+    try { var v = localStorage.getItem(CADD); return v ? JSON.parse(v) : []; } catch (e) { return []; }
+  }
+  function addCompanyAddition(item) {
+    try { var l = getCompanyAdditions(); l.push(item); localStorage.setItem(CADD, JSON.stringify(l)); return l; } catch (e) { return []; }
+  }
+  function removeCompanyAddition(id) {
+    try { var l = getCompanyAdditions().filter(function (x) { return x.id !== id; }); localStorage.setItem(CADD, JSON.stringify(l)); return l; } catch (e) { return []; }
+  }
+  function clearCompanyAdditions() { try { localStorage.removeItem(CADD); } catch (e) {} }
+
   // ---- Payroll calculation engine (per Payroll_Calculations.docx) ----
   // Columns: Basic, Taxable Allowance, Non-Taxable Allowance, Overtime, Gross,
   // Taxable Income, SSNIT (5.5% of basic), PAYE (on taxable income, GH bands),
@@ -209,6 +223,7 @@
     getPerspective: getPerspective, setPerspective: setPerspective,
     getWalletBalance: getWalletBalance, setWalletBalance: setWalletBalance, WB_DEFAULT: WB_DEFAULT,
     getPayItems: getPayItems, setPayItems: setPayItems, payItemsDelta: payItemsDelta,
+    getCompanyAdditions: getCompanyAdditions, addCompanyAddition: addCompanyAddition, removeCompanyAddition: removeCompanyAddition, clearCompanyAdditions: clearCompanyAdditions,
     calcPay: calcPay, EMP_EARNINGS: EMP_EARNINGS,
   };
 })();

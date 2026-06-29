@@ -256,7 +256,7 @@ class Component extends DCLogic {
     const sa = (window.AppState && window.AppState.get) ? window.AppState.get() : {};
     const draftsExist = (() => { try { const r = localStorage.getItem('dxp_payroll_drafts'); const arr = r ? JSON.parse(r) : []; return Array.isArray(arr) && arr.length > 0; } catch (e) { return false; } })();
     const TODO_LABELS = ['Add your employees', 'Set up company payroll', 'Apply for company wallet', 'Draft and pay June payroll'];
-    const TODO_HREFS = ['People Page.dc.html', 'Set Up Payroll.dc.html', 'Company Wallet Application.dc.html', 'Payroll Page.dc.html'];
+    const TODO_HREFS = ['People Page.dc.html', 'Payroll Page.dc.html', 'Company Wallet Application.dc.html', 'Payroll Page.dc.html'];
     const doneFlags = [
       sa.employees === 'done',
       sa.payroll === 'done' || sa.payroll === 'paid',

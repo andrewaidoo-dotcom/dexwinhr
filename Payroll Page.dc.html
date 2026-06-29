@@ -337,6 +337,33 @@
                 <h2 style="font-family:var(--font-display);font-size:30px;line-height:38px;font-weight:800;letter-spacing:-0.02em;margin:0 0 8px;color:var(--fg-primary);">Additions to basic salaries</h2>
                 <p style="font-size:17px;line-height:26px;color:var(--fg-tertiary);margin:0 0 28px;text-wrap:pretty;">Configure allowances, bonuses, and reimbursements for all or most employees.</p>
 
+                <sc-if value="{{ hasCompanyAdditions }}" hint-placeholder-val="{{ false }}">
+                  <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-xs);overflow:hidden;margin-bottom:24px;">
+                    <div style="padding:14px 22px;background:var(--bg-secondary);border-bottom:1px solid var(--border-secondary);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--fg-quaternary);">Your pay additions</div>
+                    <sc-for list="{{ companyAdditions }}" as="ca" hint-placeholder-count="1">
+                      <div style="display:flex;align-items:center;gap:16px;padding:18px 22px;border-bottom:1px solid var(--border-tertiary);">
+                        <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:11px;background:var(--brand-50);color:var(--brand-600);">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                        </span>
+                        <div style="flex:1;min-width:0;">
+                          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                            <span style="font-size:16px;font-weight:700;color:var(--fg-primary);letter-spacing:-0.01em;">{{ ca.name }}</span>
+                            <span style="flex-shrink:0;display:inline-flex;align-items:center;padding:4px 11px;font-size:12px;font-weight:600;border-radius:999px;color:{{ ca.tagColor }};background:{{ ca.tagBg }};">{{ ca.typeLabel }}</span>
+                          </div>
+                          <div style="font-size:14px;color:var(--fg-tertiary);margin-top:3px;">{{ ca.meta }}</div>
+                        </div>
+                        <div style="flex-shrink:0;text-align:right;">
+                          <div style="font-size:16px;font-weight:700;color:var(--fg-primary);font-variant-numeric:tabular-nums;">{{ ca.valueText }}</div>
+                          <div style="font-size:13px;color:var(--fg-quaternary);margin-top:2px;">{{ ca.applyLabel }}</div>
+                        </div>
+                        <button onClick="{{ ca.onRemove }}" aria-label="Remove" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;background:transparent;border:1px solid var(--border-secondary);color:var(--fg-quaternary);cursor:pointer;transition:color 120ms ease,border-color 120ms ease;" style-hover="color:var(--error-600);border-color:var(--error-300);">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                        </button>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+
                 <a href="Add Pay Addition.dc.html" data-tour="{{ addCtaTour }}" style="display:flex;align-items:center;justify-content:center;gap:12px;padding:30px 24px;background:var(--bg-primary);border:1.5px dashed var(--brand-400);border-radius:16px;cursor:pointer;text-decoration:none;transition:background 120ms ease,border-color 120ms ease;" style-hover="background:var(--brand-25);border-color:var(--brand-500);">
                   <span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;background:var(--brand-50);color:var(--brand-600);">
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16h6"></path><path d="M19 13v6"></path><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"></path><path d="m7.5 4.27 9 5.15"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><line x1="12" y1="22" x2="12" y2="12"></line></svg>
@@ -395,7 +422,7 @@
                 </span>
                 <h2 style="font-family:var(--font-display);font-size:24px;line-height:32px;font-weight:800;letter-spacing:-0.02em;margin:0 0 10px;color:var(--fg-primary);">{{ emptyTabTitle }}</h2>
                 <p style="font-size:16px;line-height:25px;color:var(--fg-tertiary);margin:0 0 26px;max-width:46ch;text-wrap:pretty;">{{ emptyTabBody }}</p>
-                <a href="Set Up Payroll.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:13px 26px;font-family:var(--font-body);font-weight:700;font-size:15px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:999px;cursor:pointer;box-shadow:var(--shadow-btn-primary);text-decoration:none;transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">
+                <a href="Payroll Page.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:13px 26px;font-family:var(--font-body);font-weight:700;font-size:15px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:999px;cursor:pointer;box-shadow:var(--shadow-btn-primary);text-decoration:none;transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                   {{ emptyTabCta }}
                 </a>
@@ -1487,9 +1514,9 @@ const TASK_DED_SVG = '<svg width="48" height="48" viewBox="0 0 48 48" fill="none
 const TASK_PERM_SVG = '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">' + FRAME + '<circle cx="21" cy="19" r="4" stroke="#414651" stroke-width="1.5"/><path d="M14 32.5a7 7 0 0 1 14 0" stroke="#414651" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M28 27.6L30.3 29.9L35 25.2" stroke="#414651" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
 const SETUP_TASKS = [
-  { id: 'additions',   title: 'Add allowances, non-cash benefits, etc.',     sub: 'Company benefits that employees enjoy', icon: TASK_ADD_SVG,  href: 'Set Up Payroll.dc.html' },
-  { id: 'deductions',  title: 'Add recurring company deductions',    sub: 'Welfare, union dues and other default deductions from employee pay',                            icon: TASK_DED_SVG,  href: 'Set Up Payroll.dc.html' },
-  { id: 'permissions', title: 'Setup payroll permissions', sub: 'Set who approves payrolls before payments.',         icon: TASK_PERM_SVG, href: 'Set Up Payroll.dc.html' },
+  { id: 'additions',   title: 'Add allowances, non-cash benefits, etc.',     sub: 'Company benefits that employees enjoy', icon: TASK_ADD_SVG,  href: 'Payroll Page.dc.html' },
+  { id: 'deductions',  title: 'Add recurring company deductions',    sub: 'Welfare, union dues and other default deductions from employee pay',                            icon: TASK_DED_SVG,  href: 'Payroll Page.dc.html' },et Up Payroll.dc.html' },
+  { id: 'permissions', title: 'Setup payroll permissions', sub: 'Set who approves payrolls before payments.',         icon: TASK_PERM_SVG, href: 'Payroll Page.dc.html' },
 ];
 const SETUP_TABS = [
   { id: 'overview',      label: 'Overview' },
@@ -1608,7 +1635,9 @@ class Component extends DCLogic {
       draftSeed: this.props.draftSeed || TWEAK_DEFAULTS.draftSeed,
     } }, () => { this.applyDemo(); this.applyPermSeed(); this.applyDraftSeed(); this.applyApprovalContext(); this._coachStart = setTimeout(this.startCoachFromContext, 140); });
     let savedTab = null; try { savedTab = localStorage.getItem('dxp_payroll_tab'); localStorage.removeItem('dxp_payroll_tab'); } catch (e) {}
-    if (savedTab) this.setState({ setupTab: savedTab });
+    if (savedTab === 'additions') this.setState({ setupTab: 'company-items', companyItemsSub: 'additions' });
+    else if (savedTab === 'deductions') this.setState({ setupTab: 'company-items', companyItemsSub: 'deductions' });
+    else if (savedTab) this.setState({ setupTab: savedTab });
     try { const r = localStorage.getItem('dxp_payroll_drafts'); if (r) this.setState({ drafts: JSON.parse(r) }); } catch (e) {}
     const loadOwner = () => {
       if (!window.AppState || !window.AppState.getAccount) return false;
@@ -1706,6 +1735,12 @@ class Component extends DCLogic {
   maybeStartCoach = () => {
     let step = null; try { step = localStorage.getItem('dxp_tour_resume'); } catch (e) {}
     if (this.state.screen !== 'gateSetup') return;
+    // Already added a company pay addition — the walkthrough is complete, don't replay it.
+    const hasAdds = (window.AppState && window.AppState.getCompanyAdditions && window.AppState.getCompanyAdditions().length > 0);
+    if (hasAdds && (step === 'payroll-additions' || step === 'payroll-additions-tab')) {
+      try { localStorage.removeItem('dxp_tour_resume'); } catch (e) {}
+      return;
+    }
     if (step === 'nav-payroll' || step === 'payroll-additions') {
       try { localStorage.setItem('dxp_tour_resume', 'payroll-additions'); } catch (e) {}
       this.setState({ setupTab: 'overview' });
@@ -2274,7 +2309,7 @@ class Component extends DCLogic {
           gateIconBg: 'var(--brand-50)', gateIconColor: 'var(--brand-600)',
           gateTitle: 'Set up company payroll',
           gateBody: 'Your team is in place. Configure your pay schedule, statutory deductions and approvers so we can calculate everyone\u2019s pay.',
-          gateCtaHref: 'Set Up Payroll.dc.html', gateCtaLabel: 'Set up payroll',
+          gateCtaHref: 'Payroll Page.dc.html', gateCtaLabel: 'Set up payroll',
           gateSteps: [ step('done', 'Add your employees'), step('todo', 'Set up company payroll'), step('locked', 'Run first payroll') ],
         };
 
@@ -2380,6 +2415,24 @@ class Component extends DCLogic {
       tagBg: t.kind === 'cash' ? 'var(--pink-100)' : 'var(--indigo-100)',
       onUse: () => { window.location.href = 'Add Pay Addition.dc.html'; },
     }));
+    const CA_TAG = {
+      cash:  { color: 'var(--pink-700)',   bg: 'var(--pink-100)' },
+      bik:   { color: 'var(--indigo-700)', bg: 'var(--indigo-100)' },
+      reimb: { color: 'var(--success-700)', bg: 'var(--success-100)' },
+    };
+    const rawCompanyAdds = (window.AppState && window.AppState.getCompanyAdditions) ? window.AppState.getCompanyAdditions() : [];
+    const companyAdditions = rawCompanyAdds.map(ca => {
+      const tag = CA_TAG[ca.type] || CA_TAG.cash;
+      return {
+        name: ca.name, typeLabel: ca.typeLabel || 'Addition',
+        tagColor: tag.color, tagBg: tag.bg,
+        valueText: ca.valueText || '\u2014',
+        applyLabel: ca.applyLabel || 'All employees',
+        meta: (ca.freq ? (ca.freq + ' \u00b7 ') : '') + (ca.taxable ? 'Taxable' : 'Not taxable'),
+        onRemove: () => { if (window.AppState && window.AppState.removeCompanyAddition) window.AppState.removeCompanyAddition(ca.id); this.forceUpdate(); },
+      };
+    });
+    const hasCompanyAdditions = companyAdditions.length > 0;
     const deductionTemplates = DEDUCTION_TEMPLATES.map(t => ({
       name: t.name, tag: t.tag,
       tagColor: t.kind === 'pretax' ? 'var(--teal-700)' : 'var(--orange-700)',
@@ -2518,6 +2571,7 @@ class Component extends DCLogic {
       permModalTitle: isPermEdit ? 'Edit payroll access' : 'Add a teammate',
       permModalDesc: isPermEdit ? 'Update what this teammate can do across payroll.' : 'Choose a teammate and pick what they can do across payroll.',
       additionTemplates, deductionTemplates,
+      companyAdditions, hasCompanyAdditions,
       setupProgress: progressPct, setupProgressLabel: progressLabel,
       emptyTabTitle: emptyTab.title, emptyTabBody: emptyTab.body, emptyTabCta: emptyTab.cta, addCtaTour,
 

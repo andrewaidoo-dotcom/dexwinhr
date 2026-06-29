@@ -557,7 +557,24 @@ class Component extends DCLogic {
       card1Border: s.card1Open ? '1px solid var(--border-secondary)' : 'none',
       card2Border: s.card2Open ? '1px solid var(--border-secondary)' : 'none',
 
-      onSave: () => { try { localStorage.setItem('dxp_payroll_tab', 'additions'); } catch (e) {} window.location.href = 'Payroll Page.dc.html'; },
+      onSave: () => {
+        const valueText = s.type === 'bik'
+          ? (bikObj ? bikObj.pct + '% of cash emoluments' : '\u2014')
+          : (s.valueMode === 'fixed' ? 'GH\u00a2 ' + (s.value || '0') : (s.value || '0') + '%');
+        const count = s.applyMode === 'all' ? EMP.length : s.selected.length;
+        const item = {
+          id: 'ca-' + Date.now(),
+          name: (s.name || '').trim() || typeLabel,
+          type: s.type, typeLabel: typeLabel,
+          valueText: valueText, freq: s.freq,
+          taxable: !(s.type === 'reimb' && s.reimbKind === 'expense'),
+          applyLabel: s.applyMode === 'all' ? 'All employees' : (count + ' employee' + (count === 1 ? '' : 's')),
+          count: count,
+        };
+        try { if (window.AppState && window.AppState.addCompanyAddition) window.AppState.addCompanyAddition(item); } catch (e) {}
+        try { localStorage.setItem('dxp_payroll_tab', 'additions'); localStorage.removeItem('dxp_tour_resume'); } catch (e) {}
+        window.location.href = 'Payroll Page.dc.html';
+      },
     };
   }
 }

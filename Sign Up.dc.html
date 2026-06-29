@@ -245,6 +245,8 @@ class Component extends DCLogic {
       window.AppState.set({ employees: 'todo', payroll: 'locked', wallet: 'none' });
       if (window.AppState.clearEmployees) window.AppState.clearEmployees();
     }
+    // Fresh signup → the welcome tour should play again on the dashboard.
+    try { localStorage.removeItem('dxp_tour_done'); localStorage.removeItem('dxp_onboard_level'); } catch (e) {}
     this.setState({ step: 'verify', errors: {}, count: 0, resendMsg: '' }, () => {
       const b = this.boxes();
       if (b[0]) b[0].focus();

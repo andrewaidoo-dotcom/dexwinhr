@@ -131,7 +131,7 @@
             </button>
           </sc-if>
           <sc-if value="{{ step3.unlocked }}" hint-placeholder-val="{{ false }}">
-            <a href="Set Up Payroll.dc.html" style="flex-shrink:0;display:inline-flex;align-items:center;gap:8px;padding:13px 26px;font-family:var(--font-body);font-weight:700;font-size:15px;color:{{ step3.ctaColor }};background:{{ step3.ctaBg }};border:1px solid {{ step3.ctaBorder }};border-radius:var(--radius-full);cursor:pointer;box-shadow:{{ step3.ctaShadow }};text-decoration:none;transition:background 120ms ease;">
+            <a href="Payroll Page.dc.html" style="flex-shrink:0;display:inline-flex;align-items:center;gap:8px;padding:13px 26px;font-family:var(--font-body);font-weight:700;font-size:15px;color:{{ step3.ctaColor }};background:{{ step3.ctaBg }};border:1px solid {{ step3.ctaBorder }};border-radius:var(--radius-full);cursor:pointer;box-shadow:{{ step3.ctaShadow }};text-decoration:none;transition:background 120ms ease;">
               {{ step3.cta }}
             </a>
           </sc-if>
@@ -211,7 +211,7 @@ class Component extends DCLogic {
     const payDone = pay === 'Done';
     if (!empDone) return { sel: '[data-tour="nav-people"]', place: 'right', rad: 10, name: 'add your employees', label: 'Add employees', href: 'People Page.dc.html', resume: 'people-choose', body: 'Head to People in the sidebar \u2014 upload a PAYE schedule or add people one by one so they can be paid.' };
     if (ws !== 'Active' && ws !== 'In review') return { sel: '[data-tour="wallet"]', place: 'right', rad: 10, name: 'apply for a wallet', label: 'Apply for wallet', href: 'Company Wallet Application.dc.html', body: 'Open Wallets in the sidebar to apply for your DexwinPay wallet so you can fund and pay salaries directly.' };
-    if (!payDone) return { sel: '[data-tour="nav-payroll"]', place: 'right', rad: 10, name: 'set up payroll', label: 'Set up payroll', href: 'Set Up Payroll.dc.html', body: 'Open Payroll in the sidebar to set your pay cycle, statutory rates and approval flow.' };
+    if (!payDone) return { sel: '[data-tour="nav-payroll"]', place: 'right', rad: 10, name: 'set up payroll', label: 'Set up payroll', href: 'Payroll Page.dc.html', body: 'Open Payroll in the sidebar to set your pay cycle, statutory rates and approval flow.' };
     return { sel: '[data-tour="checklist"]', place: 'bottom', rad: 20, name: 'run your first payroll', label: 'Go to payroll', href: 'Payroll Page.dc.html', body: 'Setup\u2019s complete \u2014 you\u2019re ready to run your first payroll.' };
   }
 

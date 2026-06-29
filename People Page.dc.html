@@ -1493,7 +1493,7 @@ class Component extends DCLogic {
   pickPaye = () => this.setState({ method: 'paye' });
   pickOne = () => this.setState({ method: 'oneByOne' });
   methodContinue = () => {
-    if (this.state.method === 'paye') { location.href = 'Add Employees.dc.html?screen=upload'; }
+    if (this.state.method === 'paye') { this.setState({ methodOpen: false, adding: true, addingStep: 'upload', uploadedFile: null, uploadStatus: 'idle', viewEmp: null }); }
     else { this.setState({ methodOpen: false }); this.openDrawerNew(); }
   };
 
