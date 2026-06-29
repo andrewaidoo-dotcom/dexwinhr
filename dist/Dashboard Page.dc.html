@@ -239,7 +239,7 @@ class Component extends DCLogic {
     const ws = this.walletState;
     const pay = this.state.ovPayroll ?? this.props.payrollStep ?? 'Auto';
     const payDone = pay === 'Done';
-    if (!empDone) return { sel: '[data-tour="nav-people"]', place: 'right', rad: 10, name: 'add your employees', label: 'Add employees', href: 'People Page.dc.html', body: 'Head to People in the sidebar \u2014 upload a PAYE schedule or add people one by one so they can be paid.' };
+    if (!empDone) return { sel: '[data-tour="nav-people"]', place: 'right', rad: 10, name: 'add your employees', label: 'Add employees', href: 'People Page.dc.html', resume: 'people-choose', body: 'Head to People in the sidebar \u2014 upload a PAYE schedule or add people one by one so they can be paid.' };
     if (ws !== 'Active' && ws !== 'In review') return { sel: '[data-tour="wallet"]', place: 'right', rad: 10, name: 'apply for a wallet', label: 'Apply for wallet', href: 'Company Wallet Application.dc.html', body: 'Open Wallets in the sidebar to apply for your DexwinPay wallet so you can fund and pay salaries directly.' };
     if (!payDone) return { sel: '[data-tour="nav-payroll"]', place: 'right', rad: 10, name: 'set up payroll', label: 'Set up payroll', href: 'Set Up Payroll.dc.html', body: 'Open Payroll in the sidebar to set your pay cycle, statutory rates and approval flow.' };
     return { sel: '[data-tour="checklist"]', place: 'bottom', rad: 20, name: 'run your first payroll', label: 'Go to payroll', href: 'Payroll Page.dc.html', body: 'Setup\u2019s complete \u2014 you\u2019re ready to run your first payroll.' };
@@ -513,7 +513,7 @@ class Component extends DCLogic {
       counter: (tStep + 1) + ' of ' + this.tourSteps.length,
       primaryLabel: (mode === 'welcome' && tStep === 0) ? 'Show me around' : (tLast ? (mode === 'done' ? 'Go to payroll' : nextTask.label) : 'Next'),
       secondaryLabel: tStep === 0 ? (mode === 'welcome' ? 'Maybe later' : 'Skip') : 'Back',
-      onPrimary: tLast ? (() => { this.tourEnd(); window.location.href = (mode === 'done' ? 'Payroll Page.dc.html' : nextTask.href); }) : this.tourNext,
+      onPrimary: tLast ? (() => { try { if (mode !== 'done' && nextTask.resume) localStorage.setItem('dxp_tour_resume', nextTask.resume); } catch (e) {} this.tourEnd(); window.location.href = (mode === 'done' ? 'Payroll Page.dc.html' : nextTask.href); }) : this.tourNext,
       onSecondary: tStep === 0 ? this.tourEnd : this.tourPrev,
       onSkip: this.tourEnd,
     };

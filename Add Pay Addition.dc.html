@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/fonts/fonts.css">
+  <link rel="stylesheet" href="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/tokens/shadows.css">
+  <link rel="stylesheet" href="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/tokens/base.css">
+  <link rel="stylesheet" href="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/styles.css">
+  <script src="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/_ds_bundle.js"></script>
+  <script src="./app-state.js"></script>
+  <style>
+    * { scrollbar-width: thin; scrollbar-color: #D5D7DA transparent; }
+    *::-webkit-scrollbar { width: 10px; height: 10px; }
+    *::-webkit-scrollbar-track { background: transparent; }
+    *::-webkit-scrollbar-thumb { background: #D5D7DA; border-radius: 999px; border: 3px solid transparent; background-clip: padding-box; }
+    *::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+  </style>
+</helmet>
+<div style="display:flex;min-height:100vh;background:var(--bg-secondary);font-family:var(--font-body);color:var(--fg-primary);">
+
+  <dc-import name="Sidebar" active="payroll" top-height="72" hint-size="288px,100vh" style="display:contents"></dc-import>
+
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;">
+
+    <!-- TOPBAR -->
+    <header style="height:72px;flex-shrink:0;padding:0 40px;display:flex;align-items:center;justify-content:space-between;background:#fff;border-bottom:1px solid var(--border-secondary);position:sticky;top:0;z-index:20;">
+      <div style="display:flex;align-items:center;gap:10px;font-size:15px;font-weight:600;">
+        <a href="Payroll Page.dc.html" style="color:var(--fg-tertiary);text-decoration:none;">Payroll</a>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--fg-quaternary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        <span style="color:var(--brand-700);">Add a pay addition</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:20px;">
+        <div style="display:flex;align-items:center;gap:9px;color:var(--fg-secondary);font-size:15px;font-weight:500;">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          {{ today }}
+        </div>
+        <span role="button" aria-label="Notifications" style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--border-secondary);border-radius:var(--radius-full);color:var(--fg-secondary);cursor:pointer;box-shadow:var(--shadow-xs);transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
+        </span>
+      </div>
+    </header>
+
+    <!-- PAGE HEADER -->
+    <div style="flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:22px 40px;border-bottom:1px solid var(--border-secondary);background:#fff;position:sticky;top:72px;z-index:19;">
+      <div style="display:flex;align-items:center;gap:16px;min-width:0;">
+        <a href="Payroll Page.dc.html" aria-label="Back" style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--border-secondary);border-radius:var(--radius-full);color:var(--fg-secondary);box-shadow:var(--shadow-xs);text-decoration:none;flex-shrink:0;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        </a>
+        <h1 style="font-family:var(--font-display);font-size:28px;line-height:34px;font-weight:800;letter-spacing:-0.02em;margin:0;color:var(--fg-primary);">Add a pay addition</h1>
+      </div>
+      <div style="flex-shrink:0;display:flex;align-items:center;gap:12px;">
+        <a href="Payroll Page.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:12px 22px;font-family:var(--font-body);font-weight:700;font-size:15px;color:var(--fg-secondary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);text-decoration:none;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+          Cancel
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+        </a>
+        <button onClick="{{ onSave }}" style="display:inline-flex;align-items:center;gap:9px;padding:13px 24px;font-family:var(--font-body);font-weight:700;font-size:15px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);cursor:pointer;box-shadow:var(--shadow-btn-primary);transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">
+          Save Pay Addition
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- BODY -->
+    <div style="flex:1;overflow-y:auto;padding:32px 40px 72px;">
+      <div style="max-width:840px;margin:0 auto;display:flex;flex-direction:column;gap:24px;">
+
+        <!-- CARD 1: details -->
+        <section style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);overflow:hidden;">
+          <div onClick="{{ toggleCard1 }}" style="display:flex;align-items:center;gap:14px;padding:22px 28px;cursor:pointer;border-bottom:{{ card1Border }};">
+            <svg style="flex-shrink:0;" width="40" height="40" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 0.5H24C28.1421 0.5 31.5 3.85786 31.5 8V24C31.5 28.1421 28.1421 31.5 24 31.5H8C3.85786 31.5 0.5 28.1421 0.5 24V8C0.5 3.85786 3.85786 0.5 8 0.5Z" fill="white"></path><path d="M8 0.5H24C28.1421 0.5 31.5 3.85786 31.5 8V24C31.5 28.1421 28.1421 31.5 24 31.5H8C3.85786 31.5 0.5 28.1421 0.5 24V8C0.5 3.85786 3.85786 0.5 8 0.5Z" stroke="#D5D7DA"></path><path d="M4 8C4 5.79086 5.79086 4 8 4H24C26.2091 4 28 5.79086 28 8V24C28 26.2091 26.2091 28 24 28H8C5.79086 28 4 26.2091 4 24V8Z" fill="white"></path><path d="M24 3.5C26.4853 3.5 28.5 5.51472 28.5 8V24C28.5 26.4853 26.4853 28.5 24 28.5H8C5.51472 28.5 3.5 26.4853 3.5 24V8C3.5 5.51472 5.51472 3.5 8 3.5H24Z" stroke="black" stroke-opacity="0.08"></path><path d="M21.6666 12.8518L16 16M16 16L10.3333 12.8518M16 16L16 22.3333M17.3333 21.9259L16.518 22.3789C16.329 22.4839 16.2344 22.5365 16.1343 22.557C16.0457 22.5753 15.9543 22.5753 15.8657 22.557C15.7656 22.5365 15.6711 22.4839 15.482 22.3789L10.5486 19.6382C10.349 19.5272 10.2491 19.4717 10.1764 19.3929C10.1121 19.3231 10.0634 19.2403 10.0337 19.1502C10 19.0484 10 18.9341 10 18.7057V13.2943C10 13.0659 10 12.9517 10.0337 12.8498C10.0634 12.7597 10.1121 12.677 10.1764 12.6072C10.2491 12.5283 10.349 12.4728 10.5486 12.3619L15.482 9.62114C15.671 9.5161 15.7656 9.46358 15.8657 9.44299C15.9543 9.42477 16.0457 9.42477 16.1343 9.44299C16.2344 9.46358 16.329 9.5161 16.518 9.62114L21.4514 12.3619C21.651 12.4728 21.7509 12.5283 21.8236 12.6072C21.8879 12.677 21.9366 12.7597 21.9663 12.8498C22 12.9517 22 13.0659 22 13.2943L22 16.3333M13 11L19 14.3333M20.6667 22V18M18.6667 20H22.6667" stroke="#2E90FA" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <h2 style="flex:1;min-width:0;font-family:var(--font-display);font-size:19px;font-weight:800;letter-spacing:-0.01em;margin:0;color:var(--fg-primary);">Provide details of the pay addition</h2>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--fg-quaternary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;transform:{{ card1Chevron }};transition:transform 160ms ease;"><polyline points="18 15 12 9 6 15"></polyline></svg>
+          </div>
+
+          <sc-if value="{{ card1Open }}" hint-placeholder-val="{{ true }}">
+            <div style="padding:26px 28px 30px;">
+
+              <!-- type of addition -->
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:12px;font-size:15px;font-weight:600;color:var(--fg-secondary);">
+                Type of Addition <span style="color:var(--error-600);">*</span>
+                <span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;border:1.5px solid var(--fg-quaternary);color:var(--fg-quaternary);font-size:10px;font-weight:700;line-height:1;">?</span>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:18px;">
+                <sc-for list="{{ typeOptions }}" as="t" hint-placeholder-count="3">
+                  <div onClick="{{ t.onClick }}" style="display:flex;align-items:center;gap:12px;padding:16px 18px;border:1.5px solid {{ t.b }};background:{{ t.bg }};border-radius:12px;cursor:pointer;transition:border-color 120ms ease,background 120ms ease;">
+                    <span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;border:1.5px solid {{ t.db }};background:{{ t.dbg }};flex-shrink:0;">
+                      <sc-if value="{{ t.on }}" hint-placeholder-val="{{ true }}"><span style="width:6px;height:6px;border-radius:50%;background:#fff;"></span></sc-if>
+                    </span>
+                    <span style="font-size:15px;font-weight:600;color:var(--fg-primary);">{{ t.label }}</span>
+                  </div>
+                </sc-for>
+              </div>
+
+              <!-- CASH fields -->
+              <sc-if value="{{ isCash }}" hint-placeholder-val="{{ true }}">
+                <div style="display:grid;grid-template-columns:300px 1fr;gap:32px;align-items:center;padding:24px 0;margin-top:8px;border-top:1px solid var(--border-tertiary);">
+                  <label style="font-size:16px;font-weight:600;color:var(--fg-secondary);">Name of Allowance</label>
+                  <input value="{{ name }}" onInput="{{ onName }}" placeholder="Name / Label" style="width:100%;box-sizing:border-box;padding:12px 16px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);outline:none;">
+                </div>
+                <div style="display:grid;grid-template-columns:300px 1fr;gap:32px;align-items:start;padding:24px 0;border-top:1px solid var(--border-tertiary);">
+                  <label style="display:flex;align-items:center;gap:6px;font-size:16px;font-weight:600;color:var(--fg-secondary);">Value of Allowance <span style="color:var(--error-600);">*</span><span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;border:1.5px solid var(--fg-quaternary);color:var(--fg-quaternary);font-size:10px;font-weight:700;line-height:1;">?</span></label>
+                  <div style="display:flex;flex-direction:column;gap:12px;">
+                    <div style="display:flex;align-items:center;border:1px solid var(--border-primary);border-radius:var(--radius-md);overflow:hidden;box-shadow:var(--shadow-xs);">
+                      <span style="padding:12px 16px;background:var(--bg-secondary);color:var(--fg-tertiary);font-size:16px;border-right:1px solid var(--border-primary);">{{ valuePrefix }}</span>
+                      <input value="{{ value }}" onInput="{{ onValue }}" inputmode="decimal" placeholder="" style="flex:1;min-width:0;padding:12px 16px;border:none;outline:none;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);">
+                    </div>
+                    <div style="display:inline-flex;align-self:flex-start;gap:4px;padding:4px;background:var(--bg-secondary);border:1px solid var(--border-secondary);border-radius:var(--radius-md);">
+                      <div onClick="{{ setFixed }}" style="padding:9px 18px;white-space:nowrap;font-size:14px;font-weight:600;border-radius:7px;cursor:pointer;color:{{ fixedColor }};background:{{ fixedBg }};box-shadow:{{ fixedShadow }};">Fixed Amount</div>
+                      <div onClick="{{ setPct }}" style="padding:9px 18px;white-space:nowrap;font-size:14px;font-weight:600;border-radius:7px;cursor:pointer;color:{{ pctColor }};background:{{ pctBg }};box-shadow:{{ pctShadow }};">% of Basic Salary</div>
+                    </div>
+                  </div>
+                </div>
+                <div style="display:grid;grid-template-columns:300px 1fr;gap:32px;align-items:center;padding:24px 0;border-top:1px solid var(--border-tertiary);">
+                  <label style="display:flex;align-items:center;gap:6px;font-size:16px;font-weight:600;color:var(--fg-secondary);">Frequency of Allowance <span style="color:var(--error-600);">*</span><span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;border:1.5px solid var(--fg-quaternary);color:var(--fg-quaternary);font-size:10px;font-weight:700;line-height:1;">?</span></label>
+                  <div style="position:relative;">
+                    <select value="{{ freq }}" onChange="{{ onFreq }}" style="width:100%;box-sizing:border-box;appearance:none;-webkit-appearance:none;padding:13px 44px 13px 16px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);outline:none;cursor:pointer;">
+                      <option>Monthly</option><option>Quarterly</option><option>Annually</option><option>One-off</option>
+                    </select>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;right:16px;top:50%;transform:translateY(-50%);pointer-events:none;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  </div>
+                </div>
+              </sc-if>
+
+              <!-- BIK fields -->
+              <sc-if value="{{ isBik }}" hint-placeholder-val="{{ false }}">
+                <div style="display:grid;grid-template-columns:300px 1fr;gap:32px;align-items:center;padding:24px 0;margin-top:8px;border-top:1px solid var(--border-tertiary);">
+                  <label style="font-size:16px;font-weight:600;color:var(--fg-secondary);">Name of Benefit</label>
+                  <input value="{{ name }}" onInput="{{ onName }}" placeholder="e.g. Company SUV" style="width:100%;box-sizing:border-box;padding:12px 16px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);outline:none;">
+                </div>
+                <div style="display:grid;grid-template-columns:300px 1fr;gap:32px;align-items:start;padding:24px 0;border-top:1px solid var(--border-tertiary);">
+                  <label style="display:flex;align-items:center;gap:6px;font-size:16px;font-weight:600;color:var(--fg-secondary);">GRA-prescribed benefit <span style="color:var(--error-600);">*</span><span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;border:1.5px solid var(--fg-quaternary);color:var(--fg-quaternary);font-size:10px;font-weight:700;line-height:1;">?</span></label>
+                  <div style="display:flex;flex-direction:column;gap:14px;">
+                    <div style="position:relative;">
+                      <select value="{{ bik }}" onChange="{{ onBik }}" style="width:100%;box-sizing:border-box;appearance:none;-webkit-appearance:none;padding:13px 44px 13px 16px;font-family:var(--font-body);font-size:16px;color:{{ bikSelectColor }};background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);outline:none;cursor:pointer;">
+                        <option value="">Select a benefit</option>
+                        <sc-for list="{{ bikOptions }}" as="b" hint-placeholder-count="6"><option value="{{ b.value }}">{{ b.label }}</option></sc-for>
+                      </select>
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;right:16px;top:50%;transform:translateY(-50%);pointer-events:none;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </div>
+                    <sc-if value="{{ bikChosen }}" hint-placeholder-val="{{ false }}">
+                      <div style="background:#EFF8FF;border:1px solid #B2DDFF;border-radius:12px;padding:14px 16px;">
+                        <div style="font-size:12px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:#175CD3;margin-bottom:4px;">Assessed value</div>
+                        <div style="font-size:15px;font-weight:700;color:#175CD3;">{{ bikValue }}</div>
+                        <div style="font-size:14px;line-height:21px;color:#175CD3;opacity:0.85;margin-top:2px;">{{ bikCalc }}</div>
+                      </div>
+                    </sc-if>
+                  </div>
+                </div>
+                <div style="display:grid;grid-template-columns:300px 1fr;gap:32px;align-items:center;padding:24px 0;border-top:1px solid var(--border-tertiary);">
+                  <label style="display:flex;align-items:center;gap:6px;font-size:16px;font-weight:600;color:var(--fg-secondary);">Frequency of Benefit <span style="color:var(--error-600);">*</span></label>
+                  <div style="position:relative;">
+                    <select value="{{ freq }}" onChange="{{ onFreq }}" style="width:100%;box-sizing:border-box;appearance:none;-webkit-appearance:none;padding:13px 44px 13px 16px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);outline:none;cursor:pointer;">
+                      <option>Monthly</option><option>Quarterly</option><option>Annually</option><option>One-off</option>
+                    </select>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;right:16px;top:50%;transform:translateY(-50%);pointer-events:none;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  </div>
+                </div>
+              </sc-if>
+
+              <!-- REIMB fields -->
+              <sc-if value="{{ isReimb }}" hint-placeholder-val="{{ false }}">
+                <div style="display:grid;grid-template-columns:300px 1fr;gap:32px;align-items:center;padding:24px 0;margin-top:8px;border-top:1px solid var(--border-tertiary);">
+                  <label style="font-size:16px;font-weight:600;color:var(--fg-secondary);">Name of Reimbursement</label>
+                  <input value="{{ name }}" onInput="{{ onName }}" placeholder="e.g. Fuel reimbursement" style="width:100%;box-sizing:border-box;padding:12px 16px;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);outline:none;">
+                </div>
+                <div style="display:grid;grid-template-columns:300px 1fr;gap:32px;align-items:start;padding:24px 0;border-top:1px solid var(--border-tertiary);">
+                  <label style="display:flex;align-items:center;gap:6px;font-size:16px;font-weight:600;color:var(--fg-secondary);">What does it cover? <span style="color:var(--error-600);">*</span></label>
+                  <div style="display:flex;flex-direction:column;gap:12px;">
+                    <div onClick="{{ setReimbExpense }}" style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1.5px solid {{ reimbExpense.b }};background:{{ reimbExpense.bg }};border-radius:12px;cursor:pointer;">
+                      <span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;border:1.5px solid {{ reimbExpense.db }};background:{{ reimbExpense.dbg }};flex-shrink:0;margin-top:1px;"><sc-if value="{{ reimbIsExpense }}" hint-placeholder-val="{{ true }}"><span style="width:6px;height:6px;border-radius:50%;background:#fff;"></span></sc-if></span>
+                      <span><span style="display:block;font-size:14px;font-weight:700;color:var(--fg-primary);">Paying back a work expense</span><span style="display:block;font-size:13px;color:var(--fg-tertiary);margin-top:2px;">A genuine business cost they paid for. Not taxed.</span></span>
+                    </div>
+                    <div onClick="{{ setReimbKeep }}" style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1.5px solid {{ reimbKeep.b }};background:{{ reimbKeep.bg }};border-radius:12px;cursor:pointer;">
+                      <span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;border:1.5px solid {{ reimbKeep.db }};background:{{ reimbKeep.dbg }};flex-shrink:0;margin-top:1px;"><sc-if value="{{ reimbIsKeep }}" hint-placeholder-val="{{ false }}"><span style="width:6px;height:6px;border-radius:50%;background:#fff;"></span></sc-if></span>
+                      <span><span style="display:block;font-size:14px;font-weight:700;color:var(--fg-primary);">Money they keep</span><span style="display:block;font-size:13px;color:var(--fg-tertiary);margin-top:2px;">Treated as income by GRA — this becomes taxable.</span></span>
+                    </div>
+                  </div>
+                </div>
+                <div style="display:grid;grid-template-columns:300px 1fr;gap:32px;align-items:center;padding:24px 0;border-top:1px solid var(--border-tertiary);">
+                  <label style="display:flex;align-items:center;gap:6px;font-size:16px;font-weight:600;color:var(--fg-secondary);">Monthly cap <span style="color:var(--error-600);">*</span></label>
+                  <div style="display:flex;align-items:center;border:1px solid var(--border-primary);border-radius:var(--radius-md);overflow:hidden;box-shadow:var(--shadow-xs);">
+                    <span style="padding:12px 16px;background:var(--bg-secondary);color:var(--fg-tertiary);font-size:16px;border-right:1px solid var(--border-primary);">GHS</span>
+                    <input value="{{ cap }}" onInput="{{ onCap }}" inputmode="decimal" placeholder="0.00" style="flex:1;min-width:0;padding:12px 16px;border:none;outline:none;font-family:var(--font-body);font-size:16px;color:var(--fg-primary);background:var(--bg-primary);">
+                  </div>
+                </div>
+              </sc-if>
+
+              <!-- tax banner -->
+              <div style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;margin-top:8px;border-radius:12px;background:{{ banner.bg }};border:1px solid {{ banner.border }};">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{ banner.icon }}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                <div style="min-width:0;">
+                  <div style="font-size:15px;font-weight:700;color:{{ banner.color }};">{{ banner.title }}</div>
+                  <div style="font-size:14px;line-height:21px;color:{{ banner.color }};opacity:0.85;margin-top:2px;">{{ banner.body }}</div>
+                </div>
+              </div>
+
+            </div>
+          </sc-if>
+        </section>
+
+        <!-- CARD 2: employees -->
+        <section style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);overflow:hidden;">
+          <div onClick="{{ toggleCard2 }}" style="display:flex;align-items:center;gap:14px;padding:22px 28px;cursor:pointer;border-bottom:{{ card2Border }};">
+            <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:10px;border:1px solid var(--border-secondary);background:var(--bg-primary);box-shadow:var(--shadow-xs);color:var(--fg-secondary);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            </span>
+            <h2 style="flex:1;min-width:0;font-family:var(--font-display);font-size:19px;font-weight:800;letter-spacing:-0.01em;margin:0;color:var(--fg-primary);">Which employees get this {{ typeLabel }}?</h2>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--fg-quaternary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;transform:{{ card2Chevron }};transition:transform 160ms ease;"><polyline points="18 15 12 9 6 15"></polyline></svg>
+          </div>
+
+          <sc-if value="{{ card2Open }}" hint-placeholder-val="{{ true }}">
+            <div style="padding:26px 28px 30px;">
+
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px;">
+                <div onClick="{{ setApplyAll }}" style="display:flex;align-items:center;gap:12px;padding:16px 18px;border:1.5px solid {{ allS.b }};background:{{ allS.bg }};border-radius:12px;cursor:pointer;transition:border-color 120ms ease,background 120ms ease;">
+                  <span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;border:1.5px solid {{ allS.db }};background:{{ allS.dbg }};flex-shrink:0;"><sc-if value="{{ applyAll }}" hint-placeholder-val="{{ false }}"><span style="width:6px;height:6px;border-radius:50%;background:#fff;"></span></sc-if></span>
+                  <span style="font-size:15px;font-weight:600;color:var(--fg-primary);">All Employees</span>
+                </div>
+                <div onClick="{{ setApplySpecific }}" style="display:flex;align-items:center;gap:12px;padding:16px 18px;border:1.5px solid {{ specS.b }};background:{{ specS.bg }};border-radius:12px;cursor:pointer;transition:border-color 120ms ease,background 120ms ease;">
+                  <span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;border:1.5px solid {{ specS.db }};background:{{ specS.dbg }};flex-shrink:0;"><sc-if value="{{ applySpecific }}" hint-placeholder-val="{{ true }}"><span style="width:6px;height:6px;border-radius:50%;background:#fff;"></span></sc-if></span>
+                  <span style="font-size:15px;font-weight:600;color:var(--fg-primary);">Specific employees</span>
+                </div>
+              </div>
+
+              <sc-if value="{{ applySpecific }}" hint-placeholder-val="{{ true }}">
+                <div style="display:grid;grid-template-columns:300px 1fr;gap:32px;align-items:start;padding:18px 0 24px;border-top:1px solid var(--border-tertiary);">
+                  <div>
+                    <label style="display:block;font-size:16px;font-weight:600;color:var(--fg-secondary);margin-bottom:3px;">Employee Group</label>
+                    <span style="font-size:13.5px;color:var(--fg-tertiary);">What do you call these set of employees?</span>
+                  </div>
+                  <div style="position:relative;">
+                    <div role="button" onClick="{{ toggleGroup }}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);cursor:pointer;transition:border-color 120ms ease;">
+                      <span style="font-size:16px;line-height:24px;color:{{ groupTextColor }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ groupDisplay }}</span>
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;transform:{{ groupChevron }};transition:transform 160ms ease;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </div>
+                    <sc-if value="{{ groupOpen }}" hint-placeholder-val="{{ false }}">
+                      <div onClick="{{ closeGroup }}" style="position:fixed;inset:0;z-index:5;"></div>
+                      <div style="position:absolute;z-index:10;top:calc(100% + 8px);left:0;right:0;background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:14px;box-shadow:var(--shadow-lg);overflow:hidden;">
+                        <div style="display:flex;align-items:center;gap:10px;padding:14px;">
+                          <input value="{{ newGroup }}" onInput="{{ onNewGroup }}" onKeyDown="{{ onNewGroupKey }}" placeholder="Name a new group" autoFocus="{{ true }}" style="flex:1;min-width:0;padding:11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;">
+                          <button onClick="{{ addGroup }}" aria-label="Add group" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:var(--radius-full);background:var(--success-50);color:var(--success-600);border:none;cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--success-100);">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                          </button>
+                          <button onClick="{{ clearNewGroup }}" aria-label="Clear" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:var(--radius-full);background:var(--gray-100);color:var(--fg-secondary);border:none;cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--gray-200);">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+                          </button>
+                        </div>
+                        <div style="height:1px;background:var(--border-secondary);"></div>
+                        <div style="max-height:220px;overflow-y:auto;padding:6px;">
+                          <sc-if value="{{ groupEmpty }}" hint-placeholder-val="{{ true }}">
+                            <div style="padding:14px 12px;font-size:14px;color:var(--fg-tertiary);text-align:center;">No groups yet — name one above and press the check to add it.</div>
+                          </sc-if>
+                          <sc-for list="{{ groupList }}" as="g" hint-placeholder-count="0">
+                            <div onClick="{{ g.onSelect }}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 12px;border-radius:8px;font-size:16px;color:var(--fg-primary);cursor:pointer;background:{{ g.bg }};transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+                              {{ g.label }}
+                              <sc-if value="{{ g.selected }}" hint-placeholder-val="{{ false }}">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-600)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                              </sc-if>
+                            </div>
+                          </sc-for>
+                        </div>
+                      </div>
+                    </sc-if>
+                  </div>
+                </div>
+
+                <div style="padding-top:6px;">
+                  <h3 style="font-family:var(--font-display);font-size:17px;font-weight:800;letter-spacing:-0.01em;margin:0 0 4px;color:var(--fg-primary);">Select the specific employees</h3>
+                  <p style="font-size:14px;line-height:21px;color:var(--fg-tertiary);margin:0 0 16px;">Filter by department and worker type, search by name — then tick exactly who it applies to. Filters combine.</p>
+
+                  <div style="display:grid;grid-template-columns:230px 1fr;border:1px solid var(--border-secondary);border-radius:14px;overflow:hidden;">
+                    <div style="padding:20px;border-right:1px solid var(--border-secondary);background:var(--bg-secondary);">
+                      <div style="font-size:12px;font-weight:700;letter-spacing:0.06em;color:var(--fg-quaternary);margin-bottom:14px;">FILTER</div>
+                      <div onClick="{{ toggleDeptOpen }}" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin-bottom:10px;">
+                        <span style="font-size:14px;font-weight:700;color:var(--fg-secondary);">Departments</span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--fg-quaternary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:{{ deptChevron }};transition:transform 160ms ease;"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                      </div>
+                      <sc-if value="{{ deptOpen }}" hint-placeholder-val="{{ true }}">
+                        <sc-for list="{{ deptFilters }}" as="d" hint-placeholder-count="5">
+                          <div onClick="{{ d.onToggle }}" style="display:flex;align-items:center;gap:10px;padding:6px 0;cursor:pointer;">
+                            <span style="width:18px;height:18px;border-radius:5px;border:1.5px solid {{ d.bc }};background:{{ d.bg }};display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;"><sc-if value="{{ d.on }}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></sc-if></span>
+                            <span style="font-size:14px;color:var(--fg-secondary);">{{ d.label }}</span>
+                          </div>
+                        </sc-for>
+                      </sc-if>
+                      <div style="height:1px;background:var(--border-secondary);margin:14px 0;"></div>
+                      <div onClick="{{ toggleWorkerOpen }}" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin-bottom:10px;">
+                        <span style="font-size:14px;font-weight:700;color:var(--fg-secondary);">Worker types</span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--fg-quaternary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:{{ workerChevron }};transition:transform 160ms ease;"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                      </div>
+                      <sc-if value="{{ workerOpen }}" hint-placeholder-val="{{ true }}">
+                        <sc-for list="{{ workerFilters }}" as="w" hint-placeholder-count="7">
+                          <div onClick="{{ w.onToggle }}" style="display:flex;align-items:center;gap:10px;padding:6px 0;cursor:pointer;">
+                            <span style="width:18px;height:18px;border-radius:5px;border:1.5px solid {{ w.bc }};background:{{ w.bg }};display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;"><sc-if value="{{ w.on }}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></sc-if></span>
+                            <span style="font-size:14px;color:var(--fg-secondary);">{{ w.label }}</span>
+                          </div>
+                        </sc-for>
+                      </sc-if>
+                    </div>
+
+                    <div style="padding:18px 20px;min-width:0;">
+                      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;">
+                        <span style="font-size:14px;font-weight:600;color:var(--fg-secondary);">{{ selectedCount }} of {{ totalCount }} employees selected</span>
+                        <span style="display:flex;gap:18px;">
+                          <span onClick="{{ selectAll }}" style="font-size:14px;font-weight:700;color:var(--brand-700);cursor:pointer;">Select all</span>
+                          <span onClick="{{ clearAll }}" style="font-size:14px;font-weight:700;color:var(--fg-tertiary);cursor:pointer;">Clear</span>
+                        </span>
+                      </div>
+                      <div style="display:flex;align-items:center;gap:10px;padding:11px 14px;border:1px solid var(--border-primary);border-radius:var(--radius-md);margin-bottom:6px;color:var(--fg-quaternary);">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <input value="{{ search }}" onInput="{{ onSearch }}" placeholder="Search by name, title or email" style="flex:1;min-width:0;border:none;outline:none;background:transparent;font-family:var(--font-body);font-size:14px;color:var(--fg-primary);">
+                      </div>
+                      <div style="max-height:360px;overflow-y:auto;">
+                        <sc-for list="{{ empList }}" as="e" hint-placeholder-count="8">
+                          <div onClick="{{ e.onToggle }}" style="display:flex;align-items:center;gap:12px;padding:11px 4px;border-bottom:1px dashed var(--border-secondary);cursor:pointer;">
+                            <span style="width:20px;height:20px;border-radius:6px;border:1.5px solid {{ e.bc }};background:{{ e.bg }};display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;"><sc-if value="{{ e.on }}" hint-placeholder-val="{{ false }}"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></sc-if></span>
+                            <x-import component-from-global-scope="DexwinPayDesignSystem_848e17.Avatar" initials="{{ e.init }}" size="sm" hint-size="36px,36px"></x-import>
+                            <div style="min-width:0;"><div style="font-size:15px;font-weight:700;color:var(--fg-primary);">{{ e.n }}</div><div style="font-size:13px;color:var(--fg-tertiary);">{{ e.meta }}</div></div>
+                          </div>
+                        </sc-for>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style="display:flex;align-items:center;gap:12px;background:var(--success-50);border:1px solid var(--success-200);border-radius:12px;padding:12px 16px;margin-top:16px;">
+                    <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:var(--radius-full);background:var(--success-100);color:var(--success-700);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg></span>
+                    <div style="font-size:13.5px;font-weight:600;color:var(--success-800);">This {{ typeLabelLower }} will apply to {{ selectedCount }} employees. You can edit any time later.</div>
+                  </div>
+                </div>
+              </sc-if>
+
+            </div>
+          </sc-if>
+        </section>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{ &quot;$preview&quot;: { &quot;width&quot;: 1440, &quot;height&quot;: 1024 } }">
+const TYPE_DEFS = [
+  { value: 'cash', label: 'Cash Allowance' },
+  { value: 'bik',  label: 'Benefits In Kind' },
+  { value: 'reimb',label: 'Reimbursement' },
+];
+const TYPE_LABEL = { cash: 'Cash Allowance', bik: 'Benefit In Kind', reimb: 'Reimbursement' };
+const FREQS = ['Monthly', 'Quarterly', 'Annually', 'One-off'];
+const BIK_BENEFITS = [
+  { value: 'veh_fuel_driver', label: 'Vehicle, fuel & driver', pct: 12.5, cap: 600 },
+  { value: 'veh_fuel', label: 'Vehicle & fuel', pct: 10, cap: 500 },
+  { value: 'veh_only', label: 'Vehicle only', pct: 5, cap: 250 },
+  { value: 'fuel_only', label: 'Fuel only', pct: 5, cap: 250 },
+  { value: 'accom_furnished', label: 'Accommodation, furnished', pct: 10, cap: 0 },
+  { value: 'accom', label: 'Accommodation only', pct: 7.5, cap: 0 },
+];
+const EMP = [
+  { n: 'Ama Boateng',   dept: 'Clinical',   basic: '8,500.00',  init: 'AB', etype: 'Full-Time-Resident' },
+  { n: 'Kwame Nkrumah', dept: 'Surgical',   basic: '15,200.00', init: 'KN', etype: 'Full-Time-Resident' },
+  { n: 'Esi Mensah',    dept: 'Pediatrics', basic: '10,000.00', init: 'EM', etype: 'Contractor-Full-Time' },
+  { n: 'Kojo Asante',   dept: 'Diagnostic', basic: '7,300.00',  init: 'KA', etype: 'Casual-Resident' },
+  { n: 'Abena Serwaa',  dept: 'Pediatrics', basic: '12,800.00', init: 'AS', etype: 'Full-Time-Resident' },
+  { n: 'Yaw Boateng',   dept: 'Pediatrics', basic: '14,500.00', init: 'YB', etype: 'Resident-Part-Time-Resident' },
+  { n: 'Adjoa Agyeman', dept: 'Pediatrics', basic: '9,200.00',  init: 'AA', etype: 'Intern' },
+  { n: 'Kofi Antwi',    dept: 'Surgical',   basic: '13,400.00', init: 'KO', etype: 'Secondary' },
+];
+// Distinct departments / employment types derived from the employees added
+const DEPTS = ['All Departments', ...Array.from(new Set(EMP.map(e => e.dept)))];
+const WORKERS = ['All worker types', ...Array.from(new Set(EMP.map(e => e.etype)))];
+
+const SELECTED_RC = { b: 'var(--brand-600)', bg: 'var(--brand-25)', db: 'var(--brand-600)', dbg: 'var(--brand-600)' };
+const IDLE_RC     = { b: 'var(--border-primary)', bg: 'var(--bg-primary)', db: 'var(--border-primary)', dbg: 'transparent' };
+
+class Component extends DCLogic {
+  state = {
+    type: 'cash',
+    name: '',
+    valueMode: 'fixed',
+    value: '',
+    freq: 'Monthly',
+    bik: '',
+    reimbKind: 'expense',
+    cap: '',
+    applyMode: 'specific',
+    groupName: '',
+    groups: [],
+    groupOpen: false,
+    newGroup: '',
+    selected: [0, 1, 2, 3],
+    depts: [],
+    workers: [],
+    deptOpen: true,
+    workerOpen: true,
+    card1Open: true,
+    card2Open: true,
+    search: '',
+  };
+
+  set = (k, v) => this.setState({ [k]: v });
+  toggleIn(arr, v) { return arr.includes(v) ? arr.filter(x => x !== v) : [...arr, v]; }
+
+  toggleDept = (name) => this.setState(s => {
+    if (name === 'All Departments') return { depts: [] };
+    return { depts: this.toggleIn(s.depts, name) };
+  });
+  toggleWorker = (name) => this.setState(s => {
+    if (name === 'All worker types') return { workers: [] };
+    return { workers: this.toggleIn(s.workers, name) };
+  });
+  toggleEmp = (i) => this.setState(s => ({ selected: this.toggleIn(s.selected, i) }));
+
+  toggleGroup = () => this.setState(s => ({ groupOpen: !s.groupOpen }));
+  closeGroup = () => this.setState({ groupOpen: false });
+  selectGroup = (v) => this.setState({ groupName: v, groupOpen: false });
+  onNewGroup = (e) => this.set('newGroup', e.target.value);
+  onNewGroupKey = (e) => { if (e.key === 'Enter') { e.preventDefault(); this.addGroup(); } };
+  clearNewGroup = () => this.set('newGroup', '');
+  addGroup = () => {
+    const name = (this.state.newGroup || '').trim();
+    if (!name) return;
+    this.setState(s => {
+      const exists = s.groups.some(g => g.value.toLowerCase() === name.toLowerCase());
+      const groups = exists ? s.groups : [...s.groups, { value: name, label: name }];
+      return { groups, groupName: name, groupOpen: false, newGroup: '' };
+    });
+  };
+
+  visibleIndexes() {
+    const s = this.state;
+    const q = (s.search || '').trim().toLowerCase();
+    return EMP.map((e, i) => i).filter(i => {
+      const e = EMP[i];
+      if (s.depts.length && !s.depts.includes(e.dept)) return false;
+      if (s.workers.length && !s.workers.includes(e.etype)) return false;
+      if (q && !(e.n.toLowerCase().includes(q) || e.etype.toLowerCase().includes(q) || e.dept.toLowerCase().includes(q))) return false;
+      return true;
+    });
+  }
+
+  renderVals() {
+    const s = this.state;
+    const isCash = s.type === 'cash', isBik = s.type === 'bik', isReimb = s.type === 'reimb';
+    const typeLabel = TYPE_LABEL[s.type];
+
+    const typeOptions = TYPE_DEFS.map(t => {
+      const on = s.type === t.value;
+      const rc = on ? SELECTED_RC : IDLE_RC;
+      return { label: t.label, on, b: rc.b, bg: rc.bg, db: rc.db, dbg: rc.dbg, onClick: () => this.set('type', t.value) };
+    });
+
+    // tax banner
+    const BLUE = { bg: '#EFF8FF', border: '#B2DDFF', color: '#175CD3', icon: '#2E90FA' };
+    const AMBER = { bg: '#FEF6EE', border: '#F9DBAF', color: '#B93815', icon: '#DC6803' };
+    const GREEN = { bg: 'var(--success-50)', border: 'var(--success-200)', color: 'var(--success-700)', icon: 'var(--success-600)' };
+    let banner;
+    if (isCash) banner = { ...BLUE, title: 'This pay item is taxable', body: 'Added to gross pay and taxed as assessable income.' };
+    else if (isBik) banner = { ...AMBER, title: 'This benefit is taxable', body: 'A non-cash benefit. Its GRA-assessed value is added to taxable income.' };
+    else if (s.reimbKind === 'keep') banner = { ...AMBER, title: 'This becomes taxable', body: 'If the employee keeps this, GRA treats it as taxable income — not a reimbursement.' };
+    else banner = { ...GREEN, title: 'This reimbursement is not taxable', body: 'Repays a genuine work expense. Excluded from the tax calculation.' };
+
+    // value toggle
+    const fixedOn = s.valueMode === 'fixed';
+    const segSel = { color: 'var(--fg-primary)', bg: '#fff', shadow: 'var(--shadow-xs)' };
+    const segIdle = { color: 'var(--fg-tertiary)', bg: 'transparent', shadow: 'none' };
+
+    // bik
+    const bikObj = BIK_BENEFITS.find(b => b.value === s.bik);
+    const bikChosen = !!bikObj;
+    const bikValue = bikObj ? (bikObj.pct + '% of total cash emoluments') : '';
+    const bikCalc = bikObj ? (bikObj.cap > 0 ? ('Capped at GH\u00a2 ' + bikObj.cap + ' / month') : 'No monthly cap') : '';
+
+    // reimb radios
+    const reimbIsExpense = s.reimbKind === 'expense';
+    const reimbIsKeep = s.reimbKind === 'keep';
+
+    // apply
+    const applyAll = s.applyMode === 'all';
+    const applySpecific = s.applyMode === 'specific';
+
+    // filters
+    const deptFilters = DEPTS.map(name => {
+      const on = name === 'All Departments' ? s.depts.length === 0 : s.depts.includes(name);
+      return { label: name, on, bc: on ? 'var(--brand-600)' : 'var(--border-primary)', bg: on ? 'var(--brand-600)' : 'var(--bg-primary)', onToggle: () => this.toggleDept(name) };
+    });
+    const workerFilters = WORKERS.map(name => {
+      const on = name === 'All worker types' ? s.workers.length === 0 : s.workers.includes(name);
+      return { label: name, on, bc: on ? 'var(--brand-600)' : 'var(--border-primary)', bg: on ? 'var(--brand-600)' : 'var(--bg-primary)', onToggle: () => this.toggleWorker(name) };
+    });
+
+    const vis = this.visibleIndexes();
+    const empList = vis.map(i => {
+      const e = EMP[i];
+      const on = s.selected.includes(i);
+      return { n: e.n, init: e.init, meta: e.etype + ' \u00b7 ' + e.dept + ' \u00b7 GH\u00a2 ' + e.basic, on,
+        bc: on ? 'var(--brand-600)' : 'var(--border-primary)', bg: on ? 'var(--brand-600)' : 'var(--bg-primary)',
+        onToggle: () => this.toggleEmp(i) };
+    });
+
+    return {
+      today: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+      typeLabel, typeLabelLower: typeLabel.toLowerCase(),
+      isCash, isBik, isReimb, typeOptions, banner,
+
+      name: s.name, onName: (e) => this.set('name', e.target.value),
+      value: s.value, onValue: (e) => this.set('value', e.target.value),
+      valuePrefix: fixedOn ? 'GHS' : '%',
+      setFixed: () => this.set('valueMode', 'fixed'), setPct: () => this.set('valueMode', 'pct'),
+      fixedColor: (fixedOn ? segSel : segIdle).color, fixedBg: (fixedOn ? segSel : segIdle).bg, fixedShadow: (fixedOn ? segSel : segIdle).shadow,
+      pctColor: (!fixedOn ? segSel : segIdle).color, pctBg: (!fixedOn ? segSel : segIdle).bg, pctShadow: (!fixedOn ? segSel : segIdle).shadow,
+      freq: s.freq, onFreq: (e) => this.set('freq', e.target.value),
+
+      bik: s.bik, onBik: (e) => this.set('bik', e.target.value), bikOptions: BIK_BENEFITS,
+      bikSelectColor: bikChosen ? 'var(--fg-primary)' : 'var(--fg-quaternary)',
+      bikChosen, bikValue, bikCalc,
+
+      reimbKind: s.reimbKind, reimbIsExpense, reimbIsKeep,
+      setReimbExpense: () => this.set('reimbKind', 'expense'), setReimbKeep: () => this.set('reimbKind', 'keep'),
+      reimbExpense: reimbIsExpense ? SELECTED_RC : IDLE_RC,
+      reimbKeep: reimbIsKeep ? SELECTED_RC : IDLE_RC,
+      cap: s.cap, onCap: (e) => this.set('cap', e.target.value),
+
+      applyAll, applySpecific,
+      setApplyAll: () => this.set('applyMode', 'all'), setApplySpecific: () => this.set('applyMode', 'specific'),
+      allS: applyAll ? SELECTED_RC : IDLE_RC, specS: applySpecific ? SELECTED_RC : IDLE_RC,
+      groupName: s.groupName, onGroupName: (e) => this.set('groupName', e.target.value),
+      groupOpen: s.groupOpen, newGroup: s.newGroup,
+      groupDisplay: s.groupName || 'Select or add a group',
+      groupTextColor: s.groupName ? 'var(--fg-primary)' : 'var(--fg-quaternary)',
+      groupChevron: s.groupOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+      groupList: s.groups.map(g => ({ label: g.label, selected: g.value === s.groupName, bg: g.value === s.groupName ? 'var(--brand-50)' : 'transparent', onSelect: () => this.selectGroup(g.value) })),
+      groupEmpty: s.groups.length === 0,
+      toggleGroup: this.toggleGroup, closeGroup: this.closeGroup,
+      onNewGroup: this.onNewGroup, onNewGroupKey: this.onNewGroupKey, addGroup: this.addGroup, clearNewGroup: this.clearNewGroup,
+
+      deptFilters, workerFilters,
+      deptOpen: s.deptOpen, workerOpen: s.workerOpen,
+      toggleDeptOpen: () => this.set('deptOpen', !s.deptOpen), toggleWorkerOpen: () => this.set('workerOpen', !s.workerOpen),
+      deptChevron: s.deptOpen ? 'rotate(0deg)' : 'rotate(180deg)', workerChevron: s.workerOpen ? 'rotate(0deg)' : 'rotate(180deg)',
+
+      empList, selectedCount: s.selected.length, totalCount: EMP.length,
+      search: s.search, onSearch: (e) => this.set('search', e.target.value),
+      selectAll: () => this.setState(st => ({ selected: Array.from(new Set([...st.selected, ...vis])) })), clearAll: () => this.set('selected', []),
+
+      card1Open: s.card1Open, card2Open: s.card2Open,
+      toggleCard1: () => this.set('card1Open', !s.card1Open), toggleCard2: () => this.set('card2Open', !s.card2Open),
+      card1Chevron: s.card1Open ? 'rotate(0deg)' : 'rotate(180deg)', card2Chevron: s.card2Open ? 'rotate(0deg)' : 'rotate(180deg)',
+      card1Border: s.card1Open ? '1px solid var(--border-secondary)' : 'none',
+      card2Border: s.card2Open ? '1px solid var(--border-secondary)' : 'none',
+
+      onSave: () => { try { localStorage.setItem('dxp_payroll_tab', 'additions'); } catch (e) {} window.location.href = 'Payroll Page.dc.html'; },
+    };
+  }
+}
+</script>
+</body>
+</html>

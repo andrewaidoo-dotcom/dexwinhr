@@ -491,37 +491,7 @@
 
 </div>
 
-<sc-if value="{{ panelOpen }}" hint-placeholder-val="{{ true }}">
-  <div style="position:fixed;bottom:20px;left:20px;z-index:90;width:280px;display:flex;flex-direction:column;background:#fff;border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-2xl);overflow:hidden;font-family:var(--font-body);">
-    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:13px 16px;border-bottom:1px solid var(--border-secondary);">
-      <span style="display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--fg-primary);">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--brand-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
-        Preview controls
-      </span>
-      <span role="button" onClick="{{ togglePanel }}" aria-label="Minimize" style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:28px;border-radius:8px;cursor:pointer;color:var(--fg-quaternary);transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-      </span>
-    </div>
-    <div style="padding:14px 16px 16px;display:flex;flex-direction:column;gap:15px;">
-      <sc-for list="{{ panelGroups }}" as="g" hint-placeholder-count="1">
-        <div>
-          <div style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--fg-quaternary);margin-bottom:8px;">{{ g.label }}</div>
-          <div style="display:flex;flex-wrap:wrap;gap:6px;">
-            <sc-for list="{{ g.options }}" as="o" hint-placeholder-count="3">
-              <button onClick="{{ o.onClick }}" style="padding:6px 12px;font-family:var(--font-body);font-size:13px;font-weight:600;border-radius:999px;cursor:pointer;background:{{ o.bg }};color:{{ o.color }};border:1px solid {{ o.border }};transition:background 120ms ease,color 120ms ease;">{{ o.label }}</button>
-            </sc-for>
-          </div>
-        </div>
-      </sc-for>
-    </div>
-  </div>
-</sc-if>
-<sc-if value="{{ panelClosed }}" hint-placeholder-val="{{ false }}">
-  <button onClick="{{ togglePanel }}" aria-label="Preview controls" style="position:fixed;bottom:20px;left:20px;z-index:90;display:inline-flex;align-items:center;gap:6px;padding:7px 13px;font-family:var(--font-body);font-size:12px;font-weight:600;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:999px;box-shadow:var(--shadow-md);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
-    Controls
-  </button>
-</sc-if></x-dc>
+</x-dc>
 <script type="text/x-dc" data-dc-script data-props="{
   &quot;$preview&quot;: { &quot;width&quot;: 1440, &quot;height&quot;: 1024 },
   &quot;employeeSetup&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;No employees&quot;, &quot;Needs details&quot;, &quot;Halfway&quot;, &quot;Complete&quot;], &quot;default&quot;: &quot;No employees&quot;, &quot;tsType&quot;: &quot;string&quot; }

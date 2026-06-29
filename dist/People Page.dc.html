@@ -108,7 +108,7 @@
       <!-- EMPTY STATE -->
       <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ true }}">
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;padding:48px 40px 64px;background:var(--bg-secondary);">
-          <div style="box-sizing:border-box;width:100%;max-width:980px;background:#fff;border:1px solid var(--border-secondary);border-radius:24px;box-shadow:var(--shadow-xs);padding:56px 64px 60px;text-align:left;">
+          <div data-tour="choose-method" onClick="{{ coachClose }}" style="box-sizing:border-box;width:100%;max-width:980px;background:#fff;border:1px solid var(--border-secondary);border-radius:24px;box-shadow:var(--shadow-xs);padding:56px 64px 60px;text-align:left;">
             <h3 style="font-family:var(--font-display);font-size:40px;line-height:48px;font-weight:800;letter-spacing:-0.02em;margin:0 0 12px;color:var(--fg-primary);">How do you want to add your employees?</h3>
             <p style="font-size:18px;line-height:28px;color:var(--fg-tertiary);margin:0 0 40px;">Pick the route that works best for you.</p>
             <div style="display:flex;flex-direction:column;gap:20px;">
@@ -1027,6 +1027,27 @@
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
     Controls
   </button>
+</sc-if>
+<sc-if value="{{ coachOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;inset:0;z-index:300;pointer-events:none;font-family:var(--font-body);">
+    <sc-if value="{{ coach.hasSpot }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;{{ coach.spotStyle }};border-radius:24px;box-shadow:0 0 0 3px var(--brand-400),0 0 0 9999px rgba(12,17,15,0.55);pointer-events:none;transition:all 240ms cubic-bezier(.4,0,.2,1);"></div>
+    </sc-if>
+    <div style="position:absolute;{{ coach.cardStyle }};pointer-events:auto;width:380px;max-width:calc(100vw - 32px);background:#fff;border:1px solid var(--border-secondary);border-radius:18px;box-shadow:var(--shadow-2xl);padding:22px 24px 20px;box-sizing:border-box;transition:left 240ms cubic-bezier(.4,0,.2,1),top 240ms cubic-bezier(.4,0,.2,1);">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:11px;">
+        <span style="display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--brand-700);"><span style="width:7px;height:7px;border-radius:999px;background:var(--brand-500);"></span>Add your employees</span>
+        <span role="button" onClick="{{ coachClose }}" aria-label="Close" style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;margin:-4px -6px -4px 0;border-radius:8px;color:var(--fg-quaternary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </span>
+      </div>
+      <div style="font-family:var(--font-display);font-size:20px;line-height:27px;font-weight:800;letter-spacing:-0.01em;color:var(--fg-primary);margin-bottom:8px;text-wrap:pretty;">Choose how to add your team</div>
+      <div style="font-size:14.5px;line-height:22px;color:var(--fg-tertiary);margin-bottom:20px;text-wrap:pretty;">Pick the route that works best — import everyone from a spreadsheet, or add people one by one. Go ahead and click an option.</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+        <span style="font-size:13px;font-weight:600;color:var(--fg-quaternary);">More to set up after this</span>
+        <button onClick="{{ coachClose }}" style="padding:10px 20px;font-family:var(--font-body);font-weight:700;font-size:14px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);cursor:pointer;box-shadow:var(--shadow-btn-primary);transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">Got it</button>
+      </div>
+    </div>
+  </div>
 </sc-if></x-dc>
 <script type="text/x-dc" data-dc-script data-props="{
   &quot;$preview&quot;: { &quot;width&quot;: 1440, &quot;height&quot;: 900 },
@@ -1178,6 +1199,7 @@ class Component extends DCLogic {
     empRoleOpen: false, empRoleAdding: false, empNewRole: '', empRoleError: '',
     toast: null,
     dataPref: 'Empty', panelOpen: false,
+    coachOpen: false, coachRect: null,
   };
   toastTimer = null;
   componentDidMount() {
@@ -1193,9 +1215,10 @@ class Component extends DCLogic {
       setTimeout(poll, 30);
     }
     try { if (new URLSearchParams(location.search).get('addstep') === 'review') this.setState({ addNew: true, empStep: STEP_ORDER.length - 1, empForm: sampleEmpForm(), empEdits: {}, empDirty: false, empCollapsed: {} }); } catch (e) {}
+    this._coachStart = setTimeout(() => this.maybeStartCoach(), 90);
   }
   componentDidUpdate(prev) { if (prev.state !== this.props.state) this.applyTweak(); }
-  componentWillUnmount() { if (this.toastTimer) clearTimeout(this.toastTimer); }
+  componentWillUnmount() { if (this.toastTimer) clearTimeout(this.toastTimer); if (this._coachStart) clearTimeout(this._coachStart); if (this._coachResize) window.removeEventListener('resize', this._coachResize); }
   applyTweak() {
     // Live: reflect the signed-up company name.
     if (window.AppState && window.AppState.getAccount) {
@@ -1224,6 +1247,22 @@ class Component extends DCLogic {
     }
   };
   togglePanel = () => this.setState(s => ({ panelOpen: !s.panelOpen }));
+
+  coachMeasure = () => {
+    const el = document.querySelector('[data-tour="choose-method"]');
+    if (el) { const r = el.getBoundingClientRect(); this.setState({ coachRect: { x: r.left, y: r.top, w: r.width, h: r.height } }); }
+    else this.setState({ coachRect: null });
+  };
+  coachSchedule = () => { requestAnimationFrame(this.coachMeasure); [60, 160, 360, 650].forEach(t => setTimeout(() => { if (this.state.coachOpen) this.coachMeasure(); }, t)); };
+  maybeStartCoach = () => {
+    let want = false; try { want = localStorage.getItem('dxp_tour_resume') === 'people-choose'; } catch (e) {}
+    if (!want) return;
+    if ((this.state.employees || []).length > 0 || this.state.addNew || this.state.adding) { try { localStorage.removeItem('dxp_tour_resume'); } catch (e) {} return; }
+    this._coachResize = () => { if (this.state.coachOpen) this.coachMeasure(); };
+    window.addEventListener('resize', this._coachResize);
+    this.setState({ coachOpen: true }, this.coachSchedule);
+  };
+  coachClose = () => { try { localStorage.removeItem('dxp_tour_resume'); } catch (e) {} if (this._coachResize) { window.removeEventListener('resize', this._coachResize); this._coachResize = null; } this.setState({ coachOpen: false }); };
 
   showToast(msg) {
     if (this.toastTimer) clearTimeout(this.toastTimer);
@@ -1477,6 +1516,18 @@ class Component extends DCLogic {
   renderVals() {
     const s = this.state;
     const viewEmp = s.viewEmp;
+    const _cr = s.coachRect;
+    let coachVals = { hasSpot: false, spotStyle: '', cardStyle: 'left:50%;top:50%;transform:translate(-50%,-50%);' };
+    if (_cr) {
+      const PAD = 10;
+      const sx = _cr.x - PAD, sy = _cr.y - PAD, sw = _cr.w + PAD * 2, sh = _cr.h + PAD * 2;
+      const vw = (typeof window !== 'undefined' && window.innerWidth) || 1440;
+      const vh = (typeof window !== 'undefined' && window.innerHeight) || 900;
+      const CW = 380;
+      let left = sx + sw + 16, top = Math.max(16, Math.min(_cr.y, vh - 260));
+      if (left + CW > vw - 16) { left = Math.max(16, Math.min(sx + sw / 2 - CW / 2, vw - CW - 16)); top = Math.min(sy + sh + 16, vh - 260); }
+      coachVals = { hasSpot: true, spotStyle: 'left:' + sx + 'px;top:' + sy + 'px;width:' + sw + 'px;height:' + sh + 'px', cardStyle: 'left:' + left + 'px;top:' + top + 'px;' };
+    }
     const rosterViewActive = s.rosterView != null;
     const importPreview = s.adding && s.addingStep === 'upload' && viewEmp != null;
     const empPreview = importPreview || rosterViewActive || s.addNew;
@@ -1606,6 +1657,7 @@ class Component extends DCLogic {
       panelOpen: s.panelOpen, panelClosed: !s.panelOpen, togglePanel: this.togglePanel,
       today: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
       isEmpty: employees.length === 0,
+      coachOpen: s.coachOpen, coach: coachVals, coachClose: this.coachClose,
       isPopulated: employees.length > 0,
       missingCount: missingCount,
       alertMissing: employees.length > 0 && missingCount > 0,

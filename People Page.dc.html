@@ -99,7 +99,7 @@
               <div style="font-size:14px;color:var(--warning-600);margin-top:1px;">Bank details, SSNIT Numbers etc, are needed for payment.</div>
             </div>
           </div>
-          <span role="button" onClick="{{ filterMissing }}" style="display:inline-flex;align-items:center;justify-content:center;padding:10px 22px;color:var(--warning-700);background:#fff;border:1px solid var(--warning-300);border-radius:var(--radius-full);font-weight:700;font-size:15px;cursor:pointer;white-space:nowrap;transition:background 120ms ease;" style-hover="background:var(--warning-50);">
+          <span role="button" onClick="{{ filterMissing }}" style="display: inline-flex; align-items: center; justify-content: center; padding: 10px 22px; color: var(--warning-700); border: 1px solid var(--warning-300); border-radius: var(--radius-full); font-weight: 700; font-size: 15px; cursor: pointer; white-space: nowrap; transition: background 120ms ease; border-color: var(--warning-600)" style-hover="background:var(--warning-50);">
             View employees
           </span>
         </div>
@@ -108,7 +108,7 @@
       <!-- EMPTY STATE -->
       <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ true }}">
         <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;padding:48px 40px 64px;background:var(--bg-secondary);">
-          <div style="box-sizing:border-box;width:100%;max-width:980px;background:#fff;border:1px solid var(--border-secondary);border-radius:24px;box-shadow:var(--shadow-xs);padding:56px 64px 60px;text-align:left;">
+          <div data-tour="choose-method" onClick="{{ coachClose }}" style="box-sizing:border-box;width:100%;max-width:980px;background:#fff;border:1px solid var(--border-secondary);border-radius:24px;box-shadow:var(--shadow-xs);padding:56px 64px 60px;text-align:left;">
             <h3 style="font-family:var(--font-display);font-size:40px;line-height:48px;font-weight:800;letter-spacing:-0.02em;margin:0 0 12px;color:var(--fg-primary);">How do you want to add your employees?</h3>
             <p style="font-size:18px;line-height:28px;color:var(--fg-tertiary);margin:0 0 40px;">Pick the route that works best for you.</p>
             <div style="display:flex;flex-direction:column;gap:20px;">
@@ -213,7 +213,7 @@
         <div style="flex:1;display:flex;flex-direction:column;min-height:0;background:#fff;">
           <div style="flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:18px 40px;border-bottom:1px solid var(--border-secondary);">
             <div style="display:flex;align-items:center;gap:16px;">
-              <button onClick="{{ headerBack }}" aria-label="Back" style="display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border:1px solid var(--border-primary);border-radius:12px;background:#fff;color:var(--fg-secondary);cursor:pointer;box-shadow:var(--shadow-xs);transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+              <button onClick="{{ headerBack }}" aria-label="Back" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--border-secondary);border-radius:var(--radius-full);background:#fff;color:var(--fg-secondary);cursor:pointer;box-shadow:var(--shadow-xs);transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
               </button>
               <sc-if value="{{ notEmpPreview }}" hint-placeholder-val="{{ true }}">
@@ -233,7 +233,7 @@
               </button></sc-if><sc-if value="{{ importNotReady }}" hint-placeholder-val="{{ true }}"><span style="display:inline-flex;align-items:center;gap:9px;padding:0 28px;height:48px;font-family:var(--font-body);font-weight:700;font-size:16px;color:var(--fg-quaternary);background:var(--gray-100);border:1px solid var(--border-secondary);border-radius:var(--radius-full);cursor:not-allowed;">
                 Import Employees
                 <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M18.3307 15L15.8307 17.5L13.3307 15M15.8307 17.5V12.5M12.9141 2.7423C14.1357 3.23679 14.9974 4.43443 14.9974 5.83333C14.9974 7.23224 14.1357 8.42988 12.9141 8.92437M9.9974 12.5H6.66406C5.11092 12.5 4.33435 12.5 3.72178 12.7537C2.90502 13.092 2.25611 13.741 1.9178 14.5577C1.66406 15.1703 1.66406 15.9469 1.66406 17.5M11.2474 5.83333C11.2474 7.67428 9.75501 9.16667 7.91406 9.16667C6.07311 9.16667 4.58073 7.67428 4.58073 5.83333C4.58073 3.99238 6.07311 2.5 7.91406 2.5C9.75501 2.5 11.2474 3.99238 11.2474 5.83333Z" stroke="currentColor" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-              </span></sc-if></sc-if></sc-if><sc-if value="{{ empPreview }}" hint-placeholder-val="{{ false }}"><button onClick="{{ empCancel }}" style="display:inline-flex;align-items:center;gap:9px;padding:0 22px;height:48px;font-family:var(--font-body);font-weight:700;font-size:15px;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">Cancel<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button><sc-if value="{{ saveEnabled }}" hint-placeholder-val="{{ false }}"><button onClick="{{ empSave }}" style="display:inline-flex;align-items:center;gap:9px;padding:0 28px;height:48px;font-family:var(--font-body);font-weight:700;font-size:16px;color:#fff;background-color:#018F58;border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background-color 120ms ease;" style-hover="background-color:#016F45;">{{ saveLabel }}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg></button></sc-if><sc-if value="{{ saveDisabled }}" hint-placeholder-val="{{ true }}"><span style="display:inline-flex;align-items:center;gap:9px;padding:0 28px;height:48px;font-family:var(--font-body);font-weight:700;font-size:16px;color:var(--fg-quaternary);background:var(--gray-100);border:1px solid var(--border-secondary);border-radius:var(--radius-full);cursor:not-allowed;">{{ saveLabel }}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg></span></sc-if></sc-if></div>
+              </span></sc-if></sc-if></sc-if><sc-if value="{{ empPreview }}" hint-placeholder-val="{{ false }}"><sc-if value="{{ empDirty }}" hint-placeholder-val="{{ false }}"><button onClick="{{ clearEmpChanges }}" style="display:inline-flex;align-items:center;gap:9px;padding:0 22px;height:48px;font-family:var(--font-body);font-weight:700;font-size:15px;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">Clear changes<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v6h6"></path><path d="M3 13a9 9 0 1 0 3-7.7L3 8"></path></svg></button></sc-if><sc-if value="{{ empNotDirty }}" hint-placeholder-val="{{ true }}"><span style="display:inline-flex;align-items:center;gap:9px;padding:0 22px;height:48px;font-family:var(--font-body);font-weight:700;font-size:15px;color:var(--fg-quaternary);background:var(--gray-100);border:1px solid var(--border-secondary);border-radius:var(--radius-full);cursor:not-allowed;">Clear changes<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v6h6"></path><path d="M3 13a9 9 0 1 0 3-7.7L3 8"></path></svg></span></sc-if><sc-if value="{{ saveEnabled }}" hint-placeholder-val="{{ false }}"><button onClick="{{ empSave }}" style="display:inline-flex;align-items:center;gap:9px;padding:0 28px;height:48px;font-family:var(--font-body);font-weight:700;font-size:16px;color:#fff;background-color:#018F58;border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background-color 120ms ease;" style-hover="background-color:#016F45;">{{ saveLabel }}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg></button></sc-if><sc-if value="{{ saveDisabled }}" hint-placeholder-val="{{ true }}"><span style="display:inline-flex;align-items:center;gap:9px;padding:0 28px;height:48px;font-family:var(--font-body);font-weight:700;font-size:16px;color:var(--fg-quaternary);background:var(--gray-100);border:1px solid var(--border-secondary);border-radius:var(--radius-full);cursor:not-allowed;">{{ saveLabel }}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg></span></sc-if></sc-if></div>
           </div>
 
           <sc-if value="{{ showBanner }}" hint-placeholder-val="{{ false }}">
@@ -444,22 +444,21 @@
                   </div>
                   <div style="display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.1fr); gap: 24px; align-items: flex-start; padding: 16px 22px; border-top: 1px solid var(--border-tertiary)">
                     <span style="font-size:15px;color:var(--fg-secondary);">Profile Picture</span>
-                    <div style="display: flex; align-items: flex-start; gap: 16px; justify-content: flex-start">
-                      <span style="position:relative;flex-shrink:0;">
+                    <div style="display: flex; align-items: center; gap: 16px; justify-content: flex-start">
+                      <label onDrop="{{ onEmpPhotoDrop }}" onDragOver="{{ onPhotoDragOver }}" title="{{ empPhotoCta }}" style="position:relative;flex-shrink:0;width:72px;height:72px;border-radius:999px;cursor:pointer;">
                         <sc-if value="{{ hasEmpPhoto }}" hint-placeholder-val="{{ false }}">{{ empPhotoEl }}</sc-if>
-                        <sc-if value="{{ noEmpPhoto }}" hint-placeholder-val="{{ true }}"><span style="display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:999px;background:var(--gray-100);color:var(--fg-secondary);font-family:var(--font-display);font-weight:800;font-size:18px;">{{ viewEmpInitials }}</span></sc-if>
-                        <span role="button" onClick="{{ clearEmpPhoto }}" title="Remove photo" style="position:absolute;right:-2px;bottom:-2px;display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:999px;background:#fff;border:1px solid var(--border-secondary);box-shadow:var(--shadow-xs);color:#D92D20;cursor:pointer;">
-                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" x2="10" y1="11" y2="17"></line><line x1="14" x2="14" y1="11" y2="17"></line></svg>
+                        <sc-if value="{{ noEmpPhoto }}" hint-placeholder-val="{{ true }}"><span style="display:inline-flex;align-items:center;justify-content:center;width:72px;height:72px;border-radius:999px;background:var(--gray-100);color:var(--fg-quaternary);"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></span></sc-if>
+                        <span style="position:absolute;right:-2px;bottom:-2px;display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:999px;background:var(--brand-600);border:2px solid #fff;box-shadow:var(--shadow-xs);color:#fff;">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
                         </span>
-                      </span>
-                      <label onDrop="{{ onEmpPhotoDrop }}" onDragOver="{{ onPhotoDragOver }}" style="flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px;background:#fff;border:1.5px dashed var(--brand-300);border-radius:12px;cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--brand-50);">
-                        <span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border:1px solid var(--border-secondary);border-radius:9px;box-shadow:var(--shadow-xs);color:var(--fg-secondary);margin-bottom:8px;">
-                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 13v8"></path><path d="m8 17 4-4 4 4"></path><path d="M20 16.7A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25"></path></svg>
-                        </span>
-                        <span style="font-size:14px;color:var(--fg-tertiary);"><span style="color:var(--brand-700);font-weight:700;">{{ empPhotoCta }}</span> or drag and drop</span>
-                        <span style="font-size:12px;color:var(--fg-quaternary);margin-top:3px;">JPG or PNG (max. 5MB)</span>
                         <input type="file" accept="image/png,image/jpeg" onChange="{{ onEmpPhoto }}" style="display:none;">
                       </label>
+                      <sc-if value="{{ hasEmpPhoto }}" hint-placeholder-val="{{ false }}">
+                        <button onClick="{{ clearEmpPhoto }}" style="display:inline-flex;align-items:center;gap:7px;padding:9px 16px;font-family:var(--font-body);font-size:14px;font-weight:700;color:#D92D20;background:#fff;border:1px solid var(--border-primary);border-radius:999px;box-shadow:var(--shadow-xs);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--error-50);">
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" x2="10" y1="11" y2="17"></line><line x1="14" x2="14" y1="11" y2="17"></line></svg>
+                          Remove
+                        </button>
+                      </sc-if>
                     </div>
                   </div>
                 </sc-if>
@@ -480,7 +479,49 @@
                 </div>
                 <sc-if value="{{ secEmployment.stepHeader }}" hint-placeholder-val="{{ false }}"><div style="padding:2px 22px 18px;"><div style="height:8px;background:var(--gray-100);border-radius:999px;overflow:hidden;"><div style="height:100%;width:{{ secEmployment.progressW }};background:var(--brand-500);transition:width 240ms ease;"></div></div></div></sc-if>
                 <sc-if value="{{ secEmployment.open }}" hint-placeholder-val="{{ true }}">
-                  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:center;padding:16px 22px;border-top:1px solid var(--border-secondary);">
+                  <div style="display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.1fr); gap: 24px; align-items: flex-start; padding: 16px 22px; border-top: 1px solid var(--border-secondary)">
+                    <span style="font-size:15px;color:var(--fg-secondary);">Employment type</span>
+                    <div style="position:relative;">
+                      <div role="button" onClick="{{ toggleEmpType }}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;box-sizing:border-box;padding:11px 14px;background:#fff;border:1px solid var(--border-primary);border-radius:8px;cursor:pointer;transition:border-color 120ms ease;">
+                        <span style="font-size:15px;color:{{ empTypeTextColor }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ empTypeDisplay }}</span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;transform:{{ empTypeChevron }};transition:transform 160ms ease;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                      </div>
+                      <sc-if value="{{ empTypeOpen }}" hint-placeholder-val="{{ false }}">
+                        <div onClick="{{ closeEmpType }}" style="position:fixed;inset:0;z-index:5;"></div>
+                        <div style="position:absolute;z-index:10;top:calc(100% + 8px);left:0;right:0;background:#fff;border:1px solid var(--border-secondary);border-radius:14px;box-shadow:var(--shadow-lg);overflow:hidden;">
+                          <div style="max-height:260px;overflow-y:auto;padding:6px;">
+                            <sc-for list="{{ empTypeList }}" as="o" hint-placeholder-count="6">
+                              <div onClick="{{ o.onSelect }}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 12px;border-radius:8px;font-size:15px;color:var(--fg-primary);cursor:pointer;background:{{ o.bg }};transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">{{ o.label }}<sc-if value="{{ o.selected }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-600)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></sc-if></div>
+                            </sc-for>
+                          </div>
+                        </div>
+                      </sc-if>
+                      <button onClick="{{ openEmpTypeHelp }}" style="display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:0;background:none;border:none;cursor:pointer;font-family:var(--font-body);font-size:13px;font-weight:600;color:var(--brand-700);">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                        Need help choosing?
+                      </button>
+                    </div>
+                  </div>
+                  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:center;padding:16px 22px;border-top:1px solid var(--border-tertiary);">
+                    <span style="font-size:15px;color:var(--fg-secondary);">Position</span>
+                    <div style="position:relative;">
+                      <div role="button" onClick="{{ toggleEmpPosition }}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;box-sizing:border-box;padding:11px 14px;background:#fff;border:1px solid var(--border-primary);border-radius:8px;cursor:pointer;transition:border-color 120ms ease;">
+                        <span style="font-size:15px;color:{{ empPositionTextColor }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ empPositionDisplay }}</span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;transform:{{ empPositionChevron }};transition:transform 160ms ease;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                      </div>
+                      <sc-if value="{{ empPositionOpen }}" hint-placeholder-val="{{ false }}">
+                        <div onClick="{{ closeEmpPosition }}" style="position:fixed;inset:0;z-index:5;"></div>
+                        <div style="position:absolute;z-index:10;top:calc(100% + 8px);left:0;right:0;background:#fff;border:1px solid var(--border-secondary);border-radius:14px;box-shadow:var(--shadow-lg);overflow:hidden;">
+                          <div style="max-height:260px;overflow-y:auto;padding:6px;">
+                            <sc-for list="{{ empPositionList }}" as="o" hint-placeholder-count="5">
+                              <div onClick="{{ o.onSelect }}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 12px;border-radius:8px;font-size:15px;color:var(--fg-primary);cursor:pointer;background:{{ o.bg }};transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">{{ o.label }}<sc-if value="{{ o.selected }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-600)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></sc-if></div>
+                            </sc-for>
+                          </div>
+                        </div>
+                      </sc-if>
+                    </div>
+                  </div>
+                  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:center;padding:16px 22px;border-top:1px solid var(--border-tertiary);">
                     <span style="font-size:15px;color:var(--fg-secondary);">Job role</span>
                     <div style="position:relative;">
                       <div role="button" onClick="{{ toggleEmpRole }}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;box-sizing:border-box;padding:11px 14px;background:#fff;border:1px solid {{ empRoleBorder }};border-radius:8px;cursor:pointer;transition:border-color 120ms ease;">
@@ -505,6 +546,9 @@
                           </sc-if>
                           <div style="height:1px;background:var(--border-secondary);"></div>
                           <div style="max-height:220px;overflow-y:auto;padding:6px;">
+                            <sc-if value="{{ empRoleEmpty }}" hint-placeholder-val="{{ false }}">
+                              <div style="padding:14px 12px;font-size:14px;color:var(--fg-tertiary);text-align:center;">No job roles yet — add one above.</div>
+                            </sc-if>
                             <sc-for list="{{ empRoleList }}" as="r" hint-placeholder-count="4">
                               <div onClick="{{ r.onSelect }}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 12px;border-radius:8px;font-size:15px;color:var(--fg-primary);cursor:pointer;background:{{ r.bg }};transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">{{ r.label }}<sc-if value="{{ r.selected }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-600)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></sc-if></div>
                             </sc-for>
@@ -538,6 +582,9 @@
                           </sc-if>
                           <div style="height:1px;background:var(--border-secondary);"></div>
                           <div style="max-height:220px;overflow-y:auto;padding:6px;">
+                            <sc-if value="{{ empDeptEmpty }}" hint-placeholder-val="{{ false }}">
+                              <div style="padding:14px 12px;font-size:14px;color:var(--fg-tertiary);text-align:center;">No departments yet — add one above.</div>
+                            </sc-if>
                             <sc-for list="{{ empDeptList }}" as="d" hint-placeholder-count="4">
                               <div onClick="{{ d.onSelect }}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 12px;border-radius:8px;font-size:15px;color:var(--fg-primary);cursor:pointer;background:{{ d.bg }};transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">{{ d.label }}<sc-if value="{{ d.selected }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-600)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></sc-if></div>
                             </sc-for>
@@ -545,13 +592,6 @@
                         </div>
                       </sc-if>
                     </div>
-                  </div>
-                  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:center;padding:16px 22px;border-top:1px solid var(--border-tertiary);">
-                    <span style="font-size:15px;color:var(--fg-secondary);">Employment type</span>
-                    <span style="position:relative;display:block;">
-                      <select value="{{ ef.employmentType }}" onChange="{{ eh.employmentType }}" style="appearance:none;-webkit-appearance:none;width:100%;box-sizing:border-box;padding:11px 38px 11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:#fff;border:1px solid var(--border-primary);border-radius:8px;outline:none;cursor:pointer;"><option value="">Select type</option><sc-for list="{{ etypeOpts }}" as="o" hint-placeholder-count="3"><option value="{{ o }}">{{ o }}</option></sc-for></select>
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;right:13px;top:50%;transform:translateY(-50%);pointer-events:none;"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                    </span>
                   </div>
                   <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:center;padding:16px 22px;border-top:1px solid var(--border-tertiary);">
                     <span style="font-size:15px;color:var(--fg-secondary);">Staff number</span>
@@ -607,14 +647,16 @@
                         <div onClick="{{ empPickSsnitYes }}" style="{{ ssnitYesStyle }}"><span style="display:inline-flex;flex-shrink:0;align-items:center;"><sc-if value="{{ ssnitYes }}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8Z" fill="#018F58"></path><path d="M5 8C5 6.34315 6.34315 5 8 5C9.65685 5 11 6.34315 11 8C11 9.65685 9.65685 11 8 11C6.34315 11 5 9.65685 5 8Z" fill="#fff"></path></svg></sc-if><sc-if value="{{ ssnitNo }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M8 0.5C12.1421 0.5 15.5 3.85786 15.5 8C15.5 12.1421 12.1421 15.5 8 15.5C3.85786 15.5 0.5 12.1421 0.5 8C0.5 3.85786 3.85786 0.5 8 0.5Z" stroke="#D5D7DA"></path></svg></sc-if></span>Yes</div>
                         <div onClick="{{ empPickSsnitNo }}" style="{{ ssnitNoStyle }}"><span style="display:inline-flex;flex-shrink:0;align-items:center;"><sc-if value="{{ ssnitNo }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8Z" fill="#018F58"></path><path d="M5 8C5 6.34315 6.34315 5 8 5C9.65685 5 11 6.34315 11 8C11 9.65685 9.65685 11 8 11C6.34315 11 5 9.65685 5 8Z" fill="#fff"></path></svg></sc-if><sc-if value="{{ ssnitYes }}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M8 0.5C12.1421 0.5 15.5 3.85786 15.5 8C15.5 12.1421 12.1421 15.5 8 15.5C3.85786 15.5 0.5 12.1421 0.5 8C0.5 3.85786 3.85786 0.5 8 0.5Z" stroke="#D5D7DA"></path></svg></sc-if></span>No</div>
                       </div>
-                      <sc-if value="{{ ssnitYes }}" hint-placeholder-val="{{ true }}">
-                        <div style="display:flex;align-items:flex-start;gap:10px;margin-top:14px;padding:12px 16px;background:var(--info-50);border-radius:10px;">
-                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--info-500)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
-                          <div style="font-size:14px;color:var(--fg-secondary);line-height:20px;">5.5% will be deducted every month<br><span style="color:var(--fg-tertiary);">GHS {{ ssnitAmount }}</span></div>
-                        </div>
-                      </sc-if>
                     </div>
                   </div>
+                  <sc-if value="{{ ssnitYes }}" hint-placeholder-val="{{ true }}">
+                    <div style="padding:0 22px 18px;">
+                      <div style="display:flex;align-items:flex-start;gap:10px;padding:12px 16px;background:var(--info-50);border-radius:10px;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--info-500)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+                        <div style="font-size:14px;color:var(--fg-secondary);line-height:20px;">5.5% will be deducted every month<br><span style="color:var(--fg-tertiary);">GHS {{ ssnitAmount }}</span></div>
+                      </div>
+                    </div>
+                  </sc-if>
                   <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:start;padding:18px 22px;border-top:1px solid var(--border-tertiary);">
                     <span style="font-size:15px;color:var(--fg-secondary);">Deduct Tier 3 Pension from employee's Salary?</span>
                     <div>
@@ -701,14 +743,6 @@
 
             </div>
           </div>
-          <sc-if value="{{ showStepFooter }}" hint-placeholder-val="{{ false }}">
-            <div style="position:sticky;bottom:0;flex-shrink:0;background:#fff;border-top:1px solid var(--border-secondary);padding:0 56px;z-index:5;">
-              <div style="max-width:720px;margin:0 auto;display:flex;justify-content:space-between;gap:16px;padding:18px 0;">
-                <button onClick="{{ stepBack }}" style="display:inline-flex;align-items:center;gap:8px;padding:12px 30px;font-family:var(--font-body);font-size:15px;font-weight:700;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:999px;cursor:pointer;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" x2="5" y1="12" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>Back</button>
-                <button onClick="{{ stepNext }}" style="display:inline-flex;align-items:center;gap:8px;padding:12px 30px;font-family:var(--font-body);font-size:15px;font-weight:700;color:#fff;background-color:#018F58;border:none;border-radius:999px;cursor:pointer;">{{ stepContinueLabel }}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" x2="19" y1="12" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
-              </div>
-            </div>
-          </sc-if>
           </sc-if>
           </div>
 
@@ -722,6 +756,42 @@
 
     </div>
   </div>
+
+  <sc-if value="{{ empTypeHelpOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeEmpTypeHelp }}" style="position:fixed;inset:0;z-index:120;background:rgba(10,13,18,0.5);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:32px 24px;box-sizing:border-box;font-family:var(--font-body);">
+      <div onClick="{{ stop }}" style="width:100%;max-width:720px;max-height:86vh;background:#fff;border-radius:20px;box-shadow:var(--shadow-2xl);display:flex;flex-direction:column;overflow:hidden;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:24px 28px 18px;border-bottom:1px solid var(--border-secondary);flex-shrink:0;">
+          <div style="min-width:0;">
+            <h2 style="font-family:var(--font-display);font-size:21px;font-weight:800;letter-spacing:-0.01em;margin:0 0 4px;color:var(--fg-primary);">Choosing an employment type</h2>
+            <p style="font-size:14px;line-height:21px;color:var(--fg-tertiary);margin:0;">How each type is treated for PAYE and SSNIT. Pick the one that matches the worker's arrangement.</p>
+          </div>
+          <span role="button" onClick="{{ closeEmpTypeHelp }}" aria-label="Close" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;cursor:pointer;color:var(--fg-quaternary);transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></span>
+        </div>
+        <div style="flex:1;overflow-y:auto;padding:4px 28px 24px;">
+          <sc-for list="{{ empTypeGuide }}" as="g" hint-placeholder-count="4">
+            <div style="margin-top:22px;">
+              <div style="font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--fg-quaternary);margin-bottom:12px;">{{ g.group }}</div>
+              <sc-if value="{{ g.hasIntro }}" hint-placeholder-val="{{ false }}"><p style="font-size:14px;line-height:21px;color:var(--fg-secondary);margin:0 0 12px;background:var(--bg-secondary);border:1px solid var(--border-secondary);border-radius:10px;padding:12px 14px;">{{ g.intro }}</p></sc-if>
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="3">
+                  <div style="border:1px solid var(--border-secondary);border-radius:12px;padding:14px 16px;">
+                    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:5px;">
+                      <span style="font-size:15px;font-weight:700;color:var(--fg-primary);">{{ it.name }}</span>
+                      <span style="display:inline-flex;align-items:center;padding:3px 10px;font-size:12px;font-weight:600;border-radius:999px;color:{{ it.tagColor }};background:{{ it.tagBg }};">{{ it.tag }}</span>
+                    </div>
+                    <div style="font-size:14px;line-height:21px;color:var(--fg-tertiary);">{{ it.desc }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="flex-shrink:0;display:flex;justify-content:flex-end;padding:16px 28px;border-top:1px solid var(--border-secondary);">
+          <button onClick="{{ closeEmpTypeHelp }}" style="display:inline-flex;align-items:center;justify-content:center;padding:12px 28px;font-family:var(--font-body);font-weight:700;font-size:15px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:999px;box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">Got it</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
 
   <sc-if value="{{ importDone }}" hint-placeholder-val="{{ false }}">
     <div style="position:fixed;inset:0;z-index:75;background:rgba(10,13,18,0.5);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:32px 24px;box-sizing:border-box;">
@@ -997,40 +1067,34 @@
 
 </div>
 
-<sc-if value="{{ panelOpen }}" hint-placeholder-val="{{ true }}">
-  <div style="position:fixed;bottom:20px;left:20px;z-index:90;width:280px;display:flex;flex-direction:column;background:#fff;border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-2xl);overflow:hidden;font-family:var(--font-body);">
-    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:13px 16px;border-bottom:1px solid var(--border-secondary);">
-      <span style="display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--fg-primary);">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--brand-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
-        Preview controls
-      </span>
-      <span role="button" onClick="{{ togglePanel }}" aria-label="Minimize" style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:28px;border-radius:8px;cursor:pointer;color:var(--fg-quaternary);transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-      </span>
-    </div>
-    <div style="padding:14px 16px 16px;display:flex;flex-direction:column;gap:15px;">
-      <sc-for list="{{ panelGroups }}" as="g" hint-placeholder-count="1">
-        <div>
-          <div style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--fg-quaternary);margin-bottom:8px;">{{ g.label }}</div>
-          <div style="display:flex;flex-wrap:wrap;gap:6px;">
-            <sc-for list="{{ g.options }}" as="o" hint-placeholder-count="2">
-              <button onClick="{{ o.onClick }}" style="padding:6px 12px;font-family:var(--font-body);font-size:13px;font-weight:600;border-radius:999px;cursor:pointer;background:{{ o.bg }};color:{{ o.color }};border:1px solid {{ o.border }};transition:background 120ms ease,color 120ms ease;">{{ o.label }}</button>
-            </sc-for>
-          </div>
-        </div>
-      </sc-for>
+
+<sc-if value="{{ coachOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;inset:0;z-index:300;pointer-events:none;font-family:var(--font-body);">
+    <sc-if value="{{ coach.hasSpot }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;{{ coach.spotStyle }};border-radius:24px;box-shadow:0 0 0 3px var(--brand-400),0 0 0 9999px rgba(12,17,15,0.55);pointer-events:none;transition:all 240ms cubic-bezier(.4,0,.2,1);"></div>
+    </sc-if>
+    <div style="position:absolute;{{ coach.cardStyle }};pointer-events:auto;width:380px;max-width:calc(100vw - 32px);background:#fff;border:1px solid var(--border-secondary);border-radius:18px;box-shadow:var(--shadow-2xl);padding:22px 24px 20px;box-sizing:border-box;transition:left 240ms cubic-bezier(.4,0,.2,1),top 240ms cubic-bezier(.4,0,.2,1);">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:11px;">
+        <span style="display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--brand-700);"><span style="width:7px;height:7px;border-radius:999px;background:var(--brand-500);"></span>{{ coach.eyebrow }}</span>
+        <span role="button" onClick="{{ coachClose }}" aria-label="Close" style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;margin:-4px -6px -4px 0;border-radius:8px;color:var(--fg-quaternary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </span>
+      </div>
+      <div style="font-family:var(--font-display);font-size:20px;line-height:27px;font-weight:800;letter-spacing:-0.01em;color:var(--fg-primary);margin-bottom:8px;text-wrap:pretty;">{{ coach.title }}</div>
+      <div style="font-size:14.5px;line-height:22px;color:var(--fg-tertiary);margin-bottom:20px;text-wrap:pretty;">{{ coach.body }}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+        <span style="font-size:13px;font-weight:600;color:var(--fg-quaternary);">{{ coach.footer }}</span>
+        <sc-if value="{{ coach.showCta }}" hint-placeholder-val="{{ true }}">
+          <button onClick="{{ coachClose }}" style="padding:10px 20px;font-family:var(--font-body);font-weight:700;font-size:14px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);cursor:pointer;box-shadow:var(--shadow-btn-primary);transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">{{ coach.cta }}</button>
+        </sc-if>
+      </div>
     </div>
   </div>
-</sc-if>
-<sc-if value="{{ panelClosed }}" hint-placeholder-val="{{ false }}">
-  <button onClick="{{ togglePanel }}" aria-label="Preview controls" style="position:fixed;bottom:20px;left:20px;z-index:90;display:inline-flex;align-items:center;gap:6px;padding:7px 13px;font-family:var(--font-body);font-size:12px;font-weight:600;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:999px;box-shadow:var(--shadow-md);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
-    Controls
-  </button>
 </sc-if></x-dc>
 <script type="text/x-dc" data-dc-script data-props="{
   &quot;$preview&quot;: { &quot;width&quot;: 1440, &quot;height&quot;: 900 },
-  &quot;state&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;Empty&quot;, &quot;Populated&quot;], &quot;default&quot;: &quot;Empty&quot;, &quot;tsType&quot;: &quot;string&quot; }
+  &quot;state&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;Empty&quot;, &quot;Populated&quot;], &quot;default&quot;: &quot;Empty&quot;, &quot;tsType&quot;: &quot;string&quot; },
+  &quot;walkthrough&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;Off&quot;, &quot;Choose method&quot;, &quot;Payroll nav&quot;], &quot;default&quot;: &quot;Off&quot;, &quot;tsType&quot;: &quot;string&quot; }
 }">
 const DEPARTMENTS = [
   { value: 'Engineering', label: 'Engineering' },
@@ -1042,11 +1106,49 @@ const DEPARTMENTS = [
   { value: 'Customer Support', label: 'Customer Support' },
 ];
 const ETYPES = [
-  { value: 'Full-time', label: 'Full-time' },
-  { value: 'Part-time', label: 'Part-time' },
-  { value: 'Contract', label: 'Contract' },
-  { value: 'National Service', label: 'National Service' },
+  { value: 'Full-Time-Resident', label: 'Full-Time-Resident' },
+  { value: 'Resident-Part-Time-Resident', label: 'Resident-Part-Time-Resident' },
+  { value: 'Casual-Resident', label: 'Casual-Resident' },
+  { value: 'Independent Contractor', label: 'Independent Contractor' },
+  { value: 'Contractor-Full-Time', label: 'Contractor-Full-Time' },
+  { value: 'NSS', label: 'NSS' },
   { value: 'Intern', label: 'Intern' },
+  { value: 'Non-Resident', label: 'Non-Resident' },
+  { value: 'Secondary@5%', label: 'Secondary@5%' },
+  { value: 'Secondary@10%', label: 'Secondary@10%' },
+  { value: 'Secondary@17.5%', label: 'Secondary@17.5%' },
+  { value: 'Secondary@25%', label: 'Secondary@25%' },
+];
+const POSITION_OPTS = ['Junior', 'Senior', 'Management', 'Expatriate', 'Other'];
+const TAG_TONES = {
+  green:  { tagColor: 'var(--success-700)', tagBg: 'var(--success-50)' },
+  blue:   { tagColor: '#175CD3', tagBg: '#EFF8FF' },
+  purple: { tagColor: 'var(--purple-700)', tagBg: 'var(--purple-100)' },
+  grey:   { tagColor: 'var(--fg-secondary)', tagBg: 'var(--bg-secondary)' },
+  orange: { tagColor: 'var(--orange-700)', tagBg: 'var(--orange-100)' },
+  teal:   { tagColor: 'var(--teal-700)', tagBg: 'var(--teal-100)' },
+};
+const EMP_TYPE_GUIDE = [
+  { group: 'Standard resident employees', items: [
+    { name: 'Full-Time-Resident', tag: 'PAYE + SSNIT', tone: 'green', desc: 'Ghana-resident staff on a continuous full-time contract. Pays monthly PAYE on the progressive bands, with SSNIT (5.5% of basic) and personal reliefs applied.' },
+    { name: 'Part-Time Resident', tag: 'PAYE + SSNIT', tone: 'green', desc: 'Ghana-resident staff working reduced or limited hours. PAYE applies to actual earnings on the same progressive bands; reliefs and SSNIT apply where relevant.' },
+    { name: 'Casual-Resident', tag: 'PAYE', tone: 'blue', desc: 'Ghana-resident staff on short-term or irregular work. PAYE is charged on the progressive bands, usually withheld per engagement or aggregated monthly.' },
+  ] },
+  { group: 'Contract & service arrangements', items: [
+    { name: 'Contractor-Full-Time', tag: 'PAYE + SSNIT', tone: 'green', desc: 'A contract worker who functions like an employee — your hours, your systems, your direction. Treated as staff for tax, so full PAYE and SSNIT apply.' },
+    { name: 'Independent Contractor', tag: 'Withholding tax', tone: 'purple', desc: 'A self-employed service provider, not an employee. No PAYE or SSNIT runs through payroll — only withholding tax is deducted on payment for services.' },
+  ] },
+  { group: 'Special status', items: [
+    { name: 'NSS (National Service)', tag: 'No payroll deductions', tone: 'grey', desc: 'National Service personnel on a monthly allowance. Generally not treated as employees for PAYE, so the allowance is paid without standard payroll deductions.' },
+    { name: 'Intern', tag: 'Usually no PAYE', tone: 'grey', desc: 'Typically paid a stipend or allowance rather than a salary. This often falls outside taxable employment income, so PAYE and SSNIT may not apply.' },
+    { name: 'Non-Resident', tag: 'PAYE \u00b7 no reliefs', tone: 'orange', desc: 'Someone not tax-resident in Ghana earning Ghana-sourced employment income. PAYE applies on the progressive bands, but resident personal reliefs are not granted.' },
+  ] },
+  { group: 'Secondary employment', intro: 'These all describe someone with a primary job elsewhere. Their tax-free band and lower bands are already used up by the main employer, so income here is withheld at a single flat marginal rate — pick the rate matching the band their primary salary already reaches.', items: [
+    { name: 'Secondary@5%', tag: 'Flat 5% PAYE', tone: 'teal', desc: 'Employee whose main job sits in the 5% band. Income from this job is withheld at a flat 5% — no tax-free portion is applied here.' },
+    { name: 'Secondary@10%', tag: 'Flat 10% PAYE', tone: 'teal', desc: 'Employee whose primary income reaches the 10% band. This job\u2019s earnings are withheld at a flat 10%.' },
+    { name: 'Secondary@17.5%', tag: 'Flat 17.5% PAYE', tone: 'teal', desc: 'Employee whose primary income reaches the 17.5% band. This job\u2019s earnings are withheld at a flat 17.5%.' },
+    { name: 'Secondary@25%', tag: 'Flat 25% PAYE', tone: 'teal', desc: 'Employee whose primary income is already in the top 25% band. This job\u2019s earnings are withheld at a flat 25%.' },
+  ] },
 ];
 const JOB_ROLES = [
   { value: 'Operations Lead', label: 'Operations Lead' },
@@ -1066,7 +1168,7 @@ function firstName(name) {
   return (name || '').trim().split(/\s+/)[0] || 'they';
 }
 function emptyEmpForm() {
-  return { firstName: '', surname: '', otherNames: '', jobRole: '', department: '', employmentType: '', staffNumber: '', ghanaCard: '', tin: '', basicSalary: '', ssnit: 'yes', tier3: 'yes', tier3Amount: '', tier3Mode: 'fixed', email: '', phone: '', accountNumber: '', accountName: '', bankBranch: '' };
+  return { firstName: '', surname: '', otherNames: '', jobRole: '', department: '', employmentType: '', position: '', staffNumber: '', ghanaCard: '', tin: '', basicSalary: '', ssnit: 'yes', tier3: 'yes', tier3Amount: '', tier3Mode: 'fixed', email: '', phone: '', accountNumber: '', accountName: '', bankBranch: '' };
 }
 function emptyForm() {
   return {
@@ -1131,23 +1233,10 @@ function rosterToRow(e) {
 const BRAND = 'var(--brand-500)';
 
 const STEP_ORDER = ['identity', 'employment', 'comp', 'ssnit', 'contact', 'bank', 'review'];
-const DEFAULT_DEPTS = [
-  { value: 'Operations', label: 'Operations' },
-  { value: 'Finance', label: 'Finance' },
-  { value: 'Engineering', label: 'Engineering' },
-  { value: 'Sales', label: 'Sales' },
-  { value: 'Human Resources', label: 'Human Resources' },
-];
-const DEFAULT_ROLES = [
-  { value: 'Operations Lead', label: 'Operations Lead' },
-  { value: 'Accountant', label: 'Accountant' },
-  { value: 'Software Engineer', label: 'Software Engineer' },
-  { value: 'Sales Executive', label: 'Sales Executive' },
-  { value: 'HR Manager', label: 'HR Manager' },
-  { value: 'Administrator', label: 'Administrator' },
-];
+const DEFAULT_DEPTS = [];
+const DEFAULT_ROLES = [];
 function sampleEmpForm() {
-  return { firstName: 'Akua', surname: 'Mensah', otherNames: 'Adwoa', jobRole: 'Operations Lead', department: 'Operations', employmentType: 'Full Time', staffNumber: 'EMP-0142', ghanaCard: 'GHA-725481630-2', tin: 'P0001234567', basicSalary: '8,500.00', ssnit: 'yes', tier3: 'yes', tier3Amount: '5', tier3Mode: 'percent', email: 'akua.mensah@acmefoods.gh', phone: '20 123 4567', accountNumber: '1011234567890', accountName: 'Akua Adwoa Mensah', bankBranch: 'GCB Bank \u2014 Accra Main' };
+  return { firstName: 'Akua', surname: 'Mensah', otherNames: 'Adwoa', jobRole: 'Operations Lead', department: 'Operations', employmentType: 'Full-Time-Resident', position: 'Management', staffNumber: 'EMP-0142', ghanaCard: 'GHA-725481630-2', tin: 'P0001234567', basicSalary: '8,500.00', ssnit: 'yes', tier3: 'yes', tier3Amount: '5', tier3Mode: 'percent', email: 'akua.mensah@acmefoods.gh', phone: '20 123 4567', accountNumber: '1011234567890', accountName: 'Akua Adwoa Mensah', bankBranch: 'GCB Bank \u2014 Accra Main' };
 }
 const SEC_SUB = {
   identity: 'Tell us about the employee',
@@ -1170,14 +1259,16 @@ class Component extends DCLogic {
   state = {
     employees: [],
     methodOpen: false, method: 'paye', adding: false, addingStep: 'choose', uploadedFile: null, uploadStatus: 'idle', viewEmp: null, bannerLeaving: false, importDone: false, empDirty: false, rosterView: null,
-    empForm: emptyEmpForm(), empEdits: {}, empCollapsed: {}, empStep: 0, rosterSearch: '', rosterPage: 1, rosterFilter: '', addNew: false,
+    empForm: emptyEmpForm(), empBaseForm: emptyEmpForm(), empEdits: {}, empCollapsed: {}, empStep: 0, rosterSearch: '', rosterPage: 1, rosterFilter: '', addNew: false,
     drawerOpen: false, editIndex: null, form: emptyForm(), errors: {},
     departments: DEFAULT_DEPTS.map(d => ({ ...d })), deptOpen: false, newDept: '',
     jobRoles: DEFAULT_ROLES.map(r => ({ ...r })), roleOpen: false, newRole: '',
     empDeptOpen: false, empDeptAdding: false, empNewDept: '', empDeptError: '',
     empRoleOpen: false, empRoleAdding: false, empNewRole: '', empRoleError: '',
+    empTypeOpen: false, empPositionOpen: false, empTypeHelpOpen: false,
     toast: null,
     dataPref: 'Empty', panelOpen: false,
+    coachOpen: false, coachRect: null, coachStep: null,
   };
   toastTimer = null;
   componentDidMount() {
@@ -1193,9 +1284,22 @@ class Component extends DCLogic {
       setTimeout(poll, 30);
     }
     try { if (new URLSearchParams(location.search).get('addstep') === 'review') this.setState({ addNew: true, empStep: STEP_ORDER.length - 1, empForm: sampleEmpForm(), empEdits: {}, empDirty: false, empCollapsed: {} }); } catch (e) {}
+    this._coachStart = setTimeout(() => this.startCoachFromProp(), 90);
   }
-  componentDidUpdate(prev) { if (prev.state !== this.props.state) this.applyTweak(); }
-  componentWillUnmount() { if (this.toastTimer) clearTimeout(this.toastTimer); }
+  componentDidUpdate(prev) {
+    if (prev.state !== this.props.state) this.applyTweak();
+    if (prev.walkthrough !== this.props.walkthrough) {
+      if (this.props.walkthrough === 'Choose method' || this.props.walkthrough === 'Payroll nav') setTimeout(() => this.startCoachFromProp(), 60);
+      else if (prev.walkthrough === 'Choose method' || prev.walkthrough === 'Payroll nav') this.setState({ coachOpen: false, coachStep: null });
+    }
+  }
+  startCoachFromProp = () => {
+    const w = this.props.walkthrough;
+    if (w === 'Choose method') { this.startCoach('people-choose'); return; }
+    if (w === 'Payroll nav') { this.startCoach('nav-payroll'); return; }
+    this.maybeStartCoach();
+  };
+  componentWillUnmount() { if (this.toastTimer) clearTimeout(this.toastTimer); if (this._coachStart) clearTimeout(this._coachStart); if (this._coachResize) window.removeEventListener('resize', this._coachResize); }
   applyTweak() {
     // Live: reflect the signed-up company name.
     if (window.AppState && window.AppState.getAccount) {
@@ -1225,6 +1329,30 @@ class Component extends DCLogic {
   };
   togglePanel = () => this.setState(s => ({ panelOpen: !s.panelOpen }));
 
+  COACH_TARGET = { 'people-choose': '[data-tour="choose-method"]', 'nav-payroll': '[data-tour="nav-payroll"]' };
+  coachMeasure = () => {
+    const sel = this.COACH_TARGET[this.state.coachStep];
+    const el = sel ? document.querySelector(sel) : null;
+    if (el) { const r = el.getBoundingClientRect(); this.setState({ coachRect: { x: r.left, y: r.top, w: r.width, h: r.height } }); }
+    else this.setState({ coachRect: null });
+  };
+  coachSchedule = () => { requestAnimationFrame(this.coachMeasure); [60, 160, 360, 650].forEach(t => setTimeout(() => { if (this.state.coachOpen) this.coachMeasure(); }, t)); };
+  startCoach = (step) => {
+    if (!this._coachResize) { this._coachResize = () => { if (this.state.coachOpen) this.coachMeasure(); }; window.addEventListener('resize', this._coachResize); }
+    this.setState({ coachOpen: true, coachStep: step }, this.coachSchedule);
+  };
+  maybeStartCoach = () => {
+    let step = null; try { step = localStorage.getItem('dxp_tour_resume'); } catch (e) {}
+    if (step === 'people-choose') {
+      if ((this.state.employees || []).length > 0 || this.state.addNew || this.state.adding) { try { localStorage.removeItem('dxp_tour_resume'); } catch (e) {} return; }
+      this.startCoach('people-choose');
+    } else if (step === 'nav-payroll') {
+      this.startCoach('nav-payroll');
+    }
+  };
+  advanceToNavPayroll = () => { try { localStorage.setItem('dxp_tour_resume', 'nav-payroll'); } catch (e) {} setTimeout(() => this.startCoach('nav-payroll'), 120); };
+  coachClose = () => { try { localStorage.removeItem('dxp_tour_resume'); } catch (e) {} if (this._coachResize) { window.removeEventListener('resize', this._coachResize); this._coachResize = null; } this.setState({ coachOpen: false, coachStep: null }); };
+
   showToast(msg) {
     if (this.toastTimer) clearTimeout(this.toastTimer);
     this.setState({ toast: msg });
@@ -1234,22 +1362,23 @@ class Component extends DCLogic {
   stop = (ev) => ev.stopPropagation();
 
   openMethod = () => this.setState({ adding: true, addingStep: 'choose' });
-  addNewEmp = () => this.setState({ addNew: true, empStep: 0, adding: false, viewEmp: null, rosterView: null, methodOpen: false, addTypeOpen: false, empForm: emptyEmpForm(), empEdits: {}, empDirty: false, empCollapsed: {} });
+  addNewEmp = () => this.setState({ addNew: true, empStep: 0, adding: false, viewEmp: null, rosterView: null, methodOpen: false, addTypeOpen: false, empForm: emptyEmpForm(), empBaseForm: emptyEmpForm(), empEdits: {}, empDirty: false, empCollapsed: {} });
   toggleAddType = () => this.setState(s => ({ addTypeOpen: !s.addTypeOpen }));
   closeAddType = () => this.setState({ addTypeOpen: false });
-  addEmpOfType = (type) => this.setState({ addNew: true, empStep: 0, adding: false, viewEmp: null, rosterView: null, methodOpen: false, addTypeOpen: false, empForm: { ...emptyEmpForm(), employmentType: type }, empEdits: {}, empDirty: false, empCollapsed: {} });
+  addEmpOfType = (type) => this.setState({ addNew: true, empStep: 0, adding: false, viewEmp: null, rosterView: null, methodOpen: false, addTypeOpen: false, empForm: { ...emptyEmpForm(), employmentType: type }, empBaseForm: { ...emptyEmpForm(), employmentType: type }, empEdits: {}, empDirty: false, empCollapsed: {} });
   stepNext = () => { const n = STEP_ORDER.length; const s = this.state; if (s.empStep >= n - 1) { this.empSave(); return; } const next = s.empStep + 1; if (STEP_ORDER[next] === 'review') { this.setState({ empStep: next, empCollapsed: {} }); } else { this.setState({ empStep: next }); } };
   stepBack = () => { if (this.state.empStep === 0) { this.empCancel(); } else { this.setState(s => ({ empStep: s.empStep - 1 })); } };
   goStep = (i) => this.setState({ empStep: i });
   closeAdding = () => this.setState({ adding: false, viewEmp: null });
   goPeopleCrumb = () => this.setState({ adding: false, viewEmp: null, rosterView: null, addNew: false });
   goImportCrumb = () => this.setState({ viewEmp: null });
+  clearEmpChanges = () => this.setState(s => ({ empForm: { ...(s.empBaseForm || emptyEmpForm()) }, empDirty: false, empTypeOpen: false, empPositionOpen: false, empRoleOpen: false, empDeptOpen: false, empDeptAdding: false, empRoleAdding: false }));
   empCancel = () => { if (this.state.addNew) { this.setState({ addNew: false }); return; } if (this.state.rosterView != null) this.setState({ rosterView: null }); else this.setState({ viewEmp: null }); };
   openRosterEmp = (i) => {
     const e = this.state.employees[i] || {};
     const nm = (e.name || e.fullName || '').trim().split(/\s+/);
     const base = { ...emptyEmpForm(), firstName: nm[0] || '', surname: nm.slice(1).join(' '), employmentType: e.type || e.employmentType || '', ghanaCard: e.ghanaCard || '', email: e.email || '', phone: (e.phone && String(e.phone).replace(/^\+233\s*/, '')) || '', jobRole: e.jobRole || '', department: e.department || '' };
-    this.setState({ rosterView: i, empForm: base, empCollapsed: {}, empDirty: false });
+    this.setState({ rosterView: i, empForm: base, empBaseForm: base, empCollapsed: {}, empDirty: false });
   };
   onRosterSearch = (e) => this.setState({ rosterSearch: e.target.value, rosterPage: 1 });
   rosterGoto = (n) => this.setState({ rosterPage: n });
@@ -1293,12 +1422,20 @@ class Component extends DCLogic {
   onEmpPhotoDrop = (e) => { e.preventDefault(); const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]; this._readEmpPhoto(f); };
   onPhotoDragOver = (e) => { e.preventDefault(); };
   clearEmpPhoto = () => this.setState(s => ({ empForm: { ...s.empForm, photo: '' }, empDirty: true }));
+  toggleEmpType = () => this.setState(s => ({ empTypeOpen: !s.empTypeOpen, empPositionOpen: false, empRoleOpen: false, empDeptOpen: false }));
+  closeEmpType = () => this.setState({ empTypeOpen: false });
+  selectEmpType = (v) => this.setState(s => ({ empForm: { ...s.empForm, employmentType: v }, empDirty: true, empTypeOpen: false }));
+  toggleEmpPosition = () => this.setState(s => ({ empPositionOpen: !s.empPositionOpen, empTypeOpen: false, empRoleOpen: false, empDeptOpen: false }));
+  closeEmpPosition = () => this.setState({ empPositionOpen: false });
+  selectEmpPosition = (v) => this.setState(s => ({ empForm: { ...s.empForm, position: v }, empDirty: true, empPositionOpen: false }));
+  openEmpTypeHelp = () => this.setState({ empTypeHelpOpen: true, empTypeOpen: false });
+  closeEmpTypeHelp = () => this.setState({ empTypeHelpOpen: false });
   openEmp = (i) => {
     const rec = IMPORT_PREVIEW[i];
     const saved = this.state.empEdits[i];
     const nm = (rec.name || '').trim().split(/\s+/);
     const base = saved ? { ...saved } : { ...emptyEmpForm(), firstName: nm[0] || '', surname: nm.slice(1).join(' '), employmentType: rec.employmentType, ghanaCard: rec.ghanaCard };
-    this.setState({ viewEmp: i, empForm: base, empCollapsed: {}, empDirty: false });
+    this.setState({ viewEmp: i, empForm: base, empBaseForm: base, empCollapsed: {}, empDirty: false });
   };
   empSet = (field) => (ev) => { const v = (ev && ev.target) ? ev.target.value : ev; this.setState(s => ({ empForm: { ...s.empForm, [field]: v }, empDirty: true })); };
   empSetVal = (field, v) => this.setState(s => ({ empForm: { ...s.empForm, [field]: v }, empDirty: true }));
@@ -1317,8 +1454,10 @@ class Component extends DCLogic {
       const complete = !!(f.basicSalary && f.accountNumber && f.accountName);
       const rec = { name: name, fullName: name, initials: ini, employmentType: f.employmentType || '', type: f.employmentType || '', jobRole: f.jobRole || '', department: f.department || '', phone: f.phone || '', email: f.email || '', state: complete ? 'ready' : 'missing', tone: complete ? 'success' : 'gray' };
       if (window.AppState && window.AppState.addEmployees) { window.AppState.addEmployees(rec); const a = window.AppState.get(); window.AppState.set({ employees: 'done', payroll: a.payroll === 'locked' ? 'unlocked' : a.payroll }); }
+      const wasEmpty = (this.state.employees || []).length === 0;
       this.setState(s => ({ employees: [...s.employees, rec], addNew: false, dataPref: 'Populated' }));
       this.showToast('Employee added successfully');
+      if (wasEmpty) this.advanceToNavPayroll();
       return;
     }
     if (this.state.rosterView != null) {
@@ -1344,6 +1483,7 @@ class Component extends DCLogic {
   };
   goToPeople = () => {
     this.setState({ employees: this._pendingRoster || this.state.employees, dataPref: 'Populated', importDone: false, adding: false, viewEmp: null, uploadStatus: 'idle', uploadedFile: null, importedBanner: false });
+    this.advanceToNavPayroll();
   };
   backAdding = () => { if (this.state.addingStep === 'upload') this.setState({ addingStep: 'choose' }); else this.closeAdding(); };
   chooseOneByOne = () => { this.setState({ adding: false }); this.addNewEmp(); };
@@ -1477,6 +1617,24 @@ class Component extends DCLogic {
   renderVals() {
     const s = this.state;
     const viewEmp = s.viewEmp;
+    const _cr = s.coachRect;
+    let coachVals = { hasSpot: false, spotStyle: '', cardStyle: 'left:50%;top:50%;transform:translate(-50%,-50%);' };
+    if (_cr) {
+      const PAD = 10;
+      const sx = _cr.x - PAD, sy = _cr.y - PAD, sw = _cr.w + PAD * 2, sh = _cr.h + PAD * 2;
+      const vw = (typeof window !== 'undefined' && window.innerWidth) || 1440;
+      const vh = (typeof window !== 'undefined' && window.innerHeight) || 900;
+      const CW = 380;
+      let left = sx + sw + 16, top = Math.max(16, Math.min(_cr.y, vh - 260));
+      if (left + CW > vw - 16) { left = Math.max(16, Math.min(sx + sw / 2 - CW / 2, vw - CW - 16)); top = Math.min(sy + sh + 16, vh - 260); }
+      coachVals = { hasSpot: true, spotStyle: 'left:' + sx + 'px;top:' + sy + 'px;width:' + sw + 'px;height:' + sh + 'px', cardStyle: 'left:' + left + 'px;top:' + top + 'px;' };
+    }
+    const COACH_CONTENT = {
+      'people-choose': { eyebrow: 'Add your employees', title: 'Choose how to add your team', body: 'Pick the route that works best \u2014 import everyone from a spreadsheet, or add people one by one. Go ahead and click an option.', cta: 'Got it', showCta: true, footer: 'More to set up after this' },
+      'nav-payroll': { eyebrow: 'Next: set up payroll', title: 'Now set up your payroll', body: 'Your team is in. Open Payroll to add pay additions, deductions and approvers \u2014 click Payroll in the sidebar.', cta: '', showCta: false, footer: 'Click Payroll to continue \u2192' },
+    };
+    const _cc = COACH_CONTENT[s.coachStep] || COACH_CONTENT['people-choose'];
+    coachVals = { ...coachVals, eyebrow: _cc.eyebrow, title: _cc.title, body: _cc.body, cta: _cc.cta, showCta: _cc.showCta, footer: _cc.footer };
     const rosterViewActive = s.rosterView != null;
     const importPreview = s.adding && s.addingStep === 'upload' && viewEmp != null;
     const empPreview = importPreview || rosterViewActive || s.addNew;
@@ -1489,7 +1647,7 @@ class Component extends DCLogic {
     const segStyle = (on) => 'display:flex;align-items:center;gap:10px;padding:12px 18px;border:1.5px solid ' + (on ? 'var(--brand-500)' : 'var(--border-primary)') + ';border-radius:10px;cursor:pointer;background:#fff;font-family:var(--font-body);font-size:15px;font-weight:600;color:var(--fg-primary);transition:border-color 120ms ease;';
     const dotStyle = (on) => 'flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:999px;border:1.5px solid ' + (on ? 'var(--brand-600)' : 'var(--border-primary)') + ';background:' + (on ? 'var(--brand-600)' : 'transparent') + ';';
     const tabStyle = (on) => 'padding:9px 16px;font-family:var(--font-body);font-size:14px;font-weight:700;cursor:pointer;border:none;transition:background 120ms ease,color 120ms ease;background:' + (on ? 'var(--brand-600)' : '#fff') + ';color:' + (on ? '#fff' : 'var(--fg-tertiary)') + ';';
-    const onReview = s.addNew && s.empStep === STEP_ORDER.length - 1;
+    const onReview = false;
     const sumMoney = (raw) => { const x = parseFloat((raw || '').toString().replace(/[^0-9.]/g, '')); return x > 0 ? 'GH\u20b5 ' + x.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : ''; };
     const REVIEW_SUMMARY = {
       identity: [((ef.firstName || '') + ' ' + (ef.surname || '')).trim(), ef.ghanaCard].filter(Boolean).join('  \u00b7  ') || 'Not provided',
@@ -1520,19 +1678,19 @@ class Component extends DCLogic {
         };
       }
       return {
-        open: s.addNew ? true : !s.empCollapsed[k],
-        show: s.addNew ? (idx === s.empStep) : true,
+        open: !s.empCollapsed[k],
+        show: true,
         chevron: s.empCollapsed[k] ? 'rotate(180deg)' : 'rotate(0deg)',
-        toggle: s.addNew ? (() => {}) : (() => this.empToggleSec(k)),
-        accHeader: !s.addNew,
-        stepHeader: s.addNew,
+        toggle: () => this.empToggleSec(k),
+        accHeader: true,
+        stepHeader: false,
         hasSummary: false,
         summaryText: '',
         stepSubtitle: SEC_SUB[k] || '',
         stepTitle: SEC_TITLE[k] || '',
         stepLabel: 'Step ' + (idx + 1) + ' of ' + n,
         progressW: Math.round(((idx + 1) / n) * 100) + '%',
-        cardStyle: s.addNew ? 'margin-bottom:0;' : 'background:#fff;border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-xs);margin-bottom:20px;',
+        cardStyle: 'background:#fff;border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-xs);margin-bottom:20px;',
       };
     };
     const bsNum = parseFloat((ef.basicSalary || '').toString().replace(/[^0-9.]/g, ''));
@@ -1606,6 +1764,7 @@ class Component extends DCLogic {
       panelOpen: s.panelOpen, panelClosed: !s.panelOpen, togglePanel: this.togglePanel,
       today: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
       isEmpty: employees.length === 0,
+      coachOpen: s.coachOpen, coach: coachVals, coachClose: this.coachClose,
       isPopulated: employees.length > 0,
       missingCount: missingCount,
       alertMissing: employees.length > 0 && missingCount > 0,
@@ -1686,7 +1845,7 @@ class Component extends DCLogic {
       ef: ef,
       eh: {
         firstName: this.empSet('firstName'), surname: this.empSet('surname'), otherNames: this.empSet('otherNames'),
-        jobRole: this.empSet('jobRole'), department: this.empSet('department'), employmentType: this.empSet('employmentType'),
+        jobRole: this.empSet('jobRole'), department: this.empSet('department'), employmentType: this.empSet('employmentType'), position: this.empSet('position'),
         staffNumber: this.empSet('staffNumber'), ghanaCard: this.empSet('ghanaCard'), tin: this.empSet('tin'),
         basicSalary: this.empSet('basicSalary'), tier3Amount: this.empSet('tier3Amount'),
         email: this.empSet('email'), phone: this.empSet('phone'),
@@ -1701,6 +1860,7 @@ class Component extends DCLogic {
       empDeptChevron: s.empDeptOpen ? 'rotate(180deg)' : 'rotate(0deg)',
       empDeptAdding: s.empDeptAdding,
       empDeptNotAdding: !s.empDeptAdding,
+      empDeptEmpty: s.departments.length === 0,
       empNewDept: s.empNewDept,
       empDeptError: s.empDeptError,
       empDeptInputBorder: s.empDeptError ? 'var(--error-400)' : 'var(--border-primary)',
@@ -1713,15 +1873,34 @@ class Component extends DCLogic {
       empRoleChevron: s.empRoleOpen ? 'rotate(180deg)' : 'rotate(0deg)',
       empRoleAdding: s.empRoleAdding,
       empRoleNotAdding: !s.empRoleAdding,
+      empRoleEmpty: s.jobRoles.length === 0,
       empNewRole: s.empNewRole,
       empRoleError: s.empRoleError,
       empRoleInputBorder: s.empRoleError ? 'var(--error-400)' : 'var(--border-primary)',
       empRoleList: s.jobRoles.map(r => ({ label: r.label, selected: r.value === ef.jobRole, bg: r.value === ef.jobRole ? 'var(--brand-50)' : 'transparent', onSelect: () => this.selectEmpRole(r.value) })),
       toggleEmpRole: this.toggleEmpRole, closeEmpRole: this.closeEmpRole, startAddEmpRole: this.startAddEmpRole, cancelAddEmpRole: this.cancelAddEmpRole, onEmpNewRole: this.onEmpNewRole, onEmpNewRoleKey: this.onEmpNewRoleKey, addEmpRole: this.addEmpRole,
       etypeOpts: ['Full Time', 'Part Time', 'Contract', 'Intern', 'NSS', 'National Service'],
+      empTypeOpen: s.empTypeOpen,
+      empTypeDisplay: ef.employmentType || 'Select type',
+      empTypeTextColor: ef.employmentType ? 'var(--fg-primary)' : 'var(--fg-quaternary)',
+      empTypeChevron: s.empTypeOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+      empTypeList: ETYPES.map(o => ({ label: o.label, selected: o.value === ef.employmentType, bg: o.value === ef.employmentType ? 'var(--brand-50)' : 'transparent', onSelect: () => this.selectEmpType(o.value) })),
+      toggleEmpType: this.toggleEmpType, closeEmpType: this.closeEmpType,
+      empPositionOpen: s.empPositionOpen,
+      empPositionDisplay: ef.position || 'Select position',
+      empPositionTextColor: ef.position ? 'var(--fg-primary)' : 'var(--fg-quaternary)',
+      empPositionChevron: s.empPositionOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+      empPositionList: POSITION_OPTS.map(o => ({ label: o, selected: o === ef.position, bg: o === ef.position ? 'var(--brand-50)' : 'transparent', onSelect: () => this.selectEmpPosition(o) })),
+      toggleEmpPosition: this.toggleEmpPosition, closeEmpPosition: this.closeEmpPosition,
+      empTypeHelpOpen: s.empTypeHelpOpen,
+      openEmpTypeHelp: this.openEmpTypeHelp, closeEmpTypeHelp: this.closeEmpTypeHelp,
+      empTypeGuide: EMP_TYPE_GUIDE.map(g => ({
+        group: g.group, hasIntro: !!g.intro, intro: g.intro || '',
+        items: g.items.map(it => ({ name: it.name, tag: it.tag, desc: it.desc, tagColor: TAG_TONES[it.tone].tagColor, tagBg: TAG_TONES[it.tone].tagBg })),
+      })),
       secEmployment: secObj('employment'), secComp: secObj('comp'), secSsnit: secObj('ssnit'), secContact: secObj('contact'), secBank: secObj('bank'),
       secIdentity: secObj('identity'),
-      isReviewStep: s.addNew && s.empStep === STEP_ORDER.length - 1,
+      isReviewStep: false,
       reviewStepLabel: 'Step ' + STEP_ORDER.length + ' of ' + STEP_ORDER.length,
       identityRows: identityRows, employmentRows: employmentRows, compRows: compRows, pensionRows: pensionRows, contactRows: contactRows, bankRows: bankRows,
       reviewName: reviewName, reviewInitials: reviewInitials,
@@ -1732,7 +1911,7 @@ class Component extends DCLogic {
       stepNext: this.stepNext,
       stepContinueLabel: s.empStep >= STEP_ORDER.length - 1 ? 'Save Employee' : 'Continue',
       empPhoto: ef.photo || '',
-      empPhotoEl: ef.photo ? React.createElement('img', { src: ef.photo, alt: '', style: { display: 'block', width: '56px', height: '56px', borderRadius: '999px', objectFit: 'cover' } }) : null,
+      empPhotoEl: ef.photo ? React.createElement('img', { src: ef.photo, alt: '', style: { display: 'block', width: '72px', height: '72px', borderRadius: '999px', objectFit: 'cover' } }) : null,
       hasEmpPhoto: !!ef.photo,
       noEmpPhoto: !ef.photo,
       empPhotoCta: ef.photo ? 'Change photo' : 'Click to upload',
@@ -1752,6 +1931,7 @@ class Component extends DCLogic {
       pickTier3Yes: this.pickTier3Yes, pickTier3No: this.pickTier3No,
       setTier3Fixed: this.setTier3Fixed, setTier3Pct: this.setTier3Pct,
       empSave: this.empSave, requestFromEmployee: this.requestFromEmployee,
+      clearEmpChanges: this.clearEmpChanges,
       empDirty: s.empDirty,
       empNotDirty: !s.empDirty,
       importDone: s.importDone,

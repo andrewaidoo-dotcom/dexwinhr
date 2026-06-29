@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/fonts/fonts.css">
+  <link rel="stylesheet" href="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/tokens/shadows.css">
+  <link rel="stylesheet" href="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/tokens/base.css">
+  <link rel="stylesheet" href="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/styles.css">
+  <script src="./app-state.js"></script>
+  <style>
+    @keyframes dxpFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  </style>
+</helmet>
+
+<div style="min-height:100vh;background:var(--bg-secondary);font-family:var(--font-body);color:var(--fg-primary);">
+
+  <!-- Top bar -->
+  <header style="height:68px;background:#fff;border-bottom:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:20;">
+    <span style="display:flex;align-items:baseline;gap:3px;">
+      <img src="assets/dexwin-logo.svg" alt="Dexwin" style="height:24px;">
+      <span style="font-family:var(--font-display);font-weight:900;font-size:11px;letter-spacing:0.04em;color:var(--fg-primary);">PAY</span>
+    </span>
+    <span style="display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--fg-tertiary);">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--success-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+      Secure approval link
+    </span>
+  </header>
+
+  <!-- INVALID / EXPIRED -->
+  <sc-if value="{{ isInvalid }}" hint-placeholder-val="{{ false }}">
+    <div style="max-width:560px;margin:80px auto;padding:0 24px;text-align:center;">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:64px;height:64px;border-radius:var(--radius-full);background:var(--gray-100);color:var(--fg-tertiary);margin-bottom:22px;">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+      </span>
+      <h1 style="font-family:var(--font-display);font-size:26px;font-weight:800;letter-spacing:-0.02em;margin:0 0 10px;">This approval link is no longer active</h1>
+      <p style="font-size:16px;line-height:25px;color:var(--fg-tertiary);margin:0;text-wrap:pretty;">The payroll may already have been decided, or the request was withdrawn. Ask the sender to share a fresh link.</p>
+    </div>
+  </sc-if>
+
+  <!-- DECISION CONFIRMED -->
+  <sc-if value="{{ isDone }}" hint-placeholder-val="{{ false }}">
+    <div style="max-width:600px;margin:72px auto;padding:0 24px;">
+      <div style="background:#fff;border:1px solid var(--border-secondary);border-radius:22px;box-shadow:var(--shadow-md);padding:44px 40px;text-align:center;">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:78px;height:78px;border-radius:var(--radius-full);background:{{ doneIconBg }};color:{{ doneIconColor }};box-shadow:{{ doneIconRing }};margin-bottom:24px;">
+          <sc-if value="{{ doneApproved }}" hint-placeholder-val="{{ true }}">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
+          </sc-if>
+          <sc-if value="{{ doneRejected }}" hint-placeholder-val="{{ false }}">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="m15 9-6 6M9 9l6 6"></path></svg>
+          </sc-if>
+        </span>
+        <h1 style="font-family:var(--font-display);font-size:27px;font-weight:800;letter-spacing:-0.02em;margin:0 0 10px;">{{ doneTitle }}</h1>
+        <p style="font-size:16px;line-height:25px;color:var(--fg-tertiary);margin:0 auto 22px;max-width:46ch;text-wrap:pretty;">{{ doneBody }}</p>
+        <sc-if value="{{ doneHasReason }}" hint-placeholder-val="{{ false }}">
+          <div style="text-align:left;background:var(--bg-secondary);border:1px solid var(--border-secondary);border-radius:14px;padding:16px 18px;margin-bottom:8px;">
+            <div style="font-size:12px;font-weight:700;color:var(--fg-quaternary);letter-spacing:0.04em;text-transform:uppercase;margin-bottom:6px;">Reason you gave</div>
+            <div style="font-size:15px;line-height:23px;color:var(--fg-secondary);">{{ doneReason }}</div>
+          </div>
+        </sc-if>
+        <p style="font-size:13.5px;color:var(--fg-quaternary);margin:18px 0 0;">{{ company }} has been notified. You can close this window.</p>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- REVIEW + DECIDE -->
+  <sc-if value="{{ isReview }}" hint-placeholder-val="{{ true }}">
+    <div style="max-width:920px;margin:0 auto;padding:32px 24px 140px;">
+
+      <!-- Request banner -->
+      <div style="background:var(--brand-900);border-radius:20px;padding:28px 30px;color:#fff;margin-bottom:26px;position:relative;overflow:hidden;">
+        <div style="position:relative;z-index:1;display:flex;align-items:flex-start;gap:18px;">
+          <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;border-radius:13px;background:rgba(255,255,255,0.12);color:#fff;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+          </span>
+          <div style="min-width:0;">
+            <div style="font-size:13px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:rgba(255,255,255,0.66);margin-bottom:7px;">Approval requested</div>
+            <h1 style="font-family:var(--font-display);font-size:25px;line-height:33px;font-weight:800;letter-spacing:-0.02em;margin:0 0 8px;text-wrap:pretty;">{{ requesterName }} has asked you to approve the {{ periodLabel }} payroll</h1>
+            <p style="font-size:15px;line-height:23px;color:rgba(255,255,255,0.74);margin:0;text-wrap:pretty;">Review the figures below for {{ company }}, then approve to release payment — or reject and tell them what needs to change. You can't edit a shared payroll; only the sender can.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:18px;">
+        <div style="background:#fff;border:1px solid var(--border-secondary);border-radius:14px;padding:18px 20px;">
+          <div style="font-size:12px;font-weight:700;color:var(--fg-quaternary);letter-spacing:0.04em;text-transform:uppercase;margin-bottom:5px;">Employees</div>
+          <div style="font-family:var(--font-display);font-size:21px;font-weight:800;letter-spacing:-0.01em;font-variant-numeric:tabular-nums;">{{ employeeCount }}</div>
+        </div>
+        <div style="background:#fff;border:1px solid var(--border-secondary);border-radius:14px;padding:18px 20px;">
+          <div style="font-size:12px;font-weight:700;color:var(--fg-quaternary);letter-spacing:0.04em;text-transform:uppercase;margin-bottom:5px;">Total net pay</div>
+          <div style="font-family:var(--font-display);font-size:21px;font-weight:800;letter-spacing:-0.01em;color:var(--brand-700);font-variant-numeric:tabular-nums;">{{ totalNetDisplay }}</div>
+        </div>
+        <div style="background:#fff;border:1px solid var(--border-secondary);border-radius:14px;padding:18px 20px;">
+          <div style="font-size:12px;font-weight:700;color:var(--fg-quaternary);letter-spacing:0.04em;text-transform:uppercase;margin-bottom:5px;">Statutory due</div>
+          <div style="font-family:var(--font-display);font-size:21px;font-weight:800;letter-spacing:-0.01em;font-variant-numeric:tabular-nums;">{{ statutoryDisplay }}</div>
+        </div>
+      </div>
+
+      <!-- Read-only table -->
+      <div style="background:#fff;border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-xs);overflow:hidden;margin-bottom:18px;">
+        <div style="display:flex;align-items:center;gap:10px;padding:16px 24px;border-bottom:1px solid var(--border-secondary);">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--fg-quaternary)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          <span style="font-size:13.5px;font-weight:600;color:var(--fg-tertiary);">View only — {{ periodLabel }} payroll breakdown</span>
+        </div>
+        <div style="display:grid;grid-template-columns:2.4fr 1fr 1fr 1fr 1.2fr;gap:16px;padding:13px 24px;background:var(--bg-secondary);border-bottom:1px solid var(--border-secondary);font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--fg-quaternary);">
+          <span>Employee</span>
+          <span style="text-align:right;">Gross</span>
+          <span style="text-align:right;">SSNIT</span>
+          <span style="text-align:right;">PAYE</span>
+          <span style="text-align:right;">Net pay</span>
+        </div>
+        <sc-for list="{{ employeesView }}" as="e" hint-placeholder-count="6">
+          <div style="display:grid;grid-template-columns:2.4fr 1fr 1fr 1fr 1.2fr;gap:16px;padding:15px 24px;border-bottom:1px solid var(--border-tertiary);align-items:center;">
+            <div style="display:flex;align-items:center;gap:12px;min-width:0;">
+              <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:999px;background:var(--brand-50);color:var(--brand-700);font-weight:700;font-size:14px;">{{ e.initials }}</span>
+              <div style="min-width:0;">
+                <div style="font-size:15px;font-weight:700;color:var(--fg-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ e.name }}</div>
+                <div style="font-size:13px;color:var(--fg-tertiary);">{{ e.role }}</div>
+              </div>
+            </div>
+            <span style="text-align:right;font-size:15px;color:var(--fg-secondary);font-variant-numeric:tabular-nums;">{{ e.gross }}</span>
+            <span style="text-align:right;font-size:15px;color:var(--fg-tertiary);font-variant-numeric:tabular-nums;">{{ e.ssnit }}</span>
+            <span style="text-align:right;font-size:15px;color:var(--fg-tertiary);font-variant-numeric:tabular-nums;">{{ e.paye }}</span>
+            <span style="text-align:right;font-size:15px;font-weight:700;color:var(--fg-primary);font-variant-numeric:tabular-nums;">{{ e.net }}</span>
+          </div>
+        </sc-for>
+        <div style="display:grid;grid-template-columns:2.4fr 1fr 1fr 1fr 1.2fr;gap:16px;padding:14px 24px;background:var(--bg-secondary);font-size:14px;font-weight:700;color:var(--fg-primary);">
+          <span>Totals</span>
+          <span style="text-align:right;font-variant-numeric:tabular-nums;">{{ totalGrossDisplay }}</span>
+          <span style="text-align:right;font-variant-numeric:tabular-nums;">{{ totalSsnitDisplay }}</span>
+          <span style="text-align:right;font-variant-numeric:tabular-nums;">{{ totalPayeDisplay }}</span>
+          <span style="text-align:right;font-variant-numeric:tabular-nums;">{{ totalNetDisplay }}</span>
+        </div>
+      </div>
+
+      <p style="font-size:13px;line-height:20px;color:var(--fg-quaternary);margin:0;text-align:center;">Shared securely with {{ approverEmail }} · You're reviewing as an external approver for {{ company }}.</p>
+    </div>
+
+    <!-- Sticky decision bar -->
+    <div style="position:fixed;left:0;right:0;bottom:0;z-index:30;background:#fff;border-top:1px solid var(--border-secondary);box-shadow:0 -4px 16px rgba(10,13,18,0.05);">
+      <div style="max-width:920px;margin:0 auto;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:18px;">
+        <div style="min-width:0;">
+          <div style="font-size:15px;font-weight:700;color:var(--fg-primary);">Ready to decide on {{ totalNetDisplay }}?</div>
+          <div style="font-size:13px;color:var(--fg-tertiary);">Your decision is sent straight back to {{ company }}.</div>
+        </div>
+        <div style="flex-shrink:0;display:flex;align-items:center;gap:12px;">
+          <button onClick="{{ startReject }}" style="display:inline-flex;align-items:center;gap:9px;padding:13px 24px;font-family:var(--font-body);font-weight:700;font-size:15px;color:var(--error-700);background:#fff;border:1px solid var(--error-300);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--error-50);">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+            Reject
+          </button>
+          <button onClick="{{ approve }}" style="display:inline-flex;align-items:center;gap:9px;padding:13px 28px;font-family:var(--font-body);font-weight:700;font-size:15px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Approve payroll
+          </button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- REJECT REASON MODAL -->
+  <sc-if value="{{ isRejecting }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ cancelReject }}" style="position:fixed;inset:0;z-index:60;background:rgba(10,13,18,0.5);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:32px 24px;box-sizing:border-box;">
+      <div onClick="{{ stopProp }}" style="width:100%;max-width:540px;background:#fff;border-radius:20px;box-shadow:var(--shadow-2xl);overflow:hidden;">
+        <div style="padding:26px 28px 6px;">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:12px;background:var(--error-50);color:var(--error-600);margin-bottom:16px;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+          </span>
+          <h2 style="font-family:var(--font-display);font-size:22px;font-weight:800;letter-spacing:-0.01em;margin:0 0 6px;">Reject this payroll</h2>
+          <p style="font-size:15px;line-height:23px;color:var(--fg-tertiary);margin:0;">Tell {{ requesterName }} what needs to change. They'll get your reason and can fix the draft and resubmit.</p>
+        </div>
+        <div style="padding:18px 28px 24px;">
+          <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Reason for rejecting <span style="color:var(--error-600);">*</span></label>
+          <textarea value="{{ reason }}" onInput="{{ onReason }}" placeholder="e.g. Yaw Asante's gross looks too high — please double-check his allowance before resending." rows="4" style="width:100%;box-sizing:border-box;padding:13px 15px;font-family:var(--font-body);font-size:15px;line-height:22px;color:var(--fg-primary);background:#fff;border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;resize:vertical;box-shadow:var(--shadow-xs);" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);"></textarea>
+          <div style="display:flex;align-items:center;justify-content:flex-end;gap:12px;margin-top:22px;">
+            <button onClick="{{ cancelReject }}" style="padding:12px 22px;font-family:var(--font-body);font-weight:700;font-size:15px;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;">Cancel</button>
+            <button onClick="{{ confirmReject }}" style="display:inline-flex;align-items:center;gap:9px;padding:12px 24px;font-family:var(--font-body);font-weight:700;font-size:15px;color:#fff;background:var(--error-600);border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;opacity:{{ rejectOpacity }};transition:background 120ms ease;" style-hover="background:var(--error-700);">Submit rejection</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1024, &quot;height&quot;: 860}}">
+function fmt(n) { return 'GH\u20b5 ' + Number(n || 0).toLocaleString('en-GH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+function fmtShort(n) { return 'GH\u20b5 ' + Number(n || 0).toLocaleString('en-GH'); }
+
+class Component extends DCLogic {
+  state = { approval: null, loaded: false, view: 'review', reason: '' };
+
+  componentDidMount() {
+    const load = () => {
+      if (!window.AppState || !window.AppState.getApproval) return false;
+      const ap = window.AppState.getApproval();
+      const view = (ap && (ap.status === 'approved' || ap.status === 'rejected')) ? 'done' : 'review';
+      this.setState({ approval: ap, loaded: true, view });
+      return true;
+    };
+    if (!load()) { let n = 0; const poll = () => { if (load() || n++ > 25) { this.setState({ loaded: true }); return; } setTimeout(poll, 40); }; poll(); }
+  }
+
+  startReject = () => this.setState({ view: 'rejecting' });
+  cancelReject = () => this.setState({ view: 'review' });
+  onReason = (ev) => this.setState({ reason: ev.target.value });
+  stopProp = (ev) => ev.stopPropagation();
+
+  approve = () => {
+    if (window.AppState) window.AppState.setApproval({ status: 'approved', reason: '', decidedAt: Date.now(), ownerSeen: false });
+    this.setState(s => ({ approval: { ...(s.approval || {}), status: 'approved', reason: '' }, view: 'done' }));
+  };
+  confirmReject = () => {
+    const reason = (this.state.reason || '').trim();
+    if (!reason) return;
+    if (window.AppState) window.AppState.setApproval({ status: 'rejected', reason, decidedAt: Date.now(), ownerSeen: false });
+    this.setState(s => ({ approval: { ...(s.approval || {}), status: 'rejected', reason }, view: 'done' }));
+  };
+
+  renderVals() {
+    const s = this.state;
+    const ap = s.approval;
+    const snap = (ap && ap.snapshot) || {};
+    const emps = snap.employees || [];
+    const valid = !!(s.loaded && ap && (ap.route === 'external' || ap.route === 'platform'));
+    const isInvalid = s.loaded && !ap;
+
+    const employeesView = emps.map(e => ({
+      initials: e.initials, name: e.name, role: e.role,
+      gross: fmtShort(e.gross), ssnit: fmtShort(e.ssnit), paye: fmtShort(e.paye), net: fmt(e.net),
+    }));
+
+    const decided = ap && (ap.status === 'approved' || ap.status === 'rejected');
+    const isApproved = ap && ap.status === 'approved';
+    const company = (ap && ap.company) || 'the company';
+    const requesterName = (ap && ap.requestedBy && ap.requestedBy.name) || 'The payroll team';
+    const approverEmail = (ap && ap.approver && (ap.approver.email || ap.approver.phone)) || 'you';
+
+    const CHECK = '<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>';
+    const XMARK = '<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/></svg>';
+
+    return {
+      isInvalid,
+      isReview: valid && s.view === 'review',
+      isRejecting: valid && s.view === 'rejecting',
+      isDone: valid && s.view === 'done',
+
+      company, requesterName, approverEmail,
+      periodLabel: (ap && ap.periodLabel) || 'this month\u2019s',
+      employeeCount: snap.employeeCount != null ? snap.employeeCount : emps.length,
+      employeesView,
+      totalNetDisplay: fmt(snap.totalNet), totalGrossDisplay: fmt(snap.totalGross),
+      totalSsnitDisplay: fmt(snap.totalSsnit), totalPayeDisplay: fmt(snap.totalPaye),
+      statutoryDisplay: fmt((snap.totalSsnit || 0) + (snap.totalPaye || 0)),
+
+      reason: s.reason,
+      rejectOpacity: s.reason.trim() ? '1' : '0.5',
+      startReject: this.startReject, cancelReject: this.cancelReject, onReason: this.onReason,
+      approve: this.approve, confirmReject: this.confirmReject, stopProp: this.stopProp,
+
+      doneApproved: !!isApproved, doneRejected: !isApproved,
+      doneIconBg: isApproved ? 'var(--success-50)' : 'var(--error-50)',
+      doneIconColor: isApproved ? 'var(--success-600)' : 'var(--error-600)',
+      doneIconRing: isApproved ? '0 0 0 10px rgba(2,170,105,0.10)' : '0 0 0 10px rgba(217,45,32,0.08)',
+      doneTitle: isApproved ? 'Payroll approved' : 'Payroll rejected',
+      doneBody: isApproved
+        ? 'Thanks for signing off on the ' + ((ap && ap.periodLabel) || 'this month\u2019s') + ' payroll. ' + company + ' can now release payment.'
+        : 'You\u2019ve sent this payroll back to ' + company + ' with your feedback.',
+      doneHasReason: !isApproved && !!(ap && ap.reason),
+      doneReason: (ap && ap.reason) || '',
+    };
+  }
+}
+</script>
+</body>
+</html>

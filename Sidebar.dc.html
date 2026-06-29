@@ -47,15 +47,23 @@
     <a href="Company Wallet.dc.html" data-tour="wallet" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);background:{{ nav.wallets.bg }};color:{{ nav.wallets.fg }};font-size:15px;font-weight:600;text-decoration:none;transition:background 120ms ease;" style-hover="background:{{ nav.wallets.hover }}">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{ nav.wallets.stroke }}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"></path><path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"></path></svg>
       <span style="flex:1;">Wallets</span>
-      <span style="font-size:12px;font-weight:700;color:var(--fg-tertiary);padding:3px 10px;border-radius:999px;border:1px solid var(--border-secondary);font-variant-numeric:tabular-nums;">{{ wallet }}</span>
+      <sc-if value="{{ showWalletBalance }}" hint-placeholder-val="{{ false }}">
+        <span style="font-size:12px;font-weight:700;color:var(--fg-tertiary);padding:3px 10px;border-radius:999px;border:1px solid var(--border-secondary);font-variant-numeric:tabular-nums;">{{ wallet }}</span>
+      </sc-if>
+      <sc-if value="{{ showWalletPending }}" hint-placeholder-val="{{ false }}">
+        <span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#B54708;background:#FFFAEB;padding:3px 9px;border-radius:999px;border:1px solid #FEDF89;">
+          <span style="width:5px;height:5px;border-radius:999px;background:#F79009;"></span>Pending
+        </span>
+      </sc-if>
     </a>
   </nav>
 
+  <sc-if value="{{ showTodo }}" hint-placeholder-val="{{ true }}">
   <div style="padding:8px 16px 4px;flex-shrink:0;">
     <div data-tour="todo" style="border:1px solid var(--border-secondary);border-radius:14px;padding:16px;">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
         <span style="font-family:var(--font-display);font-size:15px;font-weight:800;letter-spacing:-0.01em;color:var(--fg-primary);">Things to do</span>
-        <span style="font-size:13px;color:var(--fg-tertiary);">Step {{ step }} of 4</span>
+        <span style="font-size:13px;color:var(--fg-tertiary);">{{ completed }}/4 Done</span>
       </div>
       <div style="height:8px;border-radius:999px;background:var(--gray-100);overflow:hidden;margin-bottom:14px;"><div style="height:100%;width:{{ progress }};background:var(--brand-600);border-radius:999px;transition:width 300ms ease;"></div></div>
       <div style="display:flex;flex-direction:column;gap:11px;">
@@ -71,9 +79,10 @@
           </a>
         </sc-for>
       </div>
-      <a href="{{ continueHref }}" style="display:block;box-sizing:border-box;text-align:center;text-decoration:none;width:100%;margin-top:16px;padding:11px;font-family:var(--font-body);font-weight:700;font-size:14px;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">Continue setup</a>
+      <a href="{{ continueHref }}" onClick="{{ startContinue }}" style="display:block;box-sizing:border-box;text-align:center;text-decoration:none;width:100%;margin-top:16px;padding:11px;font-family:var(--font-body);font-weight:700;font-size:14px;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">Continue setup</a>
     </div>
   </div>
+  </sc-if>
 
   <div style="padding:8px 16px;display:flex;flex-direction:column;gap:2px;flex-shrink:0;">
     <a href="#" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);color:var(--fg-secondary);font-size:15px;font-weight:600;text-decoration:none;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
@@ -90,16 +99,84 @@
     </a>
   </div>
 
-  <div style="padding:12px 16px 18px;flex-shrink:0;">
-    <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid var(--border-secondary);border-radius:var(--radius-xl);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
-      <span style="width:40px;height:40px;flex-shrink:0;border-radius:999px;background:var(--brand-50);color:var(--brand-700);display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;font-size:15px;letter-spacing:-0.01em;">{{ initials }}</span>
+  <div style="padding:12px 16px 18px;flex-shrink:0;position:relative;">
+    <!-- Perspective switcher popover -->
+    <sc-if value="{{ personaOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:16px;right:16px;bottom:72px;z-index:40;background:#fff;border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-lg);overflow:hidden;">
+        <div style="padding:13px 16px 9px;font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--fg-quaternary);">Switch perspective (demo)</div>
+        <div style="padding:0 8px 8px;display:flex;flex-direction:column;gap:2px;">
+          <sc-for list="{{ personas }}" as="p" hint-placeholder-count="2">
+            <button onClick="{{ p.onSelect }}" style="display:flex;align-items:center;gap:11px;width:100%;box-sizing:border-box;text-align:left;padding:10px 11px;background:{{ p.bg }};border:none;border-radius:11px;cursor:pointer;font-family:var(--font-body);transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+              <span style="position:relative;flex-shrink:0;width:34px;height:34px;border-radius:999px;background:{{ p.avBg }};color:{{ p.avFg }};display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;font-size:13px;">{{ p.init }}
+                <sc-if value="{{ p.dot }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:-1px;right:-1px;width:11px;height:11px;border-radius:999px;background:var(--error-500);border:2px solid #fff;"></span></sc-if>
+              </span>
+              <span style="flex:1;min-width:0;">
+                <span style="display:block;font-size:14px;font-weight:700;line-height:17px;color:var(--fg-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ p.name }}</span>
+                <span style="display:block;font-size:12.5px;color:var(--fg-tertiary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ p.sub }}</span>
+              </span>
+              <sc-if value="{{ p.current }}" hint-placeholder-val="{{ false }}">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--brand-600)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </sc-if>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <div onClick="{{ togglePersona }}" style="display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid {{ personaBorder }};background:{{ personaCardBg }};border-radius:var(--radius-xl);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+      <span style="position:relative;width:40px;height:40px;flex-shrink:0;border-radius:999px;background:{{ personaAvBg }};color:{{ personaAvFg }};display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;font-size:15px;letter-spacing:-0.01em;">{{ personaInit }}
+        <sc-if value="{{ notifDot }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:-1px;right:-1px;width:12px;height:12px;border-radius:999px;background:var(--error-500);border:2px solid #fff;"></span></sc-if>
+      </span>
       <span style="flex:1;min-width:0;">
-        <span style="display:block;font-size:14px;font-weight:700;line-height:18px;color:var(--fg-primary);">{{ userName }}</span>
-        <span style="display:block;font-size:13px;color:var(--fg-tertiary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ company }}</span>
+        <span style="display:block;font-size:14px;font-weight:700;line-height:18px;color:var(--fg-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ personaName }}</span>
+        <span style="display:block;font-size:13px;color:{{ personaSubColor }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ personaSub }}</span>
       </span>
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="m7 15 5 5 5-5"></path><path d="m7 9 5-5 5 5"></path></svg>
     </div>
   </div>
+
+  <!-- GLOBAL DEMO CONTROLS (appears on every page) -->
+  <sc-if value="{{ dcOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;bottom:78px;left:308px;z-index:9998;width:330px;background:#fff;border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-lg);overflow:hidden;font-family:var(--font-body);">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--border-secondary);">
+        <span style="font-family:var(--font-display);font-size:15px;font-weight:800;letter-spacing:-0.01em;color:var(--fg-primary);">Demo controls</span>
+        <span role="button" onClick="{{ toggleDc }}" aria-label="Close" style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;color:var(--fg-quaternary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+        </span>
+      </div>
+      <div style="padding:16px 18px 18px;max-height:64vh;overflow-y:auto;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--fg-quaternary);margin-bottom:10px;">Onboarding state</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:22px;">
+          <sc-for list="{{ dcStages }}" as="o" hint-placeholder-count="5">
+            <button onClick="{{ o.onClick }}" style="display:flex;align-items:flex-start;gap:11px;width:100%;box-sizing:border-box;text-align:left;padding:11px 13px;border:1.5px solid {{ o.border }};background:{{ o.bg }};border-radius:11px;cursor:pointer;font-family:var(--font-body);transition:border-color 120ms ease,background 120ms ease;">
+              <span style="flex-shrink:0;margin-top:2px;display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;border:1.5px solid {{ o.dotBorder }};background:{{ o.dotBg }};">
+                <sc-if value="{{ o.on }}" hint-placeholder-val="{{ false }}"><span style="width:5px;height:5px;border-radius:50%;background:#fff;"></span></sc-if>
+              </span>
+              <span style="min-width:0;">
+                <span style="display:block;font-size:14px;font-weight:700;color:var(--fg-primary);">{{ o.label }}</span>
+                <span style="display:block;font-size:12.5px;line-height:17px;color:var(--fg-tertiary);margin-top:1px;">{{ o.desc }}</span>
+              </span>
+            </button>
+          </sc-for>
+        </div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--fg-quaternary);margin-bottom:10px;">Trigger a walkthrough</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <sc-for list="{{ dcTours }}" as="t" hint-placeholder-count="3">
+            <button onClick="{{ t.onClick }}" style="display:flex;align-items:center;gap:10px;width:100%;box-sizing:border-box;text-align:left;padding:11px 14px;border:1px solid var(--border-primary);background:var(--bg-primary);border-radius:11px;cursor:pointer;font-family:var(--font-body);font-size:14px;font-weight:700;color:var(--fg-secondary);box-shadow:var(--shadow-xs);transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+              <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:var(--brand-50);color:var(--brand-600);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="M11 8v6M8 11h6"></path></svg>
+              </span>
+              {{ t.label }}
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+  <button onClick="{{ toggleDc }}" aria-label="Demo controls" style="position:fixed;bottom:20px;left:308px;z-index:9999;display:inline-flex;align-items:center;gap:8px;padding:11px 18px;background:var(--fg-primary);color:#fff;border:none;border-radius:999px;box-shadow:var(--shadow-lg);cursor:pointer;font-family:var(--font-body);font-weight:700;font-size:13px;">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+    Demo states
+  </button>
 </aside>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{
@@ -113,7 +190,22 @@ const IDLE = { bg: 'transparent', fg: 'var(--fg-secondary)', stroke: 'var(--gray
 function navStyle(isActive) { return isActive ? ACTIVE : IDLE; }
 
 class Component extends DCLogic {
-  state = { acct: null };
+  state = { acct: null, dcOpen: false, personaOpen: false };
+
+  toggleDc = () => this.setState(s => ({ dcOpen: !s.dcOpen }));
+  togglePersona = () => this.setState(s => ({ personaOpen: !s.personaOpen }));
+  switchPersona = (id) => () => {
+    try { if (window.AppState && window.AppState.setPerspective) window.AppState.setPerspective(id); } catch (e) {}
+    try { window.location.reload(); } catch (e) {}
+  };
+  applyStage = (patch) => () => { try { if (window.AppState) window.AppState.set(patch); } catch (e) {} try { window.location.reload(); } catch (e) {} };
+  startTour = (kind) => () => {
+    try {
+      if (kind === 'full') { localStorage.removeItem('dxp_tour_done'); window.location.href = 'Dashboard Page.dc.html'; return; }
+      if (kind === 'people') { localStorage.setItem('dxp_tour_resume', 'people-choose'); window.location.href = 'People Page.dc.html'; return; }
+      if (kind === 'payroll') { if (window.AppState) { const a = window.AppState.get(); window.AppState.set({ employees: 'done', payroll: a.payroll === 'done' ? 'done' : 'unlocked' }); } localStorage.setItem('dxp_tour_resume', 'payroll-additions'); window.location.href = 'Payroll Page.dc.html'; return; }
+    } catch (e) {}
+  };
 
   componentDidMount() {
     const load = () => {
@@ -127,30 +219,113 @@ class Component extends DCLogic {
   renderVals() {
     const active = this.props.active || 'none';
     const sa = (window.AppState && window.AppState.get) ? window.AppState.get() : {};
-    let completed = 0;
-    if (sa.employees === 'done') completed = 1;
-    if (sa.payroll === 'done' || sa.payroll === 'paid') completed = Math.max(completed, 2);
+    const draftsExist = (() => { try { const r = localStorage.getItem('dxp_payroll_drafts'); const arr = r ? JSON.parse(r) : []; return Array.isArray(arr) && arr.length > 0; } catch (e) { return false; } })();
     const TODO_LABELS = ['Add your employees', 'Set up company payroll', 'Apply for company wallet', 'Draft and pay June payroll'];
     const TODO_HREFS = ['People Page.dc.html', 'Set Up Payroll.dc.html', 'Company Wallet Application.dc.html', 'Payroll Page.dc.html'];
+    const doneFlags = [
+      sa.employees === 'done',
+      sa.payroll === 'done' || sa.payroll === 'paid',
+      sa.wallet === 'active',
+      draftsExist,
+    ];
+    const completed = doneFlags.filter(Boolean).length;
+    const firstPending = doneFlags.indexOf(false);
     const todos = TODO_LABELS.map((label, i) => {
-      const done = i < completed;
-      const current = i === completed;
+      const done = doneFlags[i];
+      const current = i === firstPending;
       return { label, href: TODO_HREFS[i], done, pending: !done, color: current ? 'var(--fg-primary)' : 'var(--fg-tertiary)', weight: current ? '700' : '600', deco: done ? 'line-through' : 'none' };
     });
-    const step = Math.min(completed + 1, 4);
-    const continueHref = TODO_HREFS[Math.min(completed, 3)];
+    // Once a payroll period has been drafted, onboarding is complete — hide the whole widget.
+    const showTodo = !doneFlags[3];
+    const ci = firstPending === -1 ? 3 : firstPending;
+    const CONTINUE_HREFS = ['People Page.dc.html', 'Payroll Page.dc.html', 'Company Wallet Application.dc.html', 'Payroll Page.dc.html'];
+    const CONTINUE_RESUME = ['people-choose', 'payroll-additions', '', ''];
+    const continueHref = CONTINUE_HREFS[ci];
+    const continueResume = CONTINUE_RESUME[ci];
+    const startContinue = () => { try { if (continueResume) localStorage.setItem('dxp_tour_resume', continueResume); else localStorage.removeItem('dxp_tour_resume'); } catch (e) {} };
     const progress = Math.max(completed / 4 * 100, 10) + '%';
     const a = this.state.acct || {};
     const acctName = ((a.firstName || '') + ' ' + (a.lastName || '')).trim();
     const userName = acctName || this.props.userName || 'Your account';
     const company = a.company || this.props.company || 'Your company';
-    const wallet = this.props.wallet || 'GH\u20b5 0';
+    const walletStatus = sa.wallet || 'none';
+    const showWalletBalance = walletStatus === 'active';
+    const showWalletPending = walletStatus === 'review';
+    var _wb = (window.AppState && window.AppState.getWalletBalance) ? window.AppState.getWalletBalance() : null;
+    if (_wb == null) _wb = (window.AppState && window.AppState.WB_DEFAULT) || 25000;
+    const wallet = showWalletBalance ? ('GH\u20b5 ' + Number(_wb).toLocaleString('en-GH')) : (this.props.wallet || 'GH\u20b5 0');
     const topHeight = (this.props.topHeight || 72) + 'px';
     const parts = userName.trim().split(/\s+/).filter(Boolean);
     const initials = (((parts[0] || '')[0] || '') + ((parts[1] || '')[0] || '')).toUpperCase() || 'U';
+
+    // ---- Perspective switcher (demo) ----
+    const approval = (window.AppState && window.AppState.getApproval) ? window.AppState.getApproval() : null;
+    const perspective = (window.AppState && window.AppState.getPerspective) ? window.AppState.getPerspective() : 'owner';
+    const platformApprover = (approval && approval.route === 'platform' && approval.approver) ? approval.approver : null;
+    const activeApprover = (perspective !== 'owner' && platformApprover && platformApprover.id === perspective) ? platformApprover : null;
+
+    const ownerDot = !!(approval && (approval.status === 'approved' || approval.status === 'rejected') && !approval.ownerSeen);
+    const approverDot = !!(platformApprover && approval.status === 'pending' && !approval.approverSeen);
+
+    const OWNER_AV = { bg: 'var(--brand-50)', fg: 'var(--brand-700)' };
+    const APPR_AV = { bg: '#EEF4FF', fg: '#3538CD' };
+    const personas = [
+      { id: 'owner', name: userName, sub: 'Account owner \u00b7 ' + company, init: initials,
+        avBg: OWNER_AV.bg, avFg: OWNER_AV.fg, current: !activeApprover, dot: ownerDot && !!activeApprover,
+        bg: !activeApprover ? 'var(--brand-25)' : 'transparent', onSelect: this.switchPersona('owner') },
+    ];
+    if (platformApprover) {
+      const sub = approval.status === 'pending' ? 'Approver \u00b7 awaiting your review'
+        : (approval.status === 'approved' ? 'Approver \u00b7 approved' : 'Approver \u00b7 rejected');
+      personas.push({ id: platformApprover.id, name: platformApprover.name, sub, init: platformApprover.init,
+        avBg: APPR_AV.bg, avFg: APPR_AV.fg, current: !!activeApprover, dot: approverDot && !activeApprover,
+        bg: activeApprover ? 'var(--brand-25)' : 'transparent', onSelect: this.switchPersona(platformApprover.id) });
+    }
+
+    const STAGES = [
+      { key: 'new', label: 'New company', desc: 'Nothing set up yet \u2014 payroll locked', patch: { employees: 'todo', payroll: 'locked', wallet: 'none' } },
+      { key: 'emp', label: 'Employees added', desc: 'Team in place, payroll not set up', patch: { employees: 'done', payroll: 'unlocked', wallet: 'none' } },
+      { key: 'pay', label: 'Payroll set up', desc: 'Ready to run payroll', patch: { employees: 'done', payroll: 'done', wallet: 'none' } },
+      { key: 'wreview', label: 'Wallet in review', desc: 'Wallet application pending', patch: { employees: 'done', payroll: 'done', wallet: 'review' } },
+      { key: 'wactive', label: 'Wallet active', desc: 'Fully onboarded', patch: { employees: 'done', payroll: 'done', wallet: 'active' } },
+    ];
+    const curKey = (() => {
+      const w = sa.wallet || 'none';
+      if (w === 'active') return 'wactive';
+      if (w === 'review') return 'wreview';
+      if (sa.payroll === 'done') return 'pay';
+      if (sa.employees === 'done') return 'emp';
+      return 'new';
+    })();
+    const dcStages = STAGES.map(st => ({
+      label: st.label, desc: st.desc, on: st.key === curKey,
+      border: st.key === curKey ? 'var(--brand-600)' : 'var(--border-primary)',
+      bg: st.key === curKey ? 'var(--brand-25)' : 'var(--bg-primary)',
+      dotBorder: st.key === curKey ? 'var(--brand-600)' : 'var(--border-primary)',
+      dotBg: st.key === curKey ? 'var(--brand-600)' : 'transparent',
+      onClick: this.applyStage(st.patch),
+    }));
+    const dcTours = [
+      { label: 'Full onboarding tour', onClick: this.startTour('full') },
+      { label: 'Add employees', onClick: this.startTour('people') },
+      { label: 'Set up payroll', onClick: this.startTour('payroll') },
+    ];
     return {
       topHeight, userName, company, wallet, initials,
-      todos, step, progress, continueHref,
+      // perspective switcher
+      personas, personaOpen: this.state.personaOpen, togglePersona: this.togglePersona,
+      personaName: activeApprover ? activeApprover.name : userName,
+      personaSub: activeApprover ? 'Approver view \u00b7 viewing as teammate' : company,
+      personaSubColor: activeApprover ? 'var(--brand-700)' : 'var(--fg-tertiary)',
+      personaInit: activeApprover ? activeApprover.init : initials,
+      personaAvBg: activeApprover ? APPR_AV.bg : OWNER_AV.bg,
+      personaAvFg: activeApprover ? APPR_AV.fg : OWNER_AV.fg,
+      personaBorder: activeApprover ? 'var(--brand-200)' : 'var(--border-secondary)',
+      personaCardBg: activeApprover ? 'var(--brand-25)' : '#fff',
+      notifDot: activeApprover ? approverDot : ownerDot,
+      showWalletBalance, showWalletPending,
+      todos, completed, progress, continueHref, startContinue, showTodo,
+      dcOpen: this.state.dcOpen, toggleDc: this.toggleDc, dcStages, dcTours,
       signOut: (e) => { if (e) e.preventDefault(); if (window.AppState && window.AppState.signOut) window.AppState.signOut(); window.location.href = 'Login.dc.html'; },
       nav: {
         dashboard: navStyle(active === 'dashboard'),

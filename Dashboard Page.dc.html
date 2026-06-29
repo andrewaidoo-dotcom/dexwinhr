@@ -147,37 +147,7 @@
   </div>
 </div>
 
-<sc-if value="{{ panelOpen }}" hint-placeholder-val="{{ true }}">
-  <div style="position:fixed;bottom:20px;left:20px;z-index:90;width:288px;display:flex;flex-direction:column;background:#fff;border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-2xl);overflow:hidden;font-family:var(--font-body);">
-    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:13px 16px;border-bottom:1px solid var(--border-secondary);">
-      <span style="display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--fg-primary);">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--brand-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
-        Preview controls
-      </span>
-      <span role="button" onClick="{{ togglePanel }}" aria-label="Minimize" style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:28px;border-radius:8px;cursor:pointer;color:var(--fg-quaternary);transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-      </span>
-    </div>
-    <div style="padding:14px 16px 16px;display:flex;flex-direction:column;gap:15px;">
-      <sc-for list="{{ panelGroups }}" as="g" hint-placeholder-count="3">
-        <div>
-          <div style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--fg-quaternary);margin-bottom:8px;">{{ g.label }}</div>
-          <div style="display:flex;flex-wrap:wrap;gap:6px;">
-            <sc-for list="{{ g.options }}" as="o" hint-placeholder-count="3">
-              <button onClick="{{ o.onClick }}" style="padding:6px 12px;font-family:var(--font-body);font-size:13px;font-weight:600;border-radius:999px;cursor:pointer;background:{{ o.bg }};color:{{ o.color }};border:1px solid {{ o.border }};transition:background 120ms ease,color 120ms ease;">{{ o.label }}</button>
-            </sc-for>
-          </div>
-        </div>
-      </sc-for>
-    </div>
-  </div>
-</sc-if>
-<sc-if value="{{ panelClosed }}" hint-placeholder-val="{{ false }}">
-  <button onClick="{{ togglePanel }}" aria-label="Preview controls" style="position:fixed;bottom:20px;left:20px;z-index:90;display:inline-flex;align-items:center;gap:6px;padding:7px 13px;font-family:var(--font-body);font-size:12px;font-weight:600;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:999px;box-shadow:var(--shadow-md);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
-    Controls
-  </button>
-</sc-if>
+
 
 <sc-if value="{{ tourOpen }}" hint-placeholder-val="{{ false }}">
   <div style="position:fixed;inset:0;z-index:300;font-family:var(--font-body);">
@@ -239,7 +209,7 @@ class Component extends DCLogic {
     const ws = this.walletState;
     const pay = this.state.ovPayroll ?? this.props.payrollStep ?? 'Auto';
     const payDone = pay === 'Done';
-    if (!empDone) return { sel: '[data-tour="nav-people"]', place: 'right', rad: 10, name: 'add your employees', label: 'Add employees', href: 'People Page.dc.html', body: 'Head to People in the sidebar \u2014 upload a PAYE schedule or add people one by one so they can be paid.' };
+    if (!empDone) return { sel: '[data-tour="nav-people"]', place: 'right', rad: 10, name: 'add your employees', label: 'Add employees', href: 'People Page.dc.html', resume: 'people-choose', body: 'Head to People in the sidebar \u2014 upload a PAYE schedule or add people one by one so they can be paid.' };
     if (ws !== 'Active' && ws !== 'In review') return { sel: '[data-tour="wallet"]', place: 'right', rad: 10, name: 'apply for a wallet', label: 'Apply for wallet', href: 'Company Wallet Application.dc.html', body: 'Open Wallets in the sidebar to apply for your DexwinPay wallet so you can fund and pay salaries directly.' };
     if (!payDone) return { sel: '[data-tour="nav-payroll"]', place: 'right', rad: 10, name: 'set up payroll', label: 'Set up payroll', href: 'Set Up Payroll.dc.html', body: 'Open Payroll in the sidebar to set your pay cycle, statutory rates and approval flow.' };
     return { sel: '[data-tour="checklist"]', place: 'bottom', rad: 20, name: 'run your first payroll', label: 'Go to payroll', href: 'Payroll Page.dc.html', body: 'Setup\u2019s complete \u2014 you\u2019re ready to run your first payroll.' };
@@ -476,7 +446,7 @@ class Component extends DCLogic {
       ];
     } else {
       tContent = [
-        { eyebrow: 'Welcome', title: 'Welcome to DexwinPay, ' + (acct.firstName || 'there') + ' \ud83d\udc4b', body: remaining > 0 ? ('You\u2019re ' + remaining + (remaining === 1 ? ' step' : ' steps') + ' away from running your first payroll \u2014 let\u2019s knock them out together.') : 'Your setup is complete \u2014 here\u2019s a quick refresher on where everything lives.' },
+        { eyebrow: 'Welcome', title: 'Welcome to DexwinPay, ' + (acct.firstName || 'there') + ' \ud83d\udc4b', body: remaining > 0 ? ('You\u2019re a few steps away from running your first payroll \u2014 let\u2019s knock them out together.') : 'Your setup is complete \u2014 here\u2019s a quick refresher on where everything lives.' },
         { eyebrow: 'Next up', title: 'Let\u2019s ' + nextTask.name, body: nextTask.body },
       ];
     }
@@ -511,9 +481,9 @@ class Component extends DCLogic {
       backdrop: centerStep ? 'rgba(8,12,10,0.62)' : 'transparent',
       eyebrow: tc.eyebrow, title: tc.title, body: tc.body,
       counter: (tStep + 1) + ' of ' + this.tourSteps.length,
-      primaryLabel: (mode === 'welcome' && tStep === 0) ? 'Show me around' : (tLast ? (mode === 'done' ? 'Go to payroll' : nextTask.label) : 'Next'),
+      primaryLabel: (mode === 'welcome' && tStep === 0) ? 'Okay' : (tLast ? (mode === 'done' ? 'Go to payroll' : nextTask.label) : 'Next'),
       secondaryLabel: tStep === 0 ? (mode === 'welcome' ? 'Maybe later' : 'Skip') : 'Back',
-      onPrimary: tLast ? (() => { this.tourEnd(); window.location.href = (mode === 'done' ? 'Payroll Page.dc.html' : nextTask.href); }) : this.tourNext,
+      onPrimary: tLast ? (() => { try { if (mode !== 'done' && nextTask.resume) localStorage.setItem('dxp_tour_resume', nextTask.resume); } catch (e) {} this.tourEnd(); window.location.href = (mode === 'done' ? 'Payroll Page.dc.html' : nextTask.href); }) : this.tourNext,
       onSecondary: tStep === 0 ? this.tourEnd : this.tourPrev,
       onSkip: this.tourEnd,
     };

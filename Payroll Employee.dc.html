@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/fonts/fonts.css">
+  <link rel="stylesheet" href="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/tokens/shadows.css">
+  <link rel="stylesheet" href="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/tokens/base.css">
+  <link rel="stylesheet" href="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/styles.css">
+  <script src="./app-state.js"></script>
+  <style>
+    * { scrollbar-width: thin; scrollbar-color: #D5D7DA transparent; }
+    *::-webkit-scrollbar { width: 10px; height: 10px; }
+    *::-webkit-scrollbar-track { background: transparent; }
+    *::-webkit-scrollbar-thumb { background: #D5D7DA; border-radius: 999px; border: 3px solid transparent; background-clip: padding-box; }
+    *::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
+    @keyframes toastIn { from { transform: translate(-50%, -16px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
+  </style>
+</helmet>
+
+<div style="display:flex;min-height:100vh;background:var(--bg-secondary);font-family:var(--font-body);color:var(--fg-primary);">
+
+  <dc-import name="Sidebar" active="payroll" top-height="72" hint-size="288px,100vh" style="display:contents"></dc-import>
+
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;">
+
+    <!-- TOPBAR with breadcrumb -->
+    <header style="height:72px;flex-shrink:0;padding:0 40px;display:flex;align-items:center;justify-content:space-between;background:#fff;border-bottom:1px solid var(--border-secondary);position:sticky;top:0;z-index:20;">
+      <div style="display:flex;align-items:center;gap:9px;min-width:0;font-size:15px;font-weight:600;">
+        <a href="Payroll Page.dc.html" style="color:var(--fg-tertiary);text-decoration:none;white-space:nowrap;transition:color 120ms ease;" style-hover="color:var(--fg-primary);">Payroll</a>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        <a href="Payroll Page.dc.html" style="color:var(--fg-tertiary);text-decoration:none;white-space:nowrap;transition:color 120ms ease;" style-hover="color:var(--fg-primary);">{{ periodLabel }} payroll</a>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        <span style="color:var(--brand-700);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ name }}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:20px;flex-shrink:0;">
+        <div style="display:flex;align-items:center;gap:9px;color:var(--fg-secondary);font-size:15px;font-weight:500;">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          {{ today }}
+        </div>
+        <span role="button" aria-label="Notifications" style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--border-secondary);border-radius:var(--radius-full);color:var(--fg-secondary);cursor:pointer;box-shadow:var(--shadow-xs);transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
+        </span>
+      </div>
+    </header>
+
+    <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+      <div style="position:fixed;top:88px;left:50%;transform:translateX(-50%);z-index:90;display:flex;align-items:center;gap:11px;padding:13px 20px;background:var(--brand-600);color:#fff;border-radius:999px;box-shadow:var(--shadow-lg);font-size:15px;font-weight:600;animation:toastIn 220ms ease;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
+        {{ toast }}
+      </div>
+    </sc-if>
+
+    <!-- NOT FOUND -->
+    <sc-if value="{{ notFound }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:96px 40px;">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:var(--radius-full);background:var(--gray-100);color:var(--gray-500);margin-bottom:20px;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </span>
+        <h2 style="font-family:var(--font-display);font-size:24px;font-weight:800;letter-spacing:-0.02em;margin:0 0 8px;">Employee not found in this run</h2>
+        <a href="Payroll Page.dc.html" style="display:inline-flex;align-items:center;gap:9px;margin-top:18px;padding:12px 24px;font-weight:700;font-size:15px;color:#fff;background:var(--bg-brand-solid);border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);text-decoration:none;">Back to payroll</a>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ found }}" hint-placeholder-val="{{ true }}">
+      <!-- PAGE HEADER -->
+      <div style="flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:20px 40px;border-bottom:1px solid var(--border-secondary);background:#fff;position:sticky;top:72px;z-index:19;">
+        <div style="display:flex;align-items:center;gap:16px;min-width:0;">
+          <a href="Payroll Page.dc.html" aria-label="Back" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--border-secondary);border-radius:var(--radius-full);color:var(--fg-secondary);background:#fff;box-shadow:var(--shadow-xs);text-decoration:none;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          </a>
+          <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:999px;background:var(--brand-50);color:var(--brand-700);font-family:var(--font-display);font-weight:800;font-size:19px;letter-spacing:-0.01em;">{{ initials }}</span>
+          <div style="min-width:0;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <h1 style="font-family:var(--font-display);font-size:24px;line-height:30px;font-weight:800;letter-spacing:-0.02em;margin:0;color:var(--fg-primary);">{{ name }}</h1>
+              <span style="flex-shrink:0;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;padding:4px 11px;border-radius:var(--radius-full);color:{{ chipColor }};background:{{ chipBg }};border:1px solid {{ chipBorder }};"><span style="width:6px;height:6px;border-radius:999px;background:{{ chipDot }};"></span>{{ chipLabel }}</span>
+            </div>
+            <p style="font-size:14px;line-height:20px;color:var(--fg-tertiary);margin:3px 0 0;">{{ role }} · {{ periodLabel }} payroll</p>
+          </div>
+        </div>
+        <div style="flex-shrink:0;display:flex;align-items:center;gap:12px;">
+          <button onClick="{{ onDownload }}" style="display:inline-flex;align-items:center;gap:9px;padding:12px 22px;font-family:var(--font-body);font-weight:700;font-size:15px;color:var(--fg-secondary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            Download payslip
+          </button>
+          <button onClick="{{ onSend }}" style="display:inline-flex;align-items:center;gap:9px;padding:12px 22px;font-family:var(--font-body);font-weight:700;font-size:15px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+            Send payslip
+          </button>
+        </div>
+      </div>
+
+      <!-- BODY -->
+      <div style="flex:1;overflow-y:auto;padding:32px 40px 64px;">
+        <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:248px 1fr;gap:28px;align-items:start;">
+
+          <!-- SIDE MENU -->
+          <div style="background:#fff;border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-xs);padding:12px;position:sticky;top:24px;align-self:start;">
+            <div style="font-size:12px;font-weight:700;letter-spacing:0.06em;color:var(--fg-quaternary);padding:8px 12px 10px;">MENU</div>
+            <div style="display:flex;flex-direction:column;gap:3px;">
+              <sc-for list="{{ menuView }}" as="m" hint-placeholder-count="4">
+                <button onClick="{{ m.onClick }}" style="display:flex;align-items:center;gap:11px;width:100%;box-sizing:border-box;padding:11px 12px;background:{{ m.bg }};border:none;border-radius:10px;cursor:pointer;font-family:var(--font-body);font-size:14.5px;font-weight:{{ m.weight }};color:{{ m.color }};text-align:left;transition:background 120ms ease;">
+                  <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:{{ m.iconBg }};color:{{ m.iconColor }};"><span innerHTML="{{ m.icon }}" style="display:inline-flex;"></span></span>
+                  <span style="flex:1;min-width:0;">{{ m.label }}</span>
+                  <sc-if value="{{ m.badge }}" hint-placeholder-val="{{ false }}"><span style="flex-shrink:0;font-size:12px;font-weight:700;color:var(--brand-700);background:var(--brand-50);border-radius:999px;padding:1px 8px;font-variant-numeric:tabular-nums;">{{ m.badge }}</span></sc-if>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+
+          <!-- CONTENT -->
+          <div style="min-width:0;">
+
+            <!-- BREAKDOWN -->
+            <sc-if value="{{ isBreakdown }}" hint-placeholder-val="{{ true }}">
+              <div style="background:#fff;border:1px solid var(--border-secondary);border-radius:18px;box-shadow:var(--shadow-xs);overflow:hidden;">
+                <div style="padding:24px 28px 18px;border-bottom:1px solid var(--border-secondary);">
+                  <h2 style="font-family:var(--font-display);font-size:21px;font-weight:800;letter-spacing:-0.02em;margin:0 0 4px;">{{ periodLabel }} breakdown</h2>
+                  <p style="font-size:14.5px;line-height:21px;color:var(--fg-tertiary);margin:0;">How {{ firstName }}'s net pay is worked out for this run — earnings build up to gross, then SSNIT, PAYE and other deductions come off to reach net. Anything you add for this payroll feeds into the lines below.</p>
+                </div>
+                <div style="padding:6px 28px 0;">
+                  <div style="font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--fg-quaternary);padding:14px 0 4px;">Earnings</div>
+                  <sc-for list="{{ earningRows }}" as="r" hint-placeholder-count="4">
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--border-tertiary);">
+                      <span style="display:flex;align-items:center;gap:9px;font-size:15px;color:var(--fg-secondary);">{{ r.label }}<sc-if value="{{ r.tag }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;font-weight:600;color:var(--fg-quaternary);background:var(--gray-100);border-radius:999px;padding:1px 8px;">{{ r.tag }}</span></sc-if></span>
+                      <span style="font-size:15px;font-weight:{{ r.weight }};color:{{ r.color }};font-variant-numeric:tabular-nums;">{{ r.amount }}</span>
+                    </div>
+                  </sc-for>
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid var(--border-secondary);">
+                    <span style="font-size:15px;font-weight:700;color:var(--fg-primary);">Gross pay</span>
+                    <span style="font-size:15px;font-weight:800;color:var(--fg-primary);font-variant-numeric:tabular-nums;">{{ grossDisplay }}</span>
+                  </div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--border-tertiary);">
+                    <span style="display:flex;align-items:center;gap:9px;font-size:14px;color:var(--fg-tertiary);">Taxable income<span style="font-size:11.5px;color:var(--fg-quaternary);">basic − SSNIT + taxable allowance</span></span>
+                    <span style="font-size:14px;font-weight:600;color:var(--fg-tertiary);font-variant-numeric:tabular-nums;">{{ taxableDisplay }}</span>
+                  </div>
+                  <div style="font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--fg-quaternary);padding:16px 0 4px;">Deductions</div>
+                  <sc-for list="{{ deductionRows }}" as="r" hint-placeholder-count="5">
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--border-tertiary);">
+                      <span style="display:flex;align-items:center;gap:9px;font-size:15px;color:var(--fg-secondary);"><span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:6px;background:var(--error-50);color:var(--error-600);font-weight:800;">−</span>{{ r.label }}<sc-if value="{{ r.tag }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;font-weight:600;color:var(--fg-quaternary);background:var(--gray-100);border-radius:999px;padding:1px 8px;">{{ r.tag }}</span></sc-if></span>
+                      <span style="font-size:15px;font-weight:700;color:{{ r.color }};font-variant-numeric:tabular-nums;">{{ r.amount }}</span>
+                    </div>
+                  </sc-for>
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0 16px;">
+                    <span style="font-size:15px;font-weight:700;color:var(--fg-primary);">Total deductions</span>
+                    <span style="font-size:15px;font-weight:800;color:var(--error-700);font-variant-numeric:tabular-nums;">− {{ totalDedDisplay }}</span>
+                  </div>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 28px;background:var(--brand-900);color:#fff;">
+                  <span style="font-family:var(--font-display);font-size:17px;font-weight:800;letter-spacing:-0.01em;">Net pay</span>
+                  <span style="font-family:var(--font-display);font-size:24px;font-weight:800;letter-spacing:-0.01em;font-variant-numeric:tabular-nums;">{{ netDisplay }}</span>
+                </div>
+              </div>
+            </sc-if>
+
+            <!-- ADDITIONS -->
+            <sc-if value="{{ isAdditions }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:18px;">
+                <div>
+                  <h2 style="font-family:var(--font-display);font-size:21px;font-weight:800;letter-spacing:-0.02em;margin:0 0 4px;">Pay additions</h2>
+                  <p style="font-size:14.5px;line-height:21px;color:var(--fg-tertiary);margin:0;max-width:54ch;">Company allowances apply automatically. Add a one-off for {{ firstName }} on the {{ periodLabel }} run only.</p>
+                </div>
+                <button onClick="{{ openAdd }}" style="flex-shrink:0;display:inline-flex;align-items:center;gap:8px;padding:11px 20px;font-family:var(--font-body);font-weight:700;font-size:15px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  Add addition
+                </button>
+              </div>
+
+              <div style="background:#fff;border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-xs);overflow:hidden;margin-bottom:20px;">
+                <div style="padding:14px 22px;background:var(--bg-secondary);border-bottom:1px solid var(--border-secondary);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--fg-quaternary);">From company setup · included in basic pay</div>
+                <sc-for list="{{ companyAdditions }}" as="c" hint-placeholder-count="2">
+                  <div style="display:flex;align-items:center;gap:14px;padding:15px 22px;border-bottom:1px solid var(--border-tertiary);">
+                    <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;background:var(--brand-50);color:var(--brand-600);"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></span>
+                    <div style="flex:1;min-width:0;"><div style="font-size:15px;font-weight:700;color:var(--fg-primary);">{{ c.name }}</div><div style="font-size:13px;color:var(--fg-tertiary);">{{ c.tag }} · all employees</div></div>
+                    <span style="font-size:13px;font-weight:600;color:var(--fg-quaternary);">Company-wide</span>
+                  </div>
+                </sc-for>
+              </div>
+
+              <div style="background:#fff;border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-xs);overflow:hidden;">
+                <div style="padding:14px 22px;background:var(--bg-secondary);border-bottom:1px solid var(--border-secondary);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--fg-quaternary);">Added for this payroll</div>
+                <sc-if value="{{ hasAdditions }}" hint-placeholder-val="{{ false }}">
+                  <sc-for list="{{ instanceAdditions }}" as="a" hint-placeholder-count="1">
+                    <div style="display:flex;align-items:center;gap:14px;padding:15px 22px;border-bottom:1px solid var(--border-tertiary);">
+                      <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;background:var(--success-50);color:var(--success-600);font-weight:800;font-size:18px;">+</span>
+                      <div style="flex:1;min-width:0;"><div style="font-size:15px;font-weight:700;color:var(--fg-primary);">{{ a.name }}</div><div style="font-size:13px;color:var(--fg-tertiary);">{{ a.tag }}</div></div>
+                      <span style="font-size:15px;font-weight:700;color:var(--success-700);font-variant-numeric:tabular-nums;">+ {{ a.amount }}</span>
+                      <span role="button" onClick="{{ a.onRemove }}" aria-label="Remove" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:8px;color:var(--fg-quaternary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></span>
+                    </div>
+                  </sc-for>
+                </sc-if>
+                <sc-if value="{{ noAdditions }}" hint-placeholder-val="{{ true }}">
+                  <div style="padding:30px 22px;text-align:center;font-size:14.5px;color:var(--fg-tertiary);">No one-off additions yet. Use <strong style="font-weight:700;color:var(--fg-secondary);">Add addition</strong> for overtime, a bonus, a reimbursement or a cash allowance.</div>
+                </sc-if>
+              </div>
+            </sc-if>
+
+            <!-- DEDUCTIONS -->
+            <sc-if value="{{ isDeductions }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:18px;">
+                <div>
+                  <h2 style="font-family:var(--font-display);font-size:21px;font-weight:800;letter-spacing:-0.02em;margin:0 0 4px;">Pay deductions</h2>
+                  <p style="font-size:14.5px;line-height:21px;color:var(--fg-tertiary);margin:0;max-width:54ch;">Company deductions apply automatically. Add a one-off deduction for {{ firstName }} on the {{ periodLabel }} run only.</p>
+                </div>
+                <button onClick="{{ openDed }}" style="flex-shrink:0;display:inline-flex;align-items:center;gap:8px;padding:11px 20px;font-family:var(--font-body);font-weight:700;font-size:15px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  Add deduction
+                </button>
+              </div>
+
+              <div style="background:#fff;border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-xs);overflow:hidden;margin-bottom:20px;">
+                <div style="padding:14px 22px;background:var(--bg-secondary);border-bottom:1px solid var(--border-secondary);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--fg-quaternary);">From company setup</div>
+                <sc-for list="{{ companyDeductions }}" as="c" hint-placeholder-count="2">
+                  <div style="display:flex;align-items:center;gap:14px;padding:15px 22px;border-bottom:1px solid var(--border-tertiary);">
+                    <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;background:var(--gray-100);color:var(--fg-secondary);"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg></span>
+                    <div style="flex:1;min-width:0;"><div style="font-size:15px;font-weight:700;color:var(--fg-primary);">{{ c.name }}</div><div style="font-size:13px;color:var(--fg-tertiary);">{{ c.tag }} · all employees</div></div>
+                    <span style="font-size:13px;font-weight:600;color:var(--fg-quaternary);">Company-wide</span>
+                  </div>
+                </sc-for>
+              </div>
+
+              <div style="background:#fff;border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-xs);overflow:hidden;">
+                <div style="padding:14px 22px;background:var(--bg-secondary);border-bottom:1px solid var(--border-secondary);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--fg-quaternary);">Added for this payroll</div>
+                <sc-if value="{{ hasDeductions }}" hint-placeholder-val="{{ false }}">
+                  <sc-for list="{{ instanceDeductions }}" as="d" hint-placeholder-count="1">
+                    <div style="display:flex;align-items:center;gap:14px;padding:15px 22px;border-bottom:1px solid var(--border-tertiary);">
+                      <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;background:var(--error-50);color:var(--error-600);font-weight:800;font-size:18px;">−</span>
+                      <div style="flex:1;min-width:0;"><div style="font-size:15px;font-weight:700;color:var(--fg-primary);">{{ d.name }}</div><div style="font-size:13px;color:var(--fg-tertiary);">{{ d.tag }}</div></div>
+                      <span style="font-size:15px;font-weight:700;color:var(--error-700);font-variant-numeric:tabular-nums;">− {{ d.amount }}</span>
+                      <span role="button" onClick="{{ d.onRemove }}" aria-label="Remove" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:8px;color:var(--fg-quaternary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></span>
+                    </div>
+                  </sc-for>
+                </sc-if>
+                <sc-if value="{{ noDeductions }}" hint-placeholder-val="{{ true }}">
+                  <div style="padding:30px 22px;text-align:center;font-size:14.5px;color:var(--fg-tertiary);">No one-off deductions yet. Use <strong style="font-weight:700;color:var(--fg-secondary);">Add deduction</strong> to take something off this run.</div>
+                </sc-if>
+              </div>
+            </sc-if>
+
+            <!-- BANK DETAILS -->
+            <sc-if value="{{ isBank }}" hint-placeholder-val="{{ false }}">
+              <div style="background:#fff;border:1px solid var(--border-secondary);border-radius:18px;box-shadow:var(--shadow-xs);overflow:hidden;">
+                <div style="padding:24px 28px 18px;border-bottom:1px solid var(--border-secondary);">
+                  <h2 style="font-family:var(--font-display);font-size:21px;font-weight:800;letter-spacing:-0.02em;margin:0 0 4px;">Bank details</h2>
+                  <p style="font-size:14.5px;line-height:21px;color:var(--fg-tertiary);margin:0;">Where {{ firstName }}'s net pay is sent on payday.</p>
+                </div>
+                <sc-if value="{{ hasBank }}" hint-placeholder-val="{{ true }}">
+                  <div style="padding:6px 28px 18px;">
+                    <sc-for list="{{ bankRows }}" as="b" hint-placeholder-count="4">
+                      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:15px 0;border-bottom:1px solid var(--border-tertiary);">
+                        <span style="font-size:14.5px;color:var(--fg-tertiary);">{{ b.label }}</span>
+                        <span style="font-size:15px;font-weight:700;color:var(--fg-primary);font-variant-numeric:tabular-nums;">{{ b.value }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:11px;margin:8px 28px 24px;padding:13px 16px;background:var(--success-50);border:1px solid var(--success-200);border-radius:12px;">
+                    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="var(--success-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
+                    <span style="font-size:14px;font-weight:600;color:var(--success-800);">Verified — ready to receive payment.</span>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ noBank }}" hint-placeholder-val="{{ false }}">
+                  <div style="padding:36px 28px;text-align:center;">
+                    <span style="display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:var(--radius-full);background:var(--error-50);color:var(--error-600);margin-bottom:16px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></span>
+                    <div style="font-size:16px;font-weight:700;color:var(--fg-primary);margin-bottom:4px;">No bank details on file</div>
+                    <div style="font-size:14.5px;line-height:21px;color:var(--fg-tertiary);max-width:42ch;margin:0 auto;">{{ firstName }} can't be paid until their bank info is added. Add it from the payroll run when prompted.</div>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-if>
+
+          </div>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+</div>
+
+<!-- ADD ADDITION MODAL -->
+<sc-if value="{{ addOpen }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closeAdd }}" style="position:fixed;inset:0;z-index:120;background:rgba(10,13,18,0.5);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:32px 24px;box-sizing:border-box;font-family:var(--font-body);">
+    <div onClick="{{ stopProp }}" style="width:100%;max-width:540px;background:#fff;border-radius:20px;box-shadow:var(--shadow-2xl);overflow:hidden;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:24px 28px 6px;">
+        <div style="min-width:0;">
+          <h2 style="font-family:var(--font-display);font-size:21px;font-weight:800;letter-spacing:-0.02em;margin:0 0 4px;">Add a pay addition</h2>
+          <p style="font-size:14px;line-height:21px;color:var(--fg-tertiary);margin:0;">For {{ name }} · {{ periodLabel }} run only.</p>
+        </div>
+        <span role="button" onClick="{{ closeAdd }}" aria-label="Close" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;cursor:pointer;color:var(--fg-quaternary);transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></span>
+      </div>
+      <div style="padding:16px 28px 24px;">
+        <label style="display:block;font-size:13px;font-weight:600;color:var(--fg-secondary);margin-bottom:8px;">Type</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;">
+          <sc-for list="{{ addKinds }}" as="k" hint-placeholder-count="4">
+            <div onClick="{{ k.onSelect }}" style="display:flex;align-items:center;gap:10px;padding:12px 14px;border:1.5px solid {{ k.b }};background:{{ k.bg }};border-radius:11px;cursor:pointer;transition:border-color 120ms ease,background 120ms ease;">
+              <span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;border:1.5px solid {{ k.db }};background:{{ k.dbg }};flex-shrink:0;"><sc-if value="{{ k.on }}" hint-placeholder-val="{{ false }}"><span style="width:6px;height:6px;border-radius:50%;background:#fff;"></span></sc-if></span>
+              <span style="font-size:14.5px;font-weight:600;color:var(--fg-primary);">{{ k.label }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <label style="display:block;font-size:13px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Label</label>
+        <input value="{{ addName }}" onInput="{{ onAddName }}" placeholder="{{ addNamePlaceholder }}" style="width:100%;box-sizing:border-box;padding:12px 15px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:#fff;border:1px solid var(--border-primary);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);outline:none;margin-bottom:16px;" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);">
+        <label style="display:block;font-size:13px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Amount</label>
+        <div style="display:flex;align-items:center;border:1px solid var(--border-primary);border-radius:var(--radius-md);overflow:hidden;box-shadow:var(--shadow-xs);">
+          <span style="padding:12px 15px;background:var(--bg-secondary);color:var(--fg-tertiary);font-size:15px;border-right:1px solid var(--border-primary);">GH₵</span>
+          <input value="{{ addAmount }}" onInput="{{ onAddAmount }}" inputmode="decimal" placeholder="0.00" style="flex:1;min-width:0;padding:12px 15px;border:none;outline:none;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:#fff;font-variant-numeric:tabular-nums;">
+        </div>
+        <div style="display:flex;align-items:center;justify-content:flex-end;gap:12px;margin-top:24px;">
+          <button onClick="{{ closeAdd }}" style="padding:12px 22px;font-family:var(--font-body);font-weight:700;font-size:15px;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;">Cancel</button>
+          <button onClick="{{ saveAdd }}" style="display:inline-flex;align-items:center;gap:9px;padding:12px 24px;font-family:var(--font-body);font-weight:700;font-size:15px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;opacity:{{ addOpacity }};transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">Add to run</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<!-- ADD DEDUCTION MODAL -->
+<sc-if value="{{ dedOpen }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closeDed }}" style="position:fixed;inset:0;z-index:120;background:rgba(10,13,18,0.5);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:32px 24px;box-sizing:border-box;font-family:var(--font-body);">
+    <div onClick="{{ stopProp }}" style="width:100%;max-width:540px;background:#fff;border-radius:20px;box-shadow:var(--shadow-2xl);overflow:hidden;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:24px 28px 6px;">
+        <div style="min-width:0;">
+          <h2 style="font-family:var(--font-display);font-size:21px;font-weight:800;letter-spacing:-0.02em;margin:0 0 4px;">Add a pay deduction</h2>
+          <p style="font-size:14px;line-height:21px;color:var(--fg-tertiary);margin:0;">For {{ name }} · {{ periodLabel }} run only.</p>
+        </div>
+        <span role="button" onClick="{{ closeDed }}" aria-label="Close" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;cursor:pointer;color:var(--fg-quaternary);transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></span>
+      </div>
+      <div style="padding:16px 28px 24px;">
+        <label style="display:block;font-size:13px;font-weight:600;color:var(--fg-secondary);margin-bottom:8px;">When is it taken?</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;">
+          <sc-for list="{{ dedModes }}" as="t" hint-placeholder-count="2">
+            <div onClick="{{ t.onSelect }}" style="display:flex;align-items:flex-start;gap:10px;padding:13px 14px;border:1.5px solid {{ t.b }};background:{{ t.bg }};border-radius:11px;cursor:pointer;transition:border-color 120ms ease,background 120ms ease;">
+              <span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;border:1.5px solid {{ t.db }};background:{{ t.dbg }};flex-shrink:0;margin-top:1px;"><sc-if value="{{ t.on }}" hint-placeholder-val="{{ false }}"><span style="width:6px;height:6px;border-radius:50%;background:#fff;"></span></sc-if></span>
+              <span style="min-width:0;"><span style="display:block;font-size:14.5px;font-weight:700;color:var(--fg-primary);">{{ t.label }}</span><span style="display:block;font-size:12.5px;line-height:17px;color:var(--fg-tertiary);margin-top:1px;">{{ t.sub }}</span></span>
+            </div>
+          </sc-for>
+        </div>
+        <label style="display:block;font-size:13px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Label</label>
+        <input value="{{ dedName }}" onInput="{{ onDedName }}" placeholder="{{ dedNamePlaceholder }}" style="width:100%;box-sizing:border-box;padding:12px 15px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:#fff;border:1px solid var(--border-primary);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);outline:none;margin-bottom:16px;" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);">
+        <label style="display:block;font-size:13px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Amount</label>
+        <div style="display:flex;align-items:center;border:1px solid var(--border-primary);border-radius:var(--radius-md);overflow:hidden;box-shadow:var(--shadow-xs);">
+          <span style="padding:12px 15px;background:var(--bg-secondary);color:var(--fg-tertiary);font-size:15px;border-right:1px solid var(--border-primary);">GH₵</span>
+          <input value="{{ dedAmount }}" onInput="{{ onDedAmount }}" inputmode="decimal" placeholder="0.00" style="flex:1;min-width:0;padding:12px 15px;border:none;outline:none;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:#fff;font-variant-numeric:tabular-nums;">
+        </div>
+        <div style="display:flex;align-items:center;justify-content:flex-end;gap:12px;margin-top:24px;">
+          <button onClick="{{ closeDed }}" style="padding:12px 22px;font-family:var(--font-body);font-weight:700;font-size:15px;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;">Cancel</button>
+          <button onClick="{{ saveDed }}" style="display:inline-flex;align-items:center;gap:9px;padding:12px 24px;font-family:var(--font-body);font-weight:700;font-size:15px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;opacity:{{ dedOpacity }};transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">Add to run</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 1440, &quot;height&quot;: 1024}}">
+const EMPLOYEES_BASE = [
+  { id: 'e1', name: 'Akua Mensah',  role: 'Operations Lead',  initials: 'AM', bankName: 'GCB Bank',     branch: 'Accra Main', acct: '1011 2345 6789', gross: 4200, ssnit: 231, paye: 348, net: 3621 },
+  { id: 'e2', name: 'Kwame Owusu',  role: 'Accountant',       initials: 'KO', bankName: 'Stanbic Bank', branch: 'Osu',        acct: '4422 1138 7755', gross: 3800, ssnit: 209, paye: 308, net: 3283 },
+  { id: 'e3', name: 'Ama Boateng',  role: 'Software Engineer',initials: 'AB', bankName: 'Ecobank',      branch: 'Ridge',      acct: '0030 8847 1962', gross: 5400, ssnit: 297, paye: 540, net: 4563 },
+  { id: 'e4', name: 'Yaw Asante',   role: 'Sales Executive',  initials: 'YA', bankName: '',             branch: '',           acct: '',               gross: 3200, ssnit: 176, paye: 232, net: 2792 },
+  { id: 'e5', name: 'Adwoa Nyarko', role: 'HR Manager',       initials: 'AN', bankName: '',             branch: '',           acct: '',               gross: 4000, ssnit: 220, paye: 320, net: 3460 },
+  { id: 'e6', name: 'Kofi Boadi',   role: 'Customer Support', initials: 'KB', bankName: 'Fidelity Bank',branch: 'Tema',       acct: '1077 4421 9803', gross: 2800, ssnit: 154, paye: 168, net: 2478 },
+];
+const MONTHS = { jan: 'January', feb: 'February', mar: 'March', apr: 'April', may: 'May', jun: 'June', jul: 'July', aug: 'August', sep: 'September', oct: 'October', nov: 'November', dec: 'December' };
+function periodLabelOf(pid) {
+  if (!pid) return 'This month';
+  var p = String(pid).split('-');
+  var m = MONTHS[(p[0] || '').toLowerCase()];
+  return m ? (m + ' ' + (p[1] || '')) : pid;
+}
+function fmt(n) { return 'GH\u20b5 ' + Number(n || 0).toLocaleString('en-GH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+
+const ADD_KINDS = [
+  { value: 'overtime',      label: 'Overtime',       ph: 'e.g. 12 hrs overtime' },
+  { value: 'reimbursement', label: 'Reimbursement',  ph: 'e.g. Client travel refund' },
+  { value: 'cash',          label: 'Cash Allowance', ph: 'e.g. Fuel allowance' },
+  { value: 'bonus',         label: 'Bonus',          ph: 'e.g. Performance bonus' },
+];
+const ADD_TAG = { overtime: 'Overtime', reimbursement: 'Reimbursement', cash: 'Cash Allowance', bonus: 'Bonus' };
+const DED_MODES = [
+  { value: 'pretax',  label: 'Pre-tax',  sub: 'Taken before tax is worked out' },
+  { value: 'posttax', label: 'Post-tax', sub: 'Taken from net pay after tax' },
+];
+const COMPANY_ADDITIONS = [
+  { name: 'Transport Allowance', tag: 'Cash Allowance' },
+  { name: 'Risk Allowance', tag: 'Cash Allowance' },
+];
+const COMPANY_DEDUCTIONS = [
+  { name: 'Provident Fund', tag: 'Pre-tax' },
+  { name: 'Welfare Contribution', tag: 'Post-tax' },
+];
+const MENU = [
+  { id: 'breakdown', label: 'Breakdown', icon: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>' },
+  { id: 'additions', label: 'Additions', icon: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' },
+  { id: 'deductions', label: 'Deductions', icon: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>' },
+  { id: 'bank', label: 'Bank details', icon: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>' },
+];
+
+class Component extends DCLogic {
+  state = {
+    empId: '', periodId: '', emp: null, loaded: false,
+    menu: 'breakdown',
+    items: { additions: [], deductions: [] },
+    addOpen: false, addKind: 'overtime', addName: '', addAmount: '',
+    dedOpen: false, dedMode: 'posttax', dedName: '', dedAmount: '',
+    toast: null,
+  };
+  toastTimer = null;
+
+  componentDidMount() {
+    let empId = '', periodId = '';
+    try {
+      const q = new URLSearchParams(location.search);
+      empId = q.get('emp') || '';
+      periodId = q.get('period') || '';
+    } catch (e) {}
+    const emp = EMPLOYEES_BASE.find(x => x.id === empId) || null;
+    const loadItems = () => {
+      if (window.AppState && window.AppState.getPayItems) {
+        this.setState({ items: window.AppState.getPayItems(periodId, empId) });
+        return true;
+      }
+      return false;
+    };
+    this.setState({ empId, periodId, emp, loaded: true }, () => {
+      if (!loadItems()) { let n = 0; const poll = () => { if (loadItems() || n++ > 25) return; setTimeout(poll, 40); }; poll(); }
+    });
+  }
+  componentWillUnmount() { if (this.toastTimer) clearTimeout(this.toastTimer); }
+
+  showToast(msg) {
+    if (this.toastTimer) clearTimeout(this.toastTimer);
+    this.setState({ toast: msg });
+    this.toastTimer = setTimeout(() => this.setState({ toast: null }), 3500);
+  }
+  persist = (items) => { try { if (window.AppState) window.AppState.setPayItems(this.state.periodId, this.state.empId, items); } catch (e) {} };
+
+  setMenu = (id) => () => this.setState({ menu: id });
+  stopProp = (ev) => ev.stopPropagation();
+
+  openAdd = () => this.setState({ addOpen: true, addKind: 'overtime', addName: '', addAmount: '' });
+  closeAdd = () => this.setState({ addOpen: false });
+  pickAddKind = (v) => () => this.setState({ addKind: v });
+  onAddName = (e) => this.setState({ addName: e.target.value });
+  onAddAmount = (e) => this.setState({ addAmount: e.target.value });
+  saveAdd = () => {
+    const amt = parseFloat(this.state.addAmount);
+    if (!(amt > 0)) return;
+    const kind = this.state.addKind;
+    const name = (this.state.addName || '').trim() || ADD_TAG[kind];
+    const item = { id: 'a-' + Date.now(), kind, name, tag: ADD_TAG[kind], amount: Math.round(amt * 100) / 100 };
+    this.setState(s => {
+      const items = { additions: [...s.items.additions, item], deductions: s.items.deductions };
+      this.persist(items);
+      return { items, addOpen: false };
+    });
+    this.showToast(name + ' added to this run.');
+  };
+  removeAdd = (id) => () => this.setState(s => {
+    const items = { additions: s.items.additions.filter(x => x.id !== id), deductions: s.items.deductions };
+    this.persist(items); return { items };
+  });
+
+  openDed = () => this.setState({ dedOpen: true, dedMode: 'posttax', dedName: '', dedAmount: '' });
+  closeDed = () => this.setState({ dedOpen: false });
+  pickDedMode = (v) => () => this.setState({ dedMode: v });
+  onDedName = (e) => this.setState({ dedName: e.target.value });
+  onDedAmount = (e) => this.setState({ dedAmount: e.target.value });
+  saveDed = () => {
+    const amt = parseFloat(this.state.dedAmount);
+    if (!(amt > 0)) return;
+    const mode = this.state.dedMode;
+    const name = (this.state.dedName || '').trim() || (mode === 'pretax' ? 'Pre-tax deduction' : 'Post-tax deduction');
+    const item = { id: 'd-' + Date.now(), name, taxMode: mode, tag: mode === 'pretax' ? 'Pre-tax' : 'Post-tax', amount: Math.round(amt * 100) / 100 };
+    this.setState(s => {
+      const items = { additions: s.items.additions, deductions: [...s.items.deductions, item] };
+      this.persist(items);
+      return { items, dedOpen: false };
+    });
+    this.showToast(name + ' added to this run.');
+  };
+  removeDed = (id) => () => this.setState(s => {
+    const items = { additions: s.items.additions, deductions: s.items.deductions.filter(x => x.id !== id) };
+    this.persist(items); return { items };
+  });
+
+  renderVals() {
+    const s = this.state;
+    const emp = s.emp;
+    const periodLabel = periodLabelOf(s.periodId);
+    if (s.loaded && !emp) {
+      return { notFound: true, found: false, periodLabel, name: '', today: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) };
+    }
+    const e = emp || EMPLOYEES_BASE[0];
+    const firstName = (e.name || '').split(' ')[0];
+    const adds = s.items.additions || [];
+    const deds = s.items.deductions || [];
+    const c = (window.AppState && window.AppState.calcPay) ? window.AppState.calcPay(e.id, s.periodId)
+      : { basic: 0, taxAllow: 0, nonTax: 0, overtime: 0, gross: 0, taxableIncome: 0, ssnit: 0, paye: 0, otTax: 0, staffLoan: 0, salaryAdvance: 0, otherDed: [], totalDeduction: 0, net: 0 };
+    const hasBank = !!(e.bankName && e.acct);
+    const dash = (n) => n ? fmt(n) : '\u2014';
+    const earningRows = [
+      { label: 'Basic pay', tag: '', amount: fmt(c.basic), color: 'var(--fg-primary)', weight: '700' },
+      { label: 'Taxable allowance', tag: c.taxAllow ? 'Taxable' : '', amount: dash(c.taxAllow), color: c.taxAllow ? 'var(--success-700)' : 'var(--fg-quaternary)', weight: '600' },
+      { label: 'Non-taxable allowance', tag: c.nonTax ? 'Tax-free' : '', amount: dash(c.nonTax), color: c.nonTax ? 'var(--success-700)' : 'var(--fg-quaternary)', weight: '600' },
+      { label: 'Overtime', tag: '', amount: dash(c.overtime), color: c.overtime ? 'var(--success-700)' : 'var(--fg-quaternary)', weight: '600' },
+    ];
+    const deductionRows = [
+      { label: 'SSNIT', tag: '5.5%', amount: '\u2212 ' + fmt(c.ssnit), color: 'var(--error-700)' },
+      { label: 'PAYE (income tax)', tag: '', amount: '\u2212 ' + fmt(c.paye), color: 'var(--error-700)' },
+      { label: 'Overtime tax', tag: '', amount: c.otTax ? '\u2212 ' + fmt(c.otTax) : '\u2014', color: c.otTax ? 'var(--error-700)' : 'var(--fg-quaternary)' },
+      { label: 'Staff loan', tag: '', amount: c.staffLoan ? '\u2212 ' + fmt(c.staffLoan) : '\u2014', color: c.staffLoan ? 'var(--error-700)' : 'var(--fg-quaternary)' },
+      { label: 'Salary advance', tag: '', amount: c.salaryAdvance ? '\u2212 ' + fmt(c.salaryAdvance) : '\u2014', color: c.salaryAdvance ? 'var(--error-700)' : 'var(--fg-quaternary)' },
+    ].concat((c.otherDed || []).map(d => ({ label: d.name, tag: d.tag, amount: '\u2212 ' + fmt(d.amount), color: 'var(--error-700)' })));
+
+    const menuCount = { breakdown: 0, additions: adds.length, deductions: deds.length, bank: 0 };
+    const menuView = MENU.map(m => {
+      const on = s.menu === m.id;
+      return { label: m.label, icon: m.icon, onClick: this.setMenu(m.id),
+        bg: on ? 'var(--brand-50)' : 'transparent', color: on ? 'var(--brand-700)' : 'var(--fg-secondary)', weight: on ? '700' : '600',
+        iconBg: on ? 'var(--brand-100)' : 'var(--bg-secondary)', iconColor: on ? 'var(--brand-700)' : 'var(--fg-tertiary)',
+        badge: menuCount[m.id] ? String(menuCount[m.id]) : '' };
+    });
+
+    const SEL = { b: 'var(--brand-600)', bg: 'var(--brand-25)', db: 'var(--brand-600)', dbg: 'var(--brand-600)' };
+    const IDLE = { b: 'var(--border-primary)', bg: '#fff', db: 'var(--border-primary)', dbg: 'transparent' };
+    const addKinds = ADD_KINDS.map(k => { const on = s.addKind === k.value; const rc = on ? SEL : IDLE; return { label: k.label, on, b: rc.b, bg: rc.bg, db: rc.db, dbg: rc.dbg, onSelect: this.pickAddKind(k.value) }; });
+    const addKindObj = ADD_KINDS.find(k => k.value === s.addKind) || ADD_KINDS[0];
+    const dedModes = DED_MODES.map(t => { const on = s.dedMode === t.value; const rc = on ? SEL : IDLE; return { label: t.label, sub: t.sub, on, b: rc.b, bg: rc.bg, db: rc.db, dbg: rc.dbg, onSelect: this.pickDedMode(t.value) }; });
+
+    const statusChip = hasBank
+      ? { label: 'Ready to pay', color: 'var(--success-700)', bg: 'var(--success-50)', border: 'var(--success-200)', dot: 'var(--success-500)' }
+      : { label: 'Missing bank', color: 'var(--error-700)', bg: 'var(--error-50)', border: 'var(--error-200)', dot: 'var(--error-500)' };
+
+    return {
+      notFound: false, found: true,
+      today: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+      periodLabel, name: e.name, firstName, initials: e.initials, role: e.role,
+      chipLabel: statusChip.label, chipColor: statusChip.color, chipBg: statusChip.bg, chipBorder: statusChip.border, chipDot: statusChip.dot,
+      toast: s.toast,
+      onDownload: () => this.showToast('Payslip for ' + e.name + ' downloaded as PDF.'),
+      onSend: () => this.showToast('Payslip sent to ' + e.name + ' on WhatsApp.'),
+
+      menuView,
+      isBreakdown: s.menu === 'breakdown', isAdditions: s.menu === 'additions', isDeductions: s.menu === 'deductions', isBank: s.menu === 'bank',
+
+      // breakdown
+      grossDisplay: fmt(c.gross), taxableDisplay: fmt(c.taxableIncome),
+      totalDedDisplay: fmt(c.totalDeduction), netDisplay: fmt(c.net),
+      earningRows, deductionRows,
+
+      // additions tab
+      companyAdditions: COMPANY_ADDITIONS,
+      instanceAdditions: adds.map(a => ({ name: a.name, tag: a.tag, amount: fmt(a.amount), onRemove: this.removeAdd(a.id) })),
+      hasAdditions: adds.length > 0, noAdditions: adds.length === 0,
+
+      // deductions tab
+      companyDeductions: COMPANY_DEDUCTIONS,
+      instanceDeductions: deds.map(d => ({ name: d.name, tag: d.tag, amount: fmt(d.amount), onRemove: this.removeDed(d.id) })),
+      hasDeductions: deds.length > 0, noDeductions: deds.length === 0,
+
+      // bank tab
+      hasBank, noBank: !hasBank,
+      bankRows: [
+        { label: 'Bank', value: e.bankName },
+        { label: 'Branch', value: e.branch || '—' },
+        { label: 'Account name', value: e.name },
+        { label: 'Account number', value: e.acct },
+      ],
+
+      // add modal
+      addOpen: s.addOpen, addKinds, addName: s.addName, addAmount: s.addAmount,
+      addNamePlaceholder: addKindObj.ph,
+      onAddName: this.onAddName, onAddAmount: this.onAddAmount,
+      openAdd: this.openAdd, closeAdd: this.closeAdd, saveAdd: this.saveAdd,
+      addOpacity: parseFloat(s.addAmount) > 0 ? '1' : '0.5',
+
+      // ded modal
+      dedOpen: s.dedOpen, dedModes, dedName: s.dedName, dedAmount: s.dedAmount,
+      dedNamePlaceholder: s.dedMode === 'pretax' ? 'e.g. Provident top-up' : 'e.g. Salary advance recovery',
+      onDedName: this.onDedName, onDedAmount: this.onDedAmount,
+      openDed: this.openDed, closeDed: this.closeDed, saveDed: this.saveDed,
+      dedOpacity: parseFloat(s.dedAmount) > 0 ? '1' : '0.5',
+
+      stopProp: this.stopProp,
+    };
+  }
+}
+</script>
+</body>
+</html>
