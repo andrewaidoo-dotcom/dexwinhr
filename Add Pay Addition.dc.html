@@ -8,6 +8,7 @@
 <body>
 <x-dc>
 <helmet>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/fonts/fonts.css">
   <link rel="stylesheet" href="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/tokens/colors.css">
   <link rel="stylesheet" href="_ds/dexwinpay-design-system-848e17b8-ea65-4390-9f5b-4650ab9f91b8/tokens/typography.css">
@@ -36,7 +37,9 @@
       <div style="display:flex;align-items:center;gap:10px;font-size:15px;font-weight:600;">
         <a href="Payroll Page.dc.html" style="color:var(--fg-tertiary);text-decoration:none;">Payroll</a>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--fg-quaternary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-        <span style="color:var(--brand-700);">Add a pay addition</span>
+        <a href="Payroll Page.dc.html" onClick="{{ goCompanyItems }}" style="color:var(--fg-tertiary);text-decoration:none;">Company items</a>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--fg-quaternary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        <span style="color:var(--brand-700);">{{ pageTitle }}</span>
       </div>
       <div style="display:flex;align-items:center;gap:20px;">
         <div style="display:flex;align-items:center;gap:9px;color:var(--fg-secondary);font-size:15px;font-weight:500;">
@@ -55,14 +58,14 @@
         <a href="Payroll Page.dc.html" onClick="{{ goBackStep }}" aria-label="Back" style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--border-secondary);border-radius:var(--radius-full);color:var(--fg-secondary);box-shadow:var(--shadow-xs);text-decoration:none;flex-shrink:0;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
         </a>
-        <h1 style="font-family:var(--font-display);font-size:28px;line-height:34px;font-weight:800;letter-spacing:-0.02em;margin:0;color:var(--fg-primary);">Add a pay addition</h1>
+        <h1 style="font-family:var(--font-display);font-size:28px;line-height:34px;font-weight:800;letter-spacing:-0.02em;margin:0;color:var(--fg-primary);">{{ pageTitle }}</h1>
       </div>
       <div style="flex-shrink:0;display:flex;align-items:center;gap:12px;">
         <a href="Payroll Page.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:12px 22px;font-family:var(--font-body);font-weight:700;font-size:15px;color:var(--fg-secondary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);text-decoration:none;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
           Cancel
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg>
         </a>
-        <button onClick="{{ onSave }}" style="display:inline-flex;align-items:center;gap:9px;padding:13px 24px;font-family:var(--font-body);font-weight:700;font-size:15px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);cursor:pointer;box-shadow:var(--shadow-btn-primary);transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">
+        <button onClick="{{ onSave }}" disabled="{{ saveDisabled }}" style="display:inline-flex;align-items:center;gap:9px;padding:13px 24px;font-family:var(--font-body);font-weight:700;font-size:15px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);cursor:{{ saveCursor }};opacity:{{ saveOpacity }};box-shadow:var(--shadow-btn-primary);transition:background 120ms ease,opacity 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">
           Save Pay Addition
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
         </button>
@@ -208,7 +211,7 @@
         </section>
 
         <!-- CARD 2: employees -->
-        <section style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);overflow:hidden;">
+        <section id="ca-apply-section" style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);overflow:hidden;">
           <div onClick="{{ toggleCard2 }}" style="display:flex;align-items:center;gap:14px;padding:22px 28px;cursor:pointer;border-bottom:{{ card2Border }};">
             <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:10px;border:1px solid var(--border-secondary);background:var(--bg-primary);box-shadow:var(--shadow-xs);color:var(--fg-secondary);">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
@@ -364,16 +367,9 @@ const BIK_BENEFITS = [
   { value: 'accom_furnished', label: 'Accommodation, furnished', pct: 10, cap: 0 },
   { value: 'accom', label: 'Accommodation only', pct: 7.5, cap: 0 },
 ];
-const EMP = [
-  { n: 'Ama Boateng',   dept: 'Clinical',   basic: '8,500.00',  init: 'AB', etype: 'Full-Time-Resident' },
-  { n: 'Kwame Nkrumah', dept: 'Surgical',   basic: '15,200.00', init: 'KN', etype: 'Full-Time-Resident' },
-  { n: 'Esi Mensah',    dept: 'Pediatrics', basic: '10,000.00', init: 'EM', etype: 'Contractor-Full-Time' },
-  { n: 'Kojo Asante',   dept: 'Diagnostic', basic: '7,300.00',  init: 'KA', etype: 'Casual-Resident' },
-  { n: 'Abena Serwaa',  dept: 'Pediatrics', basic: '12,800.00', init: 'AS', etype: 'Full-Time-Resident' },
-  { n: 'Yaw Boateng',   dept: 'Pediatrics', basic: '14,500.00', init: 'YB', etype: 'Resident-Part-Time-Resident' },
-  { n: 'Adjoa Agyeman', dept: 'Pediatrics', basic: '9,200.00',  init: 'AA', etype: 'Intern' },
-  { n: 'Kofi Antwi',    dept: 'Surgical',   basic: '13,400.00', init: 'KO', etype: 'Secondary' },
-];
+// Real payroll roster (ids match calcPay), sourced from shared AppState.
+const EMP = ((window.AppState && window.AppState.getPayrollRoster) ? window.AppState.getPayrollRoster() : [])
+  .map(p => ({ id: p.id, n: p.name, dept: p.dept, basic: Number(p.basic || 0).toLocaleString('en-GH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), init: p.init, etype: p.etype }));
 // Distinct departments / employment types derived from the employees added
 const DEPTS = ['All Departments', ...Array.from(new Set(EMP.map(e => e.dept)))];
 const WORKERS = ['All worker types', ...Array.from(new Set(EMP.map(e => e.etype)))];
@@ -383,6 +379,8 @@ const IDLE_RC     = { b: 'var(--border-primary)', bg: 'var(--bg-primary)', db: '
 
 class Component extends DCLogic {
   state = {
+    editId: null,
+    dirty: false,
     type: 'cash',
     name: '',
     valueMode: 'fixed',
@@ -396,7 +394,7 @@ class Component extends DCLogic {
     groups: [],
     groupOpen: false,
     newGroup: '',
-    selected: [0, 1, 2, 3],
+    selected: EMP.map(e => e.id),
     depts: [],
     workers: [],
     deptOpen: true,
@@ -406,7 +404,35 @@ class Component extends DCLogic {
     search: '',
   };
 
-  set = (k, v) => this.setState({ [k]: v });
+  componentDidMount() {
+    let id = '', section = '';
+    try { const q = new URLSearchParams(location.search); id = q.get('edit') || ''; section = q.get('section') || ''; } catch (e) {}
+    if (id && window.AppState && window.AppState.getCompanyAdditions) {
+      const item = (window.AppState.getCompanyAdditions() || []).find(x => x.id === id);
+      if (item) {
+        this.setState({
+          editId: id, type: item.type || 'cash', name: item.name || '',
+          value: item.value != null ? String(item.value) : '', valueMode: item.valueMode || 'fixed',
+          freq: item.freq || 'Monthly', applyMode: item.scope === 'all' ? 'all' : 'specific',
+          selected: (Array.isArray(item.empIds) && item.empIds.length) ? item.empIds.slice() : EMP.map(e => e.id),
+          reimbKind: item.kind === 'reimbursement' ? 'expense' : (item.type === 'reimb' ? 'keep' : 'expense'),
+        });
+      }
+    }
+    if (section === 'apply') setTimeout(() => this.scrollToApply(), 280);
+  }
+  scrollToApply = () => {
+    try {
+      const el = document.getElementById('ca-apply-section');
+      if (!el) return;
+      let sc = el.parentElement;
+      while (sc && sc !== document.body) { const oy = getComputedStyle(sc).overflowY; if (oy === 'auto' || oy === 'scroll') break; sc = sc.parentElement; }
+      if (sc && sc !== document.body) { const r = el.getBoundingClientRect(), cr = sc.getBoundingClientRect(); sc.scrollTop += (r.top - cr.top) - 20; }
+      else window.scrollTo(0, el.getBoundingClientRect().top + window.scrollY - 20);
+    } catch (e) {}
+  };
+
+  set = (k, v) => this.setState({ [k]: v, dirty: true });
   toggleIn(arr, v) { return arr.includes(v) ? arr.filter(x => x !== v) : [...arr, v]; }
 
   toggleDept = (name) => this.setState(s => {
@@ -417,7 +443,7 @@ class Component extends DCLogic {
     if (name === 'All worker types') return { workers: [] };
     return { workers: this.toggleIn(s.workers, name) };
   });
-  toggleEmp = (i) => this.setState(s => ({ selected: this.toggleIn(s.selected, i) }));
+  toggleEmp = (id) => this.setState(s => ({ selected: this.toggleIn(s.selected, id), dirty: true }));
 
   toggleGroup = () => this.setState(s => ({ groupOpen: !s.groupOpen }));
   closeGroup = () => this.setState({ groupOpen: false });
@@ -435,11 +461,10 @@ class Component extends DCLogic {
     });
   };
 
-  visibleIndexes() {
+  visibleIds() {
     const s = this.state;
     const q = (s.search || '').trim().toLowerCase();
-    return EMP.map((e, i) => i).filter(i => {
-      const e = EMP[i];
+    return EMP.filter(e => {
       if (s.depts.length && !s.depts.includes(e.dept)) return false;
       if (s.workers.length && !s.workers.includes(e.etype)) return false;
       if (q && !(e.n.toLowerCase().includes(q) || e.etype.toLowerCase().includes(q) || e.dept.toLowerCase().includes(q))) return false;
@@ -447,7 +472,7 @@ class Component extends DCLogic {
     });
   }
 
-  goBackStep = (ev) => { if (ev && ev.preventDefault) ev.preventDefault(); if (window.history.length > 1) window.history.back(); else window.location.href = 'Payroll Page.dc.html'; };
+  goBackStep = (ev) => { if (ev && ev.preventDefault) ev.preventDefault(); try { localStorage.setItem('dxp_payroll_tab', 'additions'); } catch (e) {} window.location.href = 'Payroll Page.dc.html'; };
 
   renderVals() {
     const s = this.state;
@@ -499,17 +524,19 @@ class Component extends DCLogic {
       return { label: name, on, bc: on ? 'var(--brand-600)' : 'var(--border-primary)', bg: on ? 'var(--brand-600)' : 'var(--bg-primary)', onToggle: () => this.toggleWorker(name) };
     });
 
-    const vis = this.visibleIndexes();
-    const empList = vis.map(i => {
-      const e = EMP[i];
-      const on = s.selected.includes(i);
+    const vis = this.visibleIds();
+    const empList = vis.map(e => {
+      const on = s.selected.includes(e.id);
       return { n: e.n, init: e.init, meta: e.etype + ' \u00b7 ' + e.dept + ' \u00b7 GH\u00a2 ' + e.basic, on,
         bc: on ? 'var(--brand-600)' : 'var(--border-primary)', bg: on ? 'var(--brand-600)' : 'var(--bg-primary)',
-        onToggle: () => this.toggleEmp(i) };
+        onToggle: () => this.toggleEmp(e.id) };
     });
 
     return {
       goBackStep: this.goBackStep,
+      saveDisabled: !s.dirty, saveCursor: s.dirty ? 'pointer' : 'not-allowed', saveOpacity: s.dirty ? '1' : '0.5',
+      goCompanyItems: () => { try { localStorage.setItem('dxp_payroll_tab', 'additions'); } catch (e) {} },
+      pageTitle: s.editId ? (s.name || 'Edit pay addition') : 'Add a pay addition',
       today: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
       typeLabel, typeLabelLower: typeLabel.toLowerCase(),
       isCash, isBik, isReimb, typeOptions, banner,
@@ -552,7 +579,7 @@ class Component extends DCLogic {
 
       empList, selectedCount: s.selected.length, totalCount: EMP.length,
       search: s.search, onSearch: (e) => this.set('search', e.target.value),
-      selectAll: () => this.setState(st => ({ selected: Array.from(new Set([...st.selected, ...vis])) })), clearAll: () => this.set('selected', []),
+      selectAll: () => this.setState(st => ({ selected: Array.from(new Set([...st.selected, ...vis.map(e => e.id)])), dirty: true })), clearAll: () => this.setState({ selected: [], dirty: true }),
 
       card1Open: s.card1Open, card2Open: s.card2Open,
       toggleCard1: () => this.set('card1Open', !s.card1Open), toggleCard2: () => this.set('card2Open', !s.card2Open),
@@ -566,16 +593,24 @@ class Component extends DCLogic {
           : (s.valueMode === 'fixed' ? 'GH\u00a2 ' + (s.value || '0') : (s.value || '0') + '%');
         const count = s.applyMode === 'all' ? EMP.length : s.selected.length;
         const item = {
-          id: 'ca-' + Date.now(),
+          id: s.editId || ('ca-' + Date.now()),
           name: (s.name || '').trim() || typeLabel,
           type: s.type, typeLabel: typeLabel,
           valueText: valueText, freq: s.freq,
+          // engine-ready fields ↓
+          value: (Number(String(s.value || '').replace(/[^0-9.]/g, '')) || 0), valueMode: s.valueMode,
+          kind: s.type === 'reimb' ? (s.reimbKind === 'keep' ? 'cash' : 'reimbursement') : 'cash',
+          bikPct: bikObj ? bikObj.pct : 0, bikCap: bikObj ? bikObj.cap : 0,
+          scope: s.applyMode === 'all' ? 'all' : 'specific',
+          empIds: s.applyMode === 'all' ? [] : s.selected.slice(),
+          anchorMonth: new Date().getMonth(), anchorYear: new Date().getFullYear(),
+          empNames: s.applyMode === 'all' ? [] : s.selected.map(id => (EMP.find(e => e.id === id) || {}).n).filter(Boolean),
           taxable: !(s.type === 'reimb' && s.reimbKind === 'expense'),
           applyLabel: s.applyMode === 'all' ? 'All employees' : (count + ' employee' + (count === 1 ? '' : 's')),
           count: count,
         };
-        try { if (window.AppState && window.AppState.addCompanyAddition) window.AppState.addCompanyAddition(item); } catch (e) {}
-        try { localStorage.setItem('dxp_payroll_tab', 'additions'); localStorage.removeItem('dxp_tour_resume'); } catch (e) {}
+        try { if (window.AppState && window.AppState.addCompanyAddition) { if (s.editId && window.AppState.removeCompanyAddition) window.AppState.removeCompanyAddition(s.editId); window.AppState.addCompanyAddition(item); } } catch (e) {}
+        try { localStorage.setItem('dxp_payroll_tab', 'additions'); localStorage.setItem('dxp_payroll_flash', (s.editId ? 'Pay addition updated' : 'Pay addition added') + ' successfully.'); localStorage.removeItem('dxp_tour_resume'); } catch (e) {}
         window.location.href = 'Payroll Page.dc.html';
       },
     };

@@ -8,6 +8,7 @@
 <body>
 <x-dc>
 <helmet>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#018F58"></rect><g fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="50" cy="38" r="13"></circle><path d="M26 76v-4a18 18 0 0 1 48 0v4"></path></g></svg></template>
 <script src="./ds-base.js"></script>
 <script src="./app-state.js"></script>
@@ -268,12 +269,15 @@ function maskAccount(n) {
   if (!d) return '';
   return '\u2022\u2022\u2022\u2022 ' + d.slice(-4);
 }
+function fmtPhone(p) { p = (p || '').toString().trim(); if (!p) return ''; return /^\+/.test(p) ? p : ('+233 ' + p); }
 
 const ICON = {
   employment: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>',
   statutory: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>',
   contact: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>',
   bank: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>',
+  personal: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+  beneficiary: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"/></svg>',
 };
 
 const PAY_ICON = {
@@ -317,6 +321,7 @@ const BANK_OPTS = [
   { value: 'no', label: 'No, employee provides' },
 ];
 const DEPARTMENTS = ['Engineering', 'Finance', 'Operations', 'Sales', 'Human Resources', 'Marketing', 'Customer Support'];
+const POSITION_OPTS = [{ value: '', label: 'Select position' }].concat(((window.AppState && window.AppState.POSITION_VALUES) || ['Management', 'Senior', 'Junior', 'Expatriate', 'Other']).map(function (p) { return { value: p, label: p }; }));
 
 function formFromRec(rec, demo) {
   if (!rec) return {};
@@ -331,10 +336,13 @@ function formFromRec(rec, demo) {
   }
   return {
     fullName: rec.fullName || '', jobRole: rec.jobRole || '', email: rec.email || '',
-    department: rec.department || '', employmentType: rec.employmentType || '',
-    staffNumber: rec.staffNumber || '', ghanaCard: rec.ghanaCard || '',
-    ssnitMember: rec.ssnitMember || 'no', ssnitNumber: rec.ssnitNumber || '', phone: rec.phone || '',
-    hasBank: rec.hasBank || 'no', bankName: rec.bankName || '', bankBranch: rec.bankBranch || '',
+    department: rec.department || '', employmentType: rec.employmentType || '', position: rec.position || '',
+    staffNumber: rec.staffNumber || '', ghanaCard: rec.ghanaCard || '', tin: rec.tin || '',
+    otherNames: rec.otherNames || '', dob: rec.dob || '', address: rec.address || '',
+    ssnitMember: rec.ssnitMember || (rec.ssnit === 'yes' ? 'yes' : 'no'), ssnitNumber: rec.ssnitNumber || '', phone: rec.phone || '',
+    tier3Amount: rec.tier3Amount || '',
+    beneficiaryName: rec.beneficiaryName || '', beneficiaryContact: rec.beneficiaryContact || '', beneficiaryRelationship: rec.beneficiaryRelationship || '',
+    hasBank: rec.hasBank || ((rec.bankName || rec.accountNumber) ? 'yes' : 'no'), bankName: rec.bankName || '', bankBranch: rec.bankBranch || '',
     accountName: rec.accountName || '', accountNumber: rec.accountNumber || '',
     gross: rec.gross || '',
   };
@@ -400,16 +408,28 @@ class Component extends DCLogic {
     const name = (f.fullName || '').trim() || (this.state.rec && (this.state.rec.fullName || this.state.rec.name)) || 'Employee';
     const hasBank = f.hasBank === 'yes';
     const status = hasBank ? 'done' : 'invited';
+    const tier3amt = (f.tier3Amount || '').toString().trim();
     const emp = {
       fullName: name,
       jobRole: (f.jobRole || '').trim(),
       email: (f.email || '').trim(),
       department: f.department || '',
       employmentType: f.employmentType || '',
+      position: f.position || '',
+      otherNames: (f.otherNames || '').trim(),
+      dob: (f.dob || '').trim(),
+      address: (f.address || '').trim(),
       staffNumber: (f.staffNumber || '').trim(),
       ghanaCard: (f.ghanaCard || '').trim(),
+      tin: (f.tin || '').trim(),
       ssnitMember: f.ssnitMember || 'no',
       ssnitNumber: f.ssnitMember === 'yes' ? (f.ssnitNumber || '').trim() : '',
+      tier3: tier3amt && parseFloat(tier3amt) > 0 ? 'yes' : 'no',
+      tier3Amount: tier3amt,
+      tier3Mode: 'percent',
+      beneficiaryName: (f.beneficiaryName || '').trim(),
+      beneficiaryContact: (f.beneficiaryContact || '').trim(),
+      beneficiaryRelationship: (f.beneficiaryRelationship || '').trim(),
       phone: (f.phone || '').trim(),
       hasBank: f.hasBank || 'no',
       bankName: hasBank ? (f.bankName || '').trim() : '',
@@ -490,12 +510,20 @@ class Component extends DCLogic {
       };
     };
 
+    const personalRows = [
+      tRow('Other names', 'otherNames', rec.otherNames),
+      tRow('Date of birth', 'dob', rec.dob),
+      tRow('Address', 'address', rec.address),
+    ];
+
     const employmentRows = [
+      sRow('Position', 'position', POSITION_OPTS, v(rec.position).value, v(rec.position).color),
       tRow('Job role', 'jobRole', role),
       deptRow('Department', dept),
       sRow('Employment type', 'employmentType', ETYPE_OPTS, v(rec.employmentType).value, v(rec.employmentType).color),
       tRow('Staff number', 'staffNumber', rec.staffNumber),
-      tRow('Ghana Card / TIN', 'ghanaCard', rec.ghanaCard),
+      tRow('Ghana Card', 'ghanaCard', rec.ghanaCard),
+      tRow('TIN', 'tin', rec.tin),
     ];
 
     const ssnitOn = (editing ? F.ssnitMember : rec.ssnitMember) === 'yes';
@@ -503,11 +531,12 @@ class Component extends DCLogic {
       sRow('Social Security (Tier 2 Pension)', 'ssnitMember', SSNIT_OPTS, (s.demo && !editing) ? '\u2014' : (rec.ssnitMember === 'yes' ? 'Enrolled (Tier 1 & 2)' : 'Not enrolled'), (s.demo && !editing) ? muted : solid),
     ];
     if (ssnitOn) statutoryRows.push(tRow('SSNIT number', 'ssnitNumber', rec.ssnitMember === 'yes' ? rec.ssnitNumber : ''));
+    statutoryRows.push(tRow('Tier 3 voluntary pension (%)', 'tier3Amount', rec.tier3 === 'yes' ? (rec.tier3Amount ? (rec.tier3Amount + '% of basic') : 'Enrolled') : 'Not enrolled'));
     statutoryRows.push(stRow('PAYE (income tax)', 'Deducted monthly', solid));
 
     const contactRows = [
       tRow('Email', 'email', rec.email),
-      tRow('Phone', 'phone', rec.phone ? ('+233 ' + rec.phone) : ''),
+      tRow('Phone', 'phone', fmtPhone(rec.phone)),
     ];
 
     const showBank = (editing ? F.hasBank : rec.hasBank) === 'yes';
@@ -523,12 +552,20 @@ class Component extends DCLogic {
       bankRows.push(stRow('Note', s.demo ? 'Paid to file' : 'Employee invited to add their own', muted));
     }
 
+    const beneficiaryRows = [
+      tRow('Beneficiary name', 'beneficiaryName', rec.beneficiaryName),
+      tRow('Contact', 'beneficiaryContact', rec.beneficiaryContact),
+      tRow('Relationship', 'beneficiaryRelationship', rec.beneficiaryRelationship),
+    ];
+
     const exp = s.expanded || {};
     const cardDef = [
+      { title: 'Personal', iconHtml: { __html: ICON.personal }, rows: personalRows },
       { title: 'Employment', iconHtml: { __html: ICON.employment }, rows: employmentRows },
       { title: 'Statutory & pension', iconHtml: { __html: ICON.statutory }, rows: statutoryRows },
       { title: 'Contact', iconHtml: { __html: ICON.contact }, rows: contactRows },
       { title: 'Bank details', iconHtml: { __html: ICON.bank }, rows: bankRows },
+      { title: 'Beneficiary', iconHtml: { __html: ICON.beneficiary }, rows: beneficiaryRows },
     ];
     const cards = cardDef.map(c => {
       const open = exp[c.title] !== false;
@@ -567,7 +604,7 @@ class Component extends DCLogic {
       name,
       nameVal: F.fullName == null ? '' : F.fullName,
       initials: rec.initials || initials(name),
-      roleDept: rec.phone ? ('+233 ' + rec.phone) : (dept ? (role + '  \u00b7  ' + dept) : role),
+      roleDept: rec.phone ? fmtPhone(rec.phone) : (dept ? (role + '  \u00b7  ' + dept) : role),
       statusLabel: sv.label,
       statusColor: sv.color, statusBg: sv.bg, statusBorder: sv.border, statusDot: sv.dot,
       isInvited: sv.invited,

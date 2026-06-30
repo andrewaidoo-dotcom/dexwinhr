@@ -37,6 +37,8 @@ WHAT'S INSIDE
   support.js            page runtime
   ds-base.js            design-system loader
   app-state.js          shared in-browser state (localStorage)
+  payroll-engine.js     2026 Ghana tax engine (SSNIT, PAYE, WHT, overtime)
+  favicon.svg           Dexwin favicon (linked on every page)
   _ds/                  DexwinPay design system (tokens, fonts, components)
   assets/               images & logos
 

@@ -8,6 +8,7 @@
 <body>
 <x-dc>
 <helmet>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#018F58"></rect><g fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><circle cx="42" cy="42" r="11"></circle><path d="M28 70v-3a14 14 0 0 1 28 0v3"></path><path d="M62 38a10 10 0 0 1 0 18"></path><path d="M66 70v-3a14 14 0 0 0-8-12.6"></path></g></svg></template>
 <script src="./ds-base.js"></script>
 <script src="./app-state.js"></script>
@@ -332,6 +333,24 @@
                   </label>
                   </sc-if>
 
+                  <sc-if value="{{ statusError }}" hint-placeholder-val="{{ false }}">
+                  <div style="margin-top:18px;display:flex;align-items:flex-start;gap:12px;padding:16px 20px;background:var(--error-50);border:1px solid var(--error-200);border-radius:12px;">
+                    <span style="flex-shrink:0;display:inline-flex;color:var(--error-600);margin-top:1px;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></span>
+                    <div style="min-width:0;">
+                      <div style="font-size:15px;font-weight:700;color:var(--error-700);">Couldn’t read this file</div>
+                      <div style="font-size:14px;line-height:21px;color:var(--error-600);margin-top:2px;">{{ importParseError }}</div>
+                    </div>
+                  </div>
+                  <label style="display:flex;flex-direction:column;align-items:center;justify-content:center;margin-top:14px;padding:32px 24px;background:#fff;border:1.5px dashed var(--brand-300);border-radius:16px;cursor:pointer;text-align:center;transition:background 120ms ease,border-color 120ms ease;" style-hover="background:var(--brand-50);border-color:var(--brand-400);">
+                    <span style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--border-secondary);border-radius:12px;box-shadow:var(--shadow-xs);color:var(--fg-secondary);margin-bottom:12px;">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 13v8"></path><path d="m8 17 4-4 4 4"></path><path d="M20 16.7A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25"></path></svg>
+                    </span>
+                    <span style="font-size:15px;color:var(--fg-tertiary);"><span style="color:var(--brand-700);font-weight:700;">Choose another file</span> or drag and drop</span>
+                    <span style="font-size:13px;color:var(--fg-quaternary);margin-top:4px;">Upload the filled template as XLSX or CSV</span>
+                    <input type="file" accept=".xlsx,.xls,.csv" onChange="{{ onFileChange }}" style="display:none;">
+                  </label>
+                  </sc-if>
+
                   <sc-if value="{{ hasFile }}" hint-placeholder-val="{{ false }}">
                   <div style="margin-top:18px;padding:20px 24px;background:#fff;border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-xs);">
                     <div style="display:flex;align-items:center;gap:18px;">
@@ -456,6 +475,14 @@
                   <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:center;padding:16px 22px;border-top:1px solid var(--border-tertiary);">
                     <span style="font-size:15px;color:var(--fg-secondary);">TIN</span>
                     <input value="{{ ef.tin }}" onChange="{{ eh.tin }}" placeholder="TIN" style="width:100%;box-sizing:border-box;padding:11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:#fff;border:1px solid var(--border-primary);border-radius:8px;outline:none;">
+                  </div>
+                  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:center;padding:16px 22px;border-top:1px solid var(--border-tertiary);">
+                    <span style="font-size:15px;color:var(--fg-secondary);">Date of birth</span>
+                    <input value="{{ ef.dob }}" onChange="{{ eh.dob }}" placeholder="DD/MM/YYYY" style="width:100%;box-sizing:border-box;padding:11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:#fff;border:1px solid var(--border-primary);border-radius:8px;outline:none;">
+                  </div>
+                  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:center;padding:16px 22px;border-top:1px solid var(--border-tertiary);">
+                    <span style="font-size:15px;color:var(--fg-secondary);">Address</span>
+                    <input value="{{ ef.address }}" onChange="{{ eh.address }}" placeholder="Residential address" style="width:100%;box-sizing:border-box;padding:11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:#fff;border:1px solid var(--border-primary);border-radius:8px;outline:none;">
                   </div>
                   <div style="display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.1fr); gap: 24px; align-items: flex-start; padding: 16px 22px; border-top: 1px solid var(--border-tertiary)">
                     <span style="font-size:15px;color:var(--fg-secondary);">Profile Picture</span>
@@ -675,6 +702,12 @@
                       </div>
                     </div>
                   </sc-if>
+                  <sc-if value="{{ ssnitYes }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:center;padding:16px 22px;border-top:1px solid var(--border-tertiary);">
+                    <span style="font-size:15px;color:var(--fg-secondary);">SSNIT number</span>
+                    <input value="{{ ef.ssnitNumber }}" onChange="{{ eh.ssnitNumber }}" placeholder="SSNIT number" style="width:100%;box-sizing:border-box;padding:11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:#fff;border:1px solid var(--border-primary);border-radius:8px;outline:none;">
+                  </div>
+                  </sc-if>
                   <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:start;padding:18px 22px;border-top:1px solid var(--border-tertiary);">
                     <span style="font-size:15px;color:var(--fg-secondary);">Deduct Tier 3 Pension from employee's Salary? <span style="color:var(--error-500);">*</span></span>
                     <div>
@@ -746,6 +779,10 @@
                 <sc-if value="{{ secBank.stepHeader }}" hint-placeholder-val="{{ false }}"><div style="padding:2px 22px 18px;"><div style="height:8px;background:var(--gray-100);border-radius:999px;overflow:hidden;"><div style="height:100%;width:{{ secBank.progressW }};background:var(--brand-500);transition:width 240ms ease;"></div></div></div></sc-if>
                 <sc-if value="{{ secBank.open }}" hint-placeholder-val="{{ true }}">
                   <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:center;padding:16px 22px;border-top:1px solid var(--border-secondary);">
+                    <span style="font-size:15px;color:var(--fg-secondary);">Bank Name</span>
+                    <input value="{{ ef.bankName }}" onChange="{{ eh.bankName }}" placeholder="Bank Name" style="width:100%;box-sizing:border-box;padding:11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:#fff;border:1px solid var(--border-primary);border-radius:8px;outline:none;">
+                  </div>
+                  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:center;padding:16px 22px;border-top:1px solid var(--border-tertiary);">
                     <span style="font-size:15px;color:var(--fg-secondary);">Account Number</span>
                     <input value="{{ ef.accountNumber }}" onChange="{{ eh.accountNumber }}" placeholder="Account Number" style="width:100%;box-sizing:border-box;padding:11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:#fff;border:1px solid var(--border-primary);border-radius:8px;outline:none;">
                   </div>
@@ -756,6 +793,36 @@
                   <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:center;padding:16px 22px;border-top:1px solid var(--border-tertiary);">
                     <span style="font-size:15px;color:var(--fg-secondary);">Bank Branch</span>
                     <input value="{{ ef.bankBranch }}" onChange="{{ eh.bankBranch }}" placeholder="Bank Branch" style="width:100%;box-sizing:border-box;padding:11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:#fff;border:1px solid var(--border-primary);border-radius:8px;outline:none;">
+                  </div>
+                </sc-if>
+              </div>
+              </sc-if>
+
+              <sc-if value="{{ secBeneficiary.show }}" hint-placeholder-val="{{ false }}">
+              <div style="{{ secBeneficiary.cardStyle }}">
+                <div onClick="{{ secBeneficiary.toggle }}" style="display:flex;align-items:center;gap:12px;padding:18px 22px;cursor:pointer;">
+                  <span style="display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:9px;border:1px solid var(--border-secondary);color:var(--fg-secondary);flex-shrink:0;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"></path></svg></span>
+                  <div style="flex:1;min-width:0;">
+                    <sc-if value="{{ secBeneficiary.accHeader }}" hint-placeholder-val="{{ true }}"><h3 style="font-family:var(--font-display);font-size:17px;font-weight:700;letter-spacing:-0.01em;margin:0;color:var(--fg-primary);">Beneficiary</h3></sc-if>
+                    <sc-if value="{{ secBeneficiary.stepHeader }}" hint-placeholder-val="{{ false }}"><h3 style="font-family:var(--font-display);font-size:22px;font-weight:800;letter-spacing:-0.02em;margin:0;color:var(--fg-primary);">{{ secBeneficiary.stepTitle }}</h3><p style="font-size:15px;color:var(--fg-tertiary);margin:4px 0 0;">{{ secBeneficiary.stepSubtitle }}</p></sc-if>
+                    <sc-if value="{{ secBeneficiary.hasSummary }}" hint-placeholder-val="{{ false }}"><p style="font-size:14px;color:var(--fg-tertiary);margin:4px 0 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ secBeneficiary.summaryText }}</p></sc-if>
+                  </div>
+                  <sc-if value="{{ secBeneficiary.accHeader }}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:{{ secBeneficiary.chevron }};transition:transform 200ms ease;"><polyline points="18 15 12 9 6 15"></polyline></svg></sc-if>
+                  <sc-if value="{{ secBeneficiary.stepHeader }}" hint-placeholder-val="{{ false }}"><span style="font-size:15px;font-weight:600;color:var(--fg-tertiary);white-space:nowrap;flex-shrink:0;">{{ secBeneficiary.stepLabel }}</span></sc-if>
+                </div>
+                <sc-if value="{{ secBeneficiary.stepHeader }}" hint-placeholder-val="{{ false }}"><div style="padding:2px 22px 18px;"><div style="height:8px;background:var(--gray-100);border-radius:999px;overflow:hidden;"><div style="height:100%;width:{{ secBeneficiary.progressW }};background:var(--brand-500);transition:width 240ms ease;"></div></div></div></sc-if>
+                <sc-if value="{{ secBeneficiary.open }}" hint-placeholder-val="{{ true }}">
+                  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:center;padding:16px 22px;border-top:1px solid var(--border-secondary);">
+                    <span style="font-size:15px;color:var(--fg-secondary);">Beneficiary name</span>
+                    <input value="{{ ef.beneficiaryName }}" onChange="{{ eh.beneficiaryName }}" placeholder="Full name" style="width:100%;box-sizing:border-box;padding:11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:#fff;border:1px solid var(--border-primary);border-radius:8px;outline:none;">
+                  </div>
+                  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:center;padding:16px 22px;border-top:1px solid var(--border-tertiary);">
+                    <span style="font-size:15px;color:var(--fg-secondary);">Contact</span>
+                    <input value="{{ ef.beneficiaryContact }}" onChange="{{ eh.beneficiaryContact }}" placeholder="Phone or email" style="width:100%;box-sizing:border-box;padding:11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:#fff;border:1px solid var(--border-primary);border-radius:8px;outline:none;">
+                  </div>
+                  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:center;padding:16px 22px;border-top:1px solid var(--border-tertiary);">
+                    <span style="font-size:15px;color:var(--fg-secondary);">Relationship</span>
+                    <input value="{{ ef.beneficiaryRelationship }}" onChange="{{ eh.beneficiaryRelationship }}" placeholder="e.g. Spouse, Parent" style="width:100%;box-sizing:border-box;padding:11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:#fff;border:1px solid var(--border-primary);border-radius:8px;outline:none;">
                   </div>
                 </sc-if>
               </div>
@@ -1204,7 +1271,7 @@ function firstName(name) {
   return (name || '').trim().split(/\s+/)[0] || 'they';
 }
 function emptyEmpForm() {
-  return { firstName: '', surname: '', otherNames: '', jobRole: '', department: '', employmentType: '', position: '', staffNumber: '', ghanaCard: '', tin: '', basicSalary: '', ssnit: '', tier3: '', tier3Amount: '', tier3Mode: 'percent', email: '', phone: '', accountNumber: '', accountName: '', bankBranch: '' };
+  return { firstName: '', surname: '', otherNames: '', jobRole: '', department: '', employmentType: '', position: '', staffNumber: '', ghanaCard: '', tin: '', dob: '', address: '', basicSalary: '', ssnit: '', ssnitNumber: '', tier3: '', tier3Amount: '', tier3Mode: 'percent', email: '', phone: '', bankName: '', accountNumber: '', accountName: '', bankBranch: '', beneficiaryName: '', beneficiaryContact: '', beneficiaryRelationship: '' };
 }
 // Required fields enforced before an employee can be saved or imported.
 // "Other Names" is the only optional name field. Tier 3 must be answered; when
@@ -1236,30 +1303,11 @@ function emptyForm() {
     email: '', phone: '',
   };
 }
-const SEED_PEOPLE = [
-  { initials: 'OR', name: 'Olivia Rhye', phone: '+233 054 545 7854', type: 'Full Time', state: 'ready' },
-  { initials: 'PB', name: 'Phoenix Baker', phone: '+233 054 545 7854', type: 'Independent Contractor', state: 'missing' },
-  { initials: 'LS', name: 'Lana Steiner', phone: '+233 054 545 7854', type: 'Full Time', state: 'missing' },
-  { initials: 'DW', name: 'Demi Wilkinson', phone: '+233 054 545 7854', type: 'Part Time', state: 'archived' },
-  { initials: 'CW', name: 'Candice Wu', phone: '+233 054 545 7854', type: 'Full Time', state: 'archived' },
-  { initials: 'NC', name: 'Natali Craig', phone: '+233 054 545 7854', type: 'Full Time', state: 'archived' },
-  { initials: 'DC', name: 'Drew Cano', phone: '+233 054 545 7854', type: 'Full Time', state: 'ready' },
-  { initials: 'OD', name: 'Orlando Diggs', phone: '+233 054 545 7854', type: 'Independent Contractor', state: 'ready' },
-  { initials: 'AL', name: 'Andi Lane', phone: '+233 054 545 7854', type: 'Intern', state: 'missing' },
-  { initials: 'KM', name: 'Kate Morrison', phone: '+233 054 545 7854', type: 'NSS', state: 'missing' },
-];
 const STATUS2 = {
   ready: { label: 'Active', fg: 'var(--success-700)', bg: 'var(--success-50)', border: 'var(--success-200)' },
   missing: { label: 'Missing details', fg: 'var(--warning-700)', bg: 'var(--warning-50)', border: 'var(--warning-200)' },
   archived: { label: 'Archived', fg: '#5925DC', bg: '#F4F3FF', border: '#D9D6FE' },
 };
-const IMPORT_PREVIEW = [
-  { initials: 'KN', name: 'Kwame Nkrumah', phoneLocal: '054 018 8324', phoneRoster: '54 018 8324', employmentType: 'Full Time', position: 'Operations Manager', email: 'kwame.nkrumah@acmefoods.gh', ghanaCard: 'GHA-472019835-6', tin: 'P0012845673', basic: 'GH\u20b5 4,200.00', ssnit: 'yes', tier3: 'yes', tier3Amount: '5', tier3Mode: 'percent', accountNumber: '1400021893450', accountName: 'Kwame Nkrumah', bankBranch: 'GCB Bank \u2014 Accra Main' },
-  { initials: 'LH', name: 'Leila Hassan', phoneLocal: '020 774 1290', phoneRoster: '20 774 1290', employmentType: 'Part Time', position: 'Customer Support Lead', email: 'leila.hassan@acmefoods.gh', ghanaCard: 'GHA-518340027-1', tin: 'P0009384127', basic: 'GH\u20b5 2,650.00', ssnit: 'yes', tier3: 'no', tier3Amount: '', tier3Mode: 'percent', accountNumber: '0581124093871', accountName: 'Leila Hassan', bankBranch: 'Ecobank \u2014 Osu' },
-  { initials: 'SP', name: 'Sofia Patel', phoneLocal: '055 318 6047', phoneRoster: '55 318 6047', employmentType: 'Contract', position: 'Software Engineer', email: 'sofia.patel@acmefoods.gh', ghanaCard: 'GHA-209917744-8', tin: 'P0017265340', basic: 'GH\u20b5 3,800.00', ssnit: 'yes', tier3: 'yes', tier3Amount: '5', tier3Mode: 'percent', accountNumber: '1011556720394', accountName: 'Sofia Patel', bankBranch: 'Stanbic Bank \u2014 Airport City' },
-  { initials: 'MR', name: 'Mateo Rivera', phoneLocal: '024 902 4416', phoneRoster: '24 902 4416', employmentType: 'Intern', position: 'Marketing Associate', email: 'mateo.rivera@acmefoods.gh', ghanaCard: 'GHA-663052198-4', tin: 'P0021748905', basic: 'GH\u20b5 1,500.00', ssnit: 'no', tier3: 'no', tier3Amount: '', tier3Mode: 'percent', accountNumber: '0301889245017', accountName: 'Mateo Rivera', bankBranch: 'Absa Bank \u2014 Ring Road' },
-  { initials: 'AS', name: 'Aisha Suleiman', phoneLocal: '027 663 7728', phoneRoster: '27 663 7728', employmentType: 'NSS', position: 'Finance Officer', email: 'aisha.suleiman@acmefoods.gh', ghanaCard: 'GHA-871246630-9', tin: 'P0014530972', basic: 'GH\u20b5 1,230.00', ssnit: 'yes', tier3: 'no', tier3Amount: '', tier3Mode: 'percent', accountNumber: '1400078123640', accountName: 'Aisha Suleiman', bankBranch: 'Fidelity Bank \u2014 Tema' },
-];
 const TONE = {
   success: { statusColor: 'var(--success-700)', statusBg: 'var(--success-50)', statusBorder: 'var(--success-200)', statusDot: 'var(--success-500)' },
   warning: { statusColor: 'var(--warning-700)', statusBg: 'var(--warning-50)', statusBorder: 'var(--warning-200)', statusDot: 'var(--warning-500)' },
@@ -1277,6 +1325,7 @@ function rosterToRow(e) {
   else { status = 'Pending'; tone = 'gray'; }
   let state2 = (st === 'done' || st === 'Active') ? 'ready' : (st === 'archived' ? 'archived' : 'missing');
   return {
+    ...e,
     initials: e.initials || initials(name),
     name,
     email: e.email || '',
@@ -1290,7 +1339,7 @@ function rosterToRow(e) {
 }
 const BRAND = 'var(--brand-500)';
 
-const STEP_ORDER = ['identity', 'employment', 'comp', 'ssnit', 'contact', 'bank', 'review'];
+const STEP_ORDER = ['identity', 'employment', 'comp', 'ssnit', 'contact', 'bank', 'beneficiary', 'review'];
 const DEFAULT_DEPTS = [];
 const DEFAULT_ROLES = [];
 function sampleEmpForm() {
@@ -1303,6 +1352,7 @@ const SEC_SUB = {
   ssnit: 'SSNIT and Tier 3 pension deductions',
   contact: 'How we reach them',
   bank: 'Where their salary is paid',
+  beneficiary: 'Next of kin / beneficiary',
 };
 const SEC_TITLE = {
   identity: "Employee's Identity",
@@ -1311,6 +1361,7 @@ const SEC_TITLE = {
   ssnit: 'Social Security & Pension',
   contact: 'Contact Details',
   bank: 'Bank Details',
+  beneficiary: 'Beneficiary',
 };
 
 class Component extends DCLogic {
@@ -1318,6 +1369,7 @@ class Component extends DCLogic {
     employees: [],
     methodOpen: false, method: 'paye', adding: false, addingStep: 'choose', uploadedFile: null, uploadStatus: 'idle', viewEmp: null, bannerLeaving: false, importDone: false, empDirty: false, rosterView: null,
     empForm: emptyEmpForm(), empBaseForm: emptyEmpForm(), empEdits: {}, empCollapsed: {}, empErrs: {}, importTried: false, empStep: 0, rosterSearch: '', rosterPage: 1, rosterFilter: '', addNew: false, exitConfirm: false,
+    importRows: [], importErrors: [], importParseError: '',
     drawerOpen: false, editIndex: null, form: emptyForm(), errors: {},
     departments: DEFAULT_DEPTS.map(d => ({ ...d })), deptOpen: false, newDept: '',
     jobRoles: DEFAULT_ROLES.map(r => ({ ...r })), roleOpen: false, newRole: '',
@@ -1370,18 +1422,15 @@ class Component extends DCLogic {
       this.setState({ dataPref: 'Populated', employees: roster.map(rosterToRow) });
       return;
     }
-    let pref = 'Empty';
-    try { if (new URLSearchParams(location.search).get('state') === 'populated') pref = 'Populated'; } catch (e) {}
-    if (this.props.state === 'Populated') pref = 'Populated';
-    // No real roster → show the empty state. (The prop/url override above is only
-    // for design-tool previews; the running app is driven purely by the roster.)
-    this.setState({ dataPref: pref, employees: pref === 'Populated' ? SEED_PEOPLE.map(p => ({ ...p })) : [] });
+    // No real roster → empty state. Employees only ever come from the roster (real input).
+    const roster0 = (window.AppState && window.AppState.getEmployees && window.AppState.getEmployees()) || [];
+    this.setState({ dataPref: roster0.length ? 'Populated' : 'Empty', employees: roster0.map(rosterToRow) });
   }
   setData = (v) => {
     if (v === 'Populated') {
       if (window.AppState) { const a = window.AppState.get(); window.AppState.set({ employees: 'done', payroll: a.payroll === 'locked' ? 'unlocked' : a.payroll }); if (window.AppState.seedSampleRoster) window.AppState.seedSampleRoster(); }
       const roster = (window.AppState && window.AppState.getEmployees && window.AppState.getEmployees()) || [];
-      this.setState({ dataPref: 'Populated', employees: roster.length ? roster.map(rosterToRow) : SEED_PEOPLE.map(p => ({ ...p })) });
+      this.setState({ dataPref: 'Populated', employees: roster.map(rosterToRow) });
     } else {
       if (window.AppState) { window.AppState.set({ employees: 'todo', payroll: 'locked' }); window.AppState.clearEmployees(); }
       this.setState({ dataPref: 'Empty', employees: [] });
@@ -1458,9 +1507,38 @@ class Component extends DCLogic {
   clearEmpChanges = () => this.setState(s => ({ empForm: { ...(s.empBaseForm || emptyEmpForm()) }, empDirty: false, empTypeOpen: false, empPositionOpen: false, empRoleOpen: false, empDeptOpen: false, empDeptAdding: false, empRoleAdding: false }));
   empCancel = () => { if (this.state.addNew) { this.setState({ addNew: false }); return; } if (this.state.rosterView != null) this.setState({ rosterView: null }); else this.setState({ viewEmp: null }); };
   openRosterEmp = (i) => {
-    const e = this.state.employees[i] || {};
-    const nm = (e.name || e.fullName || '').trim().split(/\s+/);
-    const base = { ...emptyEmpForm(), firstName: nm[0] || '', surname: nm.slice(1).join(' '), employmentType: e.type || e.employmentType || '', ghanaCard: e.ghanaCard || '', email: e.email || '', phone: (e.phone && String(e.phone).replace(/^\+233\s*/, '')) || '', jobRole: e.jobRole || '', department: e.department || '' };
+    const row = this.state.employees[i] || {};
+    const e = (window.AppState && window.AppState.getEmployeeById && row.id) ? (window.AppState.getEmployeeById(row.id) || row) : row;
+    const nm = (e.fullName || e.name || '').trim().split(/\s+/);
+    const base = { ...emptyEmpForm(),
+      firstName: e.firstName || nm[0] || '',
+      surname: e.surname || nm.slice(1).join(' '),
+      otherNames: e.otherNames || '',
+      employmentType: e.employmentType || e.type || '',
+      position: e.position || '',
+      jobRole: e.jobRole || e.role || '',
+      department: e.department || '',
+      staffNumber: e.staffNumber || '',
+      ghanaCard: e.ghanaCard || '',
+      tin: e.tin || '',
+      dob: e.dob || '',
+      address: e.address || '',
+      basicSalary: (e.basicSalary != null && e.basicSalary !== '') ? String(e.basicSalary) : (e.basic != null ? String(e.basic) : ''),
+      ssnit: e.ssnit || '',
+      ssnitNumber: e.ssnitNumber || '',
+      tier3: e.tier3 || '',
+      tier3Amount: e.tier3Amount || '',
+      tier3Mode: e.tier3Mode || 'percent',
+      email: e.email || '',
+      phone: (e.phone && String(e.phone).replace(/^\+233\s*/, '')) || '',
+      bankName: e.bankName || '',
+      accountNumber: e.accountNumber || '',
+      accountName: e.accountName || '',
+      bankBranch: e.bankBranch || '',
+      beneficiaryName: e.beneficiaryName || '',
+      beneficiaryContact: e.beneficiaryContact || '',
+      beneficiaryRelationship: e.beneficiaryRelationship || '',
+    };
     this.setState({ rosterView: i, empForm: base, empBaseForm: base, empCollapsed: {}, empDirty: false });
   };
   onRosterSearch = (e) => this.setState({ rosterSearch: e.target.value, rosterPage: 1 });
@@ -1477,15 +1555,34 @@ class Component extends DCLogic {
     let size;
     if (f.size >= 1048576) size = (f.size / 1048576).toFixed(1) + ' MB';
     else size = Math.max(1, Math.round(f.size / 1024)) + ' KB';
-    this.setState({ uploadedFile: { name: f.name, size }, uploadStatus: 'searching', importedBanner: false, bannerLeaving: false });
+    this.setState({ uploadedFile: { name: f.name, size }, uploadStatus: 'searching', importedBanner: false, bannerLeaving: false, importRows: [], importErrors: [], importParseError: '' });
     clearTimeout(this._searchTimer);
     clearTimeout(this._bannerTimer);
     clearTimeout(this._leaveTimer); this._leaveTimer = null;
-    this._searchTimer = setTimeout(() => {
-      this.setState({ uploadStatus: 'found', importedBanner: true, importedFile: f.name, bannerLeaving: false });
+    const isCsv = /\.csv$/i.test(f.name);
+    const finish = (res, err) => {
+      if (err) { this.setState({ uploadStatus: 'error', importParseError: err, importRows: [], importErrors: [], empEdits: {} }); return; }
+      const rows = (res && res.employees) || [];
+      const errs = (res && res.errors) || [];
+      if (!rows.length) { this.setState({ uploadStatus: 'error', importParseError: 'No employees found. Check that you used the template and kept its column headers.', importRows: [], importErrors: [] }); return; }
+      this.setState({ uploadStatus: 'found', importRows: rows, importErrors: errs, empEdits: {}, importedBanner: true, importedFile: f.name, bannerLeaving: false });
       clearTimeout(this._bannerTimer);
       this._bannerTimer = setTimeout(() => this.startBannerLeave(), 5000);
-    }, 2200);
+    };
+    const A = window.AppState;
+    if (isCsv) {
+      const r = new FileReader();
+      r.onload = () => { try { finish(A.parseEmployeesCsv(String(r.result))); } catch (ex) { finish(null, 'Could not read the CSV file.'); } };
+      r.onerror = () => finish(null, 'Could not read the file.');
+      r.readAsText(f);
+    } else if (/\.xlsx$/i.test(f.name) && A.parseEmployeesXlsx) {
+      const r = new FileReader();
+      r.onload = () => { A.parseEmployeesXlsx(r.result).then(res => finish(res)).catch(() => finish(null, 'Could not read this .xlsx file. Try saving it as CSV and re-uploading.')); };
+      r.onerror = () => finish(null, 'Could not read the file.');
+      r.readAsArrayBuffer(f);
+    } else {
+      finish(null, 'Unsupported file. Upload the filled template as .csv or .xlsx.');
+    }
   };
   startBannerLeave = () => {
     if (this._leaveTimer || !this.state.importedBanner) return;
@@ -1540,8 +1637,8 @@ class Component extends DCLogic {
       }
       const name = ((f.firstName || '') + ' ' + (f.surname || '')).trim() || 'New employee';
       const ini = name.trim().split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase();
-      const complete = !!(f.accountNumber && f.accountName);
-      const rec = { name: name, fullName: name, initials: ini, employmentType: f.employmentType || '', type: f.employmentType || '', position: f.position || '', jobRole: f.jobRole || '', department: f.department || '', phone: f.phone || '', email: f.email || '', basicSalary: f.basicSalary || '', basic: f.basicSalary || '', ssnit: f.ssnit || '', tier3: f.tier3 || '', tier3Amount: f.tier3Amount || '', tier3Mode: f.tier3Mode || '', state: complete ? 'ready' : 'missing', tone: complete ? 'success' : 'gray' };
+      const complete = !!f.accountNumber;
+      const rec = { name: name, fullName: name, firstName: f.firstName || '', surname: f.surname || '', otherNames: f.otherNames || '', initials: ini, employmentType: f.employmentType || '', type: f.employmentType || '', position: f.position || '', jobRole: f.jobRole || '', department: f.department || '', staffNumber: f.staffNumber || '', ghanaCard: f.ghanaCard || '', tin: f.tin || '', dob: f.dob || '', address: f.address || '', phone: f.phone || '', email: f.email || '', basicSalary: f.basicSalary || '', basic: f.basicSalary || '', ssnit: f.ssnit || '', ssnitNumber: f.ssnitNumber || '', tier3: f.tier3 || '', tier3Amount: f.tier3Amount || '', tier3Mode: f.tier3Mode || '', bankName: f.bankName || '', accountNumber: f.accountNumber || '', accountName: f.accountName || '', bankBranch: f.bankBranch || '', beneficiaryName: f.beneficiaryName || '', beneficiaryContact: f.beneficiaryContact || '', beneficiaryRelationship: f.beneficiaryRelationship || '', state: complete ? 'ready' : 'missing', tone: complete ? 'success' : 'gray' };
       if (window.AppState && window.AppState.addEmployees) { window.AppState.addEmployees(rec); const a = window.AppState.get(); window.AppState.set({ employees: 'done', payroll: a.payroll === 'locked' ? 'unlocked' : a.payroll }); }
       const wasEmpty = (this.state.employees || []).length === 0;
       this.setState(s => ({ employees: [...s.employees, rec], addNew: false, empErrs: {}, dataPref: 'Populated' }));
@@ -1565,34 +1662,44 @@ class Component extends DCLogic {
   };
   requestFromEmployee = () => this.showToast('Request sent to the employee to complete their details');
   viewEmployee = () => { location.href = 'Employee Profile.dc.html'; };
-  // The effective edited form for an import row (saved edits, or the pre-filled base).
+  // The effective edited form for an import row (saved edits, or the parsed row).
   _effImportForm = (i) => {
     const saved = this.state.empEdits[i];
     if (saved) return saved;
-    const rec = IMPORT_PREVIEW[i];
-    const nm = (rec.name || '').trim().split(/\s+/);
-    const basicNum = (rec.basic || '').toString().replace(/[^0-9.]/g, '');
-    return { ...emptyEmpForm(), firstName: nm[0] || '', surname: nm.slice(1).join(' '), employmentType: rec.employmentType, position: rec.position || '', email: rec.email || '', ghanaCard: rec.ghanaCard, tin: rec.tin || '', phone: rec.phoneRoster || '', basicSalary: basicNum, ssnit: rec.ssnit || '', tier3: rec.tier3 || '', tier3Amount: rec.tier3Amount || '', tier3Mode: rec.tier3Mode || 'percent', accountNumber: rec.accountNumber || '', accountName: rec.accountName || '', bankBranch: rec.bankBranch || '' };
+    const rec = (this.state.importRows || [])[i] || {};
+    // The parsed record already uses the form's field names — fill any gaps with the empty form.
+    return { ...emptyEmpForm(), ...rec, basicSalary: (rec.basicSalary != null ? String(rec.basicSalary) : (rec.basic != null ? String(rec.basic) : '')) };
   };
   importEmployees = () => {
-    const incomplete = IMPORT_PREVIEW.map((p, i) => i).filter(i => !empComplete(this._effImportForm(i)));
+    const rows = this.state.importRows || [];
+    const incomplete = rows.map((p, i) => i).filter(i => !empComplete(this._effImportForm(i)));
     if (incomplete.length) {
       this.setState({ importTried: true });
       this.showToast(incomplete.length + (incomplete.length === 1 ? ' employee is' : ' employees are') + ' missing required details — complete every row to import.', 'error');
       this.openEmp(incomplete[0]);
       return;
     }
-    const canon = IMPORT_PREVIEW.map((p, i) => {
+    // Build records strictly from the parsed/edited rows — nothing invented.
+    const canon = rows.map((p, i) => {
       const f = this._effImportForm(i);
-      const name = ((f.firstName || '') + ' ' + (f.surname || '')).trim() || p.name;
-      return { fullName: name, name: name, initials: p.initials, phone: f.phone || p.phoneRoster, employmentType: f.employmentType || p.employmentType, type: f.employmentType || p.employmentType, position: f.position || '', jobRole: f.jobRole || '\u2014', department: f.department || '', email: f.email || '', ghanaCard: f.ghanaCard || p.ghanaCard, basicSalary: f.basicSalary || '', basic: f.basicSalary || '', ssnit: f.ssnit || '', tier3: f.tier3 || '', tier3Amount: f.tier3Amount || '', tier3Mode: f.tier3Mode || '', status: 'Active', state: 'ready', tone: 'success' };
+      const name = ((f.firstName || '') + ' ' + (f.surname || '')).trim();
+      return { fullName: name, name: name, firstName: f.firstName || '', surname: f.surname || '', otherNames: f.otherNames || '',
+        phone: f.phone || '', email: f.email || '', employmentType: f.employmentType || '', type: f.employmentType || '',
+        position: f.position || '', jobRole: f.jobRole || '', department: f.department || '',
+        basicSalary: f.basicSalary || '', basic: f.basicSalary || '', ssnit: f.ssnit || '',
+        tier3: f.tier3 || 'no', tier3Amount: f.tier3Amount || '', tier3Mode: f.tier3Mode || 'percent',
+        bankName: f.bankName || '', bankBranch: f.bankBranch || '', accountNumber: f.accountNumber || '', accountName: f.accountName || '',
+        ghanaCard: f.ghanaCard || '', ssnitNumber: f.ssnitNumber || '', tin: f.tin || '', address: f.address || '', dob: f.dob || '',
+        beneficiaryName: f.beneficiaryName || '', beneficiaryContact: f.beneficiaryContact || '', beneficiaryRelationship: f.beneficiaryRelationship || '',
+        status: 'Active', state: 'ready', tone: 'success' };
     });
-    if (window.AppState && window.AppState.setEmployees) {
-      window.AppState.setEmployees(canon);
+    let saved = canon;
+    if (window.AppState && window.AppState.addEmployees) {
+      saved = window.AppState.addEmployees(canon);
       const a = window.AppState.get();
       window.AppState.set({ employees: 'done', payroll: a.payroll === 'locked' ? 'unlocked' : a.payroll });
     }
-    this._pendingRoster = canon.map(rosterToRow);
+    this._pendingRoster = saved.map(rosterToRow);
     clearTimeout(this._bannerTimer);
     this.setState({ importDone: true, importedBanner: false, bannerLeaving: false });
   };
@@ -1760,7 +1867,7 @@ class Component extends DCLogic {
     const importPreview = s.adding && s.addingStep === 'upload' && viewEmp != null;
     const empPreview = importPreview || rosterViewActive || s.addNew;
     const inFlow = s.adding || rosterViewActive || s.addNew;
-    const empRec = rosterViewActive ? (s.employees[s.rosterView] || {}) : (importPreview ? IMPORT_PREVIEW[viewEmp] : null);
+    const empRec = rosterViewActive ? (s.employees[s.rosterView] || {}) : (importPreview ? ((s.importRows || [])[viewEmp] || {}) : null);
     const ef = s.empForm;
     const empSsnitYes = ef.ssnit === 'yes';
     const empSsnitNo = ef.ssnit === 'no';
@@ -1786,6 +1893,7 @@ class Component extends DCLogic {
       ssnit: (ef.ssnit === 'yes' ? 'SSNIT deducted' : 'No SSNIT') + (ef.tier3 === 'yes' ? '  \u00b7  Tier 3 on' : ''),
       contact: [ef.email, ef.phone ? '+233 ' + ef.phone : ''].filter(Boolean).join('  \u00b7  ') || 'Not provided',
       bank: [ef.accountNumber, ef.bankBranch].filter(Boolean).join('  \u00b7  ') || 'Not provided',
+      beneficiary: [ef.beneficiaryName, ef.beneficiaryRelationship].filter(Boolean).join('  \u00b7  ') || 'Not provided',
     };
     const secObj = (k) => {
       const idx = STEP_ORDER.indexOf(k);
@@ -1942,9 +2050,11 @@ class Component extends DCLogic {
       importedBanner: s.importedBanner,
       importedFile: s.importedFile || (s.uploadedFile ? s.uploadedFile.name : ''),
       dismissBanner: this.dismissBanner,
-      importList: IMPORT_PREVIEW.map((p, i) => {
+      importParseError: s.importParseError || '',
+      statusError: s.uploadStatus === 'error',
+      importList: (s.importRows || []).map((p, i) => {
         const ok = empComplete(this._effImportForm(i));
-        return { initials: p.initials, name: p.name, phone: p.phoneLocal, employmentType: p.employmentType, onView: () => this.openEmp(i),
+        return { initials: p.initials, name: p.name, phone: p.phone, employmentType: p.employmentType, onView: () => this.openEmp(i),
           complete: ok, incomplete: !ok,
           showStatus: ok || s.importTried,
           statusLabel: ok ? 'Ready' : 'Needs details',
@@ -1993,9 +2103,11 @@ class Component extends DCLogic {
         firstName: this.empSet('firstName'), surname: this.empSet('surname'), otherNames: this.empSet('otherNames'),
         jobRole: this.empSet('jobRole'), department: this.empSet('department'), employmentType: this.empSet('employmentType'), position: this.empSet('position'),
         staffNumber: this.empSet('staffNumber'), ghanaCard: this.empSet('ghanaCard'), tin: this.empSet('tin'),
+        dob: this.empSet('dob'), address: this.empSet('address'), ssnitNumber: this.empSet('ssnitNumber'),
         basicSalary: this.empSet('basicSalary'), tier3Amount: this.empSet('tier3Amount'),
         email: this.empSet('email'), phone: this.empSet('phone'),
-        accountNumber: this.empSet('accountNumber'), accountName: this.empSet('accountName'), bankBranch: this.empSet('bankBranch'),
+        bankName: this.empSet('bankName'), accountNumber: this.empSet('accountNumber'), accountName: this.empSet('accountName'), bankBranch: this.empSet('bankBranch'),
+        beneficiaryName: this.empSet('beneficiaryName'), beneficiaryContact: this.empSet('beneficiaryContact'), beneficiaryRelationship: this.empSet('beneficiaryRelationship'),
       },
       jobRoleOpts: s.jobRoles.map(r => r.value),
       deptOpts: s.departments.map(d => d.value),
@@ -2044,7 +2156,7 @@ class Component extends DCLogic {
         group: g.group, hasIntro: !!g.intro, intro: g.intro || '',
         items: g.items.map(it => ({ name: it.name, tag: it.tag, desc: it.desc, tagColor: TAG_TONES[it.tone].tagColor, tagBg: TAG_TONES[it.tone].tagBg })),
       })),
-      secEmployment: secObj('employment'), secComp: secObj('comp'), secSsnit: secObj('ssnit'), secContact: secObj('contact'), secBank: secObj('bank'),
+      secEmployment: secObj('employment'), secComp: secObj('comp'), secSsnit: secObj('ssnit'), secContact: secObj('contact'), secBank: secObj('bank'), secBeneficiary: secObj('beneficiary'),
       secIdentity: secObj('identity'),
       isReviewStep: false,
       reviewStepLabel: 'Step ' + STEP_ORDER.length + ' of ' + STEP_ORDER.length,
@@ -2082,14 +2194,14 @@ class Component extends DCLogic {
       empNotDirty: !s.empDirty,
       importDone: s.importDone,
       goToPeople: this.goToPeople,
-      importedCount: IMPORT_PREVIEW.length,
+      importedCount: (s.importRows || []).length,
       goPeopleCrumb: this.goPeopleCrumb,
       goImportCrumb: this.goImportCrumb,
       headerBack: this.headerBack,
       peopleCrumbCursor: inFlow ? 'pointer' : 'default',
       importCrumbColor: empPreview ? 'var(--fg-secondary)' : 'var(--brand-700)',
       importCrumbCursor: empPreview ? 'pointer' : 'default',
-      foundCount: IMPORT_PREVIEW.length,
+      foundCount: (s.importRows || []).length,
       uploadedName: s.uploadedFile ? s.uploadedFile.name : '',
       uploadedSize: s.uploadedFile ? s.uploadedFile.size : '',
       stepChoose: s.adding && s.addingStep === 'choose',

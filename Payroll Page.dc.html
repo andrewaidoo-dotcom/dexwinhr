@@ -8,7 +8,9 @@
 <body>
 <x-dc>
 <helmet>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <script src="./ds-base.js"></script>
+<script src="./payroll-engine.js"></script>
 <script src="./app-state.js"></script>
 <style>
   * { scrollbar-width: thin; scrollbar-color: #D5D7DA transparent; }
@@ -370,30 +372,49 @@
                 <p style="font-size:17px;line-height:26px;color:var(--fg-tertiary);margin:0 0 28px;text-wrap:pretty;">Configure allowances, bonuses, and reimbursements for all or most employees.</p>
 
                 <sc-if value="{{ hasCompanyAdditions }}" hint-placeholder-val="{{ false }}">
-                  <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-xs);overflow:hidden;margin-bottom:24px;">
-                    <div style="padding:14px 22px;background:var(--bg-secondary);border-bottom:1px solid var(--border-secondary);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--fg-quaternary);">Company pay additions</div>
-                    <sc-for list="{{ companyAdditions }}" as="ca" hint-placeholder-count="1">
-                      <div style="display:flex;align-items:center;gap:16px;padding:18px 22px;border-bottom:1px solid var(--border-tertiary);">
-                        <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:11px;background:var(--brand-50);color:var(--brand-600);">
-                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  <sc-for list="{{ companyAdditions }}" as="ca" hint-placeholder-count="1">
+                    <div onClick="{{ ca.onEdit }}" style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-xs);margin-bottom:16px;cursor:pointer;transition:border-color 120ms ease,box-shadow 120ms ease;" style-hover="border-color:var(--brand-300);box-shadow:var(--shadow-md);">
+                      <div style="display:flex;align-items:flex-start;gap:14px;padding:18px 22px;">
+                        <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:11px;background:var(--bg-primary);border:1px solid var(--border-secondary);color:#2E90FA;">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16h6"></path><path d="M19 13v6"></path><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"></path><path d="m7.5 4.27 9 5.15"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><line x1="12" y1="22" x2="12" y2="12"></line></svg>
                         </span>
                         <div style="flex:1;min-width:0;">
-                          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-                            <span style="font-size:16px;font-weight:700;color:var(--fg-primary);letter-spacing:-0.01em;">{{ ca.name }}</span>
-                            <span style="flex-shrink:0;display:inline-flex;align-items:center;padding:4px 11px;font-size:12px;font-weight:600;border-radius:999px;color:{{ ca.tagColor }};background:{{ ca.tagBg }};">{{ ca.typeLabel }}</span>
+                          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;">
+                            <div style="min-width:0;">
+                              <div style="font-size:16px;font-weight:700;color:var(--fg-primary);letter-spacing:-0.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ ca.name }}</div>
+                              <div style="margin-top:7px;"><span style="display: inline-flex; align-items: center; padding: 3px 11px; font-size: 12px; font-weight: 600; border-radius: 999px; color: {{ ca.tagColor }}; background: {{ ca.tagBg }}; text-transform: capitalize">{{ ca.typeLabel }}</span></div>
+                            </div>
+                            <div style="flex-shrink:0;text-align:right;">
+                              <div style="font-size:16px;font-weight:700;color:var(--fg-primary);letter-spacing:-0.01em;font-variant-numeric:tabular-nums;white-space:nowrap;">{{ ca.valueText }}</div>
+                              <div style="font-size: 16px; color: var(--fg-tertiary); margin-top: 4px">{{ ca.freqText }}</div>
+                            </div>
                           </div>
-                          <div style="font-size:14px;color:var(--fg-tertiary);margin-top:3px;">{{ ca.meta }}</div>
                         </div>
-                        <div style="flex-shrink:0;text-align:right;">
-                          <div style="font-size:16px;font-weight:700;color:var(--fg-primary);font-variant-numeric:tabular-nums;">{{ ca.valueText }}</div>
-                          <div style="font-size:13px;color:var(--fg-quaternary);margin-top:2px;">{{ ca.applyLabel }}</div>
+                        <div style="position:relative;flex-shrink:0;">
+                          <button onClick="{{ ca.onMenu }}" aria-label="Options" style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;background:transparent;border:none;color:var(--fg-quaternary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                          </button>
+                          <sc-if value="{{ ca.menuOpen }}" hint-placeholder-val="{{ false }}">
+                            <div onClick="{{ ca.onCloseMenu }}" style="position:fixed;inset:0;z-index:5;"></div>
+                            <div style="position:absolute;z-index:10;top:calc(100% + 6px);right:0;min-width:160px;background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:12px;box-shadow:var(--shadow-lg);overflow:hidden;padding:5px;">
+                              <button onClick="{{ ca.onRemove }}" style="display:flex;align-items:center;gap:10px;width:100%;box-sizing:border-box;padding:10px 12px;background:transparent;border:none;border-radius:8px;cursor:pointer;font-family:var(--font-body);font-size:14.5px;font-weight:600;color:var(--error-600);text-align:left;transition:background 120ms ease;" style-hover="background:var(--error-50);">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                Remove
+                              </button>
+                            </div>
+                          </sc-if>
                         </div>
-                        <button onClick="{{ ca.onRemove }}" aria-label="Remove" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;background:transparent;border:1px solid var(--border-secondary);color:var(--fg-quaternary);cursor:pointer;transition:color 120ms ease,border-color 120ms ease;" style-hover="color:var(--error-600);border-color:var(--error-300);">
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                      </div>
+                      <div style="border-top:1px dashed var(--border-secondary);margin:0 22px;"></div>
+                      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 22px;">
+                        <div style="display:flex;align-items:center;gap:10px;font-size:14.5px;color:var(--fg-tertiary);">Goes to:<span style="display:inline-flex;align-items:center;padding:4px 12px;font-size:13px;font-weight:600;border-radius:999px;color:var(--brand-700);background:var(--brand-50);border:1px solid var(--brand-200);">{{ ca.goesTo }}</span></div>
+                        <button onClick="{{ ca.onAddEmployee }}" style="display:inline-flex;align-items:center;gap:8px;background:transparent;border:none;cursor:pointer;font-family:var(--font-body);font-size:14.5px;font-weight:700;color:var(--brand-700);transition:color 120ms ease;" style-hover="color:var(--brand-800);">
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                          Add Employee
                         </button>
                       </div>
-                    </sc-for>
-                  </div>
+                    </div>
+                  </sc-for>
                 </sc-if>
 
                 <a href="Add Pay Addition.dc.html" data-tour="{{ addCtaTour }}" style="display:flex;align-items:center;justify-content:center;gap:12px;padding:30px 24px;background:var(--bg-primary);border:1.5px dashed var(--brand-400);border-radius:16px;cursor:pointer;text-decoration:none;transition:background 120ms ease,border-color 120ms ease;" style-hover="background:var(--brand-25);border-color:var(--brand-500);">
@@ -420,7 +441,57 @@
             <sc-if value="{{ tabDeductions }}" hint-placeholder-val="{{ false }}">
               <div style="max-width:1000px;padding-top:8px;">
                 <h2 style="font-family:var(--font-display);font-size:30px;line-height:38px;font-weight:800;letter-spacing:-0.02em;margin:0 0 8px;color:var(--fg-primary);">Deductions from basic salaries</h2>
-                <p style="font-size:17px;line-height:26px;color:var(--fg-tertiary);margin:0 0 28px;text-wrap:pretty;">Set up welfare contributions, union dues, loan repayments and other recurring deductions for all or most employees.</p>
+                <p style="font-size:17px;line-height:26px;color:var(--fg-tertiary);margin:0 0 28px;text-wrap:pretty;">Set up welfare contributions, union dues and other recurring deductions for all or most employees.</p>
+
+                <sc-if value="{{ hasCompanyDeductions }}" hint-placeholder-val="{{ false }}">
+                  <sc-for list="{{ companyDeductions }}" as="cd" hint-placeholder-count="1">
+                    <div onClick="{{ cd.onEdit }}" style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-xs);margin-bottom:16px;cursor:pointer;transition:border-color 120ms ease,box-shadow 120ms ease;" style-hover="border-color:var(--brand-300);box-shadow:var(--shadow-md);">
+                      <div style="display:flex;align-items:flex-start;gap:14px;padding:18px 22px;">
+                        <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:56px;height:56px;border-radius:14px;background:var(--bg-primary);border:1px solid var(--border-secondary);color:#2E90FA;">
+                          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16h6"></path><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"></path><path d="m7.5 4.27 9 5.15"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><line x1="12" y1="22" x2="12" y2="12"></line></svg>
+                        </span>
+                        <div style="flex:1;min-width:0;">
+                          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;">
+                            <div style="min-width:0;">
+                              <div style="font-size:16px;font-weight:700;color:var(--fg-primary);letter-spacing:-0.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ cd.name }}</div>
+                              <div style="margin-top:7px;"><span style="display:inline-flex;align-items:center;padding:3px 11px;font-size:12px;font-weight:600;border-radius:999px;color:{{ cd.tagColor }};background:{{ cd.tagBg }};">{{ cd.typeLabel }}</span></div>
+                            </div>
+                            <div style="flex-shrink:0;text-align:right;">
+                              <div style="font-size:16px;font-weight:700;color:var(--fg-primary);letter-spacing:-0.01em;font-variant-numeric:tabular-nums;white-space:nowrap;">{{ cd.valueText }}</div>
+                              <div style="font-size:13px;color:var(--fg-tertiary);margin-top:4px;">{{ cd.freqText }}</div>
+                            </div>
+                          </div>
+                        </div>
+                        <div style="position:relative;flex-shrink:0;">
+                          <button onClick="{{ cd.onMenu }}" aria-label="Options" style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;background:transparent;border:none;color:var(--fg-quaternary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                          </button>
+                          <sc-if value="{{ cd.menuOpen }}" hint-placeholder-val="{{ false }}">
+                            <div onClick="{{ cd.onCloseMenu }}" style="position:fixed;inset:0;z-index:5;"></div>
+                            <div style="position:absolute;z-index:10;top:calc(100% + 6px);right:0;min-width:160px;background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:12px;box-shadow:var(--shadow-lg);overflow:hidden;padding:5px;">
+                              <button onClick="{{ cd.onEdit }}" style="display:flex;align-items:center;gap:10px;width:100%;box-sizing:border-box;padding:10px 12px;background:transparent;border:none;border-radius:8px;cursor:pointer;font-family:var(--font-body);font-size:14.5px;font-weight:600;color:var(--fg-secondary);text-align:left;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>
+                                Edit
+                              </button>
+                              <button onClick="{{ cd.onRemove }}" style="display:flex;align-items:center;gap:10px;width:100%;box-sizing:border-box;padding:10px 12px;background:transparent;border:none;border-radius:8px;cursor:pointer;font-family:var(--font-body);font-size:14.5px;font-weight:600;color:var(--error-600);text-align:left;transition:background 120ms ease;" style-hover="background:var(--error-50);">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                Remove
+                              </button>
+                            </div>
+                          </sc-if>
+                        </div>
+                      </div>
+                      <div style="border-top:1px dashed var(--border-secondary);margin:0 22px;"></div>
+                      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 22px;">
+                        <div style="display:flex;align-items:center;gap:10px;font-size:14.5px;color:var(--fg-tertiary);">Goes to:<span style="display:inline-flex;align-items:center;padding:4px 12px;font-size:13px;font-weight:600;border-radius:999px;color:var(--brand-700);background:var(--brand-50);border:1px solid var(--brand-200);">{{ cd.goesTo }}</span></div>
+                        <button onClick="{{ cd.onAddEmployee }}" style="display:inline-flex;align-items:center;gap:8px;background:transparent;border:none;cursor:pointer;font-family:var(--font-body);font-size:14.5px;font-weight:700;color:var(--brand-700);transition:color 120ms ease;" style-hover="color:var(--brand-800);">
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                          Add Employee
+                        </button>
+                      </div>
+                    </div>
+                  </sc-for>
+                </sc-if>
 
                 <a href="Add Pay Deduction.dc.html" style="display:flex;align-items:center;justify-content:center;gap:12px;padding:30px 24px;background:var(--bg-primary);border:1.5px dashed var(--brand-400);border-radius:16px;cursor:pointer;text-decoration:none;transition:background 120ms ease,border-color 120ms ease;" style-hover="background:var(--brand-25);border-color:var(--brand-500);">
                   <span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;background:var(--brand-50);color:var(--brand-600);">
@@ -462,7 +533,7 @@
                     <span></span>
                   </div>
                   <sc-for list="{{ loansList }}" as="l" hint-placeholder-count="2">
-                    <div style="display:grid;grid-template-columns:1.7fr 1fr 1.1fr 1.1fr 1.1fr 44px;gap:14px;align-items:center;padding:16px 22px;border-bottom:1px solid var(--border-tertiary);">
+                    <div onClick="{{ l.onOpen }}" style="display:grid;grid-template-columns:1.7fr 1fr 1.1fr 1.1fr 1.1fr 44px;gap:14px;align-items:center;padding:16px 22px;border-bottom:1px solid var(--border-tertiary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-secondary);">
                       <div style="display:flex;align-items:center;gap:12px;min-width:0;">
                         <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:999px;background:var(--gray-100);color:var(--fg-secondary);font-size:13px;font-weight:800;">{{ l.empInit }}</span>
                         <span style="font-size:15.5px;font-weight:700;color:var(--fg-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ l.empName }}</span>
@@ -471,9 +542,24 @@
                       <div style="text-align:right;font-size:15px;font-weight:600;color:var(--fg-secondary);font-variant-numeric:tabular-nums;">{{ l.monthlyText }}</div>
                       <div style="text-align:right;font-size:15px;font-weight:600;color:var(--fg-secondary);font-variant-numeric:tabular-nums;">{{ l.totalText }}</div>
                       <div style="text-align:right;font-size:15px;font-weight:800;color:var(--fg-primary);font-variant-numeric:tabular-nums;">{{ l.leftText }}</div>
-                      <button onClick="{{ l.onRemove }}" aria-label="Remove" style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;background:transparent;border:1px solid var(--border-secondary);color:var(--fg-quaternary);cursor:pointer;transition:color 120ms ease,border-color 120ms ease;" style-hover="color:var(--error-600);border-color:var(--error-300);">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                      </button>
+                      <div style="position:relative;justify-self:end;">
+                        <button onClick="{{ l.onMenu }}" aria-label="Options" style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;background:transparent;border:none;color:var(--fg-quaternary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                        </button>
+                        <sc-if value="{{ l.menuOpen }}" hint-placeholder-val="{{ false }}">
+                          <div onClick="{{ l.onCloseMenu }}" style="position:fixed;inset:0;z-index:5;"></div>
+                          <div style="position:absolute;z-index:10;top:calc(100% + 6px);right:0;min-width:150px;background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:12px;box-shadow:var(--shadow-lg);overflow:hidden;padding:5px;">
+                            <button onClick="{{ l.onEdit }}" style="display:flex;align-items:center;gap:10px;width:100%;box-sizing:border-box;padding:10px 12px;background:transparent;border:none;border-radius:8px;cursor:pointer;font-family:var(--font-body);font-size:14.5px;font-weight:600;color:var(--fg-secondary);text-align:left;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>
+                              Edit
+                            </button>
+                            <button onClick="{{ l.onRemove }}" style="display:flex;align-items:center;gap:10px;width:100%;box-sizing:border-box;padding:10px 12px;background:transparent;border:none;border-radius:8px;cursor:pointer;font-family:var(--font-body);font-size:14.5px;font-weight:600;color:var(--error-600);text-align:left;transition:background 120ms ease;" style-hover="background:var(--error-50);">
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                              Delete
+                            </button>
+                          </div>
+                        </sc-if>
+                      </div>
                     </div>
                   </sc-for>
                 </div>
@@ -703,7 +789,7 @@
 
                 <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin:22px 0 8px;">Monthly deduction <span style="color:var(--error-600);">*</span></label>
                 <div style="position:relative;">
-                  <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--fg-quaternary);pointer-events:none;">GH&#8373;</span>
+                  <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--fg-quaternary);pointer-events:none;">GH₵</span>
                   <input value="{{ loanMonthly }}" onInput="{{ onLoanMonthly }}" type="number" inputmode="decimal" placeholder="0.00" style="width:100%;box-sizing:border-box;padding:12px 14px 12px 56px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;font-variant-numeric:tabular-nums;">
                 </div>
 
@@ -711,14 +797,14 @@
                   <div>
                     <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:8px;">Amount already paid off</label>
                     <div style="position:relative;">
-                      <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--fg-quaternary);pointer-events:none;">GH&#8373;</span>
+                      <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--fg-quaternary);pointer-events:none;">GH₵</span>
                       <input value="{{ loanPaid }}" onInput="{{ onLoanPaid }}" type="number" inputmode="decimal" placeholder="0.00" style="width:100%;box-sizing:border-box;padding:12px 14px 12px 56px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;font-variant-numeric:tabular-nums;">
                     </div>
                   </div>
                   <div>
                     <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:8px;">Total left to settle <span style="color:var(--error-600);">*</span></label>
                     <div style="position:relative;">
-                      <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--fg-quaternary);pointer-events:none;">GH&#8373;</span>
+                      <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--fg-quaternary);pointer-events:none;">GH₵</span>
                       <input value="{{ loanLeft }}" onInput="{{ onLoanLeft }}" type="number" inputmode="decimal" placeholder="0.00" style="width:100%;box-sizing:border-box;padding:12px 14px 12px 56px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;font-variant-numeric:tabular-nums;">
                     </div>
                   </div>
@@ -846,7 +932,7 @@
             <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:var(--brand-50);border:1px solid var(--brand-200);border-radius:14px;padding:11px 14px 11px 18px;margin-bottom:14px;">
               <div style="display:flex;align-items:center;gap:13px;min-width:0;">
                 <span style="display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;padding:0 9px;border-radius:999px;background:var(--bg-brand-solid);color:#fff;font-size:13px;font-weight:800;font-variant-numeric:tabular-nums;">{{ selCount }}</span>
-                <span style="font-size:14.5px;font-weight:600;color:var(--brand-900);">selected &middot; apply a one-off to the <strong style="font-weight:800;">{{ bulkPeriodLabel }}</strong> run</span>
+                <span style="font-size:14.5px;font-weight:600;color:var(--brand-900);">selected · apply a one-off to the <strong style="font-weight:800;">{{ bulkPeriodLabel }}</strong> run</span>
               </div>
               <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;">
                 <button onClick="{{ openBulkAdd }}" style="display:inline-flex;align-items:center;gap:7px;padding:9px 16px;font-family:var(--font-body);font-weight:700;font-size:14px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>Add addition</button>
@@ -1623,7 +1709,7 @@
         <sc-if value="{{ bulkFlat }}" hint-placeholder-val="{{ true }}">
           <label style="display:block;font-size:13px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Amount (each)</label>
           <div style="display:flex;align-items:center;border:1px solid var(--border-primary);border-radius:var(--radius-md);overflow:hidden;box-shadow:var(--shadow-xs);">
-            <span style="padding:12px 15px;background:var(--bg-secondary);color:var(--fg-tertiary);font-size:15px;border-right:1px solid var(--border-primary);">GH&#8373;</span>
+            <span style="padding:12px 15px;background:var(--bg-secondary);color:var(--fg-tertiary);font-size:15px;border-right:1px solid var(--border-primary);">GH₵</span>
             <input value="{{ bulkAmount }}" onInput="{{ onBulkAmount }}" inputmode="decimal" placeholder="0.00" style="flex:1;min-width:0;padding:12px 15px;border:none;outline:none;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:#fff;font-variant-numeric:tabular-nums;">
           </div>
         </sc-if>
@@ -1635,7 +1721,7 @@
                 <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:999px;background:var(--brand-50);color:var(--brand-700);font-weight:700;font-size:12px;">{{ m.initials }}</span>
                 <span style="flex:1;min-width:0;font-size:14px;font-weight:700;color:var(--fg-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ m.name }}</span>
                 <div style="flex-shrink:0;display:flex;align-items:center;width:160px;border:1px solid var(--border-primary);border-radius:var(--radius-md);overflow:hidden;">
-                  <span style="padding:9px 11px;background:var(--bg-secondary);color:var(--fg-tertiary);font-size:13.5px;border-right:1px solid var(--border-primary);">GH&#8373;</span>
+                  <span style="padding:9px 11px;background:var(--bg-secondary);color:var(--fg-tertiary);font-size:13.5px;border-right:1px solid var(--border-primary);">GH₵</span>
                   <input value="{{ m.amount }}" onInput="{{ m.onAmt }}" inputmode="decimal" placeholder="0.00" style="flex:1;min-width:0;padding:9px 11px;border:none;outline:none;font-family:var(--font-body);font-size:14px;color:var(--fg-primary);background:#fff;font-variant-numeric:tabular-nums;text-align:right;">
                 </div>
               </div>
@@ -1734,14 +1820,13 @@
   &quot;walletScenario&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;Enough&quot;, &quot;Low&quot;], &quot;default&quot;: &quot;Enough&quot;, &quot;tsType&quot;: &quot;string&quot; },
   &quot;outcome&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;Success&quot;, &quot;Partial failure&quot;], &quot;default&quot;: &quot;Success&quot;, &quot;tsType&quot;: &quot;string&quot; }
 }">
-const EMPLOYEES_BASE = [
-  { id: 'e1', name: 'Akua Mensah',  role: 'Operations Lead',  department: 'Operations',       position: 'Team Lead',  initials: 'AM', bankName: 'GCB Bank',     branch: 'Accra Main',  acct: '1011 2345 6789', gross: 4200, ssnit: 231, paye: 348, net: 3621 },
-  { id: 'e2', name: 'Kwame Owusu',  role: 'Accountant',       department: 'Finance',          position: 'Officer',    initials: 'KO', bankName: 'Stanbic Bank', branch: 'Osu',         acct: '4422 1138 7755', gross: 3800, ssnit: 209, paye: 308, net: 3283 },
-  { id: 'e3', name: 'Ama Boateng',  role: 'Software Engineer',department: 'Engineering',      position: 'Senior',     initials: 'AB', bankName: 'Ecobank',      branch: 'Ridge',       acct: '0030 8847 1962', gross: 5400, ssnit: 297, paye: 540, net: 4563 },
-  { id: 'e4', name: 'Yaw Asante',   role: 'Sales Executive',  department: 'Sales',            position: 'Executive',  initials: 'YA', bankName: '',             branch: '',            acct: '',               gross: 3200, ssnit: 176, paye: 232, net: 2792 },
-  { id: 'e5', name: 'Adwoa Nyarko', role: 'HR Manager',       department: 'People & HR',      position: 'Manager',    initials: 'AN', bankName: '',             branch: '',            acct: '',               gross: 4000, ssnit: 220, paye: 320, net: 3460 },
-  { id: 'e6', name: 'Kofi Boadi',   role: 'Customer Support', department: 'Customer Support', position: 'Associate',  initials: 'KB', bankName: 'Fidelity Bank',branch: 'Tema',        acct: '1077 4421 9803', gross: 2800, ssnit: 154, paye: 168, net: 2478 },
-];
+// Payroll register rows — derived live from the real employee roster (single source of truth).
+function rosterReg() {
+  var list = (window.AppState && window.AppState.getEmployees) ? window.AppState.getEmployees() : [];
+  return list.map(function (r) {
+    return { id: r.id, name: r.name, initials: r.initials, role: r.jobRole || r.position || '\u2014', department: r.department || '', position: r.position || '', bankName: r.bankName || '', branch: r.bankBranch || '', acct: r.accountNumber || '' };
+  });
+}
 const BANKS = ['GCB Bank', 'Stanbic Bank', 'Ecobank', 'Fidelity Bank', 'Standard Chartered', 'Absa Bank', 'CalBank', 'Zenith Bank', 'UBA Ghana', 'Access Bank'];
 function buildPeriods() {
   var now = new Date();
@@ -1813,7 +1898,6 @@ const TASK_PERM_SVG = '<svg width="48" height="48" viewBox="0 0 48 48" fill="non
 const SETUP_TASKS = [
   { id: 'additions',   title: 'Add allowances, non-cash benefits, etc.',     sub: 'Company benefits that employees enjoy', icon: TASK_ADD_SVG,  href: 'Payroll Page.dc.html' },
   { id: 'deductions',  title: 'Add recurring company deductions',    sub: 'Welfare, union dues and other default deductions from employee pay',                            icon: TASK_DED_SVG,  href: 'Payroll Page.dc.html' },
-  { id: 'permissions', title: 'Setup payroll permissions', sub: 'Set who approves payrolls before payments.',         icon: TASK_PERM_SVG, href: 'Payroll Page.dc.html' },
 ];
 const SETUP_TABS = [
   { id: 'overview',      label: 'Overview' },
@@ -1885,7 +1969,7 @@ const TWEAK_DEFAULTS = { setupStage: 'Ready to run', role: 'Approver', demoState
 class Component extends DCLogic {
   state = {
     screen: 'empty',
-    employees: EMPLOYEES_BASE.map(e => ({ ...e })),
+    employees: rosterReg(),
     period: PERIODS[0],
     status: 'draft',
     walletBalance: 84250,
@@ -1927,7 +2011,7 @@ class Component extends DCLogic {
     selIds: [], bulkModal: null, bulkKind: 'overtime', bulkDedMode: 'posttax', bulkName: '', bulkAmount: '', bulkPer: false, bulkAmts: {}, toastAction: null,
     filterOpen: false, filters: { department: [], role: [], position: [] }, filterCollapsed: {},
     payOneId: null,
-    loans: [], loanModalOpen: false, loanDraft: {}, loanEmpPickerOpen: false, loanEmpSearch: '',
+    loans: [], loanModalOpen: false, loanDraft: {}, loanEmpPickerOpen: false, loanEmpSearch: '', caMenuOpen: null, cdMenuOpen: null, loanMenuOpen: null, editLoanId: null,
   };
   disbursingTimer = null;
   toastTimer = null;
@@ -1936,6 +2020,8 @@ class Component extends DCLogic {
   componentDidMount() {
     const a = (window.AppState && window.AppState.get()) || { employees: 'todo', payroll: 'locked' };
     const stage = a.employees !== 'done' ? 'No employees' : (a.payroll !== 'done' ? 'Payroll not set up' : 'Ready to run');
+    let savedTab = null; try { savedTab = localStorage.getItem('dxp_payroll_tab'); if (savedTab) localStorage.removeItem('dxp_payroll_tab'); } catch (e) {}
+    let flash = null; try { flash = localStorage.getItem('dxp_payroll_flash'); if (flash) localStorage.removeItem('dxp_payroll_flash'); } catch (e) {}
     this.setState({ tweaks: {
       setupStage: stage,
       role: this.props.role || TWEAK_DEFAULTS.role,
@@ -1945,11 +2031,9 @@ class Component extends DCLogic {
       walkthrough: this.props.walkthrough || TWEAK_DEFAULTS.walkthrough,
       permSeed: this.props.permSeed || TWEAK_DEFAULTS.permSeed,
       draftSeed: this.props.draftSeed || TWEAK_DEFAULTS.draftSeed,
-    } }, () => { this.applyDemo(); this.applyPermSeed(); this.applyDraftSeed(); this.applyApprovalContext(); this._coachStart = setTimeout(this.startCoachFromContext, 140); });
-    let savedTab = null; try { savedTab = localStorage.getItem('dxp_payroll_tab'); localStorage.removeItem('dxp_payroll_tab'); } catch (e) {}
-    if (savedTab === 'additions') this.setState({ setupTab: 'company-items', companyItemsSub: 'additions' });
-    else if (savedTab === 'deductions') this.setState({ setupTab: 'company-items', companyItemsSub: 'deductions' });
-    else if (savedTab) this.setState({ setupTab: savedTab });
+    } }, () => { this.applyDemo(); this.applyPermSeed(); this.applyDraftSeed(); this.applyApprovalContext(); this._coachStart = setTimeout(this.startCoachFromContext, 140); try { const hA = !!(window.AppState && window.AppState.getCompanyAdditions && window.AppState.getCompanyAdditions().length); const hD = !!(window.AppState && window.AppState.getCompanyDeductions && window.AppState.getCompanyDeductions().length); if (hA && hD) this.finishSetupIfDone(); } catch (e) {} if (savedTab === 'additions') this.setState({ setupTab: 'company-items', companyItemsSub: 'additions' }); else if (savedTab === 'deductions') this.setState({ setupTab: 'company-items', companyItemsSub: 'deductions' }); });
+    if (flash) setTimeout(() => this.showToast(flash), 360);
+    try { if (window.AppState && window.AppState.getLoans) { const ln = window.AppState.getLoans(); if (ln && ln.length) this.setState({ loans: ln }); } } catch (e) {}
     try { const r = localStorage.getItem('dxp_payroll_drafts'); if (r) this.setState({ drafts: JSON.parse(r) }); } catch (e) {}
     const loadOwner = () => {
       if (!window.AppState || !window.AppState.getAccount) return false;
@@ -2021,7 +2105,9 @@ class Component extends DCLogic {
   });
   removePermMember = (id) => (ev) => { if (ev && ev.stopPropagation) ev.stopPropagation(); this.setState(s => { const next = { ...s.memberPerms }; delete next[id]; return { memberPerms: next, customMembers: s.customMembers.filter(m => m.id !== id) }; }); };
   finishSetupIfDone = () => {
-    const allDone = SETUP_TASKS.every(t => this.state.skippedTasks.includes(t.id));
+    const hasAdds = !!(window.AppState && window.AppState.getCompanyAdditions && window.AppState.getCompanyAdditions().length);
+    const hasDeds = !!(window.AppState && window.AppState.getCompanyDeductions && window.AppState.getCompanyDeductions().length);
+    const allDone = SETUP_TASKS.every(t => this.state.skippedTasks.includes(t.id) || (t.id === 'additions' && hasAdds) || (t.id === 'deductions' && hasDeds));
     if (!allDone) return false;
     try { if (window.AppState) window.AppState.set({ employees: 'done', payroll: 'done' }); } catch (e) {}
     this.setState(s => ({ tweaks: { ...s.tweaks, setupStage: 'Ready to run' }, screen: 'gateSetup', setupTab: 'overview', setupComplete: true, status: 'draft' }));
@@ -2087,7 +2173,7 @@ class Component extends DCLogic {
     try { stored = (window.AppState && window.AppState.getWalletBalance) ? window.AppState.getWalletBalance() : null; } catch (e) {}
     const balance = ws === 'Low' ? 12500 : (stored != null ? stored : ((window.AppState && window.AppState.WB_DEFAULT) || 84250));
     const d = this.tw('demoState');
-    let patch = { walletBalance: balance, employees: EMPLOYEES_BASE.map(e => ({ ...e })), excluded: [], failed: [], disbursedCount: 0, toast: null };
+    let patch = { walletBalance: balance, employees: rosterReg(), excluded: [], failed: [], disbursedCount: 0, toast: null };
 
     // Walkthrough preview forces the unlocked set-up view.
     const wt = this.tw('walkthrough');
@@ -2226,22 +2312,34 @@ class Component extends DCLogic {
   };
 
   // LOANS & ADVANCES
-  openLoanAdd = () => this.setState({ loanModalOpen: true, loanDraft: { empId: '', type: 'loan', monthly: '', paid: '', left: '' }, loanEmpPickerOpen: false, loanEmpSearch: '' });
+  openLoanAdd = () => this.setState({ loanModalOpen: true, editLoanId: null, loanDraft: { empId: '', type: 'loan', monthly: '', paid: '', left: '' }, loanEmpPickerOpen: false, loanEmpSearch: '', loanMenuOpen: null });
+  openLoanEdit = (loan) => (ev) => { if (ev && ev.stopPropagation) ev.stopPropagation(); const left = Math.max(0, Number(loan.total || 0) - Number(loan.paid || 0)); this.setState({ loanModalOpen: true, editLoanId: loan.id, loanDraft: { empId: loan.empId, type: loan.type || 'loan', monthly: String(loan.monthly || ''), paid: String(loan.paid || 0), left: String(left) }, loanEmpPickerOpen: false, loanEmpSearch: '', loanMenuOpen: null }); };
+  toggleLoanMenu = (id) => (ev) => { if (ev && ev.stopPropagation) ev.stopPropagation(); this.setState(s => ({ loanMenuOpen: s.loanMenuOpen === id ? null : id })); };
+  closeLoanMenu = (ev) => { if (ev && ev.stopPropagation) ev.stopPropagation(); this.setState({ loanMenuOpen: null }); };
   closeLoanModal = () => this.setState({ loanModalOpen: false, loanEmpPickerOpen: false });
   toggleLoanEmpPicker = () => this.setState(s => ({ loanEmpPickerOpen: !s.loanEmpPickerOpen, loanEmpSearch: '' }));
   onLoanEmpSearch = (ev) => { const v = ev.target.value; this.setState({ loanEmpSearch: v }); };
   pickLoanEmp = (id) => () => this.setState(s => ({ loanDraft: { ...s.loanDraft, empId: id }, loanEmpPickerOpen: false, loanEmpSearch: '' }));
   setLoanType = (t) => () => this.setState(s => ({ loanDraft: { ...s.loanDraft, type: t } }));
   onLoanField = (k) => (ev) => { const v = ev.target.value; this.setState(s => ({ loanDraft: { ...s.loanDraft, [k]: v } })); };
-  removeLoan = (id) => () => this.setState(s => ({ loans: (s.loans || []).filter(l => l.id !== id) }));
+  _persistLoans = (loans) => { try { if (window.AppState && window.AppState.setLoans) window.AppState.setLoans(loans); } catch (e) {} };
+  removeLoan = (id) => (ev) => { if (ev && ev.stopPropagation) ev.stopPropagation(); this.setState(s => { const loans = (s.loans || []).filter(l => l.id !== id); this._persistLoans(loans); return { loans, loanMenuOpen: null }; }); };
   saveLoan = () => this.setState(s => {
     const d = s.loanDraft || {};
     const monthly = Number(d.monthly), left = Number(d.left), paid = Number(d.paid || 0);
     if (!d.empId || !(monthly > 0) || !(left > 0)) return {};
+    const e = rosterReg().find(x => x.id === d.empId) || {};
+    if (s.editLoanId) {
+      this.showToast((d.type === 'loan' ? 'Loan' : 'Salary advance') + ' updated for ' + (e.name || 'employee') + '.');
+      const loans = (s.loans || []).map(l => l.id === s.editLoanId ? { ...l, empId: d.empId, type: d.type || 'loan', monthly, paid, total: paid + left } : l);
+      this._persistLoans(loans);
+      return { loans, loanModalOpen: false, loanEmpPickerOpen: false, editLoanId: null };
+    }
     const loan = { id: 'ln' + Date.now(), empId: d.empId, type: d.type || 'loan', monthly, paid, total: paid + left };
-    const e = EMPLOYEES_BASE.find(x => x.id === d.empId) || {};
     this.showToast((loan.type === 'loan' ? 'Loan' : 'Salary advance') + ' added for ' + (e.name || 'employee') + '.');
-    return { loans: [...(s.loans || []), loan], loanModalOpen: false, loanEmpPickerOpen: false };
+    const loans = [...(s.loans || []), loan];
+    this._persistLoans(loans);
+    return { loans, loanModalOpen: false, loanEmpPickerOpen: false };
   });
 
   // navigation
@@ -2565,16 +2663,7 @@ class Component extends DCLogic {
     s.employees.forEach(e => { calcOf[e.id] = (window.AppState && window.AppState.calcPay) ? window.AppState.calcPay(e.id, periodId) : { basic: 0, taxAllow: 0, nonTax: 0, overtime: 0, gross: 0, taxableIncome: 0, ssnit: 0, paye: 0, otTax: 0, staffLoan: 0, salaryAdvance: 0, totalDeduction: 0, net: 0 }; });
     // Fold UI-added loans & advances (from the Loans and advances tab) into each employee's deductions for this run.
     const r2 = (n) => Math.round((Number(n) || 0) * 100) / 100;
-    (s.loans || []).forEach(l => {
-      const c = calcOf[l.empId];
-      if (!c) return;
-      const m = Number(l.monthly) || 0;
-      if (m <= 0) return;
-      if (l.type === 'advance') c.salaryAdvance = r2(c.salaryAdvance + m);
-      else c.staffLoan = r2(c.staffLoan + m);
-      c.totalDeduction = r2(c.totalDeduction + m);
-      c.net = r2(c.net - m);
-    });
+    // Loans & advances are folded into pay inside AppState.calcPay (single source) — no extra fold here.
     const adjNet = (e) => (calcOf[e.id] || {}).net || 0;
     const sumField = (arr, f) => arr.reduce((a, e) => a + ((calcOf[e.id] || {})[f] || 0), 0);
     const num = (n) => n ? Number(n).toLocaleString('en-GH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '\u2014';
@@ -2827,8 +2916,12 @@ class Component extends DCLogic {
         underline: active ? 'var(--brand-600)' : 'transparent' };
     });
     const skippedSet = new Set(s.skippedTasks);
+    const hasAdds = !!(window.AppState && window.AppState.getCompanyAdditions && window.AppState.getCompanyAdditions().length);
+    const hasDeds = !!(window.AppState && window.AppState.getCompanyDeductions && window.AppState.getCompanyDeductions().length);
+    const taskDataDone = (id) => (id === 'additions' && hasAdds) || (id === 'deductions' && hasDeds);
     const setupTasksView = SETUP_TASKS.map(t => {
-      const skipped = skippedSet.has(t.id);
+      const done = skippedSet.has(t.id) || taskDataDone(t.id);
+      const skipped = done;
       return { id: t.id, title: t.title, sub: t.sub, href: t.href,
         skipped, active: !skipped, onSkip: this.skipTask(t.id),
         onStart: (this.state.coachStep && t.id === 'additions')
@@ -2865,10 +2958,10 @@ class Component extends DCLogic {
     // loans & advances
     const ld = s.loanDraft || {};
     const ldType = ld.type || 'loan';
-    const ldEmp = EMPLOYEES_BASE.find(x => x.id === ld.empId);
+    const ldEmp = rosterReg().find(x => x.id === ld.empId);
     const loanLeftN = Number(ld.left || 0), loanPaidN = Number(ld.paid || 0);
     const loansList = (s.loans || []).map(l => {
-      const e = EMPLOYEES_BASE.find(x => x.id === l.empId) || { name: 'Employee', initials: '?' };
+      const e = rosterReg().find(x => x.id === l.empId) || { name: 'Employee', initials: '?' };
       const isLoan = l.type === 'loan';
       const leftAmt = Math.max(0, Number(l.total || 0) - Number(l.paid || 0));
       return {
@@ -2877,11 +2970,13 @@ class Component extends DCLogic {
         typeBg: isLoan ? 'var(--brand-50)' : 'var(--warning-50)',
         typeColor: isLoan ? 'var(--brand-700)' : 'var(--warning-700)',
         monthlyText: fmt(l.monthly), totalText: fmt(l.total), leftText: fmt(leftAmt),
-        onRemove: this.removeLoan(l.id),
+        id: l.id, menuOpen: s.loanMenuOpen === l.id,
+        onMenu: this.toggleLoanMenu(l.id), onCloseMenu: this.closeLoanMenu,
+        onEdit: this.openLoanEdit(l), onRemove: this.removeLoan(l.id), onOpen: this.openLoanEdit(l),
       };
     });
     const loanEmpQuery = (s.loanEmpSearch || '').trim().toLowerCase();
-    const loanEmpPickable = EMPLOYEES_BASE
+    const loanEmpPickable = rosterReg()
       .filter(e => !loanEmpQuery || (e.name + ' ' + e.role).toLowerCase().includes(loanEmpQuery))
       .map(e => ({
         id: e.id, name: e.name, role: e.role, init: e.initials || initials(e.name),
@@ -2889,8 +2984,8 @@ class Component extends DCLogic {
         onSelect: this.pickLoanEmp(e.id),
       }));
 
-    // progress — skipping a task counts as done
-    const doneCount = skippedSet.size;
+    // progress — a task counts as done when skipped OR its data exists
+    const doneCount = SETUP_TASKS.filter(t => skippedSet.has(t.id) || taskDataDone(t.id)).length;
     const totalTasks = SETUP_TASKS.length;
     const progressPct = Math.round((doneCount / totalTasks) * 100) + '%';
     const progressLabel = doneCount + '/' + totalTasks + ' Done';
@@ -2953,12 +3048,20 @@ class Component extends DCLogic {
     const companyAdditions = rawCompanyAdds.map(ca => {
       const tag = CA_TAG[ca.type] || CA_TAG.cash;
       return {
+        id: ca.id,
         name: ca.name, typeLabel: ca.typeLabel || 'Addition',
         tagColor: tag.color, tagBg: tag.bg,
         valueText: ca.valueText || '\u2014',
-        applyLabel: ca.applyLabel || 'All employees',
-        meta: (ca.freq ? (ca.freq + ' \u00b7 ') : '') + (ca.taxable ? 'Taxable' : 'Not taxable'),
-        onRemove: () => { if (window.AppState && window.AppState.removeCompanyAddition) window.AppState.removeCompanyAddition(ca.id); this.forceUpdate(); },
+        goesTo: ca.applyLabel || 'All employees',
+        metaLine: [ca.typeLabel || 'Addition', ca.valueText, ca.freq].filter(Boolean).join('  \u00b7  '),
+        metaRest: [ca.valueText, ca.freq].filter(Boolean).join('  \u00b7  '),
+        freqText: ca.freq || '',
+        menuOpen: s.caMenuOpen === ca.id,
+        onMenu: (ev) => { if (ev && ev.stopPropagation) ev.stopPropagation(); this.setState(st => ({ caMenuOpen: st.caMenuOpen === ca.id ? null : ca.id })); },
+        onCloseMenu: (ev) => { if (ev && ev.stopPropagation) ev.stopPropagation(); this.setState({ caMenuOpen: null }); },
+        onRemove: (ev) => { if (ev && ev.stopPropagation) ev.stopPropagation(); this.setState({ caMenuOpen: null }); if (window.AppState && window.AppState.removeCompanyAddition) window.AppState.removeCompanyAddition(ca.id); this.forceUpdate(); },
+        onEdit: () => { window.location.href = 'Add Pay Addition.dc.html?edit=' + encodeURIComponent(ca.id); },
+        onAddEmployee: (ev) => { if (ev && ev.stopPropagation) ev.stopPropagation(); window.location.href = 'Add Pay Addition.dc.html?edit=' + encodeURIComponent(ca.id) + '&section=apply'; },
       };
     });
     const hasCompanyAdditions = companyAdditions.length > 0;
@@ -2968,6 +3071,26 @@ class Component extends DCLogic {
       tagBg: t.kind === 'pretax' ? 'var(--teal-100)' : 'var(--orange-100)',
       onUse: () => { window.location.href = 'Add Pay Deduction.dc.html'; },
     }));
+    const CD_TAG = { pretax: { color: 'var(--teal-700)', bg: 'var(--teal-100)' }, posttax: { color: 'var(--orange-700)', bg: 'var(--orange-100)' } };
+    const rawCompanyDeds = (window.AppState && window.AppState.getCompanyDeductions) ? window.AppState.getCompanyDeductions() : [];
+    const companyDeductions = rawCompanyDeds.map(cd => {
+      const tag = CD_TAG[cd.taxMode] || CD_TAG.posttax;
+      const n = (cd.count != null) ? cd.count : (cd.empIds || []).length;
+      return {
+        id: cd.id, name: cd.name, typeLabel: cd.typeLabel || (cd.taxMode === 'pretax' ? 'Pre-tax deduction' : 'Post-tax deduction'),
+        tagColor: tag.color, tagBg: tag.bg,
+        valueText: cd.valueText || (cd.valueMode === 'pct' ? ((cd.value || 0) + '% of basic') : ('GH\u00a2 ' + (cd.value || 0))),
+        freqText: cd.freq || '',
+        goesTo: cd.scope === 'all' ? 'All employees' : (n + ' employee' + (n === 1 ? '' : 's')),
+        menuOpen: s.cdMenuOpen === cd.id,
+        onMenu: (ev) => { if (ev && ev.stopPropagation) ev.stopPropagation(); this.setState(st => ({ cdMenuOpen: st.cdMenuOpen === cd.id ? null : cd.id })); },
+        onCloseMenu: (ev) => { if (ev && ev.stopPropagation) ev.stopPropagation(); this.setState({ cdMenuOpen: null }); },
+        onRemove: (ev) => { if (ev && ev.stopPropagation) ev.stopPropagation(); this.setState({ cdMenuOpen: null }); if (window.AppState && window.AppState.removeCompanyDeduction) window.AppState.removeCompanyDeduction(cd.id); this.forceUpdate(); },
+        onEdit: () => { window.location.href = 'Add Pay Deduction.dc.html?edit=' + encodeURIComponent(cd.id); },
+        onAddEmployee: (ev) => { if (ev && ev.stopPropagation) ev.stopPropagation(); window.location.href = 'Add Pay Deduction.dc.html?edit=' + encodeURIComponent(cd.id) + '&section=apply'; },
+      };
+    });
+    const hasCompanyDeductions = companyDeductions.length > 0;
 
     // walkthrough coach
     const _cr = s.coachRect;
@@ -3107,6 +3230,7 @@ class Component extends DCLogic {
       permModalDesc: isPermEdit ? 'Update what this teammate can do across payroll.' : 'Choose a teammate and pick what they can do across payroll.',
       additionTemplates, deductionTemplates,
       companyAdditions, hasCompanyAdditions,
+      companyDeductions, hasCompanyDeductions,
       setupProgress: progressPct, setupProgressLabel: progressLabel,
       emptyTabTitle: emptyTab.title, emptyTabBody: emptyTab.body, emptyTabCta: emptyTab.cta, addCtaTour,
 
