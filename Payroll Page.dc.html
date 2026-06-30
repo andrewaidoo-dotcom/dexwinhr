@@ -20,6 +20,7 @@
   @keyframes spin { to { transform: rotate(360deg); } }
   @keyframes barFill { from { width: 0%; } to { width: var(--target, 100%); } }
   @keyframes toastIn { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  @keyframes drawerIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
 </style>
 </helmet>
 <div style="display:flex;min-height:100vh;background:var(--bg-secondary);font-family:var(--font-body);color:var(--fg-primary);">
@@ -53,6 +54,9 @@
           <span innerHTML="{{ toastIcon }}" style="display:inline-flex;flex-shrink:0;"></span>
           {{ toast }}
         </div>
+        <sc-if value="{{ toastAction }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ runToastAction }}" style="flex-shrink:0;padding:7px 14px;font-family:var(--font-body);font-size:13.5px;font-weight:800;color:#fff;background:rgba(255,255,255,0.16);border:1px solid rgba(255,255,255,0.4);border-radius:999px;cursor:pointer;transition:background 120ms ease;" style-hover="background:rgba(255,255,255,0.3);">{{ toastAction }}</button>
+        </sc-if>
         <span role="button" onClick="{{ dismissToast }}" style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,0.85);flex-shrink:0;">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg>
         </span>
@@ -80,10 +84,22 @@
         <sc-if value="{{ isReview }}" hint-placeholder-val="{{ false }}">
         <div style="flex-shrink:0;display:flex;align-items:center;gap:12px;">
           <sc-if value="{{ normalReview }}" hint-placeholder-val="{{ true }}">
-            <button onClick="{{ saveExitDraft }}" style="display:inline-flex;align-items:center;gap:9px;padding:12px 24px;font-family:var(--font-body);font-weight:700;font-size:15px;color:var(--fg-secondary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
-              Save &amp; exit
-            </button>
+            <div style="position:relative;">
+              <button onClick="{{ toggleDl }}" style="display:inline-flex;align-items:center;gap:9px;padding:12px 24px;font-family:var(--font-body);font-weight:700;font-size:15px;color:var(--fg-secondary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                Download
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:{{ dlChevron }};transition:transform 160ms ease;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </button>
+              <sc-if value="{{ dlOpen }}" hint-placeholder-val="{{ false }}">
+                <div onClick="{{ closeDl }}" style="position:fixed;inset:0;z-index:25;"></div>
+                <div style="position:absolute;z-index:26;top:calc(100% + 8px);right:0;min-width:220px;background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:14px;box-shadow:var(--shadow-lg);overflow:hidden;">
+                  <div style="padding:10px 14px 6px;font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--fg-quaternary);">Statutory reports</div>
+                  <button onClick="{{ dlPaye }}" style="display:flex;align-items:center;gap:11px;width:100%;box-sizing:border-box;padding:11px 14px;background:transparent;border:none;cursor:pointer;font-family:var(--font-body);font-size:14.5px;font-weight:600;color:var(--fg-secondary);text-align:left;transition:background 120ms ease;" style-hover="background:var(--bg-secondary);"><span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:var(--brand-50);color:var(--brand-700);font-size:11px;font-weight:800;">P</span>PAYE Schedule</button>
+                  <button onClick="{{ dlSsnit }}" style="display:flex;align-items:center;gap:11px;width:100%;box-sizing:border-box;padding:11px 14px;background:transparent;border:none;cursor:pointer;font-family:var(--font-body);font-size:14.5px;font-weight:600;color:var(--fg-secondary);text-align:left;transition:background 120ms ease;" style-hover="background:var(--bg-secondary);"><span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:#EEF4FF;color:#3538CD;font-size:11px;font-weight:800;">S</span>SSNIT Schedule</button>
+                  <button onClick="{{ dlWht }}" style="display:flex;align-items:center;gap:11px;width:100%;box-sizing:border-box;padding:11px 14px;background:transparent;border:none;cursor:pointer;font-family:var(--font-body);font-size:14.5px;font-weight:600;color:var(--fg-secondary);text-align:left;transition:background 120ms ease;" style-hover="background:var(--bg-secondary);"><span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:#FEF6EE;color:#B93815;font-size:11px;font-weight:800;">W</span>WHT Schedule</button>
+                </div>
+              </sc-if>
+            </div>
             <button onClick="{{ reviewAction }}" style="display:inline-flex;align-items:center;gap:9px;padding:12px 24px;font-family:var(--font-body);font-weight:700;font-size:15px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);cursor:pointer;box-shadow:var(--shadow-btn-primary);transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">
               <span innerHTML="{{ reviewIcon }}" style="display:inline-flex;"></span>
               {{ reviewActionLabel }}
@@ -826,41 +842,42 @@
             </div>
           </div>
 
+          <sc-if value="{{ bulkBarOpen }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:var(--brand-50);border:1px solid var(--brand-200);border-radius:14px;padding:11px 14px 11px 18px;margin-bottom:14px;">
+              <div style="display:flex;align-items:center;gap:13px;min-width:0;">
+                <span style="display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;padding:0 9px;border-radius:999px;background:var(--bg-brand-solid);color:#fff;font-size:13px;font-weight:800;font-variant-numeric:tabular-nums;">{{ selCount }}</span>
+                <span style="font-size:14.5px;font-weight:600;color:var(--brand-900);">selected &middot; apply a one-off to the <strong style="font-weight:800;">{{ bulkPeriodLabel }}</strong> run</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;">
+                <button onClick="{{ openBulkAdd }}" style="display:inline-flex;align-items:center;gap:7px;padding:9px 16px;font-family:var(--font-body);font-weight:700;font-size:14px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>Add addition</button>
+                <button onClick="{{ openBulkDed }}" style="display:inline-flex;align-items:center;gap:7px;padding:9px 16px;font-family:var(--font-body);font-weight:700;font-size:14px;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>Add deduction</button>
+                <button onClick="{{ clearSel }}" style="display:inline-flex;align-items:center;padding:9px 14px;font-family:var(--font-body);font-weight:700;font-size:14px;color:var(--brand-700);background:transparent;border:none;border-radius:var(--radius-full);cursor:pointer;transition:background 120ms ease;" style-hover="background:rgba(1,143,88,0.08);">Clear</button>
+              </div>
+            </div>
+          </sc-if>
           <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-xs);overflow:hidden;margin-bottom:22px;">
             <!-- header bar -->
             <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 22px;border-bottom:1px solid var(--border-secondary);flex-wrap:wrap;">
-              <div style="display:flex;align-items:center;gap:10px;min-width:0;">
-                <h3 style="font-family:var(--font-display);font-size:17px;font-weight:800;letter-spacing:-0.01em;margin:0;color:var(--fg-primary);">{{ registerTitle }}</h3>
-                <span style="font-size:12px;font-weight:700;color:var(--fg-tertiary);background:var(--bg-secondary);border:1px solid var(--border-secondary);border-radius:999px;padding:2px 10px;font-variant-numeric:tabular-nums;">{{ employeeCount }}</span>
+              <div style="display:flex;align-items:center;gap:9px;padding:9px 14px;border:1px solid var(--border-primary);border-radius:var(--radius-full);background:var(--bg-primary);box-shadow:var(--shadow-xs);flex:1;min-width:240px;max-width:440px;color:var(--fg-quaternary);">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input value="{{ empSearch }}" onInput="{{ onEmpSearch }}" placeholder="Search {{ employeeCount }} employees" style="flex:1;min-width:0;border:none;outline:none;background:transparent;font-family:var(--font-body);font-size:14px;color:var(--fg-primary);">
               </div>
               <div style="display:flex;align-items:center;gap:12px;">
-                <div style="display:flex;align-items:center;gap:9px;padding:9px 14px;border:1px solid var(--border-primary);border-radius:var(--radius-full);background:var(--bg-primary);box-shadow:var(--shadow-xs);min-width:240px;color:var(--fg-quaternary);">
-                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                  <input value="{{ empSearch }}" onInput="{{ onEmpSearch }}" placeholder="Search employees" style="flex:1;min-width:0;border:none;outline:none;background:transparent;font-family:var(--font-body);font-size:14px;color:var(--fg-primary);">
-                </div>
-                <div style="position:relative;">
-                  <button onClick="{{ toggleDl }}" style="display:inline-flex;align-items:center;gap:9px;padding:10px 18px;font-family:var(--font-body);font-weight:700;font-size:14px;color:var(--fg-secondary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                    Download
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:{{ dlChevron }};transition:transform 160ms ease;"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                  </button>
-                  <sc-if value="{{ dlOpen }}" hint-placeholder-val="{{ false }}">
-                    <div onClick="{{ closeDl }}" style="position:fixed;inset:0;z-index:25;"></div>
-                    <div style="position:absolute;z-index:26;top:calc(100% + 8px);right:0;min-width:220px;background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:14px;box-shadow:var(--shadow-lg);overflow:hidden;">
-                      <div style="padding:10px 14px 6px;font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--fg-quaternary);">Statutory reports</div>
-                      <button onClick="{{ dlPaye }}" style="display:flex;align-items:center;gap:11px;width:100%;box-sizing:border-box;padding:11px 14px;background:transparent;border:none;cursor:pointer;font-family:var(--font-body);font-size:14.5px;font-weight:600;color:var(--fg-secondary);text-align:left;transition:background 120ms ease;" style-hover="background:var(--bg-secondary);"><span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:var(--brand-50);color:var(--brand-700);font-size:11px;font-weight:800;">P</span>PAYE Schedule</button>
-                      <button onClick="{{ dlSsnit }}" style="display:flex;align-items:center;gap:11px;width:100%;box-sizing:border-box;padding:11px 14px;background:transparent;border:none;cursor:pointer;font-family:var(--font-body);font-size:14.5px;font-weight:600;color:var(--fg-secondary);text-align:left;transition:background 120ms ease;" style-hover="background:var(--bg-secondary);"><span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:#EEF4FF;color:#3538CD;font-size:11px;font-weight:800;">S</span>SSNIT Schedule</button>
-                      <button onClick="{{ dlWht }}" style="display:flex;align-items:center;gap:11px;width:100%;box-sizing:border-box;padding:11px 14px;background:transparent;border:none;cursor:pointer;font-family:var(--font-body);font-size:14.5px;font-weight:600;color:var(--fg-secondary);text-align:left;transition:background 120ms ease;" style-hover="background:var(--bg-secondary);"><span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:#FEF6EE;color:#B93815;font-size:11px;font-weight:800;">W</span>WHT Schedule</button>
-                    </div>
-                  </sc-if>
-                </div>
+                <button onClick="{{ openFilter }}" style="display:inline-flex;align-items:center;gap:9px;padding:10px 18px;font-family:var(--font-body);font-weight:700;font-size:14px;color:{{ filterBtnColor }};background:{{ filterBtnBg }};border:1px solid {{ filterBtnBorder }};border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+                  Filter
+                  <sc-if value="{{ hasFilters }}" hint-placeholder-val="{{ false }}"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--bg-brand-solid);color:#fff;font-size:11px;font-weight:800;font-variant-numeric:tabular-nums;">{{ activeFilterCount }}</span></sc-if>
+                </button>
               </div>
             </div>
             <!-- scrollable register -->
-            <div style="overflow:auto;max-height:440px;">
-              <div style="min-width:1516px;">
-                <div style="display:grid;grid-template-columns:190px repeat(13,94px) 104px;align-items:stretch;padding:0;background:var(--bg-secondary);border-bottom:1px solid var(--border-secondary);position:sticky;top:0;z-index:6;font-size:11px;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;color:var(--fg-quaternary);">
-                  <span style="padding:13px 22px;display:flex;align-items:center;position:sticky;left:0;background:var(--bg-secondary);z-index:4;box-shadow:10px 0 10px -8px rgba(16,24,40,0.14);">Employee</span>
+            <div id="reg-hscroll-top" onScroll="{{ onRegTopScroll }}" style="overflow-x:auto;overflow-y:hidden;border-bottom:1px solid var(--border-secondary);background:var(--bg-secondary);">
+              <div style="width:1610px;height:1px;"></div>
+            </div>
+            <div id="reg-hscroll-body" onScroll="{{ onRegBodyScroll }}" style="overflow:auto;max-height:840px;">
+              <div style="min-width:1610px;">
+                <div style="display:grid;grid-template-columns:190px repeat(14,94px) 104px;align-items:stretch;padding:0;background:var(--bg-secondary);border-bottom:1px solid var(--border-secondary);position:sticky;top:0;z-index:6;font-size:11px;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;color:var(--fg-quaternary);">
+                  <span style="padding:13px 22px;display:flex;align-items:center;gap:12px;position:sticky;left:0;background:var(--bg-secondary);z-index:4;box-shadow:10px 0 10px -8px rgba(16,24,40,0.14);"><span role="button" aria-label="Select all" onClick="{{ toggleSelAll }}" style="flex-shrink:0;width:18px;height:18px;border-radius:5px;border:1.5px solid {{ allCbBorder }};background:{{ allCbBg }};display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:all 120ms ease;"><sc-if value="{{ allSelected }}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></sc-if><sc-if value="{{ someSelected }}" hint-placeholder-val="{{ false }}"><span style="width:9px;height:2.5px;border-radius:2px;background:var(--bg-brand-solid);"></span></sc-if></span>Employee</span>
                   <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-start;">Basic</span>
                   <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-start;">Tax. allow</span>
                   <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-start;">Non-tax</span>
@@ -869,6 +886,7 @@
                   <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-start;">Taxable inc.</span>
                   <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-start;">SSNIT</span>
                   <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-start;">PAYE</span>
+                  <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-start;">WHT</span>
                   <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-start;">OT tax</span>
                   <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-start;">Loan</span>
                   <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-start;">Advance</span>
@@ -877,8 +895,9 @@
                   <span style="padding:13px 18px;display:flex;align-items:center;justify-content:flex-end;position:sticky;right:0;background:var(--bg-secondary);z-index:3;border-left:1px solid var(--border-secondary);box-shadow:-10px 0 10px -8px rgba(16,24,40,0.14);">Action</span>
                 </div>
                 <sc-for list="{{ employeesView }}" as="e" hint-placeholder-count="6">
-                  <div onClick="{{ e.onOpen }}" title="View this employee’s payroll" style="display:grid;grid-template-columns:190px repeat(13,94px) 104px;align-items:stretch;padding:0;border-bottom:1px solid var(--border-tertiary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-secondary);">
+                  <div onClick="{{ e.onOpen }}" title="View this employee’s payroll" style="display:grid;grid-template-columns:190px repeat(14,94px) 104px;align-items:stretch;padding:0;border-bottom:1px solid var(--border-tertiary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-secondary);">
                     <div style="display:flex;align-items:center;gap:11px;min-width:0;padding:14px 22px;position:sticky;left:0;background:#fff;z-index:2;box-shadow:10px 0 10px -8px rgba(16,24,40,0.08);">
+                      <span role="button" aria-label="Select employee" onClick="{{ e.onToggle }}" style="flex-shrink:0;width:18px;height:18px;border-radius:5px;border:1.5px solid {{ e.cbBorder }};background:{{ e.cbBg }};display:inline-flex;align-items:center;justify-content:center;cursor:{{ e.cbCursor }};transition:all 120ms ease;"><sc-if value="{{ e.selected }}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></sc-if></span>
                       <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:999px;background:var(--brand-50);color:var(--brand-700);font-weight:700;font-size:13px;">{{ e.initials }}</span>
                       <div style="min-width:0;">
                         <div style="display:flex;align-items:center;gap:6px;font-size:14px;font-weight:700;color:var(--fg-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ e.name }}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
@@ -893,6 +912,7 @@
                     <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-size:14px;color:var(--fg-tertiary);font-variant-numeric:tabular-nums;">{{ e.taxableIncome }}</span>
                     <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-size:14px;color:var(--error-700);font-variant-numeric:tabular-nums;">{{ e.ssnit }}</span>
                     <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-size:14px;color:var(--error-700);font-variant-numeric:tabular-nums;">{{ e.paye }}</span>
+                    <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-size:14px;color:var(--error-700);font-variant-numeric:tabular-nums;">{{ e.wht }}</span>
                     <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-size:14px;color:var(--error-700);font-variant-numeric:tabular-nums;">{{ e.otTax }}</span>
                     <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-size:14px;color:var(--error-700);font-variant-numeric:tabular-nums;">{{ e.staffLoan }}</span>
                     <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-size:14px;color:var(--error-700);font-variant-numeric:tabular-nums;">{{ e.salaryAdvance }}</span>
@@ -908,7 +928,7 @@
                 <sc-if value="{{ employeesEmpty }}" hint-placeholder-val="{{ false }}">
                   <div style="padding:40px 22px;text-align:center;font-size:14.5px;color:var(--fg-tertiary);">No employees match “{{ empSearch }}”.</div>
                 </sc-if>
-                <div style="display:grid;grid-template-columns:190px repeat(13,94px) 104px;align-items:stretch;padding:0;background:var(--bg-secondary);font-size:13px;font-weight:700;color:var(--fg-primary);position:sticky;bottom:0;z-index:5;border-top:1px solid var(--border-secondary);box-shadow:0 -10px 12px -8px rgba(16,24,40,0.12);">
+                <div style="display:grid;grid-template-columns:190px repeat(14,94px) 104px;align-items:stretch;padding:0;background:var(--bg-secondary);font-size:13px;font-weight:700;color:var(--fg-primary);position:sticky;bottom:0;z-index:5;border-top:1px solid var(--border-secondary);box-shadow:0 -10px 12px -8px rgba(16,24,40,0.12);">
                   <span style="padding:14px 22px;display:flex;align-items:center;position:sticky;left:0;background:var(--bg-secondary);z-index:2;box-shadow:10px 0 10px -8px rgba(16,24,40,0.14);">Totals</span>
                   <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-variant-numeric:tabular-nums;">{{ regTotals.basic }}</span>
                   <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-variant-numeric:tabular-nums;">{{ regTotals.taxAllow }}</span>
@@ -918,6 +938,7 @@
                   <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-variant-numeric:tabular-nums;">{{ regTotals.taxableIncome }}</span>
                   <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-variant-numeric:tabular-nums;">{{ regTotals.ssnit }}</span>
                   <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-variant-numeric:tabular-nums;">{{ regTotals.paye }}</span>
+                  <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-variant-numeric:tabular-nums;">{{ regTotals.wht }}</span>
                   <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-variant-numeric:tabular-nums;">{{ regTotals.otTax }}</span>
                   <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-variant-numeric:tabular-nums;">{{ regTotals.staffLoan }}</span>
                   <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-variant-numeric:tabular-nums;">{{ regTotals.salaryAdvance }}</span>
@@ -1571,23 +1592,155 @@
   </div>
 </sc-if>
 
-</x-dc>
+
+<!-- BULK PAY ITEM MODAL -->
+<sc-if value="{{ bulkOpen }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closeBulk }}" style="position:fixed;inset:0;z-index:130;background:rgba(10,13,18,0.5);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:32px 24px;box-sizing:border-box;font-family:var(--font-body);">
+    <div onClick="{{ bulkStop }}" style="width:100%;max-width:560px;background:#fff;border-radius:20px;box-shadow:var(--shadow-2xl);overflow:hidden;display:flex;flex-direction:column;max-height:calc(100vh - 64px);">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:24px 28px 6px;flex-shrink:0;">
+        <div style="min-width:0;">
+          <h2 style="font-family:var(--font-display);font-size:21px;font-weight:800;letter-spacing:-0.02em;margin:0 0 4px;">{{ bulkTitle }}</h2>
+          <p style="font-size:14px;line-height:21px;color:var(--fg-tertiary);margin:0;">{{ bulkSubtitle }}</p>
+        </div>
+        <span role="button" onClick="{{ closeBulk }}" aria-label="Close" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;cursor:pointer;color:var(--fg-quaternary);transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></span>
+      </div>
+      <div style="padding:14px 28px 8px;overflow:auto;">
+        <label style="display:block;font-size:13px;font-weight:600;color:var(--fg-secondary);margin-bottom:8px;">{{ bulkPickerLabel }}</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;">
+          <sc-for list="{{ bulkOptions }}" as="k" hint-placeholder-count="4">
+            <div onClick="{{ k.onSelect }}" style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border:1.5px solid {{ k.b }};background:{{ k.bg }};border-radius:11px;cursor:pointer;transition:border-color 120ms ease,background 120ms ease;">
+              <span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;border:1.5px solid {{ k.db }};background:{{ k.dbg }};flex-shrink:0;margin-top:1px;"><sc-if value="{{ k.on }}" hint-placeholder-val="{{ false }}"><span style="width:6px;height:6px;border-radius:50%;background:#fff;"></span></sc-if></span>
+              <span style="min-width:0;"><span style="display:block;font-size:14.5px;font-weight:700;color:var(--fg-primary);">{{ k.label }}</span><sc-if value="{{ k.hasSub }}" hint-placeholder-val="{{ false }}"><span style="display:block;font-size:12.5px;line-height:17px;color:var(--fg-tertiary);margin-top:1px;">{{ k.sub }}</span></sc-if></span>
+            </div>
+          </sc-for>
+        </div>
+        <label style="display:block;font-size:13px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Label</label>
+        <input value="{{ bulkName }}" onInput="{{ onBulkName }}" placeholder="{{ bulkNamePlaceholder }}" style="width:100%;box-sizing:border-box;padding:12px 15px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:#fff;border:1px solid var(--border-primary);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);outline:none;margin-bottom:18px;" style-focus="border-color:var(--brand-500);box-shadow:var(--ring-brand);">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 15px;background:var(--bg-secondary);border:1px solid var(--border-secondary);border-radius:12px;margin-bottom:16px;">
+          <div style="min-width:0;"><span style="display:block;font-size:14px;font-weight:700;color:var(--fg-primary);">Different amount per person</span><span style="display:block;font-size:12.5px;line-height:17px;color:var(--fg-tertiary);margin-top:1px;">{{ bulkPerHint }}</span></div>
+          <span role="button" onClick="{{ toggleBulkPer }}" style="flex-shrink:0;width:44px;height:26px;border-radius:999px;background:{{ bulkPerTrackBg }};position:relative;cursor:pointer;transition:background 160ms ease;"><span style="position:absolute;top:3px;left:{{ bulkPerKnobLeft }};width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:var(--shadow-sm);transition:left 160ms ease;"></span></span>
+        </div>
+        <sc-if value="{{ bulkFlat }}" hint-placeholder-val="{{ true }}">
+          <label style="display:block;font-size:13px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Amount (each)</label>
+          <div style="display:flex;align-items:center;border:1px solid var(--border-primary);border-radius:var(--radius-md);overflow:hidden;box-shadow:var(--shadow-xs);">
+            <span style="padding:12px 15px;background:var(--bg-secondary);color:var(--fg-tertiary);font-size:15px;border-right:1px solid var(--border-primary);">GH&#8373;</span>
+            <input value="{{ bulkAmount }}" onInput="{{ onBulkAmount }}" inputmode="decimal" placeholder="0.00" style="flex:1;min-width:0;padding:12px 15px;border:none;outline:none;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:#fff;font-variant-numeric:tabular-nums;">
+          </div>
+        </sc-if>
+        <sc-if value="{{ bulkPer }}" hint-placeholder-val="{{ false }}">
+          <label style="display:block;font-size:13px;font-weight:600;color:var(--fg-secondary);margin-bottom:7px;">Amount per employee</label>
+          <div style="border:1px solid var(--border-secondary);border-radius:12px;overflow:hidden;">
+            <sc-for list="{{ bulkSelEmps }}" as="m" hint-placeholder-count="3">
+              <div style="display:flex;align-items:center;gap:12px;padding:9px 14px;border-bottom:1px solid var(--border-tertiary);">
+                <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:999px;background:var(--brand-50);color:var(--brand-700);font-weight:700;font-size:12px;">{{ m.initials }}</span>
+                <span style="flex:1;min-width:0;font-size:14px;font-weight:700;color:var(--fg-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ m.name }}</span>
+                <div style="flex-shrink:0;display:flex;align-items:center;width:160px;border:1px solid var(--border-primary);border-radius:var(--radius-md);overflow:hidden;">
+                  <span style="padding:9px 11px;background:var(--bg-secondary);color:var(--fg-tertiary);font-size:13.5px;border-right:1px solid var(--border-primary);">GH&#8373;</span>
+                  <input value="{{ m.amount }}" onInput="{{ m.onAmt }}" inputmode="decimal" placeholder="0.00" style="flex:1;min-width:0;padding:9px 11px;border:none;outline:none;font-family:var(--font-body);font-size:14px;color:var(--fg-primary);background:#fff;font-variant-numeric:tabular-nums;text-align:right;">
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 28px 22px;border-top:1px solid var(--border-secondary);flex-shrink:0;">
+        <span style="font-size:13.5px;color:var(--fg-tertiary);">Total: <strong style="font-weight:800;color:var(--fg-primary);font-variant-numeric:tabular-nums;">{{ bulkTotalDisplay }}</strong></span>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <button onClick="{{ closeBulk }}" style="padding:12px 22px;font-family:var(--font-body);font-weight:700;font-size:15px;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;">Cancel</button>
+          <button onClick="{{ saveBulk }}" style="display:inline-flex;align-items:center;gap:9px;padding:12px 24px;font-family:var(--font-body);font-weight:700;font-size:15px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;opacity:{{ bulkOpacity }};transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">{{ bulkCtaLabel }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</sc-if>
+<!-- FILTER DRAWER -->
+<sc-if value="{{ filterOpen }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closeFilter }}" style="position:fixed;inset:0;z-index:140;background:rgba(10,13,18,0.5);backdrop-filter:blur(3px);font-family:var(--font-body);">
+    <div onClick="{{ bulkStop }}" style="position:absolute;top:0;right:0;bottom:0;width:392px;max-width:calc(100vw - 32px);background:#fff;box-shadow:var(--shadow-2xl);display:flex;flex-direction:column;animation:drawerIn 260ms cubic-bezier(0.16,1,0.3,1);">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:22px 24px;border-bottom:1px solid var(--border-secondary);flex-shrink:0;">
+        <div style="min-width:0;">
+          <h2 style="font-family:var(--font-display);font-size:19px;font-weight:800;letter-spacing:-0.02em;margin:0 0 3px;">Filter employees</h2>
+          <p style="font-size:13.5px;line-height:19px;color:var(--fg-tertiary);margin:0;">{{ filterResultLabel }}</p>
+        </div>
+        <span role="button" onClick="{{ closeFilter }}" aria-label="Close" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;cursor:pointer;color:var(--fg-quaternary);transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></span>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:4px 24px 16px;">
+        <sc-for list="{{ filterView }}" as="g" hint-placeholder-count="3">
+          <div style="border-bottom:1px solid var(--border-tertiary);">
+            <div onClick="{{ g.onToggleSection }}" role="button" aria-expanded="{{ g.expanded }}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px 2px;cursor:pointer;user-select:none;">
+              <span style="display:inline-flex;align-items:center;gap:9px;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--fg-quaternary)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="transform:{{ g.chevron }};transition:transform 180ms ease;flex-shrink:0;"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                <span style="font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--fg-quaternary);">{{ g.label }}</span>
+              </span>
+              <sc-if value="{{ g.hasActive }}" hint-placeholder-val="{{ false }}"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 7px;border-radius:999px;background:var(--bg-brand-solid);color:#fff;font-size:11px;font-weight:800;font-variant-numeric:tabular-nums;">{{ g.activeCount }}</span></sc-if>
+            </div>
+            <sc-if value="{{ g.expanded }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;flex-direction:column;gap:3px;padding:0 0 14px;">
+                <sc-for list="{{ g.options }}" as="o" hint-placeholder-count="4">
+                  <div onClick="{{ o.onToggle }}" style="display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:10px;cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-secondary);">
+                    <span style="flex-shrink:0;width:18px;height:18px;border-radius:5px;border:1.5px solid {{ o.cbBorder }};background:{{ o.cbBg }};display:inline-flex;align-items:center;justify-content:center;transition:all 120ms ease;"><sc-if value="{{ o.on }}" hint-placeholder-val="{{ false }}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></sc-if></span>
+                    <span style="flex:1;min-width:0;font-size:14.5px;font-weight:600;color:var(--fg-primary);">{{ o.label }}</span>
+                    <span style="flex-shrink:0;font-size:12.5px;font-weight:700;color:var(--fg-quaternary);background:var(--bg-secondary);border:1px solid var(--border-secondary);border-radius:999px;padding:1px 9px;font-variant-numeric:tabular-nums;">{{ o.count }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 24px;border-top:1px solid var(--border-secondary);flex-shrink:0;">
+        <button onClick="{{ clearFilters }}" style="padding:11px 18px;font-family:var(--font-body);font-weight:700;font-size:14.5px;color:{{ clearFilterColor }};background:transparent;border:none;border-radius:var(--radius-full);cursor:{{ clearFilterCursor }};transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">Clear all</button>
+        <button onClick="{{ closeFilter }}" style="flex:1;display:inline-flex;align-items:center;justify-content:center;padding:12px 22px;font-family:var(--font-body);font-weight:700;font-size:15px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">{{ filterApplyLabel }}</button>
+      </div>
+    </div>
+  </div>
+</sc-if>
+<!-- SINGLE-EMPLOYEE PAY CONFIRM MODAL -->
+<sc-if value="{{ payOneOpen }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closePayOne }}" style="position:fixed;inset:0;z-index:135;background:rgba(10,13,18,0.5);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:32px 24px;box-sizing:border-box;font-family:var(--font-body);">
+    <div onClick="{{ bulkStop }}" style="width:100%;max-width:460px;background:#fff;border-radius:20px;box-shadow:var(--shadow-2xl);overflow:hidden;">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:24px 28px 6px;">
+        <div style="min-width:0;">
+          <h2 style="font-family:var(--font-display);font-size:21px;font-weight:800;letter-spacing:-0.02em;margin:0 0 4px;">Confirm disbursal</h2>
+          <p style="font-size:14px;line-height:21px;color:var(--fg-tertiary);margin:0;">Pay this employee now from your DexwinPay wallet.</p>
+        </div>
+        <span role="button" onClick="{{ closePayOne }}" aria-label="Close" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;cursor:pointer;color:var(--fg-quaternary);transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></span>
+      </div>
+      <div style="padding:14px 28px 4px;">
+        <div style="display:flex;align-items:center;gap:13px;padding:14px;background:var(--bg-secondary);border:1px solid var(--border-secondary);border-radius:14px;margin-bottom:14px;">
+          <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:999px;background:var(--brand-50);color:var(--brand-700);font-weight:700;font-size:15px;">{{ payOneInitials }}</span>
+          <div style="min-width:0;flex:1;">
+            <div style="font-size:15.5px;font-weight:700;color:var(--fg-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ payOneName }}</div>
+            <div style="font-size:13px;color:var(--fg-tertiary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ payOneRole }}</div>
+          </div>
+          <span style="flex-shrink:0;font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--fg-primary);font-variant-numeric:tabular-nums;">{{ payOneNet }}</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:9px;padding:2px 2px 6px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;"><span style="font-size:14px;color:var(--fg-tertiary);">Wallet balance</span><span style="font-size:14px;font-weight:600;color:var(--fg-primary);font-variant-numeric:tabular-nums;">{{ payOneWallet }}</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;"><span style="font-size:14px;color:var(--fg-tertiary);">Balance after payment</span><span style="font-size:14px;font-weight:700;color:var(--brand-700);font-variant-numeric:tabular-nums;">{{ payOneWalletAfter }}</span></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;padding:16px 28px 24px;">
+        <button onClick="{{ closePayOne }}" style="flex:1;padding:13px 22px;font-family:var(--font-body);font-weight:700;font-size:15px;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;">Cancel</button>
+        <button onClick="{{ confirmPayOne }}" style="flex:1;display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:13px 22px;font-family:var(--font-body);font-weight:700;font-size:15px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>Send {{ payOneNet }}</button>
+      </div>
+    </div>
+  </div>
+</sc-if></x-dc>
 <script type="text/x-dc" data-dc-script data-props="{
   &quot;$preview&quot;: { &quot;width&quot;: 1440, &quot;height&quot;: 1024 },
-  &quot;walkthrough&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;Off&quot;, &quot;Setup additions&quot;, &quot;Additions tab&quot;], &quot;default&quot;: &quot;Off&quot;, &quot;tsType&quot;: &quot;string&quot; },
-  &quot;setupStage&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;No employees&quot;, &quot;Payroll not set up&quot;, &quot;Ready to run&quot;], &quot;default&quot;: &quot;Ready to run&quot;, &quot;tsType&quot;: &quot;string&quot; },
   &quot;role&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;Approver&quot;, &quot;Preparer&quot;], &quot;default&quot;: &quot;Approver&quot;, &quot;tsType&quot;: &quot;string&quot; },
   &quot;demoState&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;Default flow&quot;, &quot;Pending approval&quot;, &quot;Approved&quot;, &quot;Funding low&quot;, &quot;Missing bank details&quot;, &quot;Confirm disbursal&quot;, &quot;Disbursing&quot;, &quot;Completed&quot;, &quot;Payslips&quot;, &quot;Partially failed&quot;], &quot;default&quot;: &quot;Default flow&quot;, &quot;tsType&quot;: &quot;string&quot; },
   &quot;walletScenario&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;Enough&quot;, &quot;Low&quot;], &quot;default&quot;: &quot;Enough&quot;, &quot;tsType&quot;: &quot;string&quot; },
   &quot;outcome&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;Success&quot;, &quot;Partial failure&quot;], &quot;default&quot;: &quot;Success&quot;, &quot;tsType&quot;: &quot;string&quot; }
 }">
 const EMPLOYEES_BASE = [
-  { id: 'e1', name: 'Akua Mensah',  role: 'Operations Lead',  initials: 'AM', bankName: 'GCB Bank',     branch: 'Accra Main',  acct: '1011 2345 6789', gross: 4200, ssnit: 231, paye: 348, net: 3621 },
-  { id: 'e2', name: 'Kwame Owusu',  role: 'Accountant',       initials: 'KO', bankName: 'Stanbic Bank', branch: 'Osu',         acct: '4422 1138 7755', gross: 3800, ssnit: 209, paye: 308, net: 3283 },
-  { id: 'e3', name: 'Ama Boateng',  role: 'Software Engineer',initials: 'AB', bankName: 'Ecobank',      branch: 'Ridge',       acct: '0030 8847 1962', gross: 5400, ssnit: 297, paye: 540, net: 4563 },
-  { id: 'e4', name: 'Yaw Asante',   role: 'Sales Executive',  initials: 'YA', bankName: '',             branch: '',            acct: '',               gross: 3200, ssnit: 176, paye: 232, net: 2792 },
-  { id: 'e5', name: 'Adwoa Nyarko', role: 'HR Manager',       initials: 'AN', bankName: '',             branch: '',            acct: '',               gross: 4000, ssnit: 220, paye: 320, net: 3460 },
-  { id: 'e6', name: 'Kofi Boadi',   role: 'Customer Support', initials: 'KB', bankName: 'Fidelity Bank',branch: 'Tema',        acct: '1077 4421 9803', gross: 2800, ssnit: 154, paye: 168, net: 2478 },
+  { id: 'e1', name: 'Akua Mensah',  role: 'Operations Lead',  department: 'Operations',       position: 'Team Lead',  initials: 'AM', bankName: 'GCB Bank',     branch: 'Accra Main',  acct: '1011 2345 6789', gross: 4200, ssnit: 231, paye: 348, net: 3621 },
+  { id: 'e2', name: 'Kwame Owusu',  role: 'Accountant',       department: 'Finance',          position: 'Officer',    initials: 'KO', bankName: 'Stanbic Bank', branch: 'Osu',         acct: '4422 1138 7755', gross: 3800, ssnit: 209, paye: 308, net: 3283 },
+  { id: 'e3', name: 'Ama Boateng',  role: 'Software Engineer',department: 'Engineering',      position: 'Senior',     initials: 'AB', bankName: 'Ecobank',      branch: 'Ridge',       acct: '0030 8847 1962', gross: 5400, ssnit: 297, paye: 540, net: 4563 },
+  { id: 'e4', name: 'Yaw Asante',   role: 'Sales Executive',  department: 'Sales',            position: 'Executive',  initials: 'YA', bankName: '',             branch: '',            acct: '',               gross: 3200, ssnit: 176, paye: 232, net: 2792 },
+  { id: 'e5', name: 'Adwoa Nyarko', role: 'HR Manager',       department: 'People & HR',      position: 'Manager',    initials: 'AN', bankName: '',             branch: '',            acct: '',               gross: 4000, ssnit: 220, paye: 320, net: 3460 },
+  { id: 'e6', name: 'Kofi Boadi',   role: 'Customer Support', department: 'Customer Support', position: 'Associate',  initials: 'KB', bankName: 'Fidelity Bank',branch: 'Tema',        acct: '1077 4421 9803', gross: 2800, ssnit: 154, paye: 168, net: 2478 },
 ];
 const BANKS = ['GCB Bank', 'Stanbic Bank', 'Ecobank', 'Fidelity Bank', 'Standard Chartered', 'Absa Bank', 'CalBank', 'Zenith Bank', 'UBA Ghana', 'Access Bank'];
 function buildPeriods() {
@@ -1674,6 +1827,17 @@ const EMPTY_TABS = {
   loans:      { icon: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>', title: 'No loans or advances yet', body: 'Salary advances and staff loans you record will be tracked here and recovered automatically from payroll.', cta: 'Add loan or advance' },
 };
 
+const BULK_ADD_KINDS = [
+  { value: 'overtime',      label: 'Overtime',       ph: 'e.g. 12 hrs overtime' },
+  { value: 'reimbursement', label: 'Reimbursement',  ph: 'e.g. Client travel refund' },
+  { value: 'cash',          label: 'Cash Allowance', ph: 'e.g. Fuel allowance' },
+  { value: 'bonus',         label: 'Bonus',          ph: 'e.g. Performance bonus' },
+];
+const BULK_ADD_TAG = { overtime: 'Overtime', reimbursement: 'Reimbursement', cash: 'Cash Allowance', bonus: 'Bonus' };
+const BULK_DED_MODES = [
+  { value: 'pretax',  label: 'Pre-tax',  sub: 'Taken before tax is worked out' },
+  { value: 'posttax', label: 'Post-tax', sub: 'Taken from net pay after tax' },
+];
 const ADDITION_TEMPLATES = [
   { name: 'Transport Allowance', tag: 'Cash Allowance', kind: 'cash' },
   { name: 'Company Vehicle',     tag: 'Benefit In Kind', kind: 'benefit' },
@@ -1760,6 +1924,9 @@ class Component extends DCLogic {
     apprName: '', apprEmail: '', apprPhone: '',
     rejectOpen: false, rejectReason: '',
     empSearch: '', dlOpen: false,
+    selIds: [], bulkModal: null, bulkKind: 'overtime', bulkDedMode: 'posttax', bulkName: '', bulkAmount: '', bulkPer: false, bulkAmts: {}, toastAction: null,
+    filterOpen: false, filters: { department: [], role: [], position: [] }, filterCollapsed: {},
+    payOneId: null,
     loans: [], loanModalOpen: false, loanDraft: {}, loanEmpPickerOpen: false, loanEmpSearch: '',
   };
   disbursingTimer = null;
@@ -1959,16 +2126,104 @@ class Component extends DCLogic {
     this.setState(patch);
   }
 
-  showToast(msg, kind = 'success') {
+  showToast(msg, kind = 'success', action = null) {
     if (this.toastTimer) clearTimeout(this.toastTimer);
-    this.setState({ toast: msg, toastKind: kind });
-    this.toastTimer = setTimeout(() => this.setState({ toast: null }), 4500);
+    this._toastActionFn = action ? action.fn : null;
+    this.setState({ toast: msg, toastKind: kind, toastAction: action ? action.label : null });
+    this.toastTimer = setTimeout(() => this.setState({ toast: null, toastAction: null }), action ? 7000 : 4500);
   }
-  dismissToast = () => { if (this.toastTimer) clearTimeout(this.toastTimer); this.setState({ toast: null }); };
+  dismissToast = () => { if (this.toastTimer) clearTimeout(this.toastTimer); this.setState({ toast: null, toastAction: null }); };
+  runToastAction = () => { const fn = this._toastActionFn; this._toastActionFn = null; if (this.toastTimer) clearTimeout(this.toastTimer); this.setState({ toast: null, toastAction: null }); if (fn) fn(); };
   onEmpSearch = (ev) => this.setState({ empSearch: ev.target.value });
   toggleDl = () => this.setState(s => ({ dlOpen: !s.dlOpen }));
   closeDl = () => this.setState({ dlOpen: false });
   downloadReport = (kind) => () => { this.setState({ dlOpen: false }); this.showToast(kind + ' report for ' + (this.state.period ? this.state.period.label : 'this run') + ' downloaded.'); };
+
+  // ---- Bulk pay items (select group → one-off addition/deduction for this run) ----
+  toggleSel = (id) => this.setState(s => ({ selIds: s.selIds.includes(id) ? s.selIds.filter(x => x !== id) : [...s.selIds, id] }));
+  toggleSelAll = () => this.setState(s => {
+    const q = (s.empSearch || '').trim().toLowerCase();
+    const vis = s.employees.filter(e => !s.paidIds.includes(e.id) && (!q || (e.name + ' ' + e.role).toLowerCase().includes(q))).map(e => e.id);
+    const all = vis.length > 0 && vis.every(id => s.selIds.includes(id));
+    return { selIds: all ? s.selIds.filter(id => !vis.includes(id)) : Array.from(new Set([...s.selIds, ...vis])) };
+  });
+  clearSel = () => this.setState({ selIds: [] });
+  bulkStop = (ev) => ev.stopPropagation();
+  _regLock = null;
+  onRegTopScroll = (ev) => { if (this._regLock === 'body') { this._regLock = null; return; } this._regLock = 'top'; const b = document.getElementById('reg-hscroll-body'); if (b) b.scrollLeft = ev.target.scrollLeft; };
+  onRegBodyScroll = (ev) => { if (this._regLock === 'top') { this._regLock = null; return; } this._regLock = 'body'; const t = document.getElementById('reg-hscroll-top'); if (t) t.scrollLeft = ev.target.scrollLeft; };
+
+  // ---- Table filter (department / role / position) ----
+  openFilter = () => this.setState({ filterOpen: true });
+  closeFilter = () => this.setState({ filterOpen: false });
+  toggleFilter = (key, val) => () => this.setState(s => {
+    const cur = (s.filters[key] || []);
+    const next = cur.includes(val) ? cur.filter(x => x !== val) : [...cur, val];
+    return { filters: { ...s.filters, [key]: next } };
+  });
+  clearFilters = () => this.setState({ filters: { department: [], role: [], position: [] } });
+  toggleFilterSection = (key) => () => this.setState(s => ({ filterCollapsed: { ...s.filterCollapsed, [key]: !s.filterCollapsed[key] } }));
+  askPayOne = (id) => (ev) => { if (ev && ev.stopPropagation) ev.stopPropagation(); if (this.state.status !== 'approved') return; if (this.state.paidIds.includes(id)) return; this.setState({ payOneId: id }); };
+  closePayOne = () => this.setState({ payOneId: null });
+  confirmPayOne = () => { const id = this.state.payOneId; this.setState({ payOneId: null }); if (id) this.payEmployee(id)(); };
+  openBulkAdd = () => this.setState({ bulkModal: 'add', bulkKind: 'overtime', bulkName: '', bulkAmount: '', bulkPer: false, bulkAmts: {} });
+  openBulkDed = () => this.setState({ bulkModal: 'ded', bulkDedMode: 'posttax', bulkName: '', bulkAmount: '', bulkPer: false, bulkAmts: {} });
+  closeBulk = () => this.setState({ bulkModal: null });
+  pickBulkKind = (v) => () => this.setState({ bulkKind: v });
+  pickBulkDedMode = (v) => () => this.setState({ bulkDedMode: v });
+  onBulkName = (ev) => this.setState({ bulkName: ev.target.value });
+  onBulkAmount = (ev) => this.setState({ bulkAmount: ev.target.value });
+  onBulkAmt = (id) => (ev) => { const v = ev.target.value; this.setState(s => ({ bulkAmts: { ...s.bulkAmts, [id]: v } })); };
+  toggleBulkPer = () => this.setState(s => {
+    if (s.bulkPer) return { bulkPer: false };
+    const seed = {}; const flat = s.bulkAmount || '';
+    s.selIds.forEach(id => { seed[id] = (s.bulkAmts && s.bulkAmts[id] != null) ? s.bulkAmts[id] : flat; });
+    return { bulkPer: true, bulkAmts: seed };
+  });
+  saveBulk = () => {
+    const s = this.state;
+    const ids = s.selIds.filter(id => !s.paidIds.includes(id));
+    if (!ids.length || !(window.AppState && window.AppState.getPayItems)) return;
+    const period = s.period ? s.period.id : 'cur';
+    const isAdd = s.bulkModal === 'add';
+    const batch = 'bk-' + Date.now();
+    const flat = parseFloat(s.bulkAmount);
+    const ts = Date.now();
+    let affected = 0;
+    ids.forEach((id, i) => {
+      let amt = s.bulkPer ? parseFloat(s.bulkAmts && s.bulkAmts[id]) : flat;
+      if (!(amt > 0)) return;
+      amt = Math.round(amt * 100) / 100;
+      const cur = window.AppState.getPayItems(period, id);
+      if (isAdd) {
+        const kind = s.bulkKind;
+        const name = (s.bulkName || '').trim() || BULK_ADD_TAG[kind];
+        cur.additions = [...cur.additions, { id: 'a-' + ts + '-' + i, kind, name, tag: BULK_ADD_TAG[kind], amount: amt, batch }];
+      } else {
+        const mode = s.bulkDedMode;
+        const name = (s.bulkName || '').trim() || (mode === 'pretax' ? 'Pre-tax deduction' : 'Post-tax deduction');
+        cur.deductions = [...cur.deductions, { id: 'd-' + ts + '-' + i, name, taxMode: mode, tag: mode === 'pretax' ? 'Pre-tax' : 'Post-tax', amount: amt, batch }];
+      }
+      window.AppState.setPayItems(period, id, cur);
+      affected++;
+    });
+    if (!affected) { this.showToast('Enter an amount greater than zero.', 'error'); return; }
+    const label = isAdd ? ((s.bulkName || '').trim() || BULK_ADD_TAG[s.bulkKind]) : ((s.bulkName || '').trim() || (s.bulkDedMode === 'pretax' ? 'Pre-tax deduction' : 'Post-tax deduction'));
+    const verb = isAdd ? 'added' : 'deducted';
+    this.setState({ bulkModal: null, selIds: [] });
+    this.showToast('\u201c' + label + '\u201d ' + verb + ' for ' + affected + (affected === 1 ? ' employee' : ' employees') + ' on the ' + (s.period ? s.period.label : 'current') + ' run.', 'success', { label: 'Undo', fn: () => this.undoBatch({ batch, ids, period }) });
+  };
+  undoBatch = (info) => {
+    if (!(window.AppState && window.AppState.getPayItems)) return;
+    info.ids.forEach(id => {
+      const cur = window.AppState.getPayItems(info.period, id);
+      cur.additions = (cur.additions || []).filter(x => x.batch !== info.batch);
+      cur.deductions = (cur.deductions || []).filter(x => x.batch !== info.batch);
+      window.AppState.setPayItems(info.period, id, cur);
+    });
+    this.forceUpdate();
+    this.showToast('Bulk change reverted.');
+  };
 
   // LOANS & ADVANCES
   openLoanAdd = () => this.setState({ loanModalOpen: true, loanDraft: { empId: '', type: 'loan', monthly: '', paid: '', left: '' }, loanEmpPickerOpen: false, loanEmpSearch: '' });
@@ -2308,6 +2563,18 @@ class Component extends DCLogic {
     const periodId = s.period ? s.period.id : 'cur';
     const calcOf = {};
     s.employees.forEach(e => { calcOf[e.id] = (window.AppState && window.AppState.calcPay) ? window.AppState.calcPay(e.id, periodId) : { basic: 0, taxAllow: 0, nonTax: 0, overtime: 0, gross: 0, taxableIncome: 0, ssnit: 0, paye: 0, otTax: 0, staffLoan: 0, salaryAdvance: 0, totalDeduction: 0, net: 0 }; });
+    // Fold UI-added loans & advances (from the Loans and advances tab) into each employee's deductions for this run.
+    const r2 = (n) => Math.round((Number(n) || 0) * 100) / 100;
+    (s.loans || []).forEach(l => {
+      const c = calcOf[l.empId];
+      if (!c) return;
+      const m = Number(l.monthly) || 0;
+      if (m <= 0) return;
+      if (l.type === 'advance') c.salaryAdvance = r2(c.salaryAdvance + m);
+      else c.staffLoan = r2(c.staffLoan + m);
+      c.totalDeduction = r2(c.totalDeduction + m);
+      c.net = r2(c.net - m);
+    });
     const adjNet = (e) => (calcOf[e.id] || {}).net || 0;
     const sumField = (arr, f) => arr.reduce((a, e) => a + ((calcOf[e.id] || {})[f] || 0), 0);
     const num = (n) => n ? Number(n).toLocaleString('en-GH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '\u2014';
@@ -2327,19 +2594,28 @@ class Component extends DCLogic {
     const paidEmpCount = s.paidIds.length;
     const canPayNow = status === 'approved' || status === 'paid';
     const empQuery = (s.empSearch || '').trim().toLowerCase();
-    const employeesView = s.employees.filter(e => !empQuery || (e.name + ' ' + e.role).toLowerCase().includes(empQuery)).map(e => {
+    const FLT = s.filters || { department: [], role: [], position: [] };
+    const passFilters = (e) => (!FLT.department.length || FLT.department.includes(e.department)) && (!FLT.role.length || FLT.role.includes(e.role)) && (!FLT.position.length || FLT.position.includes(e.position));
+    const employeesView = s.employees.filter(e => (!empQuery || (e.name + ' ' + e.role).toLowerCase().includes(empQuery)) && passFilters(e)).map(e => {
       const isPaid = s.paidIds.includes(e.id);
       const c = calcOf[e.id] || {};
+      const isSel = s.selIds.includes(e.id);
+      const selectable = !isPaid;
       return {
         id: e.id, initials: e.initials, name: e.name, role: e.role,
+        selected: isSel,
+        cbBg: !selectable ? 'var(--gray-100)' : (isSel ? 'var(--bg-brand-solid)' : '#fff'),
+        cbBorder: !selectable ? 'var(--border-secondary)' : (isSel ? 'var(--bg-brand-solid)' : 'var(--border-primary)'),
+        cbCursor: selectable ? 'pointer' : 'not-allowed',
+        onToggle: (ev) => { if (ev && ev.stopPropagation) ev.stopPropagation(); if (selectable) this.toggleSel(e.id); },
         basic: num(c.basic), taxAllow: num(c.taxAllow), nonTax: num(c.nonTax), overtime: num(c.overtime),
-        gross: num(c.gross), taxableIncome: num(c.taxableIncome), ssnit: num(c.ssnit), paye: num(c.paye),
+        gross: num(c.gross), taxableIncome: num(c.taxableIncome), ssnit: c.contractor ? '—' : num(c.ssnit), paye: c.contractor ? '—' : num(c.paye), wht: c.contractor ? num(c.wht) : '—',
         otTax: num(c.otTax), staffLoan: num(c.staffLoan), salaryAdvance: num(c.salaryAdvance),
         totalDeduction: num(c.totalDeduction), net: num(c.net),
         paid: isPaid, notPaid: !isPaid,
         canPay: canPayNow && !isPaid,
         cantPay: !(canPayNow && !isPaid) && !isPaid,
-        onPay: (ev) => { if (ev && ev.stopPropagation) ev.stopPropagation(); this.payEmployee(e.id)(); },
+        onPay: (ev) => { if (ev && ev.stopPropagation) ev.stopPropagation(); this.askPayOne(e.id)(ev); },
         onOpen: () => { window.location.href = 'Payroll Employee.dc.html?emp=' + e.id + '&period=' + periodId; },
       };
     });
@@ -2347,9 +2623,71 @@ class Component extends DCLogic {
     const regTotals = {
       basic: num(sumField(s.employees, 'basic')), taxAllow: num(sumField(s.employees, 'taxAllow')), nonTax: num(sumField(s.employees, 'nonTax')),
       overtime: num(sumField(s.employees, 'overtime')), gross: num(totalGross), taxableIncome: num(sumField(s.employees, 'taxableIncome')),
-      ssnit: num(totalSsnit), paye: num(totalPaye), otTax: num(sumField(s.employees, 'otTax')), staffLoan: num(sumField(s.employees, 'staffLoan')),
+      ssnit: num(totalSsnit), paye: num(totalPaye), wht: num(sumField(s.employees, 'wht')), otTax: num(sumField(s.employees, 'otTax')), staffLoan: num(sumField(s.employees, 'staffLoan')),
       salaryAdvance: num(sumField(s.employees, 'salaryAdvance')), totalDeduction: num(sumField(s.employees, 'totalDeduction')), net: num(fullNet),
     };
+
+    // ---- Bulk pay items ----
+    const selIds = s.selIds || [];
+    const visSelectable = s.employees.filter(e => !s.paidIds.includes(e.id) && (!empQuery || (e.name + ' ' + e.role).toLowerCase().includes(empQuery)) && passFilters(e)).map(e => e.id);
+    const allSelected = visSelectable.length > 0 && visSelectable.every(id => selIds.includes(id));
+    const someSelected = !allSelected && visSelectable.some(id => selIds.includes(id));
+    const selCount = selIds.length;
+    const bulkIsAdd = s.bulkModal === 'add';
+    const bulkSelEmps = s.employees.filter(e => selIds.includes(e.id) && !s.paidIds.includes(e.id)).map(e => ({
+      id: e.id, name: e.name, initials: e.initials,
+      amount: (s.bulkAmts && s.bulkAmts[e.id] != null) ? s.bulkAmts[e.id] : '',
+      onAmt: this.onBulkAmt(e.id),
+    }));
+    const mkBulkOpt = (selVal, kind) => (o) => ({ value: o.value, label: o.label, sub: o.sub || '', hasSub: !!o.sub, on: selVal === o.value, onSelect: (kind === 'add' ? this.pickBulkKind(o.value) : this.pickBulkDedMode(o.value)), b: selVal === o.value ? 'var(--brand-500)' : 'var(--border-secondary)', bg: selVal === o.value ? 'var(--brand-25)' : '#fff', db: selVal === o.value ? 'var(--bg-brand-solid)' : 'var(--border-primary)', dbg: selVal === o.value ? 'var(--bg-brand-solid)' : '#fff' });
+    const bulkOptions = bulkIsAdd
+      ? BULK_ADD_KINDS.map(mkBulkOpt(s.bulkKind, 'add'))
+      : BULK_DED_MODES.map(mkBulkOpt(s.bulkDedMode, 'ded'));
+    const flatAmt = parseFloat(s.bulkAmount);
+    const bulkTotalNum = s.bulkPer
+      ? bulkSelEmps.reduce((a, m) => a + (parseFloat(m.amount) || 0), 0)
+      : (flatAmt > 0 ? flatAmt * bulkSelEmps.length : 0);
+    const bulkValid = s.bulkPer ? bulkTotalNum > 0 : flatAmt > 0;
+    const bulkNamePlaceholder = bulkIsAdd
+      ? (((BULK_ADD_KINDS.find(k => k.value === s.bulkKind) || {}).ph) || 'Label')
+      : (s.bulkDedMode === 'pretax' ? 'e.g. Provident top-up' : 'e.g. Welfare contribution');
+
+    // ---- Filter drawer view ----
+    const distinctVals = (key) => Array.from(new Set(s.employees.map(e => e[key]).filter(Boolean)));
+    const FILTER_GROUPS = [
+      { key: 'department', label: 'Department' },
+      { key: 'role', label: 'Role' },
+      { key: 'position', label: 'Position' },
+    ];
+    const filterView = FILTER_GROUPS.map(g => {
+      const active = FLT[g.key] || [];
+      const expanded = !s.filterCollapsed[g.key];
+      return {
+        key: g.key, label: g.label,
+        hasActive: active.length > 0,
+        activeCount: active.length,
+        activeLabel: active.length + ' selected',
+        expanded, chevron: expanded ? 'rotate(90deg)' : 'rotate(0deg)',
+        onToggleSection: this.toggleFilterSection(g.key),
+        options: distinctVals(g.key).map(o => ({
+          label: o, on: active.includes(o),
+          count: s.employees.filter(e => e[g.key] === o).length,
+          cbBg: active.includes(o) ? 'var(--bg-brand-solid)' : '#fff',
+          cbBorder: active.includes(o) ? 'var(--bg-brand-solid)' : 'var(--border-primary)',
+          onToggle: this.toggleFilter(g.key, o),
+        })),
+      };
+    });
+    const activeFilterCount = FLT.department.length + FLT.role.length + FLT.position.length;
+    const hasFilters = activeFilterCount > 0;
+    const totalEmpCount = s.employees.length;
+    const filterResultLabel = hasFilters ? ('Showing ' + employeesView.length + ' of ' + totalEmpCount + ' employees') : ('All ' + totalEmpCount + ' employees');
+    const filterApplyLabel = employeesView.length === totalEmpCount ? 'Done' : ('Show ' + employeesView.length + (employeesView.length === 1 ? ' employee' : ' employees'));
+
+    // ---- Single-employee pay confirm ----
+    const payOneEmp = s.payOneId ? s.employees.find(e => e.id === s.payOneId) : null;
+    const payOneCalc = payOneEmp ? (calcOf[payOneEmp.id] || {}) : {};
+    const payOneNetNum = payOneEmp ? (payOneCalc.net || 0) : 0;
 
     const reviewIsApproved = status === 'approved';
     const reviewActionLabel = reviewIsApproved ? 'Make payments' : 'Approve or request';
@@ -2639,9 +2977,15 @@ class Component extends DCLogic {
       const sx = _cr.x - PAD, sy = _cr.y - PAD, sw = _cr.w + PAD * 2, sh = _cr.h + PAD * 2;
       const vw = (typeof window !== 'undefined' && window.innerWidth) || 1440;
       const vh = (typeof window !== 'undefined' && window.innerHeight) || 900;
-      const CW = 380;
-      let left = sx + sw + 16, top = Math.max(16, Math.min(_cr.y, vh - 260));
-      if (left + CW > vw - 16) { left = Math.max(16, Math.min(sx + sw / 2 - CW / 2, vw - CW - 16)); top = Math.min(sy + sh + 16, vh - 260); }
+      const CW = 380, CH = 240, GAP = 16, M = 16;
+      const fitV = (t) => Math.max(M, Math.min(t, vh - CH - M));
+      const fitH = (l) => Math.max(M, Math.min(l, vw - CW - M));
+      let left, top;
+      if (vw - (sx + sw) >= CW + GAP + M) { left = sx + sw + GAP; top = fitV(_cr.y - PAD); }
+      else if (vh - (sy + sh) >= CH + GAP + M) { top = sy + sh + GAP; left = fitH(sx + sw / 2 - CW / 2); }
+      else if (sy >= CH + GAP + M) { top = sy - GAP - CH; left = fitH(sx + sw / 2 - CW / 2); }
+      else if (sx >= CW + GAP + M) { left = sx - GAP - CW; top = fitV(_cr.y - PAD); }
+      else { left = fitH(sx + sw / 2 - CW / 2); top = (sy >= vh - (sy + sh)) ? M : (vh - CH - M); }
       coachVals = { hasSpot: true, spotStyle: 'left:' + sx + 'px;top:' + sy + 'px;width:' + sw + 'px;height:' + sh + 'px', cardStyle: 'left:' + left + 'px;top:' + top + 'px;' };
     }
     const COACH_CONTENT = {
@@ -2803,6 +3147,48 @@ class Component extends DCLogic {
       totalNetDisplay: fmt(totalNet), totalGrossDisplay: fmt(totalGross), totalSsnitDisplay: fmt(totalSsnit), totalPayeDisplay: fmt(totalPaye),
       employeesView, period: s.period, regTotals,
       empSearch: s.empSearch, onEmpSearch: this.onEmpSearch,
+
+      // bulk pay items
+      selCount, bulkBarOpen: selCount > 0, bulkPeriodLabel: s.period ? s.period.label : 'this month',
+      allSelected, someSelected,
+      allCbBg: allSelected ? 'var(--bg-brand-solid)' : '#fff',
+      allCbBorder: (allSelected || someSelected) ? 'var(--bg-brand-solid)' : 'var(--border-primary)',
+      toggleSelAll: this.toggleSelAll, clearSel: this.clearSel,
+      openBulkAdd: this.openBulkAdd, openBulkDed: this.openBulkDed,
+      bulkOpen: !!s.bulkModal, closeBulk: this.closeBulk, bulkStop: this.bulkStop, saveBulk: this.saveBulk,
+      bulkTitle: (bulkIsAdd ? 'Add a pay addition to ' : 'Add a pay deduction to ') + bulkSelEmps.length + (bulkSelEmps.length === 1 ? ' employee' : ' employees'),
+      bulkSubtitle: (s.period ? s.period.label : 'This month') + ' run only \u00b7 applies to everyone selected',
+      bulkPickerLabel: bulkIsAdd ? 'Type' : 'When is it taken?',
+      bulkOptions,
+      bulkName: s.bulkName, onBulkName: this.onBulkName, bulkNamePlaceholder,
+      bulkAmount: s.bulkAmount, onBulkAmount: this.onBulkAmount,
+      bulkPer: s.bulkPer, bulkFlat: !s.bulkPer, toggleBulkPer: this.toggleBulkPer,
+      bulkPerHint: s.bulkPer ? 'Set a separate figure for each employee below.' : 'Off \u00b7 the same amount applies to everyone.',
+      bulkPerTrackBg: s.bulkPer ? 'var(--bg-brand-solid)' : 'var(--gray-300)',
+      bulkPerKnobLeft: s.bulkPer ? '21px' : '3px',
+      bulkSelEmps,
+      bulkTotalDisplay: fmt(bulkTotalNum),
+      bulkOpacity: bulkValid ? '1' : '0.55',
+      bulkCtaLabel: 'Add to ' + bulkSelEmps.length + (bulkSelEmps.length === 1 ? ' employee' : ' employees'),
+
+      // toast action
+      toastAction: s.toastAction, runToastAction: this.runToastAction,
+
+      // filter drawer
+      openFilter: this.openFilter, closeFilter: this.closeFilter, clearFilters: this.clearFilters,
+      filterOpen: s.filterOpen, filterView, activeFilterCount, hasFilters,
+      filterResultLabel, filterApplyLabel,
+      filterBtnColor: hasFilters ? 'var(--brand-700)' : 'var(--fg-secondary)',
+      filterBtnBg: hasFilters ? 'var(--brand-50)' : 'var(--bg-primary)',
+      filterBtnBorder: hasFilters ? 'var(--brand-200)' : 'var(--border-primary)',
+      clearFilterColor: hasFilters ? 'var(--fg-secondary)' : 'var(--fg-quaternary)',
+      clearFilterCursor: hasFilters ? 'pointer' : 'default',
+
+      // single-employee pay confirm
+      onRegTopScroll: this.onRegTopScroll, onRegBodyScroll: this.onRegBodyScroll,
+      payOneOpen: !!payOneEmp, closePayOne: this.closePayOne, confirmPayOne: this.confirmPayOne,
+      payOneName: payOneEmp ? payOneEmp.name : '', payOneRole: payOneEmp ? payOneEmp.role : '', payOneInitials: payOneEmp ? payOneEmp.initials : '',
+      payOneNet: fmt(payOneNetNum), payOneWallet: fmt(s.walletBalance), payOneWalletAfter: fmt(s.walletBalance - payOneNetNum),
       employeesEmpty: employeesView.length === 0,
       dlOpen: s.dlOpen, toggleDl: this.toggleDl, closeDl: this.closeDl, dlChevron: s.dlOpen ? 'rotate(180deg)' : 'rotate(0deg)',
       dlPaye: this.downloadReport('PAYE'), dlSsnit: this.downloadReport('SSNIT'), dlWht: this.downloadReport('WHT'),

@@ -74,7 +74,7 @@
       <!-- PAGE HEADER -->
       <div style="flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:20px 40px;border-bottom:1px solid var(--border-secondary);background:#fff;position:sticky;top:72px;z-index:19;">
         <div style="display:flex;align-items:center;gap:16px;min-width:0;">
-          <a href="Payroll Page.dc.html" aria-label="Back" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--border-secondary);border-radius:var(--radius-full);color:var(--fg-secondary);background:#fff;box-shadow:var(--shadow-xs);text-decoration:none;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+          <a href="Payroll Page.dc.html" onClick="{{ goBackStep }}" aria-label="Back" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--border-secondary);border-radius:var(--radius-full);color:var(--fg-secondary);background:#fff;box-shadow:var(--shadow-xs);text-decoration:none;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
           </a>
           <div style="min-width:0;">
@@ -102,7 +102,7 @@
         <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:248px 1fr;gap:28px;align-items:start;">
 
           <!-- SIDE MENU -->
-          <div style="background:#fff;border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-xs);padding:12px;position:sticky;top:24px;align-self:start;">
+          <div style="background: #fff; border: 1px solid var(--border-secondary); border-radius: 16px; box-shadow: var(--shadow-xs); padding: 12px; position: sticky; top: 0px; align-self: start">
             <div style="font-size:12px;font-weight:700;letter-spacing:0.06em;color:var(--fg-quaternary);padding:8px 12px 10px;">MENU</div>
             <div style="display:flex;flex-direction:column;gap:3px;">
               <sc-for list="{{ menuView }}" as="m" hint-placeholder-count="4">
@@ -122,15 +122,27 @@
             <sc-if value="{{ isBreakdown }}" hint-placeholder-val="{{ true }}">
               <div style="background:#fff;border:1px solid var(--border-secondary);border-radius:18px;box-shadow:var(--shadow-xs);overflow:hidden;">
                 <div style="padding:24px 28px 18px;border-bottom:1px solid var(--border-secondary);">
-                  <h2 style="font-family:var(--font-display);font-size:21px;font-weight:800;letter-spacing:-0.02em;margin:0 0 4px;">{{ periodLabel }} breakdown</h2>
+                  <h2 style="font-family:var(--font-display);font-size:21px;font-weight:800;letter-spacing:-0.02em;margin:0 0 4px;">{{ periodLabel }} Pay Breakdown</h2>
                   <p style="font-size:14.5px;line-height:21px;color:var(--fg-tertiary);margin:0;">How {{ firstName }}'s net pay is worked out for this run — earnings build up to gross, then SSNIT, PAYE and other deductions come off to reach net. Anything you add for this payroll feeds into the lines below.</p>
                 </div>
                 <div style="padding:6px 28px 0;">
                   <div style="font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--fg-quaternary);padding:14px 0 4px;">Earnings</div>
                   <sc-for list="{{ earningRows }}" as="r" hint-placeholder-count="4">
-                    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--border-tertiary);">
-                      <span style="display:flex;align-items:center;gap:9px;font-size:15px;color:var(--fg-secondary);">{{ r.label }}<sc-if value="{{ r.tag }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;font-weight:600;color:var(--fg-quaternary);background:var(--gray-100);border-radius:999px;padding:1px 8px;">{{ r.tag }}</span></sc-if></span>
-                      <span style="font-size:15px;font-weight:{{ r.weight }};color:{{ r.color }};font-variant-numeric:tabular-nums;">{{ r.amount }}</span>
+                    <div style="border-bottom:1px solid var(--border-tertiary);">
+                      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;">
+                        <span style="display:flex;align-items:center;gap:9px;font-size:15px;color:var(--fg-secondary);">{{ r.label }}<sc-if value="{{ r.tag }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;font-weight:600;color:var(--fg-quaternary);background:var(--gray-100);border-radius:999px;padding:1px 8px;">{{ r.tag }}</span></sc-if></span>
+                        <span style="font-size:15px;font-weight:{{ r.weight }};color:{{ r.color }};font-variant-numeric:tabular-nums;">{{ r.amount }}</span>
+                      </div>
+                      <sc-if value="{{ r.hasSub }}" hint-placeholder-val="{{ false }}">
+                        <div style="display:flex;flex-direction:column;gap:8px;padding:2px 0 13px 16px;">
+                          <sc-for list="{{ r.subRows }}" as="sr" hint-placeholder-count="2">
+                            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+                              <span style="display:flex;align-items:center;gap:9px;font-size:13.5px;color:var(--fg-tertiary);"><span style="width:5px;height:5px;border-radius:50%;background:var(--gray-300);flex-shrink:0;"></span>{{ sr.label }}</span>
+                              <span style="font-size:13.5px;font-weight:600;color:var(--fg-tertiary);font-variant-numeric:tabular-nums;">{{ sr.amount }}</span>
+                            </div>
+                          </sc-for>
+                        </div>
+                      </sc-if>
                     </div>
                   </sc-for>
                   <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid var(--border-secondary);">
@@ -179,7 +191,7 @@
                   <div style="display:flex;align-items:center;gap:14px;padding:15px 22px;border-bottom:1px solid var(--border-tertiary);">
                     <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;background:var(--brand-50);color:var(--brand-600);"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></span>
                     <div style="flex:1;min-width:0;"><div style="font-size:15px;font-weight:700;color:var(--fg-primary);">{{ c.name }}</div><div style="font-size:13px;color:var(--fg-tertiary);">{{ c.tag }} · all employees</div></div>
-                    <span style="font-size:13px;font-weight:600;color:var(--fg-quaternary);">Company-wide</span>
+                    <div style="flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:2px;"><span style="font-size:15px;font-weight:700;color:var(--success-700);font-variant-numeric:tabular-nums;">+ {{ c.amountText }}</span><span style="font-size:12px;font-weight:600;color:var(--fg-quaternary);">Company-wide</span></div>
                   </div>
                 </sc-for>
               </div>
@@ -221,7 +233,7 @@
                   <div style="display:flex;align-items:center;gap:14px;padding:15px 22px;border-bottom:1px solid var(--border-tertiary);">
                     <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;background:var(--gray-100);color:var(--fg-secondary);"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg></span>
                     <div style="flex:1;min-width:0;"><div style="font-size:15px;font-weight:700;color:var(--fg-primary);">{{ c.name }}</div><div style="font-size:13px;color:var(--fg-tertiary);">{{ c.tag }} · all employees</div></div>
-                    <span style="font-size:13px;font-weight:600;color:var(--fg-quaternary);">Company-wide</span>
+                    <div style="flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:2px;"><span style="font-size:15px;font-weight:700;color:var(--error-700);font-variant-numeric:tabular-nums;">− {{ c.amountText }}</span><span style="font-size:12px;font-weight:600;color:var(--fg-quaternary);">Company-wide</span></div>
                   </div>
                 </sc-for>
               </div>
@@ -386,13 +398,22 @@ const DED_MODES = [
   { value: 'posttax', label: 'Post-tax', sub: 'Taken from net pay after tax' },
 ];
 const COMPANY_ADDITIONS = [
-  { name: 'Transport Allowance', tag: 'Cash Allowance' },
-  { name: 'Risk Allowance', tag: 'Cash Allowance' },
+  { name: 'Transport Allowance', tag: 'Cash Allowance', amount: 300 },
+  { name: 'Risk Allowance', tag: 'Cash Allowance', amount: 200 },
 ];
 const COMPANY_DEDUCTIONS = [
-  { name: 'Provident Fund', tag: 'Pre-tax' },
-  { name: 'Welfare Contribution', tag: 'Post-tax' },
+  { name: 'Provident Fund', tag: 'Pre-tax', amount: 250 },
+  { name: 'Welfare Contribution', tag: 'Post-tax', amount: 50 },
 ];
+// Named allowance components that make up each employee's base taxable / non-taxable allowance.
+// Each list sums to that employee's base figure in EMP_EARNINGS (one-off additions are appended at render).
+const ALLOWANCE_PARTS = {
+  e1: { taxable: [{ label: 'Transport allowance', amount: 300 }, { label: 'Risk allowance', amount: 200 }, { label: 'Responsibility allowance', amount: 300 }], nonTax: [{ label: 'Medical cover', amount: 300 }, { label: 'Phone & data', amount: 200 }] },
+  e2: { taxable: [{ label: 'Transport allowance', amount: 300 }, { label: 'Responsibility allowance', amount: 200 }], nonTax: [] },
+  e3: { taxable: [], nonTax: [{ label: 'Medical cover', amount: 400 }] },
+  e5: { taxable: [{ label: 'Transport allowance', amount: 300 }, { label: 'Risk allowance', amount: 300 }], nonTax: [{ label: 'Phone & data', amount: 300 }] },
+  e6: { taxable: [], nonTax: [{ label: 'Phone & data', amount: 200 }] },
+};
 const MENU = [
   { id: 'breakdown', label: 'Pay Breakdown', icon: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><line x1="8" y1="8" x2="14" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg>' },
   { id: 'additions', label: 'Additions', icon: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>' },
@@ -488,12 +509,14 @@ class Component extends DCLogic {
     this.persist(items); return { items };
   });
 
+  goBackStep = (ev) => { if (ev && ev.preventDefault) ev.preventDefault(); if (window.history.length > 1) window.history.back(); else window.location.href = 'Payroll Page.dc.html'; };
+
   renderVals() {
     const s = this.state;
     const emp = s.emp;
     const periodLabel = periodLabelOf(s.periodId);
     if (s.loaded && !emp) {
-      return { notFound: true, found: false, periodLabel, name: '', today: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) };
+      return { notFound: true, found: false, goBackStep: this.goBackStep, periodLabel, name: '', today: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) };
     }
     const e = emp || EMPLOYEES_BASE[0];
     const firstName = (e.name || '').split(' ')[0];
@@ -503,11 +526,16 @@ class Component extends DCLogic {
       : { basic: 0, taxAllow: 0, nonTax: 0, overtime: 0, gross: 0, taxableIncome: 0, ssnit: 0, paye: 0, otTax: 0, staffLoan: 0, salaryAdvance: 0, otherDed: [], totalDeduction: 0, net: 0 };
     const hasBank = !!(e.bankName && e.acct);
     const dash = (n) => n ? fmt(n) : '\u2014';
+    const _addns = c.instanceAdditions || [];
+    const _parts = ALLOWANCE_PARTS[e.id] || { taxable: [], nonTax: [] };
+    const _taxSub = [...(_parts.taxable || []), ..._addns.filter(a => a.kind !== 'overtime' && a.kind !== 'reimbursement').map(a => ({ label: a.name, amount: Number(a.amount) || 0 }))];
+    const _nonTaxSub = [...(_parts.nonTax || []), ..._addns.filter(a => a.kind === 'reimbursement').map(a => ({ label: a.name, amount: Number(a.amount) || 0 }))];
+    const _subFmt = (arr) => arr.map(x => ({ label: x.label, amount: fmt(x.amount) }));
     const earningRows = [
-      { label: 'Basic pay', tag: '', amount: fmt(c.basic), color: 'var(--fg-primary)', weight: '700' },
-      { label: 'Taxable allowance', tag: c.taxAllow ? 'Taxable' : '', amount: dash(c.taxAllow), color: c.taxAllow ? 'var(--success-700)' : 'var(--fg-quaternary)', weight: '600' },
-      { label: 'Non-taxable allowance', tag: c.nonTax ? 'Tax-free' : '', amount: dash(c.nonTax), color: c.nonTax ? 'var(--success-700)' : 'var(--fg-quaternary)', weight: '600' },
-      { label: 'Overtime', tag: '', amount: dash(c.overtime), color: c.overtime ? 'var(--success-700)' : 'var(--fg-quaternary)', weight: '600' },
+      { label: 'Basic pay', tag: '', amount: fmt(c.basic), color: 'var(--fg-primary)', weight: '700', hasSub: false, subRows: [] },
+      { label: 'Taxable allowance', tag: c.taxAllow ? 'Taxable' : '', amount: dash(c.taxAllow), color: c.taxAllow ? 'var(--success-700)' : 'var(--fg-quaternary)', weight: '600', hasSub: _taxSub.length > 0, subRows: _subFmt(_taxSub) },
+      { label: 'Non-taxable allowance', tag: c.nonTax ? 'Tax-free' : '', amount: dash(c.nonTax), color: c.nonTax ? 'var(--success-700)' : 'var(--fg-quaternary)', weight: '600', hasSub: _nonTaxSub.length > 0, subRows: _subFmt(_nonTaxSub) },
+      { label: 'Overtime', tag: '', amount: dash(c.overtime), color: c.overtime ? 'var(--success-700)' : 'var(--fg-quaternary)', weight: '600', hasSub: false, subRows: [] },
     ];
     const deductionRows = [
       { label: 'SSNIT', tag: '5.5%', amount: '\u2212 ' + fmt(c.ssnit), color: 'var(--error-700)' },
@@ -547,6 +575,7 @@ class Component extends DCLogic {
       onSend: () => this.showToast('Payslip sent to ' + e.name + ' on WhatsApp.'),
 
       menuView,
+      goBackStep: this.goBackStep,
       isBreakdown: s.menu === 'breakdown', isAdditions: s.menu === 'additions', isDeductions: s.menu === 'deductions', isBank: s.menu === 'bank',
 
       // breakdown
@@ -555,12 +584,12 @@ class Component extends DCLogic {
       earningRows, deductionRows,
 
       // additions tab
-      companyAdditions: COMPANY_ADDITIONS,
+      companyAdditions: COMPANY_ADDITIONS.map(c => ({ name: c.name, tag: c.tag, amountText: fmt(c.amount) })),
       instanceAdditions: adds.map(a => ({ name: a.name, tag: a.tag, amount: fmt(a.amount), onRemove: this.removeAdd(a.id) })),
       hasAdditions: adds.length > 0, noAdditions: adds.length === 0,
 
       // deductions tab
-      companyDeductions: COMPANY_DEDUCTIONS,
+      companyDeductions: COMPANY_DEDUCTIONS.map(c => ({ name: c.name, tag: c.tag, amountText: fmt(c.amount) })),
       instanceDeductions: deds.map(d => ({ name: d.name, tag: d.tag, amount: fmt(d.amount), onRemove: this.removeDed(d.id) })),
       hasDeductions: deds.length > 0, noDeductions: deds.length === 0,
 

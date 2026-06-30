@@ -378,8 +378,11 @@
                               <div style="font-size:13px;color:var(--fg-tertiary);margin-top:1px;font-variant-numeric:tabular-nums;">{{ emp.phone }}</div>
                             </div>
                           </div>
-                          <span style="font-size:15px;color:var(--fg-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ emp.employmentType }}</span>
-                          <span role="button" onClick="{{ emp.onView }}" style="flex-shrink:0;font-size:15px;font-weight:700;color:var(--brand-700);cursor:pointer;">View Employee</span>
+                          <div style="display:flex;flex-direction:column;gap:5px;min-width:0;">
+                            <span style="font-size:15px;color:var(--fg-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ emp.employmentType }}</span>
+                            <sc-if value="{{ emp.showStatus }}" hint-placeholder-val="{{ false }}"><span style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;padding:2px 9px;font-size:12px;font-weight:600;border-radius:999px;color:{{ emp.statusColor }};background:{{ emp.statusBg }};border:1px solid {{ emp.statusBorder }};">{{ emp.statusLabel }}</span></sc-if>
+                          </div>
+                          <span role="button" onClick="{{ emp.onView }}" style="flex-shrink:0;font-size:15px;font-weight:700;color:{{ emp.viewColor }};cursor:pointer;">{{ emp.viewLabel }}</span>
                         </div>
                       </sc-for>
                     </div>
@@ -395,6 +398,18 @@
           <sc-if value="{{ empPreview }}" hint-placeholder-val="{{ false }}">
           <div style="flex:1;padding:28px 56px 48px;background:{{ formAreaBg }};">
             <div style="max-width:720px;width:100%;margin:0 auto;">
+
+              <sc-if value="{{ editorErr.show }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:20px;padding:16px 18px;background:var(--error-50);border:1px solid var(--error-200);border-radius:12px;">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--error-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                  <div style="min-width:0;">
+                    <div style="font-size:15px;font-weight:700;color:var(--error-700);">Complete the required fields to continue</div>
+                    <ul style="margin:6px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:2px;">
+                      <sc-for list="{{ editorErr.items }}" as="it" hint-placeholder-count="2"><li style="font-size:13.5px;color:var(--error-600);">{{ it.msg }}</li></sc-for>
+                    </ul>
+                  </div>
+                </div>
+              </sc-if>
 
               <sc-if value="{{ isReviewStep }}" hint-placeholder-val="{{ false }}">
                 <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:8px;">
@@ -423,12 +438,12 @@
                 <sc-if value="{{ secIdentity.stepHeader }}" hint-placeholder-val="{{ false }}"><div style="padding:2px 22px 18px;"><div style="height:8px;background:var(--gray-100);border-radius:999px;overflow:hidden;"><div style="height:100%;width:{{ secIdentity.progressW }};background:var(--brand-500);transition:width 240ms ease;"></div></div></div></sc-if>
                 <sc-if value="{{ secIdentity.open }}" hint-placeholder-val="{{ true }}">
                   <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:center;padding:16px 22px;border-top:1px solid var(--border-secondary);">
-                    <span style="font-size:15px;color:var(--fg-secondary);">First Name</span>
-                    <input value="{{ ef.firstName }}" onChange="{{ eh.firstName }}" placeholder="First Name" style="width:100%;box-sizing:border-box;padding:11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:#fff;border:1px solid var(--border-primary);border-radius:8px;outline:none;">
+                    <span style="font-size:15px;color:var(--fg-secondary);">First Name <span style="color:var(--error-500);">*</span></span>
+                    <div><input value="{{ ef.firstName }}" onChange="{{ eh.firstName }}" placeholder="First Name" style="width:100%;box-sizing:border-box;padding:11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:#fff;border:1px solid {{ fieldErr.firstName.border }};border-radius:8px;outline:none;"><sc-if value="{{ fieldErr.firstName.show }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--error-600);margin-top:6px;">{{ fieldErr.firstName.msg }}</div></sc-if></div>
                   </div>
                   <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:center;padding:16px 22px;border-top:1px solid var(--border-tertiary);">
-                    <span style="font-size:15px;color:var(--fg-secondary);">Surname</span>
-                    <input value="{{ ef.surname }}" onChange="{{ eh.surname }}" placeholder="Surname" style="width:100%;box-sizing:border-box;padding:11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:#fff;border:1px solid var(--border-primary);border-radius:8px;outline:none;">
+                    <span style="font-size:15px;color:var(--fg-secondary);">Surname <span style="color:var(--error-500);">*</span></span>
+                    <div><input value="{{ ef.surname }}" onChange="{{ eh.surname }}" placeholder="Surname" style="width:100%;box-sizing:border-box;padding:11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:#fff;border:1px solid {{ fieldErr.surname.border }};border-radius:8px;outline:none;"><sc-if value="{{ fieldErr.surname.show }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--error-600);margin-top:6px;">{{ fieldErr.surname.msg }}</div></sc-if></div>
                   </div>
                   <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:center;padding:16px 22px;border-top:1px solid var(--border-tertiary);">
                     <span style="font-size:15px;color:var(--fg-secondary);">Other Names</span>
@@ -480,12 +495,13 @@
                 <sc-if value="{{ secEmployment.stepHeader }}" hint-placeholder-val="{{ false }}"><div style="padding:2px 22px 18px;"><div style="height:8px;background:var(--gray-100);border-radius:999px;overflow:hidden;"><div style="height:100%;width:{{ secEmployment.progressW }};background:var(--brand-500);transition:width 240ms ease;"></div></div></div></sc-if>
                 <sc-if value="{{ secEmployment.open }}" hint-placeholder-val="{{ true }}">
                   <div style="display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.1fr); gap: 24px; align-items: flex-start; padding: 16px 22px; border-top: 1px solid var(--border-secondary)">
-                    <span style="font-size:15px;color:var(--fg-secondary);">Employment type</span>
+                    <span style="font-size:15px;color:var(--fg-secondary);">Employment type <span style="color:var(--error-500);">*</span></span>
                     <div style="position:relative;">
-                      <div role="button" onClick="{{ toggleEmpType }}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;box-sizing:border-box;padding:11px 14px;background:#fff;border:1px solid var(--border-primary);border-radius:8px;cursor:pointer;transition:border-color 120ms ease;">
+                      <div role="button" onClick="{{ toggleEmpType }}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;box-sizing:border-box;padding:11px 14px;background:#fff;border:1px solid {{ fieldErr.employmentType.border }};border-radius:8px;cursor:pointer;transition:border-color 120ms ease;">
                         <span style="font-size:15px;color:{{ empTypeTextColor }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ empTypeDisplay }}</span>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;transform:{{ empTypeChevron }};transition:transform 160ms ease;"><polyline points="6 9 12 15 18 9"></polyline></svg>
                       </div>
+                      <sc-if value="{{ fieldErr.employmentType.show }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--error-600);margin-top:6px;">{{ fieldErr.employmentType.msg }}</div></sc-if>
                       <sc-if value="{{ empTypeOpen }}" hint-placeholder-val="{{ false }}">
                         <div onClick="{{ closeEmpType }}" style="position:fixed;inset:0;z-index:5;"></div>
                         <div style="position:absolute;z-index:10;top:calc(100% + 8px);left:0;right:0;background:#fff;border:1px solid var(--border-secondary);border-radius:14px;box-shadow:var(--shadow-lg);overflow:hidden;">
@@ -503,12 +519,13 @@
                     </div>
                   </div>
                   <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:center;padding:16px 22px;border-top:1px solid var(--border-tertiary);">
-                    <span style="font-size:15px;color:var(--fg-secondary);">Position</span>
+                    <span style="font-size:15px;color:var(--fg-secondary);">Position <span style="color:var(--error-500);">*</span></span>
                     <div style="position:relative;">
-                      <div role="button" onClick="{{ toggleEmpPosition }}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;box-sizing:border-box;padding:11px 14px;background:#fff;border:1px solid var(--border-primary);border-radius:8px;cursor:pointer;transition:border-color 120ms ease;">
+                      <div role="button" onClick="{{ toggleEmpPosition }}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;box-sizing:border-box;padding:11px 14px;background:#fff;border:1px solid {{ fieldErr.position.border }};border-radius:8px;cursor:pointer;transition:border-color 120ms ease;">
                         <span style="font-size:15px;color:{{ empPositionTextColor }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ empPositionDisplay }}</span>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;transform:{{ empPositionChevron }};transition:transform 160ms ease;"><polyline points="6 9 12 15 18 9"></polyline></svg>
                       </div>
+                      <sc-if value="{{ fieldErr.position.show }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--error-600);margin-top:6px;">{{ fieldErr.position.msg }}</div></sc-if>
                       <sc-if value="{{ empPositionOpen }}" hint-placeholder-val="{{ false }}">
                         <div onClick="{{ closeEmpPosition }}" style="position:fixed;inset:0;z-index:5;"></div>
                         <div style="position:absolute;z-index:10;top:calc(100% + 8px);left:0;right:0;background:#fff;border:1px solid var(--border-secondary);border-radius:14px;box-shadow:var(--shadow-lg);overflow:hidden;">
@@ -616,11 +633,11 @@
                 <sc-if value="{{ secComp.stepHeader }}" hint-placeholder-val="{{ false }}"><div style="padding:2px 22px 18px;"><div style="height:8px;background:var(--gray-100);border-radius:999px;overflow:hidden;"><div style="height:100%;width:{{ secComp.progressW }};background:var(--brand-500);transition:width 240ms ease;"></div></div></div></sc-if>
                 <sc-if value="{{ secComp.open }}" hint-placeholder-val="{{ true }}">
                   <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:center;padding:18px 22px;border-top:1px solid var(--border-secondary);">
-                    <span style="font-size:15px;color:var(--fg-secondary);">Basic Salary</span>
-                    <span style="display:flex;align-items:stretch;border:1px solid var(--border-primary);border-radius:8px;overflow:hidden;">
+                    <span style="font-size:15px;color:var(--fg-secondary);">Basic Salary / Contract Amount <span style="color:var(--error-500);">*</span></span>
+                    <div><span style="display:flex;align-items:stretch;border:1px solid {{ fieldErr.basicSalary.border }};border-radius:8px;overflow:hidden;">
                       <span style="display:inline-flex;align-items:center;padding:0 14px;background:var(--bg-secondary);border-right:1px solid var(--border-primary);font-size:15px;color:var(--fg-tertiary);">GHS</span>
                       <input value="{{ ef.basicSalary }}" onChange="{{ eh.basicSalary }}" placeholder="0.00" style="flex:1;min-width:0;border:none;padding:11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);outline:none;background:#fff;">
-                    </span>
+                    </span><sc-if value="{{ fieldErr.basicSalary.show }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--error-600);margin-top:6px;">{{ fieldErr.basicSalary.msg }}</div></sc-if></div>
                   </div>
                 </sc-if>
               </div>
@@ -641,12 +658,13 @@
                 <sc-if value="{{ secSsnit.stepHeader }}" hint-placeholder-val="{{ false }}"><div style="padding:2px 22px 18px;"><div style="height:8px;background:var(--gray-100);border-radius:999px;overflow:hidden;"><div style="height:100%;width:{{ secSsnit.progressW }};background:var(--brand-500);transition:width 240ms ease;"></div></div></div></sc-if>
                 <sc-if value="{{ secSsnit.open }}" hint-placeholder-val="{{ true }}">
                   <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:start;padding:18px 22px;border-top:1px solid var(--border-secondary);">
-                    <span style="font-size:15px;color:var(--fg-secondary);">Deduct Social Security (SSNIT/Tier 2) from employee's Salary?</span>
+                    <span style="font-size:15px;color:var(--fg-secondary);">Deduct Social Security (SSNIT/Tier 2) from employee's Salary? <span style="color:var(--error-500);">*</span></span>
                     <div>
                       <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-                        <div onClick="{{ empPickSsnitYes }}" style="{{ ssnitYesStyle }}"><span style="display:inline-flex;flex-shrink:0;align-items:center;"><sc-if value="{{ ssnitYes }}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8Z" fill="#018F58"></path><path d="M5 8C5 6.34315 6.34315 5 8 5C9.65685 5 11 6.34315 11 8C11 9.65685 9.65685 11 8 11C6.34315 11 5 9.65685 5 8Z" fill="#fff"></path></svg></sc-if><sc-if value="{{ ssnitNo }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M8 0.5C12.1421 0.5 15.5 3.85786 15.5 8C15.5 12.1421 12.1421 15.5 8 15.5C3.85786 15.5 0.5 12.1421 0.5 8C0.5 3.85786 3.85786 0.5 8 0.5Z" stroke="#D5D7DA"></path></svg></sc-if></span>Yes</div>
-                        <div onClick="{{ empPickSsnitNo }}" style="{{ ssnitNoStyle }}"><span style="display:inline-flex;flex-shrink:0;align-items:center;"><sc-if value="{{ ssnitNo }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8Z" fill="#018F58"></path><path d="M5 8C5 6.34315 6.34315 5 8 5C9.65685 5 11 6.34315 11 8C11 9.65685 9.65685 11 8 11C6.34315 11 5 9.65685 5 8Z" fill="#fff"></path></svg></sc-if><sc-if value="{{ ssnitYes }}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M8 0.5C12.1421 0.5 15.5 3.85786 15.5 8C15.5 12.1421 12.1421 15.5 8 15.5C3.85786 15.5 0.5 12.1421 0.5 8C0.5 3.85786 3.85786 0.5 8 0.5Z" stroke="#D5D7DA"></path></svg></sc-if></span>No</div>
+                        <div onClick="{{ empPickSsnitYes }}" style="{{ ssnitYesStyle }}"><span style="display:inline-flex;flex-shrink:0;align-items:center;"><sc-if value="{{ ssnitYes }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8Z" fill="#018F58"></path><path d="M5 8C5 6.34315 6.34315 5 8 5C9.65685 5 11 6.34315 11 8C11 9.65685 9.65685 11 8 11C6.34315 11 5 9.65685 5 8Z" fill="#fff"></path></svg></sc-if><sc-if value="{{ ssnitYesUnsel }}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M8 0.5C12.1421 0.5 15.5 3.85786 15.5 8C15.5 12.1421 12.1421 15.5 8 15.5C3.85786 15.5 0.5 12.1421 0.5 8C0.5 3.85786 3.85786 0.5 8 0.5Z" stroke="#D5D7DA"></path></svg></sc-if></span>Yes</div>
+                        <div onClick="{{ empPickSsnitNo }}" style="{{ ssnitNoStyle }}"><span style="display:inline-flex;flex-shrink:0;align-items:center;"><sc-if value="{{ ssnitNo }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8Z" fill="#018F58"></path><path d="M5 8C5 6.34315 6.34315 5 8 5C9.65685 5 11 6.34315 11 8C11 9.65685 9.65685 11 8 11C6.34315 11 5 9.65685 5 8Z" fill="#fff"></path></svg></sc-if><sc-if value="{{ ssnitNoUnsel }}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M8 0.5C12.1421 0.5 15.5 3.85786 15.5 8C15.5 12.1421 12.1421 15.5 8 15.5C3.85786 15.5 0.5 12.1421 0.5 8C0.5 3.85786 3.85786 0.5 8 0.5Z" stroke="#D5D7DA"></path></svg></sc-if></span>No</div>
                       </div>
+                      <sc-if value="{{ fieldErr.ssnit.show }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--error-600);margin-top:8px;">{{ fieldErr.ssnit.msg }}</div></sc-if>
                     </div>
                   </div>
                   <sc-if value="{{ ssnitYes }}" hint-placeholder-val="{{ true }}">
@@ -658,18 +676,20 @@
                     </div>
                   </sc-if>
                   <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:start;padding:18px 22px;border-top:1px solid var(--border-tertiary);">
-                    <span style="font-size:15px;color:var(--fg-secondary);">Deduct Tier 3 Pension from employee's Salary?</span>
+                    <span style="font-size:15px;color:var(--fg-secondary);">Deduct Tier 3 Pension from employee's Salary? <span style="color:var(--error-500);">*</span></span>
                     <div>
                       <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-                        <div onClick="{{ pickTier3Yes }}" style="{{ tier3YesStyle }}"><span style="display:inline-flex;flex-shrink:0;align-items:center;"><sc-if value="{{ tier3Yes }}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8Z" fill="#018F58"></path><path d="M5 8C5 6.34315 6.34315 5 8 5C9.65685 5 11 6.34315 11 8C11 9.65685 9.65685 11 8 11C6.34315 11 5 9.65685 5 8Z" fill="#fff"></path></svg></sc-if><sc-if value="{{ tier3No }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M8 0.5C12.1421 0.5 15.5 3.85786 15.5 8C15.5 12.1421 12.1421 15.5 8 15.5C3.85786 15.5 0.5 12.1421 0.5 8C0.5 3.85786 3.85786 0.5 8 0.5Z" stroke="#D5D7DA"></path></svg></sc-if></span>Yes</div>
-                        <div onClick="{{ pickTier3No }}" style="{{ tier3NoStyle }}"><span style="display:inline-flex;flex-shrink:0;align-items:center;"><sc-if value="{{ tier3No }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8Z" fill="#018F58"></path><path d="M5 8C5 6.34315 6.34315 5 8 5C9.65685 5 11 6.34315 11 8C11 9.65685 9.65685 11 8 11C6.34315 11 5 9.65685 5 8Z" fill="#fff"></path></svg></sc-if><sc-if value="{{ tier3Yes }}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M8 0.5C12.1421 0.5 15.5 3.85786 15.5 8C15.5 12.1421 12.1421 15.5 8 15.5C3.85786 15.5 0.5 12.1421 0.5 8C0.5 3.85786 3.85786 0.5 8 0.5Z" stroke="#D5D7DA"></path></svg></sc-if></span>No</div>
+                        <div onClick="{{ pickTier3Yes }}" style="{{ tier3YesStyle }}"><span style="display:inline-flex;flex-shrink:0;align-items:center;"><sc-if value="{{ tier3Yes }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8Z" fill="#018F58"></path><path d="M5 8C5 6.34315 6.34315 5 8 5C9.65685 5 11 6.34315 11 8C11 9.65685 9.65685 11 8 11C6.34315 11 5 9.65685 5 8Z" fill="#fff"></path></svg></sc-if><sc-if value="{{ tier3YesUnsel }}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M8 0.5C12.1421 0.5 15.5 3.85786 15.5 8C15.5 12.1421 12.1421 15.5 8 15.5C3.85786 15.5 0.5 12.1421 0.5 8C0.5 3.85786 3.85786 0.5 8 0.5Z" stroke="#D5D7DA"></path></svg></sc-if></span>Yes</div>
+                        <div onClick="{{ pickTier3No }}" style="{{ tier3NoStyle }}"><span style="display:inline-flex;flex-shrink:0;align-items:center;"><sc-if value="{{ tier3No }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M0 8C0 3.58172 3.58172 0 8 0C12.4183 0 16 3.58172 16 8C16 12.4183 12.4183 16 8 16C3.58172 16 0 12.4183 0 8Z" fill="#018F58"></path><path d="M5 8C5 6.34315 6.34315 5 8 5C9.65685 5 11 6.34315 11 8C11 9.65685 9.65685 11 8 11C6.34315 11 5 9.65685 5 8Z" fill="#fff"></path></svg></sc-if><sc-if value="{{ tier3NoUnsel }}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M8 0.5C12.1421 0.5 15.5 3.85786 15.5 8C15.5 12.1421 12.1421 15.5 8 15.5C3.85786 15.5 0.5 12.1421 0.5 8C0.5 3.85786 3.85786 0.5 8 0.5Z" stroke="#D5D7DA"></path></svg></sc-if></span>No</div>
                       </div>
+                      <sc-if value="{{ fieldErr.tier3.show }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--error-600);margin-top:8px;">{{ fieldErr.tier3.msg }}</div></sc-if>
                       <sc-if value="{{ tier3Yes }}" hint-placeholder-val="{{ true }}">
                         <div style="margin-top:14px;">
-                          <span style="display: flex; align-items: stretch; border: 1px solid var(--border-primary); border-radius: 8px; overflow: hidden; max-width: 360px; width: 100%">
+                          <span style="display: flex; align-items: stretch; border: 1px solid {{ fieldErr.tier3Amount.border }}; border-radius: 8px; overflow: hidden; max-width: 360px; width: 100%">
                             <span style="display:inline-flex;align-items:center;padding:0 14px;background:var(--bg-secondary);border-right:1px solid var(--border-primary);font-size:15px;color:var(--fg-tertiary);">{{ tier3Unit }}</span>
                             <input value="{{ ef.tier3Amount }}" onChange="{{ eh.tier3Amount }}" placeholder="0.00" style="flex:1;min-width:0;border:none;padding:11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);outline:none;background:#fff;">
                           </span>
+                          <sc-if value="{{ fieldErr.tier3Amount.show }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--error-600);margin-top:6px;">{{ fieldErr.tier3Amount.msg }}</div></sc-if>
                           <div style="display:inline-flex;margin-top:10px;border:1px solid var(--border-primary);border-radius:8px;overflow:hidden;">
                             <span role="button" onClick="{{ setTier3Fixed }}" style="{{ tier3FixedStyle }}">Fixed Amount</span>
                             <span role="button" onClick="{{ setTier3Pct }}" style="{{ tier3PctStyle }}">% of Basic Salary</span>
@@ -697,15 +717,15 @@
                 <sc-if value="{{ secContact.stepHeader }}" hint-placeholder-val="{{ false }}"><div style="padding:2px 22px 18px;"><div style="height:8px;background:var(--gray-100);border-radius:999px;overflow:hidden;"><div style="height:100%;width:{{ secContact.progressW }};background:var(--brand-500);transition:width 240ms ease;"></div></div></div></sc-if>
                 <sc-if value="{{ secContact.open }}" hint-placeholder-val="{{ true }}">
                   <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:center;padding:16px 22px;border-top:1px solid var(--border-secondary);">
-                    <span style="font-size:15px;color:var(--fg-secondary);">Email</span>
-                    <input value="{{ ef.email }}" onChange="{{ eh.email }}" type="email" placeholder="Email" style="width:100%;box-sizing:border-box;padding:11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:#fff;border:1px solid var(--border-primary);border-radius:8px;outline:none;">
+                    <span style="font-size:15px;color:var(--fg-secondary);">Email <span style="color:var(--error-500);">*</span></span>
+                    <div><input value="{{ ef.email }}" onChange="{{ eh.email }}" type="email" placeholder="Email" style="width:100%;box-sizing:border-box;padding:11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:#fff;border:1px solid {{ fieldErr.email.border }};border-radius:8px;outline:none;"><sc-if value="{{ fieldErr.email.show }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--error-600);margin-top:6px;">{{ fieldErr.email.msg }}</div></sc-if></div>
                   </div>
                   <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:center;padding:16px 22px;border-top:1px solid var(--border-tertiary);">
-                    <span style="font-size:15px;color:var(--fg-secondary);">Phone</span>
-                    <span style="display:flex;align-items:stretch;border:1px solid var(--border-primary);border-radius:8px;overflow:hidden;">
+                    <span style="font-size:15px;color:var(--fg-secondary);">Phone <span style="color:var(--error-500);">*</span></span>
+                    <div><span style="display:flex;align-items:stretch;border:1px solid {{ fieldErr.phone.border }};border-radius:8px;overflow:hidden;">
                       <span style="display:inline-flex;align-items:center;padding:0 14px;background:var(--bg-secondary);border-right:1px solid var(--border-primary);font-size:15px;color:var(--fg-tertiary);">+233</span>
                       <input value="{{ ef.phone }}" onChange="{{ eh.phone }}" type="tel" placeholder="" style="flex:1;min-width:0;border:none;padding:11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);outline:none;background:#fff;">
-                    </span>
+                    </span><sc-if value="{{ fieldErr.phone.show }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--error-600);margin-top:6px;">{{ fieldErr.phone.msg }}</div></sc-if></div>
                   </div>
                 </sc-if>
               </div>
@@ -1184,8 +1204,30 @@ function firstName(name) {
   return (name || '').trim().split(/\s+/)[0] || 'they';
 }
 function emptyEmpForm() {
-  return { firstName: '', surname: '', otherNames: '', jobRole: '', department: '', employmentType: '', position: '', staffNumber: '', ghanaCard: '', tin: '', basicSalary: '', ssnit: 'yes', tier3: 'yes', tier3Amount: '', tier3Mode: 'fixed', email: '', phone: '', accountNumber: '', accountName: '', bankBranch: '' };
+  return { firstName: '', surname: '', otherNames: '', jobRole: '', department: '', employmentType: '', position: '', staffNumber: '', ghanaCard: '', tin: '', basicSalary: '', ssnit: '', tier3: '', tier3Amount: '', tier3Mode: 'percent', email: '', phone: '', accountNumber: '', accountName: '', bankBranch: '' };
 }
+// Required fields enforced before an employee can be saved or imported.
+// "Other Names" is the only optional name field. Tier 3 must be answered; when
+// "Yes", the percentage/amount paid is required too.
+const REQUIRED_EMP = [
+  ['firstName', 'First name'], ['surname', 'Last name'], ['email', 'Email'],
+  ['phone', 'Phone number'], ['employmentType', 'Employment type'], ['position', 'Position'],
+  ['ssnit', 'SSNIT contribution'], ['basicSalary', 'Basic salary / contract amount'], ['tier3', 'Tier 3 pension'],
+];
+// Which accordion step each field lives in (for the one-by-one step flow).
+const FIELD_STEP = {
+  firstName: 'identity', surname: 'identity',
+  employmentType: 'employment', position: 'employment',
+  basicSalary: 'comp', ssnit: 'ssnit', tier3: 'ssnit', tier3Amount: 'ssnit',
+  email: 'contact', phone: 'contact',
+};
+function empErrors(f) {
+  f = f || {}; const e = {};
+  REQUIRED_EMP.forEach(function (p) { const v = f[p[0]]; if (v == null || String(v).trim() === '') e[p[0]] = p[1] + ' is required'; });
+  if (f.tier3 === 'yes' && (f.tier3Amount == null || String(f.tier3Amount).trim() === '')) e.tier3Amount = 'Enter the Tier 3 percentage paid';
+  return e;
+}
+function empComplete(f) { return Object.keys(empErrors(f)).length === 0; }
 function emptyForm() {
   return {
     fullName: '', jobRole: '', ghanaCard: '', staffNumber: '',
@@ -1212,11 +1254,11 @@ const STATUS2 = {
   archived: { label: 'Archived', fg: '#5925DC', bg: '#F4F3FF', border: '#D9D6FE' },
 };
 const IMPORT_PREVIEW = [
-  { initials: 'KN', name: 'Kwame Nkrumah', phoneLocal: '054 018 8324', phoneRoster: '54 018 8324', employmentType: 'Full Time', ghanaCard: 'GHA-472019835-6', basic: 'GH\u20b5 4,200.00' },
-  { initials: 'LH', name: 'Leila Hassan', phoneLocal: '020 774 1290', phoneRoster: '20 774 1290', employmentType: 'Part Time', ghanaCard: 'GHA-518340027-1', basic: 'GH\u20b5 2,650.00' },
-  { initials: 'SP', name: 'Sofia Patel', phoneLocal: '055 318 6047', phoneRoster: '55 318 6047', employmentType: 'Contract', ghanaCard: 'GHA-209917744-8', basic: 'GH\u20b5 3,800.00' },
-  { initials: 'MR', name: 'Mateo Rivera', phoneLocal: '024 902 4416', phoneRoster: '24 902 4416', employmentType: 'Intern', ghanaCard: 'GHA-663052198-4', basic: 'GH\u20b5 1,500.00' },
-  { initials: 'AS', name: 'Aisha Suleiman', phoneLocal: '027 663 7728', phoneRoster: '27 663 7728', employmentType: 'NSS', ghanaCard: 'GHA-871246630-9', basic: 'GH\u20b5 1,230.00' },
+  { initials: 'KN', name: 'Kwame Nkrumah', phoneLocal: '054 018 8324', phoneRoster: '54 018 8324', employmentType: 'Full Time', position: 'Operations Manager', email: 'kwame.nkrumah@acmefoods.gh', ghanaCard: 'GHA-472019835-6', tin: 'P0012845673', basic: 'GH\u20b5 4,200.00', ssnit: 'yes', tier3: 'yes', tier3Amount: '5', tier3Mode: 'percent', accountNumber: '1400021893450', accountName: 'Kwame Nkrumah', bankBranch: 'GCB Bank \u2014 Accra Main' },
+  { initials: 'LH', name: 'Leila Hassan', phoneLocal: '020 774 1290', phoneRoster: '20 774 1290', employmentType: 'Part Time', position: 'Customer Support Lead', email: 'leila.hassan@acmefoods.gh', ghanaCard: 'GHA-518340027-1', tin: 'P0009384127', basic: 'GH\u20b5 2,650.00', ssnit: 'yes', tier3: 'no', tier3Amount: '', tier3Mode: 'percent', accountNumber: '0581124093871', accountName: 'Leila Hassan', bankBranch: 'Ecobank \u2014 Osu' },
+  { initials: 'SP', name: 'Sofia Patel', phoneLocal: '055 318 6047', phoneRoster: '55 318 6047', employmentType: 'Contract', position: 'Software Engineer', email: 'sofia.patel@acmefoods.gh', ghanaCard: 'GHA-209917744-8', tin: 'P0017265340', basic: 'GH\u20b5 3,800.00', ssnit: 'yes', tier3: 'yes', tier3Amount: '5', tier3Mode: 'percent', accountNumber: '1011556720394', accountName: 'Sofia Patel', bankBranch: 'Stanbic Bank \u2014 Airport City' },
+  { initials: 'MR', name: 'Mateo Rivera', phoneLocal: '024 902 4416', phoneRoster: '24 902 4416', employmentType: 'Intern', position: 'Marketing Associate', email: 'mateo.rivera@acmefoods.gh', ghanaCard: 'GHA-663052198-4', tin: 'P0021748905', basic: 'GH\u20b5 1,500.00', ssnit: 'no', tier3: 'no', tier3Amount: '', tier3Mode: 'percent', accountNumber: '0301889245017', accountName: 'Mateo Rivera', bankBranch: 'Absa Bank \u2014 Ring Road' },
+  { initials: 'AS', name: 'Aisha Suleiman', phoneLocal: '027 663 7728', phoneRoster: '27 663 7728', employmentType: 'NSS', position: 'Finance Officer', email: 'aisha.suleiman@acmefoods.gh', ghanaCard: 'GHA-871246630-9', tin: 'P0014530972', basic: 'GH\u20b5 1,230.00', ssnit: 'yes', tier3: 'no', tier3Amount: '', tier3Mode: 'percent', accountNumber: '1400078123640', accountName: 'Aisha Suleiman', bankBranch: 'Fidelity Bank \u2014 Tema' },
 ];
 const TONE = {
   success: { statusColor: 'var(--success-700)', statusBg: 'var(--success-50)', statusBorder: 'var(--success-200)', statusDot: 'var(--success-500)' },
@@ -1275,7 +1317,7 @@ class Component extends DCLogic {
   state = {
     employees: [],
     methodOpen: false, method: 'paye', adding: false, addingStep: 'choose', uploadedFile: null, uploadStatus: 'idle', viewEmp: null, bannerLeaving: false, importDone: false, empDirty: false, rosterView: null,
-    empForm: emptyEmpForm(), empBaseForm: emptyEmpForm(), empEdits: {}, empCollapsed: {}, empStep: 0, rosterSearch: '', rosterPage: 1, rosterFilter: '', addNew: false, exitConfirm: false,
+    empForm: emptyEmpForm(), empBaseForm: emptyEmpForm(), empEdits: {}, empCollapsed: {}, empErrs: {}, importTried: false, empStep: 0, rosterSearch: '', rosterPage: 1, rosterFilter: '', addNew: false, exitConfirm: false,
     drawerOpen: false, editIndex: null, form: emptyForm(), errors: {},
     departments: DEFAULT_DEPTS.map(d => ({ ...d })), deptOpen: false, newDept: '',
     jobRoles: DEFAULT_ROLES.map(r => ({ ...r })), roleOpen: false, newRole: '',
@@ -1400,6 +1442,14 @@ class Component extends DCLogic {
   };
   flowExit = () => this.setState({ adding: false, addNew: false, rosterView: null, viewEmp: null, addingStep: 'choose', uploadStatus: 'idle', uploadedFile: null, empDirty: false, empForm: emptyEmpForm(), empBaseForm: emptyEmpForm(), empStep: 0, empEdits: {}, exitConfirm: false, methodOpen: false, addTypeOpen: false });
   requestExit = () => { if (this.flowHasProgress()) this.setState({ exitConfirm: true }); else this.flowExit(); };
+  // The header back arrow steps up ONE breadcrumb level, mirroring the trail
+  // (People › Import your employees › Name). Only a top-level step leaves the flow.
+  headerBack = () => {
+    const s = this.state;
+    if (s.viewEmp != null) { this.setState({ viewEmp: null, empErrs: {} }); return; }   // employee → import list
+    if (s.adding && !s.addNew && !s.rosterView && s.addingStep === 'upload') { this.setState({ addingStep: 'choose' }); return; } // upload → choose method
+    this.requestExit();   // top level (import list / add-one / roster edit) → People, with unsaved-changes guard
+  };
   cancelExit = () => this.setState({ exitConfirm: false });
   confirmExit = () => this.flowExit();
   closeAdding = () => this.flowExit();
@@ -1464,11 +1514,8 @@ class Component extends DCLogic {
   openEmpTypeHelp = () => this.setState({ empTypeHelpOpen: true, empTypeOpen: false });
   closeEmpTypeHelp = () => this.setState({ empTypeHelpOpen: false });
   openEmp = (i) => {
-    const rec = IMPORT_PREVIEW[i];
-    const saved = this.state.empEdits[i];
-    const nm = (rec.name || '').trim().split(/\s+/);
-    const base = saved ? { ...saved } : { ...emptyEmpForm(), firstName: nm[0] || '', surname: nm.slice(1).join(' '), employmentType: rec.employmentType, ghanaCard: rec.ghanaCard };
-    this.setState({ viewEmp: i, empForm: base, empBaseForm: base, empCollapsed: {}, empDirty: false });
+    const base = this._effImportForm(i);
+    this.setState({ viewEmp: i, empForm: base, empBaseForm: base, empCollapsed: {}, empErrs: {}, empDirty: false });
   };
   empSet = (field) => (ev) => { const v = (ev && ev.target) ? ev.target.value : ev; this.setState(s => ({ empForm: { ...s.empForm, [field]: v }, empDirty: true })); };
   empSetVal = (field, v) => this.setState(s => ({ empForm: { ...s.empForm, [field]: v }, empDirty: true }));
@@ -1482,13 +1529,22 @@ class Component extends DCLogic {
   empSave = () => {
     if (this.state.addNew) {
       const f = this.state.empForm;
+      const errs = empErrors(f);
+      if (Object.keys(errs).length) {
+        let jump = this.state.empStep;
+        const order = ['identity', 'employment', 'comp', 'ssnit', 'contact', 'bank', 'review'];
+        for (let si = 0; si < order.length; si++) { if (Object.keys(errs).some(k => FIELD_STEP[k] === order[si])) { jump = si; break; } }
+        this.setState({ empErrs: errs, empStep: jump });
+        this.showToast('Fill in all required fields before saving', 'error');
+        return;
+      }
       const name = ((f.firstName || '') + ' ' + (f.surname || '')).trim() || 'New employee';
       const ini = name.trim().split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase();
-      const complete = !!(f.basicSalary && f.accountNumber && f.accountName);
-      const rec = { name: name, fullName: name, initials: ini, employmentType: f.employmentType || '', type: f.employmentType || '', jobRole: f.jobRole || '', department: f.department || '', phone: f.phone || '', email: f.email || '', state: complete ? 'ready' : 'missing', tone: complete ? 'success' : 'gray' };
+      const complete = !!(f.accountNumber && f.accountName);
+      const rec = { name: name, fullName: name, initials: ini, employmentType: f.employmentType || '', type: f.employmentType || '', position: f.position || '', jobRole: f.jobRole || '', department: f.department || '', phone: f.phone || '', email: f.email || '', basicSalary: f.basicSalary || '', basic: f.basicSalary || '', ssnit: f.ssnit || '', tier3: f.tier3 || '', tier3Amount: f.tier3Amount || '', tier3Mode: f.tier3Mode || '', state: complete ? 'ready' : 'missing', tone: complete ? 'success' : 'gray' };
       if (window.AppState && window.AppState.addEmployees) { window.AppState.addEmployees(rec); const a = window.AppState.get(); window.AppState.set({ employees: 'done', payroll: a.payroll === 'locked' ? 'unlocked' : a.payroll }); }
       const wasEmpty = (this.state.employees || []).length === 0;
-      this.setState(s => ({ employees: [...s.employees, rec], addNew: false, dataPref: 'Populated' }));
+      this.setState(s => ({ employees: [...s.employees, rec], addNew: false, empErrs: {}, dataPref: 'Populated' }));
       this.showToast('Employee added successfully');
       if (wasEmpty) this.advanceToNavPayroll();
       return;
@@ -1499,12 +1555,38 @@ class Component extends DCLogic {
       this.showToast('Employee details saved');
       return;
     }
-    const i = this.state.viewEmp; this.setState(s => ({ empEdits: { ...s.empEdits, [i]: { ...s.empForm } }, viewEmp: null })); this.showToast('Employee details saved');
+    const errs = empErrors(this.state.empForm);
+    if (Object.keys(errs).length) {
+      this.setState({ empErrs: errs, empCollapsed: {} });
+      this.showToast('Fill in all required fields before saving', 'error');
+      return;
+    }
+    const i = this.state.viewEmp; this.setState(s => ({ empEdits: { ...s.empEdits, [i]: { ...s.empForm } }, empErrs: {}, viewEmp: null })); this.showToast('Employee details saved');
   };
   requestFromEmployee = () => this.showToast('Request sent to the employee to complete their details');
   viewEmployee = () => { location.href = 'Employee Profile.dc.html'; };
+  // The effective edited form for an import row (saved edits, or the pre-filled base).
+  _effImportForm = (i) => {
+    const saved = this.state.empEdits[i];
+    if (saved) return saved;
+    const rec = IMPORT_PREVIEW[i];
+    const nm = (rec.name || '').trim().split(/\s+/);
+    const basicNum = (rec.basic || '').toString().replace(/[^0-9.]/g, '');
+    return { ...emptyEmpForm(), firstName: nm[0] || '', surname: nm.slice(1).join(' '), employmentType: rec.employmentType, position: rec.position || '', email: rec.email || '', ghanaCard: rec.ghanaCard, tin: rec.tin || '', phone: rec.phoneRoster || '', basicSalary: basicNum, ssnit: rec.ssnit || '', tier3: rec.tier3 || '', tier3Amount: rec.tier3Amount || '', tier3Mode: rec.tier3Mode || 'percent', accountNumber: rec.accountNumber || '', accountName: rec.accountName || '', bankBranch: rec.bankBranch || '' };
+  };
   importEmployees = () => {
-    const canon = IMPORT_PREVIEW.map(p => ({ fullName: p.name, initials: p.initials, phone: p.phoneRoster, employmentType: p.employmentType, jobRole: '\u2014', email: '', status: 'Active' }));
+    const incomplete = IMPORT_PREVIEW.map((p, i) => i).filter(i => !empComplete(this._effImportForm(i)));
+    if (incomplete.length) {
+      this.setState({ importTried: true });
+      this.showToast(incomplete.length + (incomplete.length === 1 ? ' employee is' : ' employees are') + ' missing required details — complete every row to import.', 'error');
+      this.openEmp(incomplete[0]);
+      return;
+    }
+    const canon = IMPORT_PREVIEW.map((p, i) => {
+      const f = this._effImportForm(i);
+      const name = ((f.firstName || '') + ' ' + (f.surname || '')).trim() || p.name;
+      return { fullName: name, name: name, initials: p.initials, phone: f.phone || p.phoneRoster, employmentType: f.employmentType || p.employmentType, type: f.employmentType || p.employmentType, position: f.position || '', jobRole: f.jobRole || '\u2014', department: f.department || '', email: f.email || '', ghanaCard: f.ghanaCard || p.ghanaCard, basicSalary: f.basicSalary || '', basic: f.basicSalary || '', ssnit: f.ssnit || '', tier3: f.tier3 || '', tier3Amount: f.tier3Amount || '', tier3Mode: f.tier3Mode || '', status: 'Active', state: 'ready', tone: 'success' };
+    });
     if (window.AppState && window.AppState.setEmployees) {
       window.AppState.setEmployees(canon);
       const a = window.AppState.get();
@@ -1657,9 +1739,15 @@ class Component extends DCLogic {
       const sx = _cr.x - PAD, sy = _cr.y - PAD, sw = _cr.w + PAD * 2, sh = _cr.h + PAD * 2;
       const vw = (typeof window !== 'undefined' && window.innerWidth) || 1440;
       const vh = (typeof window !== 'undefined' && window.innerHeight) || 900;
-      const CW = 380;
-      let left = sx + sw + 16, top = Math.max(16, Math.min(_cr.y, vh - 260));
-      if (left + CW > vw - 16) { left = Math.max(16, Math.min(sx + sw / 2 - CW / 2, vw - CW - 16)); top = Math.min(sy + sh + 16, vh - 260); }
+      const CW = 380, CH = 240, GAP = 16, M = 16;
+      const fitV = (t) => Math.max(M, Math.min(t, vh - CH - M));
+      const fitH = (l) => Math.max(M, Math.min(l, vw - CW - M));
+      let left, top;
+      if (vw - (sx + sw) >= CW + GAP + M) { left = sx + sw + GAP; top = fitV(_cr.y - PAD); }
+      else if (vh - (sy + sh) >= CH + GAP + M) { top = sy + sh + GAP; left = fitH(sx + sw / 2 - CW / 2); }
+      else if (sy >= CH + GAP + M) { top = sy - GAP - CH; left = fitH(sx + sw / 2 - CW / 2); }
+      else if (sx >= CW + GAP + M) { left = sx - GAP - CW; top = fitV(_cr.y - PAD); }
+      else { left = fitH(sx + sw / 2 - CW / 2); top = (sy >= vh - (sy + sh)) ? M : (vh - CH - M); }
       coachVals = { hasSpot: true, spotStyle: 'left:' + sx + 'px;top:' + sy + 'px;width:' + sw + 'px;height:' + sh + 'px', cardStyle: 'left:' + left + 'px;top:' + top + 'px;' };
     }
     const COACH_CONTENT = {
@@ -1675,7 +1763,16 @@ class Component extends DCLogic {
     const empRec = rosterViewActive ? (s.employees[s.rosterView] || {}) : (importPreview ? IMPORT_PREVIEW[viewEmp] : null);
     const ef = s.empForm;
     const empSsnitYes = ef.ssnit === 'yes';
+    const empSsnitNo = ef.ssnit === 'no';
     const empTier3Yes = ef.tier3 === 'yes';
+    const empTier3No = ef.tier3 === 'no';
+    const _errs = s.empErrs || {};
+    const fErr = {};
+    ['firstName', 'surname', 'email', 'phone', 'basicSalary', 'tier3Amount', 'employmentType', 'position', 'ssnit', 'tier3'].forEach(k => {
+      fErr[k] = { show: !!_errs[k], msg: _errs[k] || '', border: _errs[k] ? 'var(--error-500)' : 'var(--border-primary)' };
+    });
+    const errList = REQUIRED_EMP.map(p => p[0]).concat(['tier3Amount']).filter(k => _errs[k]).map(k => _errs[k]);
+    const editorErr = { show: errList.length > 0, count: errList.length, items: errList.map((m, i) => ({ msg: m, key: 'e' + i })) };
     const empMissing = rosterViewActive ? (empRec && empRec.state === 'missing') : !(ef.basicSalary && ef.accountNumber && ef.accountName);
     const segStyle = (on) => 'display:flex;align-items:center;gap:10px;padding:12px 18px;border:1.5px solid ' + (on ? 'var(--brand-500)' : 'var(--border-primary)') + ';border-radius:10px;cursor:pointer;background:#fff;font-family:var(--font-body);font-size:15px;font-weight:600;color:var(--fg-primary);transition:border-color 120ms ease;';
     const dotStyle = (on) => 'flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:999px;border:1.5px solid ' + (on ? 'var(--brand-600)' : 'var(--border-primary)') + ';background:' + (on ? 'var(--brand-600)' : 'transparent') + ';';
@@ -1845,7 +1942,18 @@ class Component extends DCLogic {
       importedBanner: s.importedBanner,
       importedFile: s.importedFile || (s.uploadedFile ? s.uploadedFile.name : ''),
       dismissBanner: this.dismissBanner,
-      importList: IMPORT_PREVIEW.map((p, i) => ({ initials: p.initials, name: p.name, phone: p.phoneLocal, employmentType: p.employmentType, onView: () => this.openEmp(i) })),
+      importList: IMPORT_PREVIEW.map((p, i) => {
+        const ok = empComplete(this._effImportForm(i));
+        return { initials: p.initials, name: p.name, phone: p.phoneLocal, employmentType: p.employmentType, onView: () => this.openEmp(i),
+          complete: ok, incomplete: !ok,
+          showStatus: ok || s.importTried,
+          statusLabel: ok ? 'Ready' : 'Needs details',
+          statusColor: ok ? 'var(--success-700)' : 'var(--warning-700)',
+          statusBg: ok ? 'var(--success-50)' : 'var(--warning-50)',
+          statusBorder: ok ? 'var(--success-200)' : 'var(--warning-200)',
+          viewLabel: ok ? 'Edit' : 'Complete details',
+          viewColor: ok ? 'var(--brand-700)' : 'var(--warning-700)' };
+      }),
       empPreview: empPreview,
       notEmpPreview: !empPreview,
       uploadView: s.adding && s.addingStep === 'upload' && viewEmp == null,
@@ -1879,6 +1987,8 @@ class Component extends DCLogic {
         { label: 'Basic salary', value: empRec.basic },
       ] : [],
       ef: ef,
+      fieldErr: fErr,
+      editorErr: editorErr,
       eh: {
         firstName: this.empSet('firstName'), surname: this.empSet('surname'), otherNames: this.empSet('otherNames'),
         jobRole: this.empSet('jobRole'), department: this.empSet('department'), employmentType: this.empSet('employmentType'), position: this.empSet('position'),
@@ -1957,9 +2067,9 @@ class Component extends DCLogic {
       clearEmpPhoto: this.clearEmpPhoto,
       empMissing: empMissing,
       showEmpBanner: empPreview && !s.addNew && empMissing,
-      ssnitYes: empSsnitYes, ssnitNo: !empSsnitYes, tier3Yes: empTier3Yes, tier3No: !empTier3Yes,
-      ssnitYesStyle: segStyle(empSsnitYes), ssnitNoStyle: segStyle(!empSsnitYes), ssnitYesDot: dotStyle(empSsnitYes), ssnitNoDot: dotStyle(!empSsnitYes),
-      tier3YesStyle: segStyle(empTier3Yes), tier3NoStyle: segStyle(!empTier3Yes), tier3YesDot: dotStyle(empTier3Yes), tier3NoDot: dotStyle(!empTier3Yes),
+      ssnitYes: empSsnitYes, ssnitNo: empSsnitNo, ssnitYesUnsel: !empSsnitYes, ssnitNoUnsel: !empSsnitNo, tier3Yes: empTier3Yes, tier3No: empTier3No, tier3YesUnsel: !empTier3Yes, tier3NoUnsel: !empTier3No,
+      ssnitYesStyle: segStyle(empSsnitYes), ssnitNoStyle: segStyle(empSsnitNo), ssnitYesDot: dotStyle(empSsnitYes), ssnitNoDot: dotStyle(empSsnitNo),
+      tier3YesStyle: segStyle(empTier3Yes), tier3NoStyle: segStyle(empTier3No), tier3YesDot: dotStyle(empTier3Yes), tier3NoDot: dotStyle(empTier3No),
       tier3FixedStyle: tabStyle(ef.tier3Mode === 'fixed'), tier3PctStyle: tabStyle(ef.tier3Mode === 'percent'),
       tier3Unit: ef.tier3Mode === 'percent' ? '%' : 'GHS',
       ssnitAmount: ssnitAmount,
@@ -1975,7 +2085,7 @@ class Component extends DCLogic {
       importedCount: IMPORT_PREVIEW.length,
       goPeopleCrumb: this.goPeopleCrumb,
       goImportCrumb: this.goImportCrumb,
-      headerBack: this.requestExit,
+      headerBack: this.headerBack,
       peopleCrumbCursor: inFlow ? 'pointer' : 'default',
       importCrumbColor: empPreview ? 'var(--fg-secondary)' : 'var(--brand-700)',
       importCrumbCursor: empPreview ? 'pointer' : 'default',

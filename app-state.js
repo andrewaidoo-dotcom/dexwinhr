@@ -160,7 +160,7 @@
     e1: { basic: 5000,  taxAllow: 800, nonTax: 500, overtime: 0,      staffLoan: 0,   salaryAdvance: 0 },
     e2: { basic: 5000,  taxAllow: 500, nonTax: 0,   overtime: 0,      staffLoan: 0,   salaryAdvance: 0 },
     e3: { basic: 10000, taxAllow: 0,   nonTax: 400, overtime: 0,      staffLoan: 0,   salaryAdvance: 0 },
-    e4: { basic: 10000, taxAllow: 800, nonTax: 500, overtime: 590.97, staffLoan: 0,   salaryAdvance: 5000 },
+    e4: { basic: 8000,  taxAllow: 0,   nonTax: 0,   overtime: 0,      staffLoan: 0,   salaryAdvance: 0, contractor: true },
     e5: { basic: 6000,  taxAllow: 600, nonTax: 300, overtime: 0,      staffLoan: 0,   salaryAdvance: 0 },
     e6: { basic: 3500,  taxAllow: 0,   nonTax: 200, overtime: 0,      staffLoan: 400, salaryAdvance: 0 },
   };
@@ -196,18 +196,21 @@
     });
     var otherDed = (items.deductions || []).map(function (d) { return { name: d.name, tag: d.tag, amount: Number(d.amount) || 0 }; });
     var otherDedTotal = otherDed.reduce(function (a, x) { return a + x.amount; }, 0);
-    var ssnit = _round2(b.basic * 0.055);
-    var taxableIncome = _round2(b.basic - ssnit + taxAllow);
-    var paye = _round2(payeOf(taxableIncome));
-    var otTax = _round2(otTaxOf(b.basic, overtime));
+    var isContractor = !!b.contractor;
     var gross = _round2(b.basic + taxAllow + nonTax + overtime);
-    var totalDeduction = _round2(ssnit + paye + otTax + b.staffLoan + b.salaryAdvance + otherDedTotal);
+    // Contractors: no SSNIT/PAYE/OT tax — a flat 7.5% withholding tax (WHT) on gross instead.
+    var ssnit = isContractor ? 0 : _round2(b.basic * 0.055);
+    var taxableIncome = isContractor ? 0 : _round2(b.basic - ssnit + taxAllow);
+    var paye = isContractor ? 0 : _round2(payeOf(taxableIncome));
+    var wht = isContractor ? _round2(gross * 0.075) : 0;
+    var otTax = isContractor ? 0 : _round2(otTaxOf(b.basic, overtime));
+    var totalDeduction = _round2(ssnit + paye + wht + otTax + b.staffLoan + b.salaryAdvance + otherDedTotal);
     var net = _round2(gross - totalDeduction);
     return {
       basic: b.basic, taxAllow: _round2(taxAllow), nonTax: _round2(nonTax), overtime: _round2(overtime),
-      gross: gross, taxableIncome: taxableIncome, ssnit: ssnit, paye: paye, otTax: otTax,
+      gross: gross, taxableIncome: taxableIncome, ssnit: ssnit, paye: paye, wht: wht, otTax: otTax,
       staffLoan: b.staffLoan, salaryAdvance: b.salaryAdvance, otherDed: otherDed,
-      totalDeduction: totalDeduction, net: net,
+      totalDeduction: totalDeduction, net: net, contractor: isContractor,
       instanceAdditions: items.additions || [], instanceDeductions: items.deductions || [],
     };
   }

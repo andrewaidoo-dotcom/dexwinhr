@@ -52,7 +52,7 @@
     <!-- PAGE HEADER -->
     <div style="flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:22px 40px;border-bottom:1px solid var(--border-secondary);background:#fff;position:sticky;top:72px;z-index:19;">
       <div style="display:flex;align-items:center;gap:16px;min-width:0;">
-        <a href="Payroll Page.dc.html" aria-label="Back" style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--border-secondary);border-radius:var(--radius-full);color:var(--fg-secondary);box-shadow:var(--shadow-xs);text-decoration:none;flex-shrink:0;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+        <a href="Payroll Page.dc.html" onClick="{{ goBackStep }}" aria-label="Back" style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--border-secondary);border-radius:var(--radius-full);color:var(--fg-secondary);box-shadow:var(--shadow-xs);text-decoration:none;flex-shrink:0;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
         </a>
         <h1 style="font-family:var(--font-display);font-size:28px;line-height:34px;font-weight:800;letter-spacing:-0.02em;margin:0;color:var(--fg-primary);">Add a pay addition</h1>
@@ -447,6 +447,8 @@ class Component extends DCLogic {
     });
   }
 
+  goBackStep = (ev) => { if (ev && ev.preventDefault) ev.preventDefault(); if (window.history.length > 1) window.history.back(); else window.location.href = 'Payroll Page.dc.html'; };
+
   renderVals() {
     const s = this.state;
     const isCash = s.type === 'cash', isBik = s.type === 'bik', isReimb = s.type === 'reimb';
@@ -507,6 +509,7 @@ class Component extends DCLogic {
     });
 
     return {
+      goBackStep: this.goBackStep,
       today: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
       typeLabel, typeLabelLower: typeLabel.toLowerCase(),
       isCash, isBik, isReimb, typeOptions, banner,
