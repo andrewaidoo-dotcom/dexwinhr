@@ -228,10 +228,10 @@
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg>
               Save &amp; Exit
             </button><sc-if value="{{ stepUpload }}" hint-placeholder-val="{{ false }}"><sc-if value="{{ importReady }}" hint-placeholder-val="{{ false }}"><button onClick="{{ importEmployees }}" style="display:inline-flex;align-items:center;gap:9px;padding:0 28px;height:48px;font-family:var(--font-body);font-weight:700;font-size:16px;color:#fff;background-color:#018F58;border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background-color 120ms ease;" style-hover="background-color:#016F45;">
-                Import Employees
+                Add Employees
                 <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M18.3307 15L15.8307 17.5L13.3307 15M15.8307 17.5V12.5M12.9141 2.7423C14.1357 3.23679 14.9974 4.43443 14.9974 5.83333C14.9974 7.23224 14.1357 8.42988 12.9141 8.92437M9.9974 12.5H6.66406C5.11092 12.5 4.33435 12.5 3.72178 12.7537C2.90502 13.092 2.25611 13.741 1.9178 14.5577C1.66406 15.1703 1.66406 15.9469 1.66406 17.5M11.2474 5.83333C11.2474 7.67428 9.75501 9.16667 7.91406 9.16667C6.07311 9.16667 4.58073 7.67428 4.58073 5.83333C4.58073 3.99238 6.07311 2.5 7.91406 2.5C9.75501 2.5 11.2474 3.99238 11.2474 5.83333Z" stroke="currentColor" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"></path></svg>
               </button></sc-if><sc-if value="{{ importNotReady }}" hint-placeholder-val="{{ true }}"><span style="display:inline-flex;align-items:center;gap:9px;padding:0 28px;height:48px;font-family:var(--font-body);font-weight:700;font-size:16px;color:var(--fg-quaternary);background:var(--gray-100);border:1px solid var(--border-secondary);border-radius:var(--radius-full);cursor:not-allowed;">
-                Import Employees
+                Add Employees
                 <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M18.3307 15L15.8307 17.5L13.3307 15M15.8307 17.5V12.5M12.9141 2.7423C14.1357 3.23679 14.9974 4.43443 14.9974 5.83333C14.9974 7.23224 14.1357 8.42988 12.9141 8.92437M9.9974 12.5H6.66406C5.11092 12.5 4.33435 12.5 3.72178 12.7537C2.90502 13.092 2.25611 13.741 1.9178 14.5577C1.66406 15.1703 1.66406 15.9469 1.66406 17.5M11.2474 5.83333C11.2474 7.67428 9.75501 9.16667 7.91406 9.16667C6.07311 9.16667 4.58073 7.67428 4.58073 5.83333C4.58073 3.99238 6.07311 2.5 7.91406 2.5C9.75501 2.5 11.2474 3.99238 11.2474 5.83333Z" stroke="currentColor" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"></path></svg>
               </span></sc-if></sc-if></sc-if><sc-if value="{{ empPreview }}" hint-placeholder-val="{{ false }}"><sc-if value="{{ empDirty }}" hint-placeholder-val="{{ false }}"><button onClick="{{ clearEmpChanges }}" style="display:inline-flex;align-items:center;gap:9px;padding:0 22px;height:48px;font-family:var(--font-body);font-weight:700;font-size:15px;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">Clear changes<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v6h6"></path><path d="M3 13a9 9 0 1 0 3-7.7L3 8"></path></svg></button></sc-if><sc-if value="{{ empNotDirty }}" hint-placeholder-val="{{ true }}"><span style="display:inline-flex;align-items:center;gap:9px;padding:0 22px;height:48px;font-family:var(--font-body);font-weight:700;font-size:15px;color:var(--fg-quaternary);background:var(--gray-100);border:1px solid var(--border-secondary);border-radius:var(--radius-full);cursor:not-allowed;">Clear changes<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v6h6"></path><path d="M3 13a9 9 0 1 0 3-7.7L3 8"></path></svg></span></sc-if><sc-if value="{{ saveEnabled }}" hint-placeholder-val="{{ false }}"><button onClick="{{ empSave }}" style="display:inline-flex;align-items:center;gap:9px;padding:0 28px;height:48px;font-family:var(--font-body);font-weight:700;font-size:16px;color:#fff;background-color:#018F58;border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background-color 120ms ease;" style-hover="background-color:#016F45;">{{ saveLabel }}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg></button></sc-if><sc-if value="{{ saveDisabled }}" hint-placeholder-val="{{ true }}"><span style="display:inline-flex;align-items:center;gap:9px;padding:0 28px;height:48px;font-family:var(--font-body);font-weight:700;font-size:16px;color:var(--fg-quaternary);background:var(--gray-100);border:1px solid var(--border-secondary);border-radius:var(--radius-full);cursor:not-allowed;">{{ saveLabel }}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg></span></sc-if></sc-if></div>
           </div>
@@ -806,6 +806,22 @@
     </div>
   </sc-if>
 
+  <sc-if value="{{ exitConfirm }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ cancelExit }}" style="position:fixed;inset:0;z-index:130;background:rgba(10,13,18,0.5);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:32px 24px;box-sizing:border-box;">
+      <div onClick="{{ stop }}" style="width:100%;max-width:440px;background:#fff;border-radius:20px;box-shadow:var(--shadow-2xl);padding:32px 32px 28px;">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:999px;background:var(--warning-50);color:var(--warning-600);box-shadow:0 0 0 8px var(--warning-50);margin-bottom:20px;">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+        </span>
+        <h3 style="font-family:var(--font-display);font-size:22px;font-weight:800;letter-spacing:-0.01em;margin:0 0 8px;color:var(--fg-primary);">Leave without saving?</h3>
+        <p style="font-size:15px;line-height:23px;color:var(--fg-tertiary);margin:0 0 28px;">You've made changes that haven't been saved. If you leave now, your progress on this page will be lost.</p>
+        <div style="display:flex;gap:12px;">
+          <button onClick="{{ cancelExit }}" style="flex:1;height:48px;font-family:var(--font-body);font-weight:700;font-size:15px;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">Keep editing</button>
+          <button onClick="{{ confirmExit }}" style="flex:1;height:48px;font-family:var(--font-body);font-weight:700;font-size:15px;color:#fff;background-color:var(--error-600);border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;transition:background-color 120ms ease;" style-hover="background-color:var(--error-700);">Discard &amp; leave</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
   <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
     <div style="position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:80;display:flex;align-items:center;gap:12px;padding:14px 20px;background:var(--brand-600);color:#fff;border-radius:12px;box-shadow:var(--shadow-lg);font-size:15px;font-weight:600;">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
@@ -1259,7 +1275,7 @@ class Component extends DCLogic {
   state = {
     employees: [],
     methodOpen: false, method: 'paye', adding: false, addingStep: 'choose', uploadedFile: null, uploadStatus: 'idle', viewEmp: null, bannerLeaving: false, importDone: false, empDirty: false, rosterView: null,
-    empForm: emptyEmpForm(), empBaseForm: emptyEmpForm(), empEdits: {}, empCollapsed: {}, empStep: 0, rosterSearch: '', rosterPage: 1, rosterFilter: '', addNew: false,
+    empForm: emptyEmpForm(), empBaseForm: emptyEmpForm(), empEdits: {}, empCollapsed: {}, empStep: 0, rosterSearch: '', rosterPage: 1, rosterFilter: '', addNew: false, exitConfirm: false,
     drawerOpen: false, editIndex: null, form: emptyForm(), errors: {},
     departments: DEFAULT_DEPTS.map(d => ({ ...d })), deptOpen: false, newDept: '',
     jobRoles: DEFAULT_ROLES.map(r => ({ ...r })), roleOpen: false, newRole: '',
@@ -1371,7 +1387,22 @@ class Component extends DCLogic {
   stepNext = () => { const n = STEP_ORDER.length; const s = this.state; if (s.empStep >= n - 1) { this.empSave(); return; } const next = s.empStep + 1; if (STEP_ORDER[next] === 'review') { this.setState({ empStep: next, empCollapsed: {} }); } else { this.setState({ empStep: next }); } };
   stepBack = () => { if (this.state.empStep === 0) { this.empCancel(); } else { this.setState(s => ({ empStep: s.empStep - 1 })); } };
   goStep = (i) => this.setState({ empStep: i });
-  closeAdding = () => this.setState({ adding: false, viewEmp: null });
+  flowHasProgress = () => {
+    const s = this.state;
+    if (s.empDirty) return true;
+    if (s.addNew) {
+      if (s.empStep > 0) return true;
+      const def = emptyEmpForm(); const f = s.empForm || {};
+      return Object.keys(def).some(k => { const v = f[k]; return v != null && v !== '' && v !== def[k]; });
+    }
+    if (s.adding && (s.uploadStatus === 'found' || s.uploadedFile)) return true;
+    return false;
+  };
+  flowExit = () => this.setState({ adding: false, addNew: false, rosterView: null, viewEmp: null, addingStep: 'choose', uploadStatus: 'idle', uploadedFile: null, empDirty: false, empForm: emptyEmpForm(), empBaseForm: emptyEmpForm(), empStep: 0, empEdits: {}, exitConfirm: false, methodOpen: false, addTypeOpen: false });
+  requestExit = () => { if (this.flowHasProgress()) this.setState({ exitConfirm: true }); else this.flowExit(); };
+  cancelExit = () => this.setState({ exitConfirm: false });
+  confirmExit = () => this.flowExit();
+  closeAdding = () => this.flowExit();
   goPeopleCrumb = () => this.setState({ adding: false, viewEmp: null, rosterView: null, addNew: false });
   goImportCrumb = () => this.setState({ viewEmp: null });
   clearEmpChanges = () => this.setState(s => ({ empForm: { ...(s.empBaseForm || emptyEmpForm()) }, empDirty: false, empTypeOpen: false, empPositionOpen: false, empRoleOpen: false, empDeptOpen: false, empDeptAdding: false, empRoleAdding: false }));
@@ -1795,6 +1826,9 @@ class Component extends DCLogic {
       showRoster: !inFlow,
       inFlow: inFlow,
       closeAdding: this.closeAdding,
+      exitConfirm: s.exitConfirm,
+      cancelExit: this.cancelExit,
+      confirmExit: this.confirmExit,
       backAdding: this.backAdding,
       goImport: this.goImport,
       goImportDirect: this.goImportDirect,
@@ -1941,7 +1975,7 @@ class Component extends DCLogic {
       importedCount: IMPORT_PREVIEW.length,
       goPeopleCrumb: this.goPeopleCrumb,
       goImportCrumb: this.goImportCrumb,
-      headerBack: empPreview ? this.empCancel : this.backAdding,
+      headerBack: this.requestExit,
       peopleCrumbCursor: inFlow ? 'pointer' : 'default',
       importCrumbColor: empPreview ? 'var(--fg-secondary)' : 'var(--brand-700)',
       importCrumbCursor: empPreview ? 'pointer' : 'default',

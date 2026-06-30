@@ -128,7 +128,7 @@
     </sc-if>
 
     <div style="flex:1;overflow-y:auto;padding:32px 40px 56px;">
-      <div style="max-width:1180px;margin:0 auto;">
+      <div style="margin: 0 auto">
 
         <!-- EMPTY -->
         <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ true }}">
@@ -210,7 +210,7 @@
         <sc-if value="{{ isGateSetup }}" hint-placeholder-val="{{ true }}">
           <!-- OVERVIEW TAB -->
           <sc-if value="{{ tabOverview }}" hint-placeholder-val="{{ true }}">
-            <div style="max-width:1180px;margin:0 auto;">
+            <div style="margin:0 auto;">
               <sc-if value="{{ setupIncomplete }}" hint-placeholder-val="{{ true }}">
               <div style="max-width:720px;margin-left:auto;margin-right:auto;display: flex; flex-direction: column; align-items: center; text-align: center; padding: 56px 32px; border: 1px solid var(--border-secondary); border-radius: 20px; margin-bottom: 32px; border-style: solid; padding-top: 48px; padding-bottom: 48px; padding-right: 48px; padding-left: 48px; background-color: var(--bg-primary); border-color: var(--border-secondary); border-width: 1px">
                 <span style="display:inline-flex;margin-bottom:26px;">
@@ -267,25 +267,41 @@
               <sc-if value="{{ setupComplete }}" hint-placeholder-val="{{ false }}">
                 <sc-if value="{{ hasDrafts }}" hint-placeholder-val="{{ false }}">
                   <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);overflow:hidden;margin-bottom:24px;">
-                    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 24px;border-bottom:1px solid var(--border-secondary);">
-                      <div>
-                        <h3 style="font-family:var(--font-display);font-size:18px;font-weight:800;letter-spacing:-0.01em;margin:0;color:var(--fg-primary);">Payrolls</h3>
-                        <p style="font-size:14px;color:var(--fg-tertiary);margin:4px 0 0;">Pick up where you left off, or start a new run.</p>
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px 26px;border-bottom:1px solid var(--border-secondary);flex-wrap:wrap;">
+                      <h3 style="font-family:var(--font-display);font-size:22px;font-weight:800;letter-spacing:-0.01em;margin:0;color:var(--fg-primary);">Payroll History</h3>
+                      <div style="display:flex;align-items:center;gap:12px;">
+                        <button style="display:inline-flex;align-items:center;gap:10px;font-family:var(--font-body);font-size:15px;font-weight:600;color:var(--fg-secondary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-full);padding:10px 18px;cursor:pointer;box-shadow:var(--shadow-xs);transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">Filter by Year<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
+                        <button style="display:inline-flex;align-items:center;gap:10px;font-family:var(--font-body);font-size:15px;font-weight:600;color:var(--fg-secondary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-full);padding:10px 18px;cursor:pointer;box-shadow:var(--shadow-xs);transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">Filter by Month<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></button>
                       </div>
                     </div>
-                    <div style="display:grid;grid-template-columns:1.6fr 1fr 1fr 1.2fr;gap:16px;padding:12px 24px;background:var(--bg-secondary);font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--fg-quaternary);">
-                      <span>Period</span><span>Status</span><span>Employees paid</span><span style="text-align:right;">Action</span>
+                    <div style="display:grid;grid-template-columns:1.5fr 0.9fr 1.4fr 1fr 1.4fr;gap:16px;padding:14px 26px;background:var(--bg-secondary);font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--fg-quaternary);">
+                      <span>Payroll period</span><span>Status</span><span>Execution date</span><span>Employees paid</span><span>Total cost (TCOE)</span>
                     </div>
-                    <sc-for list="{{ draftsView }}" as="d" hint-placeholder-count="1">
-                      <div onClick="{{ d.onResume }}" style="display:grid;grid-template-columns:1.6fr 1fr 1fr 1.2fr;gap:16px;padding:16px 24px;border-top:1px solid var(--border-tertiary);align-items:center;cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-secondary);">
-                        <span style="font-size:15px;font-weight:700;color:var(--fg-primary);">{{ d.periodLabel }}</span>
-                        <span><span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:4px 11px;border-radius:var(--radius-full);color:{{ d.statusColor }};background:{{ d.statusBg }};border:1px solid {{ d.statusBorder }};"><span style="width:6px;height:6px;border-radius:999px;background:{{ d.statusDot }};"></span>{{ d.statusLabel }}</span></span>
-                        <span style="font-size:15px;color:var(--fg-secondary);font-variant-numeric:tabular-nums;">{{ d.paidRatio }}</span>
-                        <div style="display:flex;justify-content:flex-end;align-items:center;gap:10px;">
-                          <button onClick="{{ d.onResume }}" style="display:inline-flex;align-items:center;gap:7px;font-family:var(--font-body);font-size:14px;font-weight:700;color:var(--brand-700);background:var(--brand-50);border:1px solid var(--brand-200);border-radius:var(--radius-full);padding:8px 16px;cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--brand-100);">Resume<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
+                    <sc-for list="{{ draftsView }}" as="d" hint-placeholder-count="3">
+                      <div onClick="{{ d.onResume }}" title="Open this payroll" style="display:grid;grid-template-columns:1.5fr 0.9fr 1.4fr 1fr 1.4fr;gap:16px;padding:18px 26px;border-top:1px solid var(--border-tertiary);align-items:center;cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-secondary);">
+                        <div style="display:flex;align-items:center;gap:14px;min-width:0;">
+                          <span style="flex-shrink:0;display:inline-flex;">
+                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 0.75H24C24.1212 0.75 24.2375 0.798089 24.3232 0.883789L35.1162 11.6768C35.2019 11.7625 35.25 11.8788 35.25 12V36C35.25 37.7949 33.7949 39.25 32 39.25H8C6.20507 39.25 4.75 37.7949 4.75 36V4C4.75 2.20507 6.20508 0.75 8 0.75Z" stroke="#D5D7DA" stroke-width="1.5"></path><path d="M24 0.5V8C24 10.2091 25.7909 12 28 12H35.5" stroke="#D5D7DA" stroke-width="1.5"></path><path d="M20.75 20.25L19.9133 18.5767C19.6726 18.0951 19.5521 17.8543 19.3725 17.6784C19.2137 17.5228 19.0222 17.4045 18.8121 17.332C18.5744 17.25 18.3052 17.25 17.7667 17.25H14.9C14.0599 17.25 13.6399 17.25 13.319 17.4135C13.0368 17.5573 12.8073 17.7868 12.6635 18.069C12.5 18.3899 12.5 18.8099 12.5 19.65V20.25M12.5 20.25H23.9C25.1601 20.25 25.7902 20.25 26.2715 20.4952C26.6948 20.711 27.039 21.0552 27.2548 21.4785C27.5 21.9598 27.5 22.5899 27.5 23.85V27.15C27.5 28.4101 27.5 29.0402 27.2548 29.5215C27.039 29.9448 26.6948 30.289 26.2715 30.5048C25.7902 30.75 25.1601 30.75 23.9 30.75H16.1C14.8399 30.75 14.2098 30.75 13.7285 30.5048C13.3052 30.289 12.961 29.9448 12.7452 29.5215C12.5 29.0402 12.5 28.4101 12.5 27.15V20.25Z" stroke="#018F58" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                          </span>
+                          <span style="font-size:16px;font-weight:700;color:var(--fg-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ d.periodLabel }}</span>
+                        </div>
+                        <div><span style="display:inline-flex;align-items:center;padding:5px 13px;font-size:13px;font-weight:600;border-radius:999px;color:{{ d.statusColor }};background:{{ d.statusBg }};border:1px solid {{ d.statusBorder }};">{{ d.statusLabel }}</span></div>
+                        <div style="min-width:0;">
+                          <div style="font-size:15px;font-weight:700;color:var(--fg-primary);">{{ d.execDate }}</div>
+                          <div style="font-size:13.5px;color:var(--fg-tertiary);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ d.execBy }}</div>
+                        </div>
+                        <div style="font-size:15px;font-weight:600;color:var(--fg-secondary);font-variant-numeric:tabular-nums;">{{ d.paidLabel }}</div>
+                        <div style="min-width:0;">
+                          <div style="font-size:16px;font-weight:700;color:var(--fg-primary);font-variant-numeric:tabular-nums;">{{ d.costTotal }}</div>
+                          <div style="font-size:13.5px;color:var(--fg-tertiary);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ d.costBreak }}</div>
                         </div>
                       </div>
                     </sc-for>
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 26px;border-top:1px solid var(--border-secondary);">
+                      <button style="display:inline-flex;align-items:center;gap:9px;font-family:var(--font-body);font-size:14.5px;font-weight:600;color:var(--fg-quaternary);background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:var(--radius-full);padding:10px 20px;cursor:not-allowed;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>Previous</button>
+                      <span style="display:inline-flex;align-items:center;justify-content:center;min-width:36px;height:36px;padding:0 10px;font-size:14.5px;font-weight:700;color:var(--fg-secondary);background:var(--bg-secondary);border-radius:9px;">1</span>
+                      <button style="display:inline-flex;align-items:center;gap:9px;font-family:var(--font-body);font-size:14.5px;font-weight:600;color:var(--fg-quaternary);background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:var(--radius-full);padding:10px 20px;cursor:not-allowed;">Next<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
+                    </div>
                   </div>
                 </sc-if>
                 <sc-if value="{{ noDrafts }}" hint-placeholder-val="{{ true }}">
@@ -339,7 +355,7 @@
 
                 <sc-if value="{{ hasCompanyAdditions }}" hint-placeholder-val="{{ false }}">
                   <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-xs);overflow:hidden;margin-bottom:24px;">
-                    <div style="padding:14px 22px;background:var(--bg-secondary);border-bottom:1px solid var(--border-secondary);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--fg-quaternary);">Your pay additions</div>
+                    <div style="padding:14px 22px;background:var(--bg-secondary);border-bottom:1px solid var(--border-secondary);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--fg-quaternary);">Company pay additions</div>
                     <sc-for list="{{ companyAdditions }}" as="ca" hint-placeholder-count="1">
                       <div style="display:flex;align-items:center;gap:16px;padding:18px 22px;border-bottom:1px solid var(--border-tertiary);">
                         <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:11px;background:var(--brand-50);color:var(--brand-600);">
@@ -413,19 +429,45 @@
             </div>
           </sc-if>
 
-          <!-- LOANS — generic empty -->
+          <!-- LOANS AND ADVANCES TAB -->
           <sc-if value="{{ tabLoans }}" hint-placeholder-val="{{ false }}">
-            <div style="max-width:840px;margin:0 auto;">
-              <div style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:72px 32px;background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:20px;box-shadow:var(--shadow-xs);">
-                <span style="display:inline-flex;align-items:center;justify-content:center;width:64px;height:64px;border-radius:16px;background:var(--brand-50);color:var(--brand-600);margin-bottom:22px;">
-                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+            <div style="max-width:1000px;margin:0 auto;padding-top:8px;">
+              <h2 style="font-family:var(--font-display);font-size:30px;line-height:38px;font-weight:800;letter-spacing:-0.02em;margin:0 0 8px;color:var(--fg-primary);">Loans and advances</h2>
+              <p style="font-size:17px;line-height:26px;color:var(--fg-tertiary);margin:0 0 28px;text-wrap:pretty;">Track staff loans and salary advances. The monthly amount is deducted from each payslip until the balance is settled.</p>
+
+              <sc-if value="{{ hasLoans }}" hint-placeholder-val="{{ false }}">
+                <div style="background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:16px;box-shadow:var(--shadow-xs);overflow:hidden;margin-bottom:24px;">
+                  <div style="display:grid;grid-template-columns:1.7fr 1fr 1.1fr 1.1fr 1.1fr 44px;gap:14px;align-items:center;padding:13px 22px;background:var(--bg-secondary);border-bottom:1px solid var(--border-secondary);font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--fg-quaternary);">
+                    <span>Employee</span>
+                    <span>Type</span>
+                    <span style="text-align:right;">Monthly deduction</span>
+                    <span style="text-align:right;">Total</span>
+                    <span style="text-align:right;">Amount left</span>
+                    <span></span>
+                  </div>
+                  <sc-for list="{{ loansList }}" as="l" hint-placeholder-count="2">
+                    <div style="display:grid;grid-template-columns:1.7fr 1fr 1.1fr 1.1fr 1.1fr 44px;gap:14px;align-items:center;padding:16px 22px;border-bottom:1px solid var(--border-tertiary);">
+                      <div style="display:flex;align-items:center;gap:12px;min-width:0;">
+                        <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:999px;background:var(--gray-100);color:var(--fg-secondary);font-size:13px;font-weight:800;">{{ l.empInit }}</span>
+                        <span style="font-size:15.5px;font-weight:700;color:var(--fg-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ l.empName }}</span>
+                      </div>
+                      <div><span style="display:inline-flex;align-items:center;padding:4px 11px;font-size:12.5px;font-weight:600;border-radius:999px;color:{{ l.typeColor }};background:{{ l.typeBg }};">{{ l.typeLabel }}</span></div>
+                      <div style="text-align:right;font-size:15px;font-weight:600;color:var(--fg-secondary);font-variant-numeric:tabular-nums;">{{ l.monthlyText }}</div>
+                      <div style="text-align:right;font-size:15px;font-weight:600;color:var(--fg-secondary);font-variant-numeric:tabular-nums;">{{ l.totalText }}</div>
+                      <div style="text-align:right;font-size:15px;font-weight:800;color:var(--fg-primary);font-variant-numeric:tabular-nums;">{{ l.leftText }}</div>
+                      <button onClick="{{ l.onRemove }}" aria-label="Remove" style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;background:transparent;border:1px solid var(--border-secondary);color:var(--fg-quaternary);cursor:pointer;transition:color 120ms ease,border-color 120ms ease;" style-hover="color:var(--error-600);border-color:var(--error-300);">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                      </button>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-if>
+
+              <div role="button" onClick="{{ openLoanAdd }}" style="display:flex;align-items:center;justify-content:center;gap:12px;padding:30px 24px;background:var(--bg-primary);border:1.5px dashed var(--brand-400);border-radius:16px;cursor:pointer;transition:background 120ms ease,border-color 120ms ease;" style-hover="background:var(--brand-25);border-color:var(--brand-500);">
+                <span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;background:var(--brand-50);color:var(--brand-600);">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                 </span>
-                <h2 style="font-family:var(--font-display);font-size:24px;line-height:32px;font-weight:800;letter-spacing:-0.02em;margin:0 0 10px;color:var(--fg-primary);">{{ emptyTabTitle }}</h2>
-                <p style="font-size:16px;line-height:25px;color:var(--fg-tertiary);margin:0 0 26px;max-width:46ch;text-wrap:pretty;">{{ emptyTabBody }}</p>
-                <a href="Payroll Page.dc.html" style="display:inline-flex;align-items:center;gap:9px;padding:13px 26px;font-family:var(--font-body);font-weight:700;font-size:15px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:999px;cursor:pointer;box-shadow:var(--shadow-btn-primary);text-decoration:none;transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                  {{ emptyTabCta }}
-                </a>
+                <span style="font-family:var(--font-body);font-size:17px;font-weight:700;color:var(--brand-700);">Add loan or salary advance</span>
               </div>
             </div>
           </sc-if>
@@ -592,6 +634,97 @@
           </div>
         </sc-if>
 
+        <!-- LOAN / ADVANCE MODAL -->
+        <sc-if value="{{ loanModalOpen }}" hint-placeholder-val="{{ false }}">
+          <div onClick="{{ closeLoanModal }}" style="position:fixed;inset:0;z-index:50;background:rgba(10,13,18,0.5);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:32px 24px;box-sizing:border-box;">
+            <div onClick="{{ stopProp }}" style="width:100%;max-width:560px;max-height:90vh;background:var(--bg-primary);border-radius:20px;box-shadow:var(--shadow-2xl);display:flex;flex-direction:column;overflow:visible;">
+              <div style="display:flex;align-items:flex-start;gap:16px;padding:24px 28px;border-bottom:1px solid var(--border-secondary);flex-shrink:0;">
+                <div style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--border-secondary);border-radius:12px;box-shadow:var(--shadow-xs);color:var(--fg-secondary);">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+                </div>
+                <div style="flex:1;">
+                  <h2 style="font-size:20px;line-height:28px;font-weight:700;margin:0 0 2px;color:var(--fg-primary);">Add loan or salary advance</h2>
+                  <p style="font-size:15px;line-height:22px;color:var(--fg-tertiary);margin:0;">The monthly amount is deducted from this employee's payslip until it's settled.</p>
+                </div>
+                <span role="button" aria-label="Close" onClick="{{ closeLoanModal }}" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;cursor:pointer;color:var(--fg-quaternary);transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+                </span>
+              </div>
+
+              <div style="flex:1;overflow-y:auto;padding:28px;">
+                <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:8px;">Employee <span style="color:var(--error-600);">*</span></label>
+                <div style="position:relative;">
+                  <div role="button" onClick="{{ toggleLoanEmpPicker }}" style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);box-shadow:var(--shadow-xs);cursor:pointer;">
+                    <span style="font-size:15px;color:{{ loanEmpColor }};">{{ loanEmpDisplay }}</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;transform:{{ loanEmpChevron }};transition:transform 160ms ease;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  </div>
+                  <sc-if value="{{ loanEmpPickerOpen }}" hint-placeholder-val="{{ false }}">
+                    <div onClick="{{ toggleLoanEmpPicker }}" style="position:fixed;inset:0;z-index:5;"></div>
+                    <div style="position:absolute;z-index:10;top:calc(100% + 8px);left:0;right:0;background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:14px;box-shadow:var(--shadow-lg);overflow:hidden;max-height:320px;display:flex;flex-direction:column;">
+                      <div style="padding:8px;border-bottom:1px solid var(--border-secondary);position:relative;flex-shrink:0;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;left:18px;top:50%;transform:translateY(-50%);pointer-events:none;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <input value="{{ loanEmpSearch }}" onInput="{{ onLoanEmpSearch }}" placeholder="Search employees" style="width:100%;box-sizing:border-box;padding:9px 12px 9px 38px;font-family:var(--font-body);font-size:14px;color:var(--fg-primary);background:var(--bg-secondary);border:1px solid var(--border-primary);border-radius:10px;outline:none;">
+                      </div>
+                      <div style="overflow-y:auto;padding:6px;">
+                      <sc-if value="{{ loanEmpNoResults }}" hint-placeholder-val="{{ false }}"><div style="padding:18px 10px;text-align:center;font-size:13.5px;color:var(--fg-tertiary);">No employees match "{{ loanEmpSearch }}".</div></sc-if>
+                      <sc-for list="{{ loanEmpPickable }}" as="t" hint-placeholder-count="5">
+                        <div onClick="{{ t.onSelect }}" style="display:flex;align-items:center;gap:12px;padding:10px;border-radius:10px;cursor:pointer;background:{{ t.bg }};transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+                          <span style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:999px;background:var(--gray-100);color:var(--fg-secondary);font-size:12px;font-weight:800;flex-shrink:0;">{{ t.init }}</span>
+                          <span style="min-width:0;flex:1;"><span style="display:block;font-size:14.5px;font-weight:700;color:var(--fg-primary);">{{ t.name }}</span><span style="display:block;font-size:12.5px;color:var(--fg-tertiary);">{{ t.role }}</span></span>
+                          <sc-if value="{{ t.selected }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-600)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></sc-if>
+                        </div>
+                      </sc-for>
+                      </div>
+                    </div>
+                  </sc-if>
+                </div>
+
+                <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin:22px 0 8px;">Type <span style="color:var(--error-600);">*</span></label>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                  <button onClick="{{ setLoanTypeLoan }}" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:13px;font-family:var(--font-body);font-size:15px;font-weight:700;background:{{ loanTypeLoanBg }};border:1.5px solid {{ loanTypeLoanBorder }};border-radius:var(--radius-md);color:{{ loanTypeLoanColor }};cursor:pointer;transition:all 120ms ease;">Loan</button>
+                  <button onClick="{{ setLoanTypeAdvance }}" style="display:flex;align-items:center;justify-content:center;gap:8px;padding:13px;font-family:var(--font-body);font-size:15px;font-weight:700;background:{{ loanTypeAdvBg }};border:1.5px solid {{ loanTypeAdvBorder }};border-radius:var(--radius-md);color:{{ loanTypeAdvColor }};cursor:pointer;transition:all 120ms ease;">Salary advance</button>
+                </div>
+
+                <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin:22px 0 8px;">Monthly deduction <span style="color:var(--error-600);">*</span></label>
+                <div style="position:relative;">
+                  <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--fg-quaternary);pointer-events:none;">GH&#8373;</span>
+                  <input value="{{ loanMonthly }}" onInput="{{ onLoanMonthly }}" type="number" inputmode="decimal" placeholder="0.00" style="width:100%;box-sizing:border-box;padding:12px 14px 12px 56px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;font-variant-numeric:tabular-nums;">
+                </div>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px;">
+                  <div>
+                    <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:8px;">Amount already paid off</label>
+                    <div style="position:relative;">
+                      <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--fg-quaternary);pointer-events:none;">GH&#8373;</span>
+                      <input value="{{ loanPaid }}" onInput="{{ onLoanPaid }}" type="number" inputmode="decimal" placeholder="0.00" style="width:100%;box-sizing:border-box;padding:12px 14px 12px 56px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;font-variant-numeric:tabular-nums;">
+                    </div>
+                  </div>
+                  <div>
+                    <label style="display:block;font-size:14px;font-weight:600;color:var(--fg-secondary);margin-bottom:8px;">Total left to settle <span style="color:var(--error-600);">*</span></label>
+                    <div style="position:relative;">
+                      <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:15px;color:var(--fg-quaternary);pointer-events:none;">GH&#8373;</span>
+                      <input value="{{ loanLeft }}" onInput="{{ onLoanLeft }}" type="number" inputmode="decimal" placeholder="0.00" style="width:100%;box-sizing:border-box;padding:12px 14px 12px 56px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-md);outline:none;font-variant-numeric:tabular-nums;">
+                    </div>
+                  </div>
+                </div>
+
+                <div style="margin-top:22px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 18px;background:var(--bg-secondary);border:1px solid var(--border-secondary);border-radius:12px;">
+                  <span style="font-size:14px;font-weight:600;color:var(--fg-secondary);">Total loan value <span style="font-weight:400;color:var(--fg-tertiary);">(paid + left)</span></span>
+                  <span style="font-size:17px;font-weight:800;color:var(--fg-primary);font-variant-numeric:tabular-nums;">{{ loanTotalPreview }}</span>
+                </div>
+              </div>
+
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:20px 28px;border-top:1px solid var(--border-secondary);flex-shrink:0;">
+                <button onClick="{{ closeLoanModal }}" style="display:inline-flex;align-items:center;justify-content:center;padding:14px 24px;font-family:var(--font-body);font-weight:700;font-size:16px;color:var(--fg-secondary);background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">Cancel</button>
+                <button onClick="{{ saveLoan }}" style="display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 24px;font-family:var(--font-body);font-weight:700;font-size:16px;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;opacity:{{ loanSaveOpacity }};transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  Add
+                </button>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
         <!-- PERIOD / CALCULATING MODAL -->
         <sc-if value="{{ payModalOpen }}" hint-placeholder-val="{{ false }}">
           <div onClick="{{ closePayModalBackdrop }}" style="position:fixed;inset:0;z-index:50;background:rgba(10,13,18,0.5);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:32px 24px;box-sizing:border-box;">
@@ -715,57 +848,57 @@
                     <div onClick="{{ closeDl }}" style="position:fixed;inset:0;z-index:25;"></div>
                     <div style="position:absolute;z-index:26;top:calc(100% + 8px);right:0;min-width:220px;background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:14px;box-shadow:var(--shadow-lg);overflow:hidden;">
                       <div style="padding:10px 14px 6px;font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--fg-quaternary);">Statutory reports</div>
-                      <button onClick="{{ dlPaye }}" style="display:flex;align-items:center;gap:11px;width:100%;box-sizing:border-box;padding:11px 14px;background:transparent;border:none;cursor:pointer;font-family:var(--font-body);font-size:14.5px;font-weight:600;color:var(--fg-secondary);text-align:left;transition:background 120ms ease;" style-hover="background:var(--bg-secondary);"><span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:var(--brand-50);color:var(--brand-700);font-size:11px;font-weight:800;">P</span>PAYE return</button>
-                      <button onClick="{{ dlSsnit }}" style="display:flex;align-items:center;gap:11px;width:100%;box-sizing:border-box;padding:11px 14px;background:transparent;border:none;cursor:pointer;font-family:var(--font-body);font-size:14.5px;font-weight:600;color:var(--fg-secondary);text-align:left;transition:background 120ms ease;" style-hover="background:var(--bg-secondary);"><span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:#EEF4FF;color:#3538CD;font-size:11px;font-weight:800;">S</span>SSNIT report</button>
-                      <button onClick="{{ dlWht }}" style="display:flex;align-items:center;gap:11px;width:100%;box-sizing:border-box;padding:11px 14px;background:transparent;border:none;cursor:pointer;font-family:var(--font-body);font-size:14.5px;font-weight:600;color:var(--fg-secondary);text-align:left;transition:background 120ms ease;" style-hover="background:var(--bg-secondary);"><span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:#FEF6EE;color:#B93815;font-size:11px;font-weight:800;">W</span>WHT report</button>
+                      <button onClick="{{ dlPaye }}" style="display:flex;align-items:center;gap:11px;width:100%;box-sizing:border-box;padding:11px 14px;background:transparent;border:none;cursor:pointer;font-family:var(--font-body);font-size:14.5px;font-weight:600;color:var(--fg-secondary);text-align:left;transition:background 120ms ease;" style-hover="background:var(--bg-secondary);"><span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:var(--brand-50);color:var(--brand-700);font-size:11px;font-weight:800;">P</span>PAYE Schedule</button>
+                      <button onClick="{{ dlSsnit }}" style="display:flex;align-items:center;gap:11px;width:100%;box-sizing:border-box;padding:11px 14px;background:transparent;border:none;cursor:pointer;font-family:var(--font-body);font-size:14.5px;font-weight:600;color:var(--fg-secondary);text-align:left;transition:background 120ms ease;" style-hover="background:var(--bg-secondary);"><span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:#EEF4FF;color:#3538CD;font-size:11px;font-weight:800;">S</span>SSNIT Schedule</button>
+                      <button onClick="{{ dlWht }}" style="display:flex;align-items:center;gap:11px;width:100%;box-sizing:border-box;padding:11px 14px;background:transparent;border:none;cursor:pointer;font-family:var(--font-body);font-size:14.5px;font-weight:600;color:var(--fg-secondary);text-align:left;transition:background 120ms ease;" style-hover="background:var(--bg-secondary);"><span style="display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:#FEF6EE;color:#B93815;font-size:11px;font-weight:800;">W</span>WHT Schedule</button>
                     </div>
                   </sc-if>
                 </div>
               </div>
             </div>
             <!-- scrollable register -->
-            <div style="overflow-x:auto;">
+            <div style="overflow:auto;max-height:440px;">
               <div style="min-width:1516px;">
-                <div style="display:grid;grid-template-columns:190px repeat(13,94px) 104px;align-items:center;padding:13px 0;background:var(--bg-secondary);border-bottom:1px solid var(--border-secondary);font-size:11px;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;color:var(--fg-quaternary);">
-                  <span style="padding:0 22px;">Employee</span>
-                  <span style="padding:0 10px;text-align:right;">Basic</span>
-                  <span style="padding:0 10px;text-align:right;">Tax. allow</span>
-                  <span style="padding:0 10px;text-align:right;">Non-tax</span>
-                  <span style="padding:0 10px;text-align:right;">Overtime</span>
-                  <span style="padding:0 10px;text-align:right;">Gross</span>
-                  <span style="padding:0 10px;text-align:right;">Taxable inc.</span>
-                  <span style="padding:0 10px;text-align:right;">SSNIT</span>
-                  <span style="padding:0 10px;text-align:right;">PAYE</span>
-                  <span style="padding:0 10px;text-align:right;">OT tax</span>
-                  <span style="padding:0 10px;text-align:right;">Loan</span>
-                  <span style="padding:0 10px;text-align:right;">Advance</span>
-                  <span style="padding:0 10px;text-align:right;">Total ded.</span>
-                  <span style="padding:0 10px;text-align:right;">Net pay</span>
-                  <span style="padding:0 18px;text-align:right;">Action</span>
+                <div style="display:grid;grid-template-columns:190px repeat(13,94px) 104px;align-items:stretch;padding:0;background:var(--bg-secondary);border-bottom:1px solid var(--border-secondary);position:sticky;top:0;z-index:6;font-size:11px;font-weight:700;letter-spacing:0.03em;text-transform:uppercase;color:var(--fg-quaternary);">
+                  <span style="padding:13px 22px;display:flex;align-items:center;position:sticky;left:0;background:var(--bg-secondary);z-index:4;box-shadow:10px 0 10px -8px rgba(16,24,40,0.14);">Employee</span>
+                  <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-start;">Basic</span>
+                  <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-start;">Tax. allow</span>
+                  <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-start;">Non-tax</span>
+                  <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-start;">Overtime</span>
+                  <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-start;">Gross</span>
+                  <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-start;">Taxable inc.</span>
+                  <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-start;">SSNIT</span>
+                  <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-start;">PAYE</span>
+                  <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-start;">OT tax</span>
+                  <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-start;">Loan</span>
+                  <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-start;">Advance</span>
+                  <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-start;">Total ded.</span>
+                  <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-start;">Net pay</span>
+                  <span style="padding:13px 18px;display:flex;align-items:center;justify-content:flex-end;position:sticky;right:0;background:var(--bg-secondary);z-index:3;border-left:1px solid var(--border-secondary);box-shadow:-10px 0 10px -8px rgba(16,24,40,0.14);">Action</span>
                 </div>
                 <sc-for list="{{ employeesView }}" as="e" hint-placeholder-count="6">
-                  <div onClick="{{ e.onOpen }}" title="View this employee’s payroll" style="display:grid;grid-template-columns:190px repeat(13,94px) 104px;align-items:center;padding:14px 0;border-bottom:1px solid var(--border-tertiary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-secondary);">
-                    <div style="display:flex;align-items:center;gap:11px;min-width:0;padding:0 22px;">
+                  <div onClick="{{ e.onOpen }}" title="View this employee’s payroll" style="display:grid;grid-template-columns:190px repeat(13,94px) 104px;align-items:stretch;padding:0;border-bottom:1px solid var(--border-tertiary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-secondary);">
+                    <div style="display:flex;align-items:center;gap:11px;min-width:0;padding:14px 22px;position:sticky;left:0;background:#fff;z-index:2;box-shadow:10px 0 10px -8px rgba(16,24,40,0.08);">
                       <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:999px;background:var(--brand-50);color:var(--brand-700);font-weight:700;font-size:13px;">{{ e.initials }}</span>
                       <div style="min-width:0;">
                         <div style="display:flex;align-items:center;gap:6px;font-size:14px;font-weight:700;color:var(--fg-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ e.name }}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
                         <div style="font-size:12px;color:var(--fg-tertiary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ e.role }}</div>
                       </div>
                     </div>
-                    <span style="padding:0 10px;text-align:right;font-size:14px;color:var(--fg-secondary);font-variant-numeric:tabular-nums;">{{ e.basic }}</span>
-                    <span style="padding:0 10px;text-align:right;font-size:14px;color:var(--success-700);font-variant-numeric:tabular-nums;">{{ e.taxAllow }}</span>
-                    <span style="padding:0 10px;text-align:right;font-size:14px;color:var(--success-700);font-variant-numeric:tabular-nums;">{{ e.nonTax }}</span>
-                    <span style="padding:0 10px;text-align:right;font-size:14px;color:var(--success-700);font-variant-numeric:tabular-nums;">{{ e.overtime }}</span>
-                    <span style="padding:0 10px;text-align:right;font-size:14px;font-weight:700;color:var(--fg-primary);font-variant-numeric:tabular-nums;">{{ e.gross }}</span>
-                    <span style="padding:0 10px;text-align:right;font-size:14px;color:var(--fg-tertiary);font-variant-numeric:tabular-nums;">{{ e.taxableIncome }}</span>
-                    <span style="padding:0 10px;text-align:right;font-size:14px;color:var(--error-700);font-variant-numeric:tabular-nums;">{{ e.ssnit }}</span>
-                    <span style="padding:0 10px;text-align:right;font-size:14px;color:var(--error-700);font-variant-numeric:tabular-nums;">{{ e.paye }}</span>
-                    <span style="padding:0 10px;text-align:right;font-size:14px;color:var(--error-700);font-variant-numeric:tabular-nums;">{{ e.otTax }}</span>
-                    <span style="padding:0 10px;text-align:right;font-size:14px;color:var(--error-700);font-variant-numeric:tabular-nums;">{{ e.staffLoan }}</span>
-                    <span style="padding:0 10px;text-align:right;font-size:14px;color:var(--error-700);font-variant-numeric:tabular-nums;">{{ e.salaryAdvance }}</span>
-                    <span style="padding:0 10px;text-align:right;font-size:14px;font-weight:600;color:var(--error-700);font-variant-numeric:tabular-nums;">{{ e.totalDeduction }}</span>
-                    <span style="padding:0 10px;text-align:right;font-size:14px;font-weight:800;color:var(--brand-700);font-variant-numeric:tabular-nums;">{{ e.net }}</span>
-                    <div style="padding:0 18px;display:flex;justify-content:flex-end;">
+                    <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-size:14px;color:var(--fg-secondary);font-variant-numeric:tabular-nums;">{{ e.basic }}</span>
+                    <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-size:14px;color:var(--success-700);font-variant-numeric:tabular-nums;">{{ e.taxAllow }}</span>
+                    <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-size:14px;color:var(--success-700);font-variant-numeric:tabular-nums;">{{ e.nonTax }}</span>
+                    <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-size:14px;color:var(--success-700);font-variant-numeric:tabular-nums;">{{ e.overtime }}</span>
+                    <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-size:14px;font-weight:700;color:var(--fg-primary);font-variant-numeric:tabular-nums;">{{ e.gross }}</span>
+                    <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-size:14px;color:var(--fg-tertiary);font-variant-numeric:tabular-nums;">{{ e.taxableIncome }}</span>
+                    <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-size:14px;color:var(--error-700);font-variant-numeric:tabular-nums;">{{ e.ssnit }}</span>
+                    <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-size:14px;color:var(--error-700);font-variant-numeric:tabular-nums;">{{ e.paye }}</span>
+                    <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-size:14px;color:var(--error-700);font-variant-numeric:tabular-nums;">{{ e.otTax }}</span>
+                    <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-size:14px;color:var(--error-700);font-variant-numeric:tabular-nums;">{{ e.staffLoan }}</span>
+                    <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-size:14px;color:var(--error-700);font-variant-numeric:tabular-nums;">{{ e.salaryAdvance }}</span>
+                    <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-size:14px;font-weight:600;color:var(--error-700);font-variant-numeric:tabular-nums;">{{ e.totalDeduction }}</span>
+                    <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-size:14px;font-weight:800;color:var(--brand-700);font-variant-numeric:tabular-nums;">{{ e.net }}</span>
+                    <div style="padding:0 18px;display:flex;align-items:center;justify-content:flex-end;position:sticky;right:0;background:#fff;z-index:1;border-left:1px solid var(--border-secondary);box-shadow:-10px 0 10px -8px rgba(16,24,40,0.08);">
                       <sc-if value="{{ e.paid }}" hint-placeholder-val="{{ false }}"><span style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:var(--success-700);background:var(--success-50);border:1px solid var(--success-200);padding:5px 10px;border-radius:var(--radius-full);"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>Paid</span></sc-if>
                       <sc-if value="{{ e.canPay }}" hint-placeholder-val="{{ false }}"><button onClick="{{ e.onPay }}" style="display:inline-flex;align-items:center;gap:6px;font-family:var(--font-body);font-size:13px;font-weight:700;color:#fff;background:var(--bg-brand-solid);border:none;border-radius:var(--radius-full);padding:7px 15px;cursor:pointer;box-shadow:var(--shadow-btn-primary);transition:background 120ms ease;" style-hover="background:var(--bg-brand-solid-hover);">Pay</button></sc-if>
                       <sc-if value="{{ e.cantPay }}" hint-placeholder-val="{{ true }}"><span title="Approve the payroll to enable payments" style="display:inline-flex;align-items:center;font-family:var(--font-body);font-size:13px;font-weight:700;color:var(--fg-quaternary);background:var(--gray-100);border:1px solid var(--border-secondary);border-radius:var(--radius-full);padding:7px 15px;cursor:not-allowed;">Pay</span></sc-if>
@@ -775,22 +908,22 @@
                 <sc-if value="{{ employeesEmpty }}" hint-placeholder-val="{{ false }}">
                   <div style="padding:40px 22px;text-align:center;font-size:14.5px;color:var(--fg-tertiary);">No employees match “{{ empSearch }}”.</div>
                 </sc-if>
-                <div style="display:grid;grid-template-columns:190px repeat(13,94px) 104px;align-items:center;padding:14px 0;background:var(--bg-secondary);font-size:13px;font-weight:700;color:var(--fg-primary);">
-                  <span style="padding:0 22px;">Totals</span>
-                  <span style="padding:0 10px;text-align:right;font-variant-numeric:tabular-nums;">{{ regTotals.basic }}</span>
-                  <span style="padding:0 10px;text-align:right;font-variant-numeric:tabular-nums;">{{ regTotals.taxAllow }}</span>
-                  <span style="padding:0 10px;text-align:right;font-variant-numeric:tabular-nums;">{{ regTotals.nonTax }}</span>
-                  <span style="padding:0 10px;text-align:right;font-variant-numeric:tabular-nums;">{{ regTotals.overtime }}</span>
-                  <span style="padding:0 10px;text-align:right;font-variant-numeric:tabular-nums;">{{ regTotals.gross }}</span>
-                  <span style="padding:0 10px;text-align:right;font-variant-numeric:tabular-nums;">{{ regTotals.taxableIncome }}</span>
-                  <span style="padding:0 10px;text-align:right;font-variant-numeric:tabular-nums;">{{ regTotals.ssnit }}</span>
-                  <span style="padding:0 10px;text-align:right;font-variant-numeric:tabular-nums;">{{ regTotals.paye }}</span>
-                  <span style="padding:0 10px;text-align:right;font-variant-numeric:tabular-nums;">{{ regTotals.otTax }}</span>
-                  <span style="padding:0 10px;text-align:right;font-variant-numeric:tabular-nums;">{{ regTotals.staffLoan }}</span>
-                  <span style="padding:0 10px;text-align:right;font-variant-numeric:tabular-nums;">{{ regTotals.salaryAdvance }}</span>
-                  <span style="padding:0 10px;text-align:right;font-variant-numeric:tabular-nums;">{{ regTotals.totalDeduction }}</span>
-                  <span style="padding:0 10px;text-align:right;color:var(--brand-700);font-weight:800;font-variant-numeric:tabular-nums;">{{ regTotals.net }}</span>
-                  <span style="padding:0 18px;"></span>
+                <div style="display:grid;grid-template-columns:190px repeat(13,94px) 104px;align-items:stretch;padding:0;background:var(--bg-secondary);font-size:13px;font-weight:700;color:var(--fg-primary);position:sticky;bottom:0;z-index:5;border-top:1px solid var(--border-secondary);box-shadow:0 -10px 12px -8px rgba(16,24,40,0.12);">
+                  <span style="padding:14px 22px;display:flex;align-items:center;position:sticky;left:0;background:var(--bg-secondary);z-index:2;box-shadow:10px 0 10px -8px rgba(16,24,40,0.14);">Totals</span>
+                  <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-variant-numeric:tabular-nums;">{{ regTotals.basic }}</span>
+                  <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-variant-numeric:tabular-nums;">{{ regTotals.taxAllow }}</span>
+                  <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-variant-numeric:tabular-nums;">{{ regTotals.nonTax }}</span>
+                  <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-variant-numeric:tabular-nums;">{{ regTotals.overtime }}</span>
+                  <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-variant-numeric:tabular-nums;">{{ regTotals.gross }}</span>
+                  <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-variant-numeric:tabular-nums;">{{ regTotals.taxableIncome }}</span>
+                  <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-variant-numeric:tabular-nums;">{{ regTotals.ssnit }}</span>
+                  <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-variant-numeric:tabular-nums;">{{ regTotals.paye }}</span>
+                  <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-variant-numeric:tabular-nums;">{{ regTotals.otTax }}</span>
+                  <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-variant-numeric:tabular-nums;">{{ regTotals.staffLoan }}</span>
+                  <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-variant-numeric:tabular-nums;">{{ regTotals.salaryAdvance }}</span>
+                  <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;font-variant-numeric:tabular-nums;">{{ regTotals.totalDeduction }}</span>
+                  <span style="padding:0 10px;border-left:1px solid var(--border-secondary);display:flex;align-items:center;justify-content:flex-end;color:var(--brand-700);font-weight:800;font-variant-numeric:tabular-nums;">{{ regTotals.net }}</span>
+                  <span style="padding:0 18px;position:sticky;right:0;background:var(--bg-secondary);z-index:2;border-left:1px solid var(--border-secondary);box-shadow:-10px 0 10px -8px rgba(16,24,40,0.14);"></span>
                 </div>
               </div>
             </div>
@@ -1438,7 +1571,7 @@
   </div>
 </sc-if>
 
-</sc-if></x-dc>
+</x-dc>
 <script type="text/x-dc" data-dc-script data-props="{
   &quot;$preview&quot;: { &quot;width&quot;: 1440, &quot;height&quot;: 1024 },
   &quot;walkthrough&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;Off&quot;, &quot;Setup additions&quot;, &quot;Additions tab&quot;], &quot;default&quot;: &quot;Off&quot;, &quot;tsType&quot;: &quot;string&quot; },
@@ -1491,6 +1624,17 @@ const STATUSES = {
 
 function fmt(n) { return 'GH\u20b5 ' + Number(n || 0).toLocaleString('en-GH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
 function fmtShort(n) { return 'GH\u20b5 ' + Number(n || 0).toLocaleString('en-GH'); }
+function fmtGHS(n) { return 'GHS ' + Number(n || 0).toLocaleString('en-GH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+function ghsK(n) { return 'GHS ' + Math.round(Number(n || 0) / 1000) + 'K'; }
+const HIST_STATUS = {
+  draft:      { label: 'Drafted',       color: 'var(--info-700)',    bg: 'var(--info-50)',    border: 'var(--info-200)',    verb: 'Drafted by' },
+  pending:    { label: 'Pending',       color: 'var(--warning-700)', bg: 'var(--warning-50)', border: 'var(--warning-200)', verb: 'Submitted by' },
+  approved:   { label: 'Approved',      color: 'var(--info-700)',    bg: 'var(--info-50)',    border: 'var(--info-200)',    verb: 'Approved by' },
+  disbursing: { label: 'Disbursing',    color: 'var(--brand-700)',   bg: 'var(--brand-50)',   border: 'var(--brand-200)',   verb: 'Approved by' },
+  completed:  { label: 'Disbursed',     color: 'var(--success-700)', bg: 'var(--success-50)', border: 'var(--success-200)', verb: 'Approved by' },
+  paid:       { label: 'Disbursed',     color: 'var(--success-700)', bg: 'var(--success-50)', border: 'var(--success-200)', verb: 'Approved by' },
+  partial:    { label: 'Part. failed',  color: 'var(--error-700)',   bg: 'var(--error-50)',   border: 'var(--error-200)',   verb: 'Approved by' },
+};
 function initials(name) { const p = (name || '').trim().split(/\s+/); return (((p[0] || '')[0] || '') + ((p[1] || '')[0] || '')).toUpperCase() || '?'; }
 
 const CHECK_SVG = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
@@ -1616,6 +1760,7 @@ class Component extends DCLogic {
     apprName: '', apprEmail: '', apprPhone: '',
     rejectOpen: false, rejectReason: '',
     empSearch: '', dlOpen: false,
+    loans: [], loanModalOpen: false, loanDraft: {}, loanEmpPickerOpen: false, loanEmpSearch: '',
   };
   disbursingTimer = null;
   toastTimer = null;
@@ -1824,6 +1969,25 @@ class Component extends DCLogic {
   toggleDl = () => this.setState(s => ({ dlOpen: !s.dlOpen }));
   closeDl = () => this.setState({ dlOpen: false });
   downloadReport = (kind) => () => { this.setState({ dlOpen: false }); this.showToast(kind + ' report for ' + (this.state.period ? this.state.period.label : 'this run') + ' downloaded.'); };
+
+  // LOANS & ADVANCES
+  openLoanAdd = () => this.setState({ loanModalOpen: true, loanDraft: { empId: '', type: 'loan', monthly: '', paid: '', left: '' }, loanEmpPickerOpen: false, loanEmpSearch: '' });
+  closeLoanModal = () => this.setState({ loanModalOpen: false, loanEmpPickerOpen: false });
+  toggleLoanEmpPicker = () => this.setState(s => ({ loanEmpPickerOpen: !s.loanEmpPickerOpen, loanEmpSearch: '' }));
+  onLoanEmpSearch = (ev) => { const v = ev.target.value; this.setState({ loanEmpSearch: v }); };
+  pickLoanEmp = (id) => () => this.setState(s => ({ loanDraft: { ...s.loanDraft, empId: id }, loanEmpPickerOpen: false, loanEmpSearch: '' }));
+  setLoanType = (t) => () => this.setState(s => ({ loanDraft: { ...s.loanDraft, type: t } }));
+  onLoanField = (k) => (ev) => { const v = ev.target.value; this.setState(s => ({ loanDraft: { ...s.loanDraft, [k]: v } })); };
+  removeLoan = (id) => () => this.setState(s => ({ loans: (s.loans || []).filter(l => l.id !== id) }));
+  saveLoan = () => this.setState(s => {
+    const d = s.loanDraft || {};
+    const monthly = Number(d.monthly), left = Number(d.left), paid = Number(d.paid || 0);
+    if (!d.empId || !(monthly > 0) || !(left > 0)) return {};
+    const loan = { id: 'ln' + Date.now(), empId: d.empId, type: d.type || 'loan', monthly, paid, total: paid + left };
+    const e = EMPLOYEES_BASE.find(x => x.id === d.empId) || {};
+    this.showToast((loan.type === 'loan' ? 'Loan' : 'Salary advance') + ' added for ' + (e.name || 'employee') + '.');
+    return { loans: [...(s.loans || []), loan], loanModalOpen: false, loanEmpPickerOpen: false };
+  });
 
   // navigation
   go = (screen) => { window.scrollTo(0, 0); this.setState({ screen }); };
@@ -2360,6 +2524,33 @@ class Component extends DCLogic {
       dot: m.active ? 'var(--brand-600)' : 'transparent',
       onClick: this.setCompanySub(m.id) }));
 
+    // loans & advances
+    const ld = s.loanDraft || {};
+    const ldType = ld.type || 'loan';
+    const ldEmp = EMPLOYEES_BASE.find(x => x.id === ld.empId);
+    const loanLeftN = Number(ld.left || 0), loanPaidN = Number(ld.paid || 0);
+    const loansList = (s.loans || []).map(l => {
+      const e = EMPLOYEES_BASE.find(x => x.id === l.empId) || { name: 'Employee', initials: '?' };
+      const isLoan = l.type === 'loan';
+      const leftAmt = Math.max(0, Number(l.total || 0) - Number(l.paid || 0));
+      return {
+        id: l.id, empName: e.name, empInit: e.initials || initials(e.name),
+        typeLabel: isLoan ? 'Loan' : 'Salary advance',
+        typeBg: isLoan ? 'var(--brand-50)' : 'var(--warning-50)',
+        typeColor: isLoan ? 'var(--brand-700)' : 'var(--warning-700)',
+        monthlyText: fmt(l.monthly), totalText: fmt(l.total), leftText: fmt(leftAmt),
+        onRemove: this.removeLoan(l.id),
+      };
+    });
+    const loanEmpQuery = (s.loanEmpSearch || '').trim().toLowerCase();
+    const loanEmpPickable = EMPLOYEES_BASE
+      .filter(e => !loanEmpQuery || (e.name + ' ' + e.role).toLowerCase().includes(loanEmpQuery))
+      .map(e => ({
+        id: e.id, name: e.name, role: e.role, init: e.initials || initials(e.name),
+        selected: ld.empId === e.id, bg: ld.empId === e.id ? 'var(--brand-25)' : 'transparent',
+        onSelect: this.pickLoanEmp(e.id),
+      }));
+
     // progress — skipping a task counts as done
     const doneCount = skippedSet.size;
     const totalTasks = SETUP_TASKS.length;
@@ -2575,6 +2766,26 @@ class Component extends DCLogic {
       setupProgress: progressPct, setupProgressLabel: progressLabel,
       emptyTabTitle: emptyTab.title, emptyTabBody: emptyTab.body, emptyTabCta: emptyTab.cta, addCtaTour,
 
+      // loans & advances
+      loansList, hasLoans: loansList.length > 0,
+      loanModalOpen: s.loanModalOpen, openLoanAdd: this.openLoanAdd, closeLoanModal: this.closeLoanModal, saveLoan: this.saveLoan,
+      loanEmpPickerOpen: s.loanEmpPickerOpen, toggleLoanEmpPicker: this.toggleLoanEmpPicker, loanEmpPickable,
+      loanEmpSearch: s.loanEmpSearch || '', onLoanEmpSearch: this.onLoanEmpSearch, loanEmpNoResults: loanEmpPickable.length === 0,
+      loanEmpDisplay: ldEmp ? ldEmp.name : 'Select an employee',
+      loanEmpColor: ldEmp ? 'var(--fg-primary)' : 'var(--fg-quaternary)',
+      loanEmpChevron: s.loanEmpPickerOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+      setLoanTypeLoan: this.setLoanType('loan'), setLoanTypeAdvance: this.setLoanType('advance'),
+      loanTypeLoanBg: ldType === 'loan' ? 'var(--brand-50)' : 'var(--bg-primary)',
+      loanTypeLoanBorder: ldType === 'loan' ? 'var(--brand-500)' : 'var(--border-primary)',
+      loanTypeLoanColor: ldType === 'loan' ? 'var(--brand-700)' : 'var(--fg-secondary)',
+      loanTypeAdvBg: ldType === 'advance' ? 'var(--warning-50)' : 'var(--bg-primary)',
+      loanTypeAdvBorder: ldType === 'advance' ? 'var(--warning-400)' : 'var(--border-primary)',
+      loanTypeAdvColor: ldType === 'advance' ? 'var(--warning-700)' : 'var(--fg-secondary)',
+      loanMonthly: ld.monthly || '', loanPaid: ld.paid || '', loanLeft: ld.left || '',
+      onLoanMonthly: this.onLoanField('monthly'), onLoanPaid: this.onLoanField('paid'), onLoanLeft: this.onLoanField('left'),
+      loanTotalPreview: fmt(loanPaidN + loanLeftN),
+      loanSaveOpacity: (ld.empId && Number(ld.monthly) > 0 && loanLeftN > 0) ? '1' : '0.5',
+
       // walkthrough coach
       coachOpen: s.coachOpen, coach: coachVals, coachClose: this.coachClose,
 
@@ -2605,10 +2816,25 @@ class Component extends DCLogic {
       hasDrafts: s.drafts.length > 0,
       noDrafts: s.drafts.length === 0,
       draftsView: s.drafts.slice().sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0)).map(d => {
-        const c = STATUSES[d.status] || STATUSES.draft;
+        const c = HIST_STATUS[d.status] || HIST_STATUS.draft;
         const total = s.employees.length;
         const paidN = (d.paidIds || []).length;
-        return { id: d.id, periodLabel: d.periodLabel, statusLabel: c.label, statusColor: c.color, statusBg: c.bg, statusBorder: c.border, statusDot: c.dot, paidRatio: paidN + ' / ' + total, onResume: this.resumeDraft(d.id), onDelete: this.deleteDraft(d.id) };
+        const ownerShort = (() => {
+          const fn = (s.owner.firstName || '').trim(), ln = (s.owner.lastName || '').trim();
+          if (fn && ln) return fn[0].toUpperCase() + '. ' + ln;
+          return ln || fn || 'You';
+        })();
+        const net = totalNet, tax = Math.max(0, totalGross - totalNet);
+        return {
+          id: d.id, periodLabel: d.periodLabel,
+          statusLabel: c.label, statusColor: c.color, statusBg: c.bg, statusBorder: c.border,
+          execDate: d.updatedAt ? new Date(d.updatedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '\u2014',
+          execBy: c.verb + ' ' + ownerShort,
+          paidLabel: paidN + '/' + total + ' Paid',
+          costTotal: fmtGHS(totalGross),
+          costBreak: ghsK(net) + ' Net, ' + ghsK(tax) + ' Tax',
+          onResume: this.resumeDraft(d.id), onDelete: this.deleteDraft(d.id),
+        };
       }),
 
       // review

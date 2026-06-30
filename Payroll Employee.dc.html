@@ -77,7 +77,6 @@
           <a href="Payroll Page.dc.html" aria-label="Back" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid var(--border-secondary);border-radius:var(--radius-full);color:var(--fg-secondary);background:#fff;box-shadow:var(--shadow-xs);text-decoration:none;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
           </a>
-          <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:999px;background:var(--brand-50);color:var(--brand-700);font-family:var(--font-display);font-weight:800;font-size:19px;letter-spacing:-0.01em;">{{ initials }}</span>
           <div style="min-width:0;">
             <div style="display:flex;align-items:center;gap:10px;">
               <h1 style="font-family:var(--font-display);font-size:24px;line-height:30px;font-weight:800;letter-spacing:-0.02em;margin:0;color:var(--fg-primary);">{{ name }}</h1>
@@ -108,7 +107,7 @@
             <div style="display:flex;flex-direction:column;gap:3px;">
               <sc-for list="{{ menuView }}" as="m" hint-placeholder-count="4">
                 <button onClick="{{ m.onClick }}" style="display:flex;align-items:center;gap:11px;width:100%;box-sizing:border-box;padding:11px 12px;background:{{ m.bg }};border:none;border-radius:10px;cursor:pointer;font-family:var(--font-body);font-size:14.5px;font-weight:{{ m.weight }};color:{{ m.color }};text-align:left;transition:background 120ms ease;">
-                  <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:{{ m.iconBg }};color:{{ m.iconColor }};"><span innerHTML="{{ m.icon }}" style="display:inline-flex;"></span></span>
+                  <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:8px;background:{{ m.iconBg }};color:{{ m.iconColor }};">{{ m.iconNode }}</span>
                   <span style="flex:1;min-width:0;">{{ m.label }}</span>
                   <sc-if value="{{ m.badge }}" hint-placeholder-val="{{ false }}"><span style="flex-shrink:0;font-size:12px;font-weight:700;color:var(--brand-700);background:var(--brand-50);border-radius:999px;padding:1px 8px;font-variant-numeric:tabular-nums;">{{ m.badge }}</span></sc-if>
                 </button>
@@ -395,10 +394,10 @@ const COMPANY_DEDUCTIONS = [
   { name: 'Welfare Contribution', tag: 'Post-tax' },
 ];
 const MENU = [
-  { id: 'breakdown', label: 'Breakdown', icon: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>' },
-  { id: 'additions', label: 'Additions', icon: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>' },
-  { id: 'deductions', label: 'Deductions', icon: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>' },
-  { id: 'bank', label: 'Bank details', icon: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>' },
+  { id: 'breakdown', label: 'Pay Breakdown', icon: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><line x1="8" y1="8" x2="14" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg>' },
+  { id: 'additions', label: 'Additions', icon: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>' },
+  { id: 'deductions', label: 'Deductions', icon: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="8" y1="12" x2="16" y2="12"/></svg>' },
+  { id: 'bank', label: 'Bank details', icon: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 21 7 3 7"/><line x1="5" y1="11" x2="5" y2="17"/><line x1="9.5" y1="11" x2="9.5" y2="17"/><line x1="14.5" y1="11" x2="14.5" y2="17"/><line x1="19" y1="11" x2="19" y2="17"/><line x1="3" y1="21" x2="21" y2="21"/></svg>' },
 ];
 
 class Component extends DCLogic {
@@ -522,6 +521,7 @@ class Component extends DCLogic {
     const menuView = MENU.map(m => {
       const on = s.menu === m.id;
       return { label: m.label, icon: m.icon, onClick: this.setMenu(m.id),
+        iconNode: React.createElement('span', { style: { display: 'inline-flex' }, dangerouslySetInnerHTML: { __html: m.icon } }),
         bg: on ? 'var(--brand-50)' : 'transparent', color: on ? 'var(--brand-700)' : 'var(--fg-secondary)', weight: on ? '700' : '600',
         iconBg: on ? 'var(--brand-100)' : 'var(--bg-secondary)', iconColor: on ? 'var(--brand-700)' : 'var(--fg-tertiary)',
         badge: menuCount[m.id] ? String(menuCount[m.id]) : '' };
