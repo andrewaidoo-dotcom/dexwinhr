@@ -225,16 +225,13 @@
                 <sc-if value="{{ showTypePill }}" hint-placeholder-val="{{ false }}"><span style="display:inline-flex;align-items:center;font-size:13px;font-weight:600;padding:4px 13px;color:var(--info-700);background:var(--info-50);border:1px solid var(--info-200);border-radius:999px;">{{ viewEmpType }}</span></sc-if>
               </sc-if>
             </div>
-            <div style="box-sizing: border-box; display: flex; flex-direction: row; gap: 12px; justify-content: space-between; align-items: center"><sc-if value="{{ notEmpPreview }}" hint-placeholder-val="{{ true }}"><button onClick="{{ closeAdding }}" style="display: inline-flex; align-items: center; gap: 9px; padding: 11px 20px; font-family: var(--font-body); font-weight: 700; font-size: 15px; color: var(--fg-secondary); background: #fff; border: 1px solid var(--border-primary); border-radius: var(--radius-full); box-shadow: var(--shadow-xs); cursor: pointer; transition: background 120ms ease; height: 48px" style-hover="background:var(--bg-tertiary);">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg>
-              Save &amp; Exit
-            </button><sc-if value="{{ stepUpload }}" hint-placeholder-val="{{ false }}"><sc-if value="{{ importReady }}" hint-placeholder-val="{{ false }}"><button onClick="{{ importEmployees }}" style="display:inline-flex;align-items:center;gap:9px;padding:0 28px;height:48px;font-family:var(--font-body);font-weight:700;font-size:16px;color:#fff;background-color:#018F58;border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background-color 120ms ease;" style-hover="background-color:#016F45;">
-                Add Employees
+            <div style="box-sizing: border-box; display: flex; flex-direction: row; gap: 12px; justify-content: space-between; align-items: center"><sc-if value="{{ notEmpPreview }}" hint-placeholder-val="{{ true }}"><sc-if value="{{ stepUpload }}" hint-placeholder-val="{{ false }}"><sc-if value="{{ importReady }}" hint-placeholder-val="{{ false }}"><button onClick="{{ importEmployees }}" style="display:inline-flex;align-items:center;gap:9px;padding:0 28px;height:48px;font-family:var(--font-body);font-weight:700;font-size:16px;color:#fff;background-color:#018F58;border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background-color 120ms ease;" style-hover="background-color:#016F45;">
+                Import Employees
                 <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M18.3307 15L15.8307 17.5L13.3307 15M15.8307 17.5V12.5M12.9141 2.7423C14.1357 3.23679 14.9974 4.43443 14.9974 5.83333C14.9974 7.23224 14.1357 8.42988 12.9141 8.92437M9.9974 12.5H6.66406C5.11092 12.5 4.33435 12.5 3.72178 12.7537C2.90502 13.092 2.25611 13.741 1.9178 14.5577C1.66406 15.1703 1.66406 15.9469 1.66406 17.5M11.2474 5.83333C11.2474 7.67428 9.75501 9.16667 7.91406 9.16667C6.07311 9.16667 4.58073 7.67428 4.58073 5.83333C4.58073 3.99238 6.07311 2.5 7.91406 2.5C9.75501 2.5 11.2474 3.99238 11.2474 5.83333Z" stroke="currentColor" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"></path></svg>
               </button></sc-if><sc-if value="{{ importNotReady }}" hint-placeholder-val="{{ true }}"><span style="display:inline-flex;align-items:center;gap:9px;padding:0 28px;height:48px;font-family:var(--font-body);font-weight:700;font-size:16px;color:var(--fg-quaternary);background:var(--gray-100);border:1px solid var(--border-secondary);border-radius:var(--radius-full);cursor:not-allowed;">
-                Add Employees
+                Import Employees
                 <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M18.3307 15L15.8307 17.5L13.3307 15M15.8307 17.5V12.5M12.9141 2.7423C14.1357 3.23679 14.9974 4.43443 14.9974 5.83333C14.9974 7.23224 14.1357 8.42988 12.9141 8.92437M9.9974 12.5H6.66406C5.11092 12.5 4.33435 12.5 3.72178 12.7537C2.90502 13.092 2.25611 13.741 1.9178 14.5577C1.66406 15.1703 1.66406 15.9469 1.66406 17.5M11.2474 5.83333C11.2474 7.67428 9.75501 9.16667 7.91406 9.16667C6.07311 9.16667 4.58073 7.67428 4.58073 5.83333C4.58073 3.99238 6.07311 2.5 7.91406 2.5C9.75501 2.5 11.2474 3.99238 11.2474 5.83333Z" stroke="currentColor" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"></path></svg>
-              </span></sc-if></sc-if></sc-if><sc-if value="{{ empPreview }}" hint-placeholder-val="{{ false }}"><sc-if value="{{ empDirty }}" hint-placeholder-val="{{ false }}"><button onClick="{{ clearEmpChanges }}" style="display:inline-flex;align-items:center;gap:9px;padding:0 22px;height:48px;font-family:var(--font-body);font-weight:700;font-size:15px;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:var(--radius-full);box-shadow:var(--shadow-xs);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">Clear changes<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v6h6"></path><path d="M3 13a9 9 0 1 0 3-7.7L3 8"></path></svg></button></sc-if><sc-if value="{{ empNotDirty }}" hint-placeholder-val="{{ true }}"><span style="display:inline-flex;align-items:center;gap:9px;padding:0 22px;height:48px;font-family:var(--font-body);font-weight:700;font-size:15px;color:var(--fg-quaternary);background:var(--gray-100);border:1px solid var(--border-secondary);border-radius:var(--radius-full);cursor:not-allowed;">Clear changes<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v6h6"></path><path d="M3 13a9 9 0 1 0 3-7.7L3 8"></path></svg></span></sc-if><sc-if value="{{ saveEnabled }}" hint-placeholder-val="{{ false }}"><button onClick="{{ empSave }}" style="display:inline-flex;align-items:center;gap:9px;padding:0 28px;height:48px;font-family:var(--font-body);font-weight:700;font-size:16px;color:#fff;background-color:#018F58;border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background-color 120ms ease;" style-hover="background-color:#016F45;">{{ saveLabel }}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg></button></sc-if><sc-if value="{{ saveDisabled }}" hint-placeholder-val="{{ true }}"><span style="display:inline-flex;align-items:center;gap:9px;padding:0 28px;height:48px;font-family:var(--font-body);font-weight:700;font-size:16px;color:var(--fg-quaternary);background:var(--gray-100);border:1px solid var(--border-secondary);border-radius:var(--radius-full);cursor:not-allowed;">{{ saveLabel }}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg></span></sc-if></sc-if></div>
+              </span></sc-if></sc-if></sc-if><sc-if value="{{ empPreview }}" hint-placeholder-val="{{ false }}"><sc-if value="{{ saveEnabled }}" hint-placeholder-val="{{ false }}"><button onClick="{{ empSave }}" style="display:inline-flex;align-items:center;gap:9px;padding:0 28px;height:48px;font-family:var(--font-body);font-weight:700;font-size:16px;color:#fff;background-color:#018F58;border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background-color 120ms ease;" style-hover="background-color:#016F45;">{{ saveLabel }}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg></button></sc-if><sc-if value="{{ saveDisabled }}" hint-placeholder-val="{{ true }}"><span style="display:inline-flex;align-items:center;gap:9px;padding:0 28px;height:48px;font-family:var(--font-body);font-weight:700;font-size:16px;color:var(--fg-quaternary);background:var(--gray-100);border:1px solid var(--border-secondary);border-radius:var(--radius-full);cursor:not-allowed;">{{ saveLabel }}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg></span></sc-if></sc-if></div>
           </div>
 
           <sc-if value="{{ showBanner }}" hint-placeholder-val="{{ false }}">
@@ -405,6 +402,10 @@
                         </div>
                       </sc-for>
                     </div>
+                    <button onClick="{{ importEmployees }}" style="display:inline-flex;align-items:center;justify-content:center;gap:9px;width:100%;box-sizing:border-box;margin-top:18px;padding:0 28px;height:48px;font-family:var(--font-body);font-weight:700;font-size:16px;color:#fff;background-color:#018F58;border:none;border-radius:var(--radius-full);box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background-color 120ms ease;" style-hover="background-color:#016F45;">
+                      Import Employees
+                      <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M18.3307 15L15.8307 17.5L13.3307 15M15.8307 17.5V12.5M12.9141 2.7423C14.1357 3.23679 14.9974 4.43443 14.9974 5.83333C14.9974 7.23224 14.1357 8.42988 12.9141 8.92437M9.9974 12.5H6.66406C5.11092 12.5 4.33435 12.5 3.72178 12.7537C2.90502 13.092 2.25611 13.741 1.9178 14.5577C1.66406 15.1703 1.66406 15.9469 1.66406 17.5M11.2474 5.83333C11.2474 7.67428 9.75501 9.16667 7.91406 9.16667C6.07311 9.16667 4.58073 7.67428 4.58073 5.83333C4.58073 3.99238 6.07311 2.5 7.91406 2.5C9.75501 2.5 11.2474 3.99238 11.2474 5.83333Z" stroke="currentColor" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    </button>
                     </sc-if>
                   </div>
                   </sc-if>
@@ -641,6 +642,13 @@
                     <span style="font-size:15px;color:var(--fg-secondary);">Staff number</span>
                     <input value="{{ ef.staffNumber }}" onChange="{{ eh.staffNumber }}" placeholder="Staff number" style="width:100%;box-sizing:border-box;padding:11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:#fff;border:1px solid var(--border-primary);border-radius:8px;outline:none;">
                   </div>
+                  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:center;padding:16px 22px;border-top:1px solid var(--border-tertiary);">
+                    <span style="font-size:15px;color:var(--fg-secondary);">Basic Salary / Contract Amount <span style="color:var(--error-500);">*</span></span>
+                    <div><span style="display:flex;align-items:stretch;border:1px solid {{ fieldErr.basicSalary.border }};border-radius:8px;overflow:hidden;">
+                      <span style="display:inline-flex;align-items:center;padding:0 14px;background:var(--bg-secondary);border-right:1px solid var(--border-primary);font-size:15px;color:var(--fg-tertiary);">GHS</span>
+                      <input value="{{ ef.basicSalary }}" onChange="{{ eh.basicSalary }}" placeholder="0.00" style="flex:1;min-width:0;border:none;padding:11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);outline:none;background:#fff;">
+                    </span><sc-if value="{{ fieldErr.basicSalary.show }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--error-600);margin-top:6px;">{{ fieldErr.basicSalary.msg }}</div></sc-if></div>
+                  </div>
                 </sc-if>
               </div>
               </sc-if>
@@ -650,7 +658,7 @@
                 <div onClick="{{ secComp.toggle }}" style="display:flex;align-items:center;gap:12px;padding:18px 22px;cursor:pointer;">
                   <span style="flex-shrink:0;display:inline-flex;"><svg width="38" height="38" viewBox="0 0 40 40" fill="none"><path d="M8 0.5H32C36.1421 0.5 39.5 3.85786 39.5 8V32C39.5 36.1421 36.1421 39.5 32 39.5H8C3.85786 39.5 0.5 36.1421 0.5 32V8C0.5 3.85786 3.85786 0.5 8 0.5Z" fill="white"></path><path d="M8 0.5H32C36.1421 0.5 39.5 3.85786 39.5 8V32C39.5 36.1421 36.1421 39.5 32 39.5H8C3.85786 39.5 0.5 36.1421 0.5 32V8C0.5 3.85786 3.85786 0.5 8 0.5Z" stroke="#D5D7DA"></path><path d="M14.9974 19.1673V22.5006M24.9974 17.5007V20.834M24.1641 13.334C26.2047 13.334 27.3083 13.6463 27.8575 13.8885C27.9306 13.9208 27.9672 13.9369 28.0727 14.0376C28.136 14.098 28.2515 14.2751 28.2812 14.3574C28.3307 14.4946 28.3307 14.5696 28.3307 14.7196V23.6766C28.3307 24.4339 28.3307 24.8126 28.2172 25.0072C28.1016 25.2052 27.9902 25.2972 27.774 25.3733C27.5614 25.4481 27.1324 25.3657 26.2742 25.2008C25.6735 25.0854 24.9612 25.0007 24.1641 25.0007C21.6641 25.0007 19.1641 26.6673 15.8307 26.6673C13.7901 26.6673 12.6865 26.355 12.1373 26.1128C12.0642 26.0805 12.0276 26.0644 11.9221 25.9637C11.8588 25.9033 11.7433 25.7262 11.7136 25.6439C11.6641 25.5067 11.6641 25.4317 11.6641 25.2817L11.6641 16.3247C11.6641 15.5674 11.6641 15.1887 11.7776 14.9941C11.8931 14.7961 12.0046 14.7041 12.2208 14.628C12.4333 14.5532 12.8624 14.6356 13.7206 14.8005C14.3212 14.9159 15.0336 15.0007 15.8307 15.0007C18.3307 15.0007 20.8307 13.334 24.1641 13.334ZM22.0807 20.0007C22.0807 21.1512 21.148 22.084 19.9974 22.084C18.8468 22.084 17.9141 21.1512 17.9141 20.0007C17.9141 18.8501 18.8468 17.9173 19.9974 17.9173C21.148 17.9173 22.0807 18.8501 22.0807 20.0007Z" stroke="#414651" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
                   <div style="flex:1;min-width:0;">
-                    <sc-if value="{{ secComp.accHeader }}" hint-placeholder-val="{{ true }}"><h3 style="font-family:var(--font-display);font-size:17px;font-weight:700;letter-spacing:-0.01em;margin:0;color:var(--fg-primary);">Compensation</h3></sc-if>
+                    <sc-if value="{{ secComp.accHeader }}" hint-placeholder-val="{{ true }}"><h3 style="font-family:var(--font-display);font-size:17px;font-weight:700;letter-spacing:-0.01em;margin:0;color:var(--fg-primary);">Pay additions</h3></sc-if>
                     <sc-if value="{{ secComp.stepHeader }}" hint-placeholder-val="{{ false }}"><h3 style="font-family:var(--font-display);font-size:22px;font-weight:800;letter-spacing:-0.02em;margin:0;color:var(--fg-primary);">{{ secComp.stepTitle }}</h3><p style="font-size:15px;color:var(--fg-tertiary);margin:4px 0 0;">{{ secComp.stepSubtitle }}</p></sc-if>
                     <sc-if value="{{ secComp.hasSummary }}" hint-placeholder-val="{{ false }}"><p style="font-size:14px;color:var(--fg-tertiary);margin:4px 0 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ secComp.summaryText }}</p></sc-if>
                   </div>
@@ -659,12 +667,131 @@
                 </div>
                 <sc-if value="{{ secComp.stepHeader }}" hint-placeholder-val="{{ false }}"><div style="padding:2px 22px 18px;"><div style="height:8px;background:var(--gray-100);border-radius:999px;overflow:hidden;"><div style="height:100%;width:{{ secComp.progressW }};background:var(--brand-500);transition:width 240ms ease;"></div></div></div></sc-if>
                 <sc-if value="{{ secComp.open }}" hint-placeholder-val="{{ true }}">
-                  <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:24px;align-items:center;padding:18px 22px;border-top:1px solid var(--border-secondary);">
-                    <span style="font-size:15px;color:var(--fg-secondary);">Basic Salary / Contract Amount <span style="color:var(--error-500);">*</span></span>
-                    <div><span style="display:flex;align-items:stretch;border:1px solid {{ fieldErr.basicSalary.border }};border-radius:8px;overflow:hidden;">
-                      <span style="display:inline-flex;align-items:center;padding:0 14px;background:var(--bg-secondary);border-right:1px solid var(--border-primary);font-size:15px;color:var(--fg-tertiary);">GHS</span>
-                      <input value="{{ ef.basicSalary }}" onChange="{{ eh.basicSalary }}" placeholder="0.00" style="flex:1;min-width:0;border:none;padding:11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);outline:none;background:#fff;">
-                    </span><sc-if value="{{ fieldErr.basicSalary.show }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:var(--error-600);margin-top:6px;">{{ fieldErr.basicSalary.msg }}</div></sc-if></div>
+                  <div style="padding:18px 22px;border-top:1px solid var(--border-secondary);">
+                    <div style="font-size:13.5px;color:var(--fg-tertiary);margin-bottom:14px;">Recurring allowances or benefits added to this employee's pay. These feed the payroll calculation.</div>
+                    <sc-if value="{{ payAdd.hasItems }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:14px;">
+                        <sc-for list="{{ payAdd.items }}" as="pa" hint-placeholder-count="1">
+                          <div style="display:flex;align-items:center;gap:14px;padding:13px 16px;background:var(--bg-secondary);border:1px solid var(--border-secondary);border-radius:12px;">
+                            <div style="flex:1;min-width:0;">
+                              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                                <span style="font-size:14.5px;font-weight:600;color:var(--fg-primary);">{{ pa.name }}</span>
+                                <span style="display:inline-flex;align-items:center;font-size:11.5px;font-weight:700;letter-spacing:0.02em;padding:2px 10px;color:{{ pa.tagColor }};background:{{ pa.tagBg }};border-radius:999px;">{{ pa.typeLabel }}</span>
+                                <span style="display:inline-flex;align-items:center;font-size:11px;font-weight:700;padding:2px 9px;color:{{ pa.taxColor }};background:{{ pa.taxBg }};border-radius:999px;">{{ pa.taxLabel }}</span>
+                              </div>
+                              <div style="font-size:13px;color:var(--fg-tertiary);margin-top:3px;">{{ pa.amountLabel }}  &middot;  {{ pa.freq }}</div>
+                              <sc-if value="{{ pa.hasBasis }}" hint-placeholder-val="{{ false }}"><div style="font-size:12.5px;color:var(--fg-quaternary);margin-top:2px;">{{ pa.basis }}</div></sc-if>
+                            </div>
+                            <span role="button" onClick="{{ pa.onRemove }}" aria-label="Remove pay addition" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;color:var(--fg-quaternary);background:#fff;border:1px solid var(--border-primary);border-radius:999px;cursor:pointer;transition:all 120ms ease;" style-hover="color:var(--error-600);border-color:var(--error-300);">
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            </span>
+                          </div>
+                        </sc-for>
+                      </div>
+                    </sc-if>
+                    <span role="button" onClick="{{ payAdd.open }}" style="display:flex;align-items:center;justify-content:center;gap:14px;width:100%;box-sizing:border-box;padding:20px;background:#fff;border:1.5px dashed var(--brand-400);border-radius:14px;cursor:pointer;transition:background 120ms ease,border-color 120ms ease;" style-hover="background:var(--brand-25);border-color:var(--brand-500);">
+                      <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;background:var(--brand-50);color:var(--brand-600);">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 16h6"></path><path d="M19 13v6"></path><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"></path><path d="M16.5 9.4 7.55 4.24"></path><polyline points="3.29 7 12 12 20.71 7"></polyline><line x1="12" x2="12" y1="22" y2="12"></line></svg>
+                      </span>
+                      <span style="font-family:var(--font-body);font-size:16px;font-weight:700;color:var(--brand-700);">Add a pay addition</span>
+                    </span>
+                  </div>
+                </sc-if>
+              </div>
+              </sc-if>
+
+              <sc-if value="{{ secPayDed.show }}" hint-placeholder-val="{{ true }}">
+              <div style="{{ secPayDed.cardStyle }}">
+                <div onClick="{{ secPayDed.toggle }}" style="display:flex;align-items:center;gap:12px;padding:18px 22px;cursor:pointer;">
+                  <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;border:1px solid var(--border-secondary);background:#fff;color:var(--fg-secondary);">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                  </span>
+                  <div style="flex:1;min-width:0;">
+                    <sc-if value="{{ secPayDed.accHeader }}" hint-placeholder-val="{{ true }}"><h3 style="font-family:var(--font-display);font-size:17px;font-weight:700;letter-spacing:-0.01em;margin:0;color:var(--fg-primary);">Pay deductions</h3></sc-if>
+                    <sc-if value="{{ secPayDed.stepHeader }}" hint-placeholder-val="{{ false }}"><h3 style="font-family:var(--font-display);font-size:22px;font-weight:800;letter-spacing:-0.02em;margin:0;color:var(--fg-primary);">{{ secPayDed.stepTitle }}</h3><p style="font-size:15px;color:var(--fg-tertiary);margin:4px 0 0;">{{ secPayDed.stepSubtitle }}</p></sc-if>
+                    <sc-if value="{{ secPayDed.hasSummary }}" hint-placeholder-val="{{ false }}"><p style="font-size:14px;color:var(--fg-tertiary);margin:4px 0 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ secPayDed.summaryText }}</p></sc-if>
+                  </div>
+                  <sc-if value="{{ secPayDed.accHeader }}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:{{ secPayDed.chevron }};transition:transform 200ms ease;"><polyline points="18 15 12 9 6 15"></polyline></svg></sc-if>
+                  <sc-if value="{{ secPayDed.stepHeader }}" hint-placeholder-val="{{ false }}"><span style="font-size:15px;font-weight:600;color:var(--fg-tertiary);white-space:nowrap;flex-shrink:0;">{{ secPayDed.stepLabel }}</span></sc-if>
+                </div>
+                <sc-if value="{{ secPayDed.stepHeader }}" hint-placeholder-val="{{ false }}"><div style="padding:2px 22px 18px;"><div style="height:8px;background:var(--gray-100);border-radius:999px;overflow:hidden;"><div style="height:100%;width:{{ secPayDed.progressW }};background:var(--brand-500);transition:width 240ms ease;"></div></div></div></sc-if>
+                <sc-if value="{{ secPayDed.open }}" hint-placeholder-val="{{ true }}">
+                  <div style="padding:18px 22px;border-top:1px solid var(--border-secondary);">
+                    <div style="font-size:13.5px;color:var(--fg-tertiary);margin-bottom:14px;">Amounts withheld from this employee's pay. Pre-tax deductions reduce taxable income; post-tax come off net pay.</div>
+                    <sc-if value="{{ payDed.hasItems }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:14px;">
+                        <sc-for list="{{ payDed.items }}" as="dx" hint-placeholder-count="1">
+                          <div style="display:flex;align-items:center;gap:14px;padding:13px 16px;background:var(--bg-secondary);border:1px solid var(--border-secondary);border-radius:12px;">
+                            <div style="flex:1;min-width:0;">
+                              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                                <span style="font-size:14.5px;font-weight:600;color:var(--fg-primary);">{{ dx.name }}</span>
+                                <span style="display:inline-flex;align-items:center;font-size:11.5px;font-weight:700;letter-spacing:0.02em;padding:2px 10px;color:{{ dx.tagColor }};background:{{ dx.tagBg }};border-radius:999px;">{{ dx.typeLabel }}</span>
+                                <span style="display:inline-flex;align-items:center;font-size:11px;font-weight:700;padding:2px 9px;color:{{ dx.taxColor }};background:{{ dx.taxBg }};border-radius:999px;">{{ dx.taxLabel }}</span>
+                              </div>
+                              <div style="font-size:13px;color:var(--fg-tertiary);margin-top:3px;">{{ dx.amountLabel }}  &middot;  {{ dx.freq }}</div>
+                              <sc-if value="{{ dx.hasBasis }}" hint-placeholder-val="{{ false }}"><div style="font-size:12.5px;color:var(--fg-quaternary);margin-top:2px;">{{ dx.basis }}</div></sc-if>
+                            </div>
+                            <span role="button" onClick="{{ dx.onRemove }}" aria-label="Remove deduction" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;color:var(--fg-quaternary);background:#fff;border:1px solid var(--border-primary);border-radius:999px;cursor:pointer;transition:all 120ms ease;" style-hover="color:var(--error-600);border-color:var(--error-300);">
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            </span>
+                          </div>
+                        </sc-for>
+                      </div>
+                    </sc-if>
+                    <span role="button" onClick="{{ payDed.open }}" style="display:flex;align-items:center;justify-content:center;gap:14px;width:100%;box-sizing:border-box;padding:20px;background:#fff;border:1.5px dashed var(--brand-400);border-radius:14px;cursor:pointer;transition:background 120ms ease,border-color 120ms ease;" style-hover="background:var(--brand-25);border-color:var(--brand-500);">
+                      <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;background:var(--brand-50);color:var(--brand-600);">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path><path d="M9 12h6"></path></svg>
+                      </span>
+                      <span style="font-family:var(--font-body);font-size:16px;font-weight:700;color:var(--brand-700);">Add a pay deduction</span>
+                    </span>
+                  </div>
+                </sc-if>
+              </div>
+              </sc-if>
+
+              <sc-if value="{{ secLoans.show }}" hint-placeholder-val="{{ true }}">
+              <div style="{{ secLoans.cardStyle }}">
+                <div onClick="{{ secLoans.toggle }}" style="display:flex;align-items:center;gap:12px;padding:18px 22px;cursor:pointer;">
+                  <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;border:1px solid var(--border-secondary);background:#fff;color:var(--fg-secondary);">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M11 15h2a2 2 0 1 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 17"></path><path d="m7 21 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a2 2 0 0 0-2.75-2.91l-4.2 3.9"></path><path d="m2 16 6 6"></path><circle cx="16" cy="9" r="2.9"></circle><circle cx="6" cy="5" r="3"></circle></svg>
+                  </span>
+                  <div style="flex:1;min-width:0;">
+                    <sc-if value="{{ secLoans.accHeader }}" hint-placeholder-val="{{ true }}"><h3 style="font-family:var(--font-display);font-size:17px;font-weight:700;letter-spacing:-0.01em;margin:0;color:var(--fg-primary);">Loans &amp; advances</h3></sc-if>
+                    <sc-if value="{{ secLoans.stepHeader }}" hint-placeholder-val="{{ false }}"><h3 style="font-family:var(--font-display);font-size:22px;font-weight:800;letter-spacing:-0.02em;margin:0;color:var(--fg-primary);">{{ secLoans.stepTitle }}</h3><p style="font-size:15px;color:var(--fg-tertiary);margin:4px 0 0;">{{ secLoans.stepSubtitle }}</p></sc-if>
+                    <sc-if value="{{ secLoans.hasSummary }}" hint-placeholder-val="{{ false }}"><p style="font-size:14px;color:var(--fg-tertiary);margin:4px 0 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ secLoans.summaryText }}</p></sc-if>
+                  </div>
+                  <sc-if value="{{ secLoans.accHeader }}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:{{ secLoans.chevron }};transition:transform 200ms ease;"><polyline points="18 15 12 9 6 15"></polyline></svg></sc-if>
+                  <sc-if value="{{ secLoans.stepHeader }}" hint-placeholder-val="{{ false }}"><span style="font-size:15px;font-weight:600;color:var(--fg-tertiary);white-space:nowrap;flex-shrink:0;">{{ secLoans.stepLabel }}</span></sc-if>
+                </div>
+                <sc-if value="{{ secLoans.stepHeader }}" hint-placeholder-val="{{ false }}"><div style="padding:2px 22px 18px;"><div style="height:8px;background:var(--gray-100);border-radius:999px;overflow:hidden;"><div style="height:100%;width:{{ secLoans.progressW }};background:var(--brand-500);transition:width 240ms ease;"></div></div></div></sc-if>
+                <sc-if value="{{ secLoans.open }}" hint-placeholder-val="{{ true }}">
+                  <div style="padding:18px 22px;border-top:1px solid var(--border-secondary);">
+                    <div style="font-size:13.5px;color:var(--fg-tertiary);margin-bottom:14px;">Staff loans and salary advances. The monthly repayment is deducted from net pay (after tax).</div>
+                    <sc-if value="{{ payLoan.hasItems }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:14px;">
+                        <sc-for list="{{ payLoan.items }}" as="lx" hint-placeholder-count="1">
+                          <div style="display:flex;align-items:center;gap:14px;padding:13px 16px;background:var(--bg-secondary);border:1px solid var(--border-secondary);border-radius:12px;">
+                            <div style="flex:1;min-width:0;">
+                              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                                <span style="font-size:14.5px;font-weight:600;color:var(--fg-primary);">{{ lx.name }}</span>
+                                <span style="display:inline-flex;align-items:center;font-size:11.5px;font-weight:700;letter-spacing:0.02em;padding:2px 10px;color:{{ lx.tagColor }};background:{{ lx.tagBg }};border-radius:999px;">{{ lx.typeLabel }}</span>
+                              </div>
+                              <div style="font-size:13px;color:var(--fg-tertiary);margin-top:3px;">{{ lx.amountLabel }}</div>
+                              <sc-if value="{{ lx.hasBasis }}" hint-placeholder-val="{{ false }}"><div style="font-size:12.5px;color:var(--fg-quaternary);margin-top:2px;">{{ lx.basis }}</div></sc-if>
+                            </div>
+                            <span role="button" onClick="{{ lx.onRemove }}" aria-label="Remove loan" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;color:var(--fg-quaternary);background:#fff;border:1px solid var(--border-primary);border-radius:999px;cursor:pointer;transition:all 120ms ease;" style-hover="color:var(--error-600);border-color:var(--error-300);">
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                            </span>
+                          </div>
+                        </sc-for>
+                      </div>
+                    </sc-if>
+                    <span role="button" onClick="{{ payLoan.open }}" style="display:flex;align-items:center;justify-content:center;gap:14px;width:100%;box-sizing:border-box;padding:20px;background:#fff;border:1.5px dashed var(--brand-400);border-radius:14px;cursor:pointer;transition:background 120ms ease,border-color 120ms ease;" style-hover="background:var(--brand-25);border-color:var(--brand-500);">
+                      <span style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;background:var(--brand-50);color:var(--brand-600);">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v8"></path><path d="M8 12h8"></path></svg>
+                      </span>
+                      <span style="font-family:var(--font-body);font-size:16px;font-weight:700;color:var(--brand-700);">Add a loan or advance</span>
+                    </span>
                   </div>
                 </sc-if>
               </div>
@@ -843,6 +970,234 @@
 
     </div>
   </div>
+
+  <sc-if value="{{ payAdd.editing }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ payAdd.cancel }}" style="position:fixed;inset:0;z-index:125;background:rgba(10,13,18,0.5);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:32px 24px;box-sizing:border-box;font-family:var(--font-body);">
+      <div onClick="{{ stop }}" style="width:100%;max-width:560px;max-height:90vh;background:#fff;border-radius:20px;box-shadow:var(--shadow-2xl);display:flex;flex-direction:column;overflow:hidden;animation:slideInRight 220ms ease;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:24px 28px 18px;border-bottom:1px solid var(--border-secondary);flex-shrink:0;">
+          <div style="min-width:0;">
+            <h3 style="font-family:var(--font-display);font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0;color:var(--fg-primary);">Add a pay addition</h3>
+            <p style="font-size:14px;color:var(--fg-tertiary);margin:4px 0 0;">A recurring allowance or benefit added to this employee's pay.</p>
+          </div>
+          <span role="button" onClick="{{ payAdd.cancel }}" aria-label="Close" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;margin:-4px -6px 0 0;color:var(--fg-quaternary);background:transparent;border:none;border-radius:999px;cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </span>
+        </div>
+        <div style="padding:22px 28px;overflow-y:auto;">
+          <div style="margin-bottom:18px;">
+            <div style="font-size:13px;font-weight:600;color:var(--fg-secondary);margin-bottom:8px;">Type</div>
+            <div style="display:flex;flex-wrap:wrap;gap:9px;">
+              <sc-for list="{{ payAdd.types }}" as="t" hint-placeholder-count="3">
+                <span role="button" onClick="{{ t.onPick }}" style="{{ t.style }}">{{ t.label }}</span>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="margin-bottom:18px;">
+            <div style="font-size:13px;font-weight:600;color:var(--fg-secondary);margin-bottom:8px;">{{ payAdd.nameLabel }}</div>
+            <input value="{{ payAdd.name }}" onInput="{{ payAdd.onName }}" placeholder="{{ payAdd.namePlaceholder }}" style="width:100%;box-sizing:border-box;padding:11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:#fff;border:1px solid var(--border-primary);border-radius:8px;outline:none;">
+          </div>
+
+          <sc-if value="{{ payAdd.isCash }}" hint-placeholder-val="{{ true }}">
+            <div style="margin-bottom:18px;">
+              <div style="font-size:13px;font-weight:600;color:var(--fg-secondary);margin-bottom:8px;">Value of allowance <span style="color:var(--error-500);">*</span></div>
+              <span style="display:flex;align-items:stretch;border:1px solid var(--border-primary);border-radius:8px;overflow:hidden;max-width:320px;">
+                <span style="display:inline-flex;align-items:center;padding:0 14px;background:var(--bg-secondary);border-right:1px solid var(--border-primary);font-size:15px;color:var(--fg-tertiary);">{{ payAdd.valuePrefix }}</span>
+                <input value="{{ payAdd.value }}" onInput="{{ payAdd.onValue }}" inputmode="decimal" placeholder="0.00" style="flex:1;min-width:0;border:none;padding:11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);outline:none;background:#fff;">
+              </span>
+              <div style="display:inline-flex;margin-top:10px;border:1px solid var(--border-primary);border-radius:8px;overflow:hidden;">
+                <span role="button" onClick="{{ payAdd.setFixed }}" style="{{ payAdd.fixedStyle }}">Fixed amount</span>
+                <span role="button" onClick="{{ payAdd.setPct }}" style="{{ payAdd.pctStyle }}">% of basic salary</span>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ payAdd.isBik }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-bottom:18px;">
+              <div style="font-size:13px;font-weight:600;color:var(--fg-secondary);margin-bottom:8px;">GRA-prescribed benefit <span style="color:var(--error-500);">*</span></div>
+              <div style="position:relative;">
+                <select value="{{ payAdd.bik }}" onChange="{{ payAdd.onBik }}" style="width:100%;box-sizing:border-box;appearance:none;-webkit-appearance:none;padding:12px 40px 12px 14px;font-family:var(--font-body);font-size:15px;color:{{ payAdd.bikSelectColor }};background:#fff;border:1px solid var(--border-primary);border-radius:8px;outline:none;cursor:pointer;">
+                  <option value="">Select a benefit</option>
+                  <sc-for list="{{ payAdd.bikOptions }}" as="b" hint-placeholder-count="6"><option value="{{ b.value }}">{{ b.label }}</option></sc-for>
+                </select>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position:absolute;right:14px;top:50%;transform:translateY(-50%);pointer-events:none;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              </div>
+              <sc-if value="{{ payAdd.bikChosen }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top:12px;background:#EFF8FF;border:1px solid #B2DDFF;border-radius:12px;padding:14px 16px;">
+                  <div style="font-size:12px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:#175CD3;margin-bottom:4px;">Assessed value</div>
+                  <div style="font-size:15px;font-weight:700;color:#175CD3;">{{ payAdd.bikValue }}</div>
+                  <div style="font-size:14px;line-height:21px;color:#175CD3;opacity:0.85;margin-top:2px;">{{ payAdd.bikCalc }}</div>
+                </div>
+              </sc-if>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ payAdd.isReimb }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-bottom:18px;">
+              <div style="font-size:13px;font-weight:600;color:var(--fg-secondary);margin-bottom:8px;">What does it cover? <span style="color:var(--error-500);">*</span></div>
+              <div style="display:flex;flex-direction:column;gap:12px;">
+                <div onClick="{{ payAdd.setReimbExpense }}" style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1.5px solid {{ payAdd.reimbExpense.b }};background:{{ payAdd.reimbExpense.bg }};border-radius:12px;cursor:pointer;">
+                  <span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;border:1.5px solid {{ payAdd.reimbExpense.db }};background:{{ payAdd.reimbExpense.dbg }};flex-shrink:0;margin-top:1px;"><sc-if value="{{ payAdd.reimbIsExpense }}" hint-placeholder-val="{{ true }}"><span style="width:6px;height:6px;border-radius:50%;background:#fff;"></span></sc-if></span>
+                  <span><span style="display:block;font-size:14px;font-weight:700;color:var(--fg-primary);">Paying back a work expense</span><span style="display:block;font-size:13px;color:var(--fg-tertiary);margin-top:2px;">A genuine business cost they paid for. Not taxed.</span></span>
+                </div>
+                <div onClick="{{ payAdd.setReimbKeep }}" style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1.5px solid {{ payAdd.reimbKeep.b }};background:{{ payAdd.reimbKeep.bg }};border-radius:12px;cursor:pointer;">
+                  <span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;border:1.5px solid {{ payAdd.reimbKeep.db }};background:{{ payAdd.reimbKeep.dbg }};flex-shrink:0;margin-top:1px;"><sc-if value="{{ payAdd.reimbIsKeep }}" hint-placeholder-val="{{ false }}"><span style="width:6px;height:6px;border-radius:50%;background:#fff;"></span></sc-if></span>
+                  <span><span style="display:block;font-size:14px;font-weight:700;color:var(--fg-primary);">Money they keep</span><span style="display:block;font-size:13px;color:var(--fg-tertiary);margin-top:2px;">Treated as income by GRA — this becomes taxable.</span></span>
+                </div>
+              </div>
+            </div>
+            <div style="margin-bottom:18px;">
+              <div style="font-size:13px;font-weight:600;color:var(--fg-secondary);margin-bottom:8px;">Monthly cap <span style="color:var(--error-500);">*</span></div>
+              <span style="display:flex;align-items:stretch;border:1px solid var(--border-primary);border-radius:8px;overflow:hidden;max-width:320px;">
+                <span style="display:inline-flex;align-items:center;padding:0 14px;background:var(--bg-secondary);border-right:1px solid var(--border-primary);font-size:15px;color:var(--fg-tertiary);">GHS</span>
+                <input value="{{ payAdd.cap }}" onInput="{{ payAdd.onCap }}" inputmode="decimal" placeholder="0.00" style="flex:1;min-width:0;border:none;padding:11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);outline:none;background:#fff;">
+              </span>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ payAdd.showFreq }}" hint-placeholder-val="{{ true }}">
+            <div style="margin-bottom:18px;">
+              <div style="font-size:13px;font-weight:600;color:var(--fg-secondary);margin-bottom:8px;">Frequency</div>
+              <div style="display:flex;flex-wrap:wrap;gap:9px;">
+                <sc-for list="{{ payAdd.freqs }}" as="fq" hint-placeholder-count="4">
+                  <span role="button" onClick="{{ fq.onPick }}" style="{{ fq.style }}">{{ fq.label }}</span>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <div style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border-radius:12px;background:{{ payAdd.banner.bg }};border:1px solid {{ payAdd.banner.border }};">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{ payAdd.banner.icon }}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            <div style="min-width:0;">
+              <div style="font-size:15px;font-weight:700;color:{{ payAdd.banner.color }};">{{ payAdd.banner.title }}</div>
+              <div style="font-size:14px;line-height:21px;color:{{ payAdd.banner.color }};opacity:0.85;margin-top:2px;">{{ payAdd.banner.body }}</div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:10px;padding:16px 28px;border-top:1px solid var(--border-secondary);background:var(--gray-50);flex-shrink:0;">
+          <span role="button" onClick="{{ payAdd.cancel }}" style="display:inline-flex;align-items:center;padding:11px 22px;font-family:var(--font-body);font-size:15px;font-weight:700;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:999px;box-shadow:var(--shadow-xs);cursor:pointer;">Cancel</span>
+          <span role="button" onClick="{{ payAdd.save }}" style="display:inline-flex;align-items:center;padding:11px 24px;font-family:var(--font-body);font-size:15px;font-weight:700;color:#fff;background-color:#018F58;border:none;border-radius:999px;box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background-color 120ms ease;" style-hover="background-color:#016F45;">Add pay addition</span>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ payDed.editing }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ payDed.cancel }}" style="position:fixed;inset:0;z-index:125;background:rgba(10,13,18,0.5);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:32px 24px;box-sizing:border-box;font-family:var(--font-body);">
+      <div onClick="{{ stop }}" style="width:100%;max-width:560px;max-height:90vh;background:#fff;border-radius:20px;box-shadow:var(--shadow-2xl);display:flex;flex-direction:column;overflow:hidden;animation:slideInRight 220ms ease;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:24px 28px 18px;border-bottom:1px solid var(--border-secondary);flex-shrink:0;">
+          <div style="min-width:0;">
+            <h3 style="font-family:var(--font-display);font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0;color:var(--fg-primary);">Add a pay deduction</h3>
+            <p style="font-size:14px;color:var(--fg-tertiary);margin:4px 0 0;">An amount withheld from this employee's pay each period.</p>
+          </div>
+          <span role="button" onClick="{{ payDed.cancel }}" aria-label="Close" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;margin:-4px -6px 0 0;color:var(--fg-quaternary);background:transparent;border:none;border-radius:999px;cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </span>
+        </div>
+        <div style="padding:22px 28px;overflow-y:auto;">
+          <div style="margin-bottom:18px;">
+            <div style="font-size:13px;font-weight:600;color:var(--fg-secondary);margin-bottom:8px;">Tax treatment</div>
+            <div style="display:flex;flex-wrap:wrap;gap:9px;">
+              <sc-for list="{{ payDed.types }}" as="t" hint-placeholder-count="2">
+                <span role="button" onClick="{{ t.onPick }}" style="{{ t.style }}">{{ t.label }}</span>
+              </sc-for>
+            </div>
+          </div>
+          <div style="margin-bottom:18px;">
+            <div style="font-size:13px;font-weight:600;color:var(--fg-secondary);margin-bottom:8px;">Name of deduction</div>
+            <input value="{{ payDed.name }}" onInput="{{ payDed.onName }}" placeholder="{{ payDed.namePlaceholder }}" style="width:100%;box-sizing:border-box;padding:11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:#fff;border:1px solid var(--border-primary);border-radius:8px;outline:none;">
+          </div>
+          <div style="margin-bottom:18px;">
+            <div style="font-size:13px;font-weight:600;color:var(--fg-secondary);margin-bottom:8px;">Value of deduction <span style="color:var(--error-500);">*</span></div>
+            <span style="display:flex;align-items:stretch;border:1px solid var(--border-primary);border-radius:8px;overflow:hidden;max-width:320px;">
+              <span style="display:inline-flex;align-items:center;padding:0 14px;background:var(--bg-secondary);border-right:1px solid var(--border-primary);font-size:15px;color:var(--fg-tertiary);">{{ payDed.valuePrefix }}</span>
+              <input value="{{ payDed.value }}" onInput="{{ payDed.onValue }}" inputmode="decimal" placeholder="0.00" style="flex:1;min-width:0;border:none;padding:11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);outline:none;background:#fff;">
+            </span>
+            <div style="display:inline-flex;margin-top:10px;border:1px solid var(--border-primary);border-radius:8px;overflow:hidden;">
+              <span role="button" onClick="{{ payDed.setFixed }}" style="{{ payDed.fixedStyle }}">Fixed amount</span>
+              <span role="button" onClick="{{ payDed.setPct }}" style="{{ payDed.pctStyle }}">% of basic salary</span>
+            </div>
+          </div>
+          <div style="margin-bottom:18px;">
+            <div style="font-size:13px;font-weight:600;color:var(--fg-secondary);margin-bottom:8px;">Frequency</div>
+            <div style="display:flex;flex-wrap:wrap;gap:9px;">
+              <sc-for list="{{ payDed.freqs }}" as="fq" hint-placeholder-count="4">
+                <span role="button" onClick="{{ fq.onPick }}" style="{{ fq.style }}">{{ fq.label }}</span>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border-radius:12px;background:{{ payDed.banner.bg }};border:1px solid {{ payDed.banner.border }};">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{ payDed.banner.icon }}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            <div style="min-width:0;">
+              <div style="font-size:15px;font-weight:700;color:{{ payDed.banner.color }};">{{ payDed.banner.title }}</div>
+              <div style="font-size:14px;line-height:21px;color:{{ payDed.banner.color }};opacity:0.85;margin-top:2px;">{{ payDed.banner.body }}</div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:10px;padding:16px 28px;border-top:1px solid var(--border-secondary);background:var(--gray-50);flex-shrink:0;">
+          <span role="button" onClick="{{ payDed.cancel }}" style="display:inline-flex;align-items:center;padding:11px 22px;font-family:var(--font-body);font-size:15px;font-weight:700;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:999px;box-shadow:var(--shadow-xs);cursor:pointer;">Cancel</span>
+          <span role="button" onClick="{{ payDed.save }}" style="display:inline-flex;align-items:center;padding:11px 24px;font-family:var(--font-body);font-size:15px;font-weight:700;color:#fff;background-color:#018F58;border:none;border-radius:999px;box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background-color 120ms ease;" style-hover="background-color:#016F45;">Add deduction</span>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ payLoan.editing }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ payLoan.cancel }}" style="position:fixed;inset:0;z-index:125;background:rgba(10,13,18,0.5);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:32px 24px;box-sizing:border-box;font-family:var(--font-body);">
+      <div onClick="{{ stop }}" style="width:100%;max-width:560px;max-height:90vh;background:#fff;border-radius:20px;box-shadow:var(--shadow-2xl);display:flex;flex-direction:column;overflow:hidden;animation:slideInRight 220ms ease;">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:24px 28px 18px;border-bottom:1px solid var(--border-secondary);flex-shrink:0;">
+          <div style="min-width:0;">
+            <h3 style="font-family:var(--font-display);font-size:20px;font-weight:800;letter-spacing:-0.02em;margin:0;color:var(--fg-primary);">Add a loan or advance</h3>
+            <p style="font-size:14px;color:var(--fg-tertiary);margin:4px 0 0;">The monthly repayment is deducted from net pay until it's cleared.</p>
+          </div>
+          <span role="button" onClick="{{ payLoan.cancel }}" aria-label="Close" style="flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;margin:-4px -6px 0 0;color:var(--fg-quaternary);background:transparent;border:none;border-radius:999px;cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </span>
+        </div>
+        <div style="padding:22px 28px;overflow-y:auto;">
+          <div style="margin-bottom:18px;">
+            <div style="font-size:13px;font-weight:600;color:var(--fg-secondary);margin-bottom:8px;">Type</div>
+            <div style="display:flex;flex-wrap:wrap;gap:9px;">
+              <sc-for list="{{ payLoan.types }}" as="t" hint-placeholder-count="2">
+                <span role="button" onClick="{{ t.onPick }}" style="{{ t.style }}">{{ t.label }}</span>
+              </sc-for>
+            </div>
+          </div>
+          <div style="margin-bottom:18px;">
+            <div style="font-size:13px;font-weight:600;color:var(--fg-secondary);margin-bottom:8px;">Name / description</div>
+            <input value="{{ payLoan.name }}" onInput="{{ payLoan.onName }}" placeholder="{{ payLoan.namePlaceholder }}" style="width:100%;box-sizing:border-box;padding:11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);background:#fff;border:1px solid var(--border-primary);border-radius:8px;outline:none;">
+          </div>
+          <div style="display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:18px;">
+            <div>
+              <div style="font-size:13px;font-weight:600;color:var(--fg-secondary);margin-bottom:8px;">Total amount</div>
+              <span style="display:flex;align-items:stretch;border:1px solid var(--border-primary);border-radius:8px;overflow:hidden;">
+                <span style="display:inline-flex;align-items:center;padding:0 14px;background:var(--bg-secondary);border-right:1px solid var(--border-primary);font-size:15px;color:var(--fg-tertiary);">GHS</span>
+                <input value="{{ payLoan.total }}" onInput="{{ payLoan.onTotal }}" inputmode="decimal" placeholder="0.00" style="flex:1;min-width:0;border:none;padding:11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);outline:none;background:#fff;">
+              </span>
+            </div>
+            <div>
+              <div style="font-size:13px;font-weight:600;color:var(--fg-secondary);margin-bottom:8px;">Monthly repayment <span style="color:var(--error-500);">*</span></div>
+              <span style="display:flex;align-items:stretch;border:1px solid var(--border-primary);border-radius:8px;overflow:hidden;">
+                <span style="display:inline-flex;align-items:center;padding:0 14px;background:var(--bg-secondary);border-right:1px solid var(--border-primary);font-size:15px;color:var(--fg-tertiary);">GHS</span>
+                <input value="{{ payLoan.monthly }}" onInput="{{ payLoan.onMonthly }}" inputmode="decimal" placeholder="0.00" style="flex:1;min-width:0;border:none;padding:11px 14px;font-family:var(--font-body);font-size:15px;color:var(--fg-primary);outline:none;background:#fff;">
+              </span>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border-radius:12px;background:var(--bg-secondary);border:1px solid var(--border-primary);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--fg-quaternary)" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            <div style="min-width:0;">
+              <div style="font-size:15px;font-weight:700;color:var(--fg-secondary);">Deducted after tax</div>
+              <div style="font-size:14px;line-height:21px;color:var(--fg-secondary);opacity:0.85;margin-top:2px;">Loan and advance repayments come off net pay. They don't change the tax calculation.</div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:10px;padding:16px 28px;border-top:1px solid var(--border-secondary);background:var(--gray-50);flex-shrink:0;">
+          <span role="button" onClick="{{ payLoan.cancel }}" style="display:inline-flex;align-items:center;padding:11px 22px;font-family:var(--font-body);font-size:15px;font-weight:700;color:var(--fg-secondary);background:#fff;border:1px solid var(--border-primary);border-radius:999px;box-shadow:var(--shadow-xs);cursor:pointer;">Cancel</span>
+          <span role="button" onClick="{{ payLoan.save }}" style="display:inline-flex;align-items:center;padding:11px 24px;font-family:var(--font-body);font-size:15px;font-weight:700;color:#fff;background-color:#018F58;border:none;border-radius:999px;box-shadow:var(--shadow-btn-primary);cursor:pointer;transition:background-color 120ms ease;" style-hover="background-color:#016F45;">Add to record</span>
+        </div>
+      </div>
+    </div>
+  </sc-if>
 
   <sc-if value="{{ empTypeHelpOpen }}" hint-placeholder-val="{{ false }}">
     <div onClick="{{ closeEmpTypeHelp }}" style="position:fixed;inset:0;z-index:120;background:rgba(10,13,18,0.5);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:32px 24px;box-sizing:border-box;font-family:var(--font-body);">
@@ -1271,7 +1626,7 @@ function firstName(name) {
   return (name || '').trim().split(/\s+/)[0] || 'they';
 }
 function emptyEmpForm() {
-  return { firstName: '', surname: '', otherNames: '', jobRole: '', department: '', employmentType: '', position: '', staffNumber: '', ghanaCard: '', tin: '', dob: '', address: '', basicSalary: '', ssnit: '', ssnitNumber: '', tier3: '', tier3Amount: '', tier3Mode: 'percent', email: '', phone: '', bankName: '', accountNumber: '', accountName: '', bankBranch: '', beneficiaryName: '', beneficiaryContact: '', beneficiaryRelationship: '' };
+  return { firstName: '', surname: '', otherNames: '', jobRole: '', department: '', employmentType: '', position: '', staffNumber: '', ghanaCard: '', tin: '', dob: '', address: '', basicSalary: '', additions: [], deductions: [], loans: [], ssnit: '', ssnitNumber: '', tier3: '', tier3Amount: '', tier3Mode: 'percent', email: '', phone: '', bankName: '', accountNumber: '', accountName: '', bankBranch: '', beneficiaryName: '', beneficiaryContact: '', beneficiaryRelationship: '' };
 }
 // Required fields enforced before an employee can be saved or imported.
 // "Other Names" is the only optional name field. Tier 3 must be answered; when
@@ -1285,7 +1640,7 @@ const REQUIRED_EMP = [
 const FIELD_STEP = {
   firstName: 'identity', surname: 'identity',
   employmentType: 'employment', position: 'employment',
-  basicSalary: 'comp', ssnit: 'ssnit', tier3: 'ssnit', tier3Amount: 'ssnit',
+  basicSalary: 'employment', ssnit: 'ssnit', tier3: 'ssnit', tier3Amount: 'ssnit',
   email: 'contact', phone: 'contact',
 };
 function empErrors(f) {
@@ -1339,16 +1694,32 @@ function rosterToRow(e) {
 }
 const BRAND = 'var(--brand-500)';
 
-const STEP_ORDER = ['identity', 'employment', 'comp', 'ssnit', 'contact', 'bank', 'beneficiary', 'review'];
+const STEP_ORDER = ['identity', 'employment', 'comp', 'payded', 'loans', 'ssnit', 'contact', 'bank', 'beneficiary', 'review'];
 const DEFAULT_DEPTS = [];
 const DEFAULT_ROLES = [];
 function sampleEmpForm() {
-  return { firstName: 'Akua', surname: 'Mensah', otherNames: 'Adwoa', jobRole: 'Operations Lead', department: 'Operations', employmentType: 'Full-Time-Resident', position: 'Management', staffNumber: 'EMP-0142', ghanaCard: 'GHA-725481630-2', tin: 'P0001234567', basicSalary: '8,500.00', ssnit: 'yes', tier3: 'yes', tier3Amount: '5', tier3Mode: 'percent', email: 'akua.mensah@acmefoods.gh', phone: '20 123 4567', accountNumber: '1011234567890', accountName: 'Akua Adwoa Mensah', bankBranch: 'GCB Bank \u2014 Accra Main' };
+  return { firstName: 'Akua', surname: 'Mensah', otherNames: 'Adwoa', jobRole: 'Operations Lead', department: 'Operations', employmentType: 'Full-Time-Resident', position: 'Management', staffNumber: 'EMP-0142', ghanaCard: 'GHA-725481630-2', tin: 'P0001234567', basicSalary: '8,500.00', additions: [{ id: 'pa-sample1', type: 'cash', typeLabel: 'Cash allowance', name: 'Transport allowance', value: '450.00', valueMode: 'fixed', freq: 'Monthly' }, { id: 'pa-sample2', type: 'bik', typeLabel: 'Benefit in kind', name: 'Company vehicle', bik: 'veh_fuel', bikPct: 10, bikCap: 500, freq: 'Monthly' }], deductions: [{ id: 'pd-sample1', taxMode: 'posttax', typeLabel: 'Post-tax deduction', name: 'Welfare contribution', value: '50.00', valueMode: 'fixed', freq: 'Monthly' }], loans: [{ id: 'ln-sample1', type: 'loan', typeLabel: 'Staff loan', name: 'Staff loan', total: '6,000.00', monthly: '500.00' }], ssnit: 'yes', tier3: 'yes', tier3Amount: '5', tier3Mode: 'percent', email: 'akua.mensah@acmefoods.gh', phone: '20 123 4567', accountNumber: '1011234567890', accountName: 'Akua Adwoa Mensah', bankBranch: 'GCB Bank \u2014 Accra Main' };
 }
+const PAY_ADD_TYPES = [
+  { value: 'cash', label: 'Cash allowance', typeLabel: 'Cash allowance' },
+  { value: 'bik', label: 'Benefit in kind', typeLabel: 'Benefit in kind' },
+  { value: 'reimb', label: 'Reimbursement', typeLabel: 'Reimbursement' },
+];
+const PAY_ADD_BIK = [
+  { value: 'veh_fuel_driver', label: 'Vehicle, fuel & driver', pct: 12.5, cap: 600 },
+  { value: 'veh_fuel', label: 'Vehicle & fuel', pct: 10, cap: 500 },
+  { value: 'veh_only', label: 'Vehicle only', pct: 5, cap: 250 },
+  { value: 'fuel_only', label: 'Fuel only', pct: 5, cap: 250 },
+  { value: 'accom_furnished', label: 'Accommodation, furnished', pct: 10, cap: 0 },
+  { value: 'accom', label: 'Accommodation only', pct: 7.5, cap: 0 },
+];
+const PAY_ADD_FREQS = ['Monthly', 'Quarterly', 'Annually', 'One-off'];
 const SEC_SUB = {
   identity: 'Tell us about the employee',
-  employment: 'Role, department and worker type',
-  comp: 'Set their basic salary',
+  employment: 'Role, department, worker type and basic salary',
+  comp: 'Recurring allowances and benefits',
+  payded: 'Pre-tax and post-tax deductions',
+  loans: 'Staff loans and salary advances',
   ssnit: 'SSNIT and Tier 3 pension deductions',
   contact: 'How we reach them',
   bank: 'Where their salary is paid',
@@ -1357,7 +1728,9 @@ const SEC_SUB = {
 const SEC_TITLE = {
   identity: "Employee's Identity",
   employment: 'Employment Details',
-  comp: 'Compensation',
+  comp: 'Pay additions',
+  payded: 'Pay deductions',
+  loans: 'Loans & advances',
   ssnit: 'Social Security & Pension',
   contact: 'Contact Details',
   bank: 'Bank Details',
@@ -1538,6 +1911,9 @@ class Component extends DCLogic {
       beneficiaryName: e.beneficiaryName || '',
       beneficiaryContact: e.beneficiaryContact || '',
       beneficiaryRelationship: e.beneficiaryRelationship || '',
+      additions: Array.isArray(e.additions) ? e.additions : [],
+      deductions: Array.isArray(e.deductions) ? e.deductions : [],
+      loans: Array.isArray(e.loans) ? e.loans : [],
     };
     this.setState({ rosterView: i, empForm: base, empBaseForm: base, empCollapsed: {}, empDirty: false });
   };
@@ -1623,6 +1999,63 @@ class Component extends DCLogic {
   pickTier3No = () => this.empSetVal('tier3', 'no');
   setTier3Fixed = () => this.empSetVal('tier3Mode', 'fixed');
   setTier3Pct = () => this.empSetVal('tier3Mode', 'percent');
+  // ---- Per-employee pay additions (allowances / benefits / reimbursements) ----
+  openAddPay = () => this.setState({ payAddOpen: true, payDraft: { type: 'cash', name: '', value: '', valueMode: 'fixed', freq: 'Monthly', bik: '', cap: '', reimbKind: 'expense' } });
+  cancelAddPay = () => this.setState({ payAddOpen: false, payDraft: null });
+  setPayDraft = (field, v) => this.setState(s => ({ payDraft: { ...(s.payDraft || {}), [field]: v } }));
+  savePayAddition = () => this.setState(s => {
+    const d = s.payDraft || {};
+    const type = d.type || 'cash';
+    const name = (d.name || '').trim();
+    const id = 'pa-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+    let item = null;
+    if (type === 'cash') {
+      const value = (d.value == null ? '' : d.value).toString().trim();
+      if (!value) { this.showToast('Enter a value for the allowance', 'error'); return {}; }
+      item = { id: id, type: 'cash', typeLabel: 'Cash allowance', name: name || 'Cash allowance', value: value, valueMode: d.valueMode === 'pct' ? 'pct' : 'fixed', freq: d.freq || 'Monthly' };
+    } else if (type === 'bik') {
+      const b = PAY_ADD_BIK.find(x => x.value === d.bik);
+      if (!b) { this.showToast('Select a GRA-prescribed benefit', 'error'); return {}; }
+      item = { id: id, type: 'bik', typeLabel: 'Benefit in kind', name: name || b.label, bik: b.value, bikPct: b.pct, bikCap: b.cap, freq: d.freq || 'Monthly' };
+    } else {
+      const cap = (d.cap == null ? '' : d.cap).toString().trim();
+      if (!cap) { this.showToast('Enter a monthly cap for the reimbursement', 'error'); return {}; }
+      item = { id: id, type: 'reimb', typeLabel: 'Reimbursement', name: name || 'Reimbursement', reimbKind: d.reimbKind === 'keep' ? 'keep' : 'expense', value: cap, valueMode: 'fixed', freq: 'Monthly' };
+    }
+    const list = (s.empForm.additions || []).concat(item);
+    return { empForm: { ...s.empForm, additions: list }, empDirty: true, payAddOpen: false, payDraft: null };
+  });
+  removePayAddition = (id) => this.setState(s => ({ empForm: { ...s.empForm, additions: (s.empForm.additions || []).filter(a => a.id !== id) }, empDirty: true }));
+  // ---- Per-employee pay deductions (pre-tax / post-tax) ----
+  openAddDed = () => this.setState({ dedAddOpen: true, dedDraft: { taxMode: 'posttax', name: '', value: '', valueMode: 'fixed', freq: 'Monthly' } });
+  cancelAddDed = () => this.setState({ dedAddOpen: false, dedDraft: null });
+  setDedDraft = (field, v) => this.setState(s => ({ dedDraft: { ...(s.dedDraft || {}), [field]: v } }));
+  saveDeduction = () => this.setState(s => {
+    const d = s.dedDraft || {};
+    const name = (d.name || '').trim();
+    const value = (d.value == null ? '' : d.value).toString().trim();
+    if (!value) { this.showToast('Enter a value for the deduction', 'error'); return {}; }
+    const taxMode = d.taxMode === 'pretax' ? 'pretax' : 'posttax';
+    const item = { id: 'pd-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5), taxMode: taxMode, typeLabel: taxMode === 'pretax' ? 'Pre-tax deduction' : 'Post-tax deduction', name: name || (taxMode === 'pretax' ? 'Pre-tax deduction' : 'Post-tax deduction'), value: value, valueMode: d.valueMode === 'pct' ? 'pct' : 'fixed', freq: d.freq || 'Monthly' };
+    const list = (s.empForm.deductions || []).concat(item);
+    return { empForm: { ...s.empForm, deductions: list }, empDirty: true, dedAddOpen: false, dedDraft: null };
+  });
+  removeDeduction = (id) => this.setState(s => ({ empForm: { ...s.empForm, deductions: (s.empForm.deductions || []).filter(d => d.id !== id) }, empDirty: true }));
+  // ---- Per-employee loans & salary advances (monthly repayment feeds net pay) ----
+  openAddLoan = () => this.setState({ loanAddOpen: true, loanDraft: { type: 'loan', name: '', total: '', monthly: '' } });
+  cancelAddLoan = () => this.setState({ loanAddOpen: false, loanDraft: null });
+  setLoanDraft = (field, v) => this.setState(s => ({ loanDraft: { ...(s.loanDraft || {}), [field]: v } }));
+  saveLoan = () => this.setState(s => {
+    const d = s.loanDraft || {};
+    const type = d.type === 'advance' ? 'advance' : 'loan';
+    const monthly = (d.monthly == null ? '' : d.monthly).toString().trim();
+    if (!monthly) { this.showToast('Enter a monthly repayment amount', 'error'); return {}; }
+    const defName = type === 'advance' ? 'Salary advance' : 'Staff loan';
+    const item = { id: 'ln-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5), type: type, typeLabel: defName, name: (d.name || '').trim() || defName, total: (d.total || '').toString().trim(), monthly: monthly };
+    const list = (s.empForm.loans || []).concat(item);
+    return { empForm: { ...s.empForm, loans: list }, empDirty: true, loanAddOpen: false, loanDraft: null };
+  });
+  removeLoan = (id) => this.setState(s => ({ empForm: { ...s.empForm, loans: (s.empForm.loans || []).filter(l => l.id !== id) }, empDirty: true }));
   empSave = () => {
     if (this.state.addNew) {
       const f = this.state.empForm;
@@ -1638,7 +2071,7 @@ class Component extends DCLogic {
       const name = ((f.firstName || '') + ' ' + (f.surname || '')).trim() || 'New employee';
       const ini = name.trim().split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase();
       const complete = !!f.accountNumber;
-      const rec = { name: name, fullName: name, firstName: f.firstName || '', surname: f.surname || '', otherNames: f.otherNames || '', initials: ini, employmentType: f.employmentType || '', type: f.employmentType || '', position: f.position || '', jobRole: f.jobRole || '', department: f.department || '', staffNumber: f.staffNumber || '', ghanaCard: f.ghanaCard || '', tin: f.tin || '', dob: f.dob || '', address: f.address || '', phone: f.phone || '', email: f.email || '', basicSalary: f.basicSalary || '', basic: f.basicSalary || '', ssnit: f.ssnit || '', ssnitNumber: f.ssnitNumber || '', tier3: f.tier3 || '', tier3Amount: f.tier3Amount || '', tier3Mode: f.tier3Mode || '', bankName: f.bankName || '', accountNumber: f.accountNumber || '', accountName: f.accountName || '', bankBranch: f.bankBranch || '', beneficiaryName: f.beneficiaryName || '', beneficiaryContact: f.beneficiaryContact || '', beneficiaryRelationship: f.beneficiaryRelationship || '', state: complete ? 'ready' : 'missing', tone: complete ? 'success' : 'gray' };
+      const rec = { name: name, fullName: name, firstName: f.firstName || '', surname: f.surname || '', otherNames: f.otherNames || '', initials: ini, employmentType: f.employmentType || '', type: f.employmentType || '', position: f.position || '', jobRole: f.jobRole || '', department: f.department || '', staffNumber: f.staffNumber || '', ghanaCard: f.ghanaCard || '', tin: f.tin || '', dob: f.dob || '', address: f.address || '', phone: f.phone || '', email: f.email || '', basicSalary: f.basicSalary || '', basic: f.basicSalary || '', ssnit: f.ssnit || '', ssnitNumber: f.ssnitNumber || '', tier3: f.tier3 || '', tier3Amount: f.tier3Amount || '', tier3Mode: f.tier3Mode || '', additions: Array.isArray(f.additions) ? f.additions : [], deductions: Array.isArray(f.deductions) ? f.deductions : [], loans: Array.isArray(f.loans) ? f.loans : [], bankName: f.bankName || '', accountNumber: f.accountNumber || '', accountName: f.accountName || '', bankBranch: f.bankBranch || '', beneficiaryName: f.beneficiaryName || '', beneficiaryContact: f.beneficiaryContact || '', beneficiaryRelationship: f.beneficiaryRelationship || '', state: complete ? 'ready' : 'missing', tone: complete ? 'success' : 'gray' };
       if (window.AppState && window.AppState.addEmployees) { window.AppState.addEmployees(rec); const a = window.AppState.get(); window.AppState.set({ employees: 'done', payroll: a.payroll === 'locked' ? 'unlocked' : a.payroll }); }
       const wasEmpty = (this.state.employees || []).length === 0;
       this.setState(s => ({ employees: [...s.employees, rec], addNew: false, empErrs: {}, dataPref: 'Populated' }));
@@ -1648,7 +2081,30 @@ class Component extends DCLogic {
     }
     if (this.state.rosterView != null) {
       const i = this.state.rosterView;
-      this.setState(s => ({ employees: s.employees.map((e, idx) => idx === i ? { ...e, name: (s.empForm.firstName + ' ' + s.empForm.surname).trim() || e.name, type: s.empForm.employmentType || e.type, state: 'ready' } : e), rosterView: null }));
+      const f = this.state.empForm;
+      // Persist the edited record back to AppState so per-employee additions (and the
+      // rest of the form) reach the payroll engine via calcPay.
+      const rowId = (this.state.employees[i] || {}).id;
+      if (rowId && window.AppState && window.AppState.getEmployees && window.AppState.setEmployees) {
+        const fullName = ((f.firstName || '') + ' ' + (f.surname || '')).trim();
+        const patch = {
+          firstName: f.firstName || '', surname: f.surname || '', otherNames: f.otherNames || '',
+          employmentType: f.employmentType || '', type: f.employmentType || '', position: f.position || '',
+          jobRole: f.jobRole || '', department: f.department || '', staffNumber: f.staffNumber || '',
+          ghanaCard: f.ghanaCard || '', tin: f.tin || '', dob: f.dob || '', address: f.address || '',
+          phone: f.phone || '', email: f.email || '', basicSalary: f.basicSalary || '', basic: f.basicSalary || '',
+          ssnit: f.ssnit || '', ssnitNumber: f.ssnitNumber || '', tier3: f.tier3 || '', tier3Amount: f.tier3Amount || '', tier3Mode: f.tier3Mode || '',
+          additions: Array.isArray(f.additions) ? f.additions : [],
+          deductions: Array.isArray(f.deductions) ? f.deductions : [],
+          loans: Array.isArray(f.loans) ? f.loans : [],
+          bankName: f.bankName || '', accountNumber: f.accountNumber || '', accountName: f.accountName || '', bankBranch: f.bankBranch || '',
+          beneficiaryName: f.beneficiaryName || '', beneficiaryContact: f.beneficiaryContact || '', beneficiaryRelationship: f.beneficiaryRelationship || '',
+        };
+        if (fullName) { patch.name = fullName; patch.fullName = fullName; }
+        const list = window.AppState.getEmployees().map(r => r.id === rowId ? { ...r, ...patch } : r);
+        window.AppState.setEmployees(list);
+      }
+      this.setState(s => ({ employees: s.employees.map((e, idx) => idx === i ? { ...e, name: (s.empForm.firstName + ' ' + s.empForm.surname).trim() || e.name, type: s.empForm.employmentType || e.type, state: 'ready' } : e), rosterView: null, empBaseForm: { ...s.empForm }, empDirty: false }));
       this.showToast('Employee details saved');
       return;
     }
@@ -1885,11 +2341,137 @@ class Component extends DCLogic {
     const dotStyle = (on) => 'flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:999px;border:1.5px solid ' + (on ? 'var(--brand-600)' : 'var(--border-primary)') + ';background:' + (on ? 'var(--brand-600)' : 'transparent') + ';';
     const tabStyle = (on) => 'padding:9px 16px;font-family:var(--font-body);font-size:14px;font-weight:700;cursor:pointer;border:none;transition:background 120ms ease,color 120ms ease;background:' + (on ? 'var(--brand-600)' : '#fff') + ';color:' + (on ? '#fff' : 'var(--fg-tertiary)') + ';';
     const onReview = false;
+    const PAY_TYPE_LABEL = { cash: 'Cash allowance', bik: 'Benefit in kind', reimb: 'Reimbursement' };
+    const PAY_TYPE_TONE = { cash: { c: 'var(--brand-700)', bg: 'var(--brand-50)' }, bik: { c: 'var(--info-700)', bg: 'var(--info-50)' }, reimb: { c: 'var(--warning-700)', bg: 'var(--warning-50)' } };
+    const _bsNum = parseFloat((ef.basicSalary || '').toString().replace(/[^0-9.]/g, '')) || 0;
+    const _payMoney = (n) => 'GH\u20b5 ' + Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    // Resolve a saved addition's monthly cash value against basic (mirrors the payroll engine).
+    const _addAmount = (a) => {
+      if (a.type === 'bik') { const p = parseFloat(a.bikPct) || 0; const cap = parseFloat(a.bikCap) || 0; const raw = _bsNum * p / 100; return cap > 0 ? Math.min(raw, cap) : raw; }
+      const v = parseFloat((a.value || '').toString().replace(/[^0-9.]/g, '')) || 0;
+      return a.valueMode === 'pct' ? _bsNum * v / 100 : v;
+    };
+    const payItems = (ef.additions || []).map((a) => {
+      const tone = PAY_TYPE_TONE[a.type] || PAY_TYPE_TONE.cash;
+      let basis = '';
+      if (a.type === 'bik') { const p = parseFloat(a.bikPct) || 0; const cap = parseFloat(a.bikCap) || 0; basis = p + '% of cash emoluments' + (cap > 0 ? '  \u00b7  cap ' + _payMoney(cap) : '  \u00b7  no cap'); }
+      else if (a.type === 'reimb') { basis = a.reimbKind === 'keep' ? 'Employee keeps it \u00b7 taxed as income' : 'Repays a work expense \u00b7 not taxed'; }
+      else if (a.valueMode === 'pct') { const v = parseFloat((a.value || '').toString().replace(/[^0-9.]/g, '')) || 0; basis = v + '% of basic salary'; }
+      const taxable = !(a.type === 'reimb' && a.reimbKind !== 'keep');
+      return {
+        id: a.id, name: a.name, typeLabel: a.typeLabel || PAY_TYPE_LABEL[a.type] || 'Cash allowance',
+        tagColor: tone.c, tagBg: tone.bg, amountLabel: _payMoney(_addAmount(a)), freq: a.freq || 'Monthly',
+        basis: basis, hasBasis: !!basis,
+        taxable: taxable, taxLabel: taxable ? 'Taxable' : 'Not taxed',
+        taxColor: taxable ? 'var(--warning-700)' : 'var(--success-700)', taxBg: taxable ? 'var(--warning-50)' : 'var(--success-50)',
+        onRemove: () => this.removePayAddition(a.id),
+      };
+    });
+    const pd = s.payDraft || {};
+    const _pdType = pd.type || 'cash';
+    const _isCash = _pdType === 'cash', _isBik = _pdType === 'bik', _isReimb = _pdType === 'reimb';
+    const _pdMode = pd.valueMode === 'pct' ? 'pct' : 'fixed';
+    const _pdFreq = pd.freq || 'Monthly';
+    const _pdReimb = pd.reimbKind === 'keep' ? 'keep' : 'expense';
+    const _bikObj = PAY_ADD_BIK.find(b => b.value === pd.bik);
+    const payPill = (on) => 'display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;padding:9px 15px;font-family:var(--font-body);font-size:14px;font-weight:600;cursor:pointer;border:1px solid ' + (on ? 'var(--brand-600)' : 'var(--border-primary)') + ';background:' + (on ? 'var(--brand-50)' : '#fff') + ';color:' + (on ? 'var(--brand-700)' : 'var(--fg-secondary)') + ';border-radius:999px;transition:all 120ms ease;';
+    const _radioRC = (on) => ({ b: on ? 'var(--brand-500)' : 'var(--border-primary)', bg: on ? 'var(--brand-25)' : '#fff', db: on ? 'var(--brand-600)' : 'var(--border-primary)', dbg: on ? 'var(--brand-600)' : 'transparent' });
+    const _BLUE = { bg: '#EFF8FF', border: '#B2DDFF', color: '#175CD3', icon: '#2E90FA' };
+    const _AMBER = { bg: '#FEF6EE', border: '#F9DBAF', color: '#B93815', icon: '#DC6803' };
+    const _GREEN = { bg: 'var(--success-50)', border: 'var(--success-200)', color: 'var(--success-700)', icon: 'var(--success-600)' };
+    let _banner;
+    if (_isCash) _banner = { ..._BLUE, title: 'This pay item is taxable', body: 'Added to gross pay and taxed as assessable income.' };
+    else if (_isBik) _banner = { ..._AMBER, title: 'This benefit is taxable', body: 'A non-cash benefit. Its GRA-assessed value is added to taxable income.' };
+    else if (_pdReimb === 'keep') _banner = { ..._AMBER, title: 'This becomes taxable', body: 'If the employee keeps this, GRA treats it as taxable income — not a reimbursement.' };
+    else _banner = { ..._GREEN, title: 'This reimbursement is not taxable', body: 'Repays a genuine work expense. Excluded from the tax calculation.' };
+    const payAdd = {
+      items: payItems, hasItems: payItems.length > 0, editing: !!s.payAddOpen,
+      open: this.openAddPay, cancel: this.cancelAddPay, save: this.savePayAddition,
+      isCash: _isCash, isBik: _isBik, isReimb: _isReimb, showFreq: _isCash || _isBik,
+      types: PAY_ADD_TYPES.map((t) => ({ label: t.label, style: payPill(_pdType === t.value), onPick: () => this.setPayDraft('type', t.value) })),
+      nameLabel: _isBik ? 'Name of benefit' : (_isReimb ? 'Name of reimbursement' : 'Name of allowance'),
+      namePlaceholder: _isBik ? 'e.g. Company vehicle' : (_isReimb ? 'e.g. Fuel reimbursement' : 'e.g. Transport allowance'),
+      name: pd.name || '', onName: (e) => this.setPayDraft('name', e.target.value),
+      value: pd.value || '', onValue: (e) => this.setPayDraft('value', e.target.value),
+      valuePrefix: _pdMode === 'pct' ? '%' : 'GHS',
+      fixedStyle: tabStyle(_pdMode === 'fixed'), pctStyle: tabStyle(_pdMode === 'pct'),
+      setFixed: () => this.setPayDraft('valueMode', 'fixed'), setPct: () => this.setPayDraft('valueMode', 'pct'),
+      freqs: PAY_ADD_FREQS.map((l) => ({ label: l, style: payPill(_pdFreq === l), onPick: () => this.setPayDraft('freq', l) })),
+      bik: pd.bik || '', onBik: (e) => this.setPayDraft('bik', e.target.value),
+      bikSelectColor: _bikObj ? 'var(--fg-primary)' : 'var(--fg-placeholder)',
+      bikOptions: PAY_ADD_BIK.map((b) => ({ value: b.value, label: b.label })),
+      bikChosen: !!_bikObj,
+      bikValue: _bikObj ? (_bikObj.pct + '% of total cash emoluments') : '',
+      bikCalc: _bikObj ? (_bikObj.cap > 0 ? ('Capped at GH\u20b5 ' + _bikObj.cap + ' / month') : 'No monthly cap') : '',
+      cap: pd.cap || '', onCap: (e) => this.setPayDraft('cap', e.target.value),
+      reimbIsExpense: _pdReimb === 'expense', reimbIsKeep: _pdReimb === 'keep',
+      setReimbExpense: () => this.setPayDraft('reimbKind', 'expense'), setReimbKeep: () => this.setPayDraft('reimbKind', 'keep'),
+      reimbExpense: _radioRC(_pdReimb === 'expense'), reimbKeep: _radioRC(_pdReimb === 'keep'),
+      banner: _banner,
+    };
+    // ---- Pay deductions ----
+    const DED_TONE = { pretax: { c: 'var(--info-700)', bg: 'var(--info-50)' }, posttax: { c: 'var(--fg-secondary)', bg: 'var(--gray-100)' } };
+    const _dedAmount = (d) => { const v = parseFloat((d.value || '').toString().replace(/[^0-9.]/g, '')) || 0; return d.valueMode === 'pct' ? _bsNum * v / 100 : v; };
+    const dedItems = (ef.deductions || []).map((d) => {
+      const pre = d.taxMode === 'pretax';
+      const tone = DED_TONE[pre ? 'pretax' : 'posttax'];
+      const basis = d.valueMode === 'pct' ? ((parseFloat((d.value || '').toString().replace(/[^0-9.]/g, '')) || 0) + '% of basic salary') : '';
+      return {
+        id: d.id, name: d.name, typeLabel: d.typeLabel || (pre ? 'Pre-tax deduction' : 'Post-tax deduction'),
+        tagColor: tone.c, tagBg: tone.bg, amountLabel: '\u2212 ' + _payMoney(_dedAmount(d)), freq: d.freq || 'Monthly',
+        basis: basis, hasBasis: !!basis,
+        taxLabel: pre ? 'Reduces tax' : 'After tax', taxColor: pre ? 'var(--info-700)' : 'var(--fg-tertiary)', taxBg: pre ? 'var(--info-50)' : 'var(--gray-100)',
+        onRemove: () => this.removeDeduction(d.id),
+      };
+    });
+    const dd = s.dedDraft || {};
+    const _ddMode = dd.valueMode === 'pct' ? 'pct' : 'fixed';
+    const _ddFreq = dd.freq || 'Monthly';
+    const _ddPre = dd.taxMode === 'pretax';
+    const _dedBanner = _ddPre
+      ? { ..._BLUE, title: 'This deduction reduces tax', body: 'Taken from pay before tax — it lowers the taxable amount.' }
+      : { bg: 'var(--bg-secondary)', border: 'var(--border-primary)', color: 'var(--fg-secondary)', icon: 'var(--fg-quaternary)', title: 'No effect on tax', body: 'Deducted from net pay after tax. The tax calculation is unchanged.' };
+    const payDed = {
+      items: dedItems, hasItems: dedItems.length > 0, editing: !!s.dedAddOpen,
+      open: this.openAddDed, cancel: this.cancelAddDed, save: this.saveDeduction,
+      types: [{ value: 'pretax', label: 'Pre-tax', sub: 'Taken before tax is worked out' }, { value: 'posttax', label: 'Post-tax', sub: 'Taken from net pay after tax' }].map((t) => ({ label: t.label, sub: t.sub, style: payPill((dd.taxMode || 'posttax') === t.value), onPick: () => this.setDedDraft('taxMode', t.value) })),
+      name: dd.name || '', onName: (e) => this.setDedDraft('name', e.target.value),
+      namePlaceholder: _ddPre ? 'e.g. Provident fund' : 'e.g. Welfare contribution',
+      value: dd.value || '', onValue: (e) => this.setDedDraft('value', e.target.value),
+      valuePrefix: _ddMode === 'pct' ? '%' : 'GHS',
+      fixedStyle: tabStyle(_ddMode === 'fixed'), pctStyle: tabStyle(_ddMode === 'pct'),
+      setFixed: () => this.setDedDraft('valueMode', 'fixed'), setPct: () => this.setDedDraft('valueMode', 'pct'),
+      freqs: PAY_ADD_FREQS.map((l) => ({ label: l, style: payPill(_ddFreq === l), onPick: () => this.setDedDraft('freq', l) })),
+      banner: _dedBanner,
+    };
+    // ---- Loans & advances ----
+    const loanItems = (ef.loans || []).map((l) => {
+      const adv = l.type === 'advance';
+      const total = parseFloat((l.total || '').toString().replace(/[^0-9.]/g, '')) || 0;
+      return {
+        id: l.id, name: l.name, typeLabel: l.typeLabel || (adv ? 'Salary advance' : 'Staff loan'),
+        tagColor: adv ? 'var(--warning-700)' : 'var(--brand-700)', tagBg: adv ? 'var(--warning-50)' : 'var(--brand-50)',
+        amountLabel: '\u2212 ' + _payMoney(parseFloat((l.monthly || '').toString().replace(/[^0-9.]/g, '')) || 0) + ' / month',
+        basis: total > 0 ? ('Total ' + _payMoney(total)) : '', hasBasis: total > 0,
+        onRemove: () => this.removeLoan(l.id),
+      };
+    });
+    const ld = s.loanDraft || {};
+    const _ldType = ld.type === 'advance' ? 'advance' : 'loan';
+    const payLoan = {
+      items: loanItems, hasItems: loanItems.length > 0, editing: !!s.loanAddOpen,
+      open: this.openAddLoan, cancel: this.cancelAddLoan, save: this.saveLoan,
+      types: [{ value: 'loan', label: 'Staff loan' }, { value: 'advance', label: 'Salary advance' }].map((t) => ({ label: t.label, style: payPill(_ldType === t.value), onPick: () => this.setLoanDraft('type', t.value) })),
+      name: ld.name || '', onName: (e) => this.setLoanDraft('name', e.target.value),
+      namePlaceholder: _ldType === 'advance' ? 'e.g. December advance' : 'e.g. Motorbike loan',
+      total: ld.total || '', onTotal: (e) => this.setLoanDraft('total', e.target.value),
+      monthly: ld.monthly || '', onMonthly: (e) => this.setLoanDraft('monthly', e.target.value),
+    };
     const sumMoney = (raw) => { const x = parseFloat((raw || '').toString().replace(/[^0-9.]/g, '')); return x > 0 ? 'GH\u20b5 ' + x.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : ''; };
     const REVIEW_SUMMARY = {
       identity: [((ef.firstName || '') + ' ' + (ef.surname || '')).trim(), ef.ghanaCard].filter(Boolean).join('  \u00b7  ') || 'Not provided',
       employment: [ef.employmentType, ef.jobRole].filter(Boolean).join('  \u00b7  ') || 'Not provided',
-      comp: sumMoney(ef.basicSalary) || 'Not provided',
+      comp: [sumMoney(ef.basicSalary), (ef.additions || []).length ? ((ef.additions.length) + ' pay addition' + (ef.additions.length > 1 ? 's' : '')) : ''].filter(Boolean).join('  ·  ') || 'Not provided',
       ssnit: (ef.ssnit === 'yes' ? 'SSNIT deducted' : 'No SSNIT') + (ef.tier3 === 'yes' ? '  \u00b7  Tier 3 on' : ''),
       contact: [ef.email, ef.phone ? '+233 ' + ef.phone : ''].filter(Boolean).join('  \u00b7  ') || 'Not provided',
       bank: [ef.accountNumber, ef.bankBranch].filter(Boolean).join('  \u00b7  ') || 'Not provided',
@@ -1941,6 +2523,9 @@ class Component extends DCLogic {
     const identityRows = [ rvRow('First name', ef.firstName), rvRow('Surname', ef.surname), rvRow('Other names', ef.otherNames), rvRow('Ghana Card number', ef.ghanaCard), rvRow('TIN', ef.tin) ];
     const employmentRows = [ rvRow('Employment type', ef.employmentType), rvRow('Job role', ef.jobRole), rvRow('Department', ef.department), rvRow('Staff number', ef.staffNumber) ];
     const compRows = [ rvRow('Basic salary', money2(ef.basicSalary)) ];
+    (ef.additions || []).forEach(function (a) {
+      compRows.push(rvRow((a.name || 'Pay addition') + '  \u00b7  ' + (a.typeLabel || PAY_TYPE_LABEL[a.type] || 'Allowance'), _payMoney(_addAmount(a))));
+    });
     const pensionRows = [ rvRow('Deduct SSNIT (Tier 1 & 2)', ef.ssnit === 'yes' ? 'Yes' : 'No') ];
     if (ef.ssnit === 'yes') pensionRows.push(rvRow('Monthly SSNIT (5.5%)', ssnitAmount && ssnitAmount !== '--' ? 'GH\u20b5 ' + ssnitAmount : ''));
     pensionRows.push(rvRow('Deduct Tier 3 pension', ef.tier3 === 'yes' ? 'Yes' : 'No'));
@@ -2097,6 +2682,7 @@ class Component extends DCLogic {
         { label: 'Basic salary', value: empRec.basic },
       ] : [],
       ef: ef,
+      payAdd: payAdd,
       fieldErr: fErr,
       editorErr: editorErr,
       eh: {
@@ -2156,8 +2742,9 @@ class Component extends DCLogic {
         group: g.group, hasIntro: !!g.intro, intro: g.intro || '',
         items: g.items.map(it => ({ name: it.name, tag: it.tag, desc: it.desc, tagColor: TAG_TONES[it.tone].tagColor, tagBg: TAG_TONES[it.tone].tagBg })),
       })),
-      secEmployment: secObj('employment'), secComp: secObj('comp'), secSsnit: secObj('ssnit'), secContact: secObj('contact'), secBank: secObj('bank'), secBeneficiary: secObj('beneficiary'),
+      secEmployment: secObj('employment'), secComp: secObj('comp'), secPayDed: secObj('payded'), secLoans: secObj('loans'), secSsnit: secObj('ssnit'), secContact: secObj('contact'), secBank: secObj('bank'), secBeneficiary: secObj('beneficiary'),
       secIdentity: secObj('identity'),
+      payDed: payDed, payLoan: payLoan,
       isReviewStep: false,
       reviewStepLabel: 'Step ' + STEP_ORDER.length + ' of ' + STEP_ORDER.length,
       identityRows: identityRows, employmentRows: employmentRows, compRows: compRows, pensionRows: pensionRows, contactRows: contactRows, bankRows: bankRows,

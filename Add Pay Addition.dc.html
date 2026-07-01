@@ -283,6 +283,7 @@
                   <div style="display:grid;grid-template-columns:230px 1fr;border:1px solid var(--border-secondary);border-radius:14px;overflow:hidden;">
                     <div style="padding:20px;border-right:1px solid var(--border-secondary);background:var(--bg-secondary);">
                       <div style="font-size:12px;font-weight:700;letter-spacing:0.06em;color:var(--fg-quaternary);margin-bottom:14px;">FILTER</div>
+                      <sc-if value="{{ hasDepts }}" hint-placeholder-val="{{ true }}">
                       <div onClick="{{ toggleDeptOpen }}" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin-bottom:10px;">
                         <span style="font-size:14px;font-weight:700;color:var(--fg-secondary);">Departments</span>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--fg-quaternary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:{{ deptChevron }};transition:transform 160ms ease;"><polyline points="18 15 12 9 6 15"></polyline></svg>
@@ -296,6 +297,7 @@
                         </sc-for>
                       </sc-if>
                       <div style="height:1px;background:var(--border-secondary);margin:14px 0;"></div>
+                      </sc-if>
                       <div onClick="{{ toggleWorkerOpen }}" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin-bottom:10px;">
                         <span style="font-size:14px;font-weight:700;color:var(--fg-secondary);">Worker types</span>
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--fg-quaternary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transform:{{ workerChevron }};transition:transform 160ms ease;"><polyline points="18 15 12 9 6 15"></polyline></svg>
@@ -371,8 +373,8 @@ const BIK_BENEFITS = [
 const EMP = ((window.AppState && window.AppState.getPayrollRoster) ? window.AppState.getPayrollRoster() : [])
   .map(p => ({ id: p.id, n: p.name, dept: p.dept, basic: Number(p.basic || 0).toLocaleString('en-GH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }), init: p.init, etype: p.etype }));
 // Distinct departments / employment types derived from the employees added
-const DEPTS = ['All Departments', ...Array.from(new Set(EMP.map(e => e.dept)))];
-const WORKERS = ['All worker types', ...Array.from(new Set(EMP.map(e => e.etype)))];
+const DEPTS = ['All Departments', ...Array.from(new Set(EMP.map(e => e.dept).filter(Boolean)))];
+const WORKERS = ['All worker types', ...Array.from(new Set(EMP.map(e => e.etype).filter(Boolean)))];
 
 const SELECTED_RC = { b: 'var(--brand-600)', bg: 'var(--brand-25)', db: 'var(--brand-600)', dbg: 'var(--brand-600)' };
 const IDLE_RC     = { b: 'var(--border-primary)', bg: 'var(--bg-primary)', db: 'var(--border-primary)', dbg: 'transparent' };
@@ -527,7 +529,7 @@ class Component extends DCLogic {
     const vis = this.visibleIds();
     const empList = vis.map(e => {
       const on = s.selected.includes(e.id);
-      return { n: e.n, init: e.init, meta: e.etype + ' \u00b7 ' + e.dept + ' \u00b7 GH\u00a2 ' + e.basic, on,
+      return { n: e.n, init: e.init, meta: [e.etype, e.dept, 'GH\u00a2 ' + e.basic].filter(Boolean).join(' \u00b7 '), on,
         bc: on ? 'var(--brand-600)' : 'var(--border-primary)', bg: on ? 'var(--brand-600)' : 'var(--bg-primary)',
         onToggle: () => this.toggleEmp(e.id) };
     });
@@ -572,7 +574,7 @@ class Component extends DCLogic {
       toggleGroup: this.toggleGroup, closeGroup: this.closeGroup,
       onNewGroup: this.onNewGroup, onNewGroupKey: this.onNewGroupKey, addGroup: this.addGroup, clearNewGroup: this.clearNewGroup,
 
-      deptFilters, workerFilters,
+      deptFilters, workerFilters, hasDepts: DEPTS.length > 1,
       deptOpen: s.deptOpen, workerOpen: s.workerOpen,
       toggleDeptOpen: () => this.set('deptOpen', !s.deptOpen), toggleWorkerOpen: () => this.set('workerOpen', !s.workerOpen),
       deptChevron: s.deptOpen ? 'rotate(0deg)' : 'rotate(180deg)', workerChevron: s.workerOpen ? 'rotate(0deg)' : 'rotate(180deg)',

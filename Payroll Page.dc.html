@@ -380,15 +380,16 @@
                         </span>
                         <div style="flex:1;min-width:0;">
                           <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px;">
-                            <div style="min-width:0;">
+                            <div style="min-width:0;display:flex;align-items:center;gap:10px;">
                               <div style="font-size:16px;font-weight:700;color:var(--fg-primary);letter-spacing:-0.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ ca.name }}</div>
-                              <div style="margin-top:7px;"><span style="display: inline-flex; align-items: center; padding: 3px 11px; font-size: 12px; font-weight: 600; border-radius: 999px; color: {{ ca.tagColor }}; background: {{ ca.tagBg }}; text-transform: capitalize">{{ ca.typeLabel }}</span></div>
+                              <span style="flex-shrink:0;display: inline-flex; align-items: center; padding: 3px 11px; font-size: 12px; font-weight: 600; border-radius: 999px; color: {{ ca.tagColor }}; background: {{ ca.tagBg }}; text-transform: capitalize">{{ ca.typeLabel }}</span>
                             </div>
                             <div style="flex-shrink:0;text-align:right;">
                               <div style="font-size:16px;font-weight:700;color:var(--fg-primary);letter-spacing:-0.01em;font-variant-numeric:tabular-nums;white-space:nowrap;">{{ ca.valueText }}</div>
                               <div style="font-size: 16px; color: var(--fg-tertiary); margin-top: 4px">{{ ca.freqText }}</div>
                             </div>
                           </div>
+                          <div style="margin-top:12px;display:flex;align-items:center;gap:10px;font-size:14.5px;color:var(--fg-tertiary);">Goes to:<span style="display:inline-flex;align-items:center;padding:4px 12px;font-size:13px;font-weight:600;border-radius:999px;color:var(--brand-700);background:var(--brand-50);border:1px solid var(--brand-200);">{{ ca.goesTo }}</span></div>
                         </div>
                         <div style="position:relative;flex-shrink:0;">
                           <button onClick="{{ ca.onMenu }}" aria-label="Options" style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;background:transparent;border:none;color:var(--fg-quaternary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
@@ -396,7 +397,16 @@
                           </button>
                           <sc-if value="{{ ca.menuOpen }}" hint-placeholder-val="{{ false }}">
                             <div onClick="{{ ca.onCloseMenu }}" style="position:fixed;inset:0;z-index:5;"></div>
-                            <div style="position:absolute;z-index:10;top:calc(100% + 6px);right:0;min-width:160px;background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:12px;box-shadow:var(--shadow-lg);overflow:hidden;padding:5px;">
+                            <div style="position:absolute;z-index:10;top:calc(100% + 6px);right:0;min-width:170px;background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:12px;box-shadow:var(--shadow-lg);overflow:hidden;padding:5px;">
+                              <button onClick="{{ ca.onMenuEdit }}" style="display:flex;align-items:center;gap:10px;width:100%;box-sizing:border-box;padding:10px 12px;background:transparent;border:none;border-radius:8px;cursor:pointer;font-family:var(--font-body);font-size:14.5px;font-weight:600;color:var(--fg-secondary);text-align:left;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                Edit
+                              </button>
+                              <button onClick="{{ ca.onAddEmployee }}" style="display:flex;align-items:center;gap:10px;width:100%;box-sizing:border-box;padding:10px 12px;background:transparent;border:none;border-radius:8px;cursor:pointer;font-family:var(--font-body);font-size:14.5px;font-weight:600;color:var(--fg-secondary);text-align:left;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" y1="8" x2="19" y2="14"></line><line x1="22" y1="11" x2="16" y2="11"></line></svg>
+                                Add employee
+                              </button>
+                              <div style="height:1px;background:var(--border-secondary);margin:5px 6px;"></div>
                               <button onClick="{{ ca.onRemove }}" style="display:flex;align-items:center;gap:10px;width:100%;box-sizing:border-box;padding:10px 12px;background:transparent;border:none;border-radius:8px;cursor:pointer;font-family:var(--font-body);font-size:14.5px;font-weight:600;color:var(--error-600);text-align:left;transition:background 120ms ease;" style-hover="background:var(--error-50);">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                                 Remove
@@ -406,8 +416,7 @@
                         </div>
                       </div>
                       <div style="border-top:1px dashed var(--border-secondary);margin:0 22px;"></div>
-                      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 22px;">
-                        <div style="display:flex;align-items:center;gap:10px;font-size:14.5px;color:var(--fg-tertiary);">Goes to:<span style="display:inline-flex;align-items:center;padding:4px 12px;font-size:13px;font-weight:600;border-radius:999px;color:var(--brand-700);background:var(--brand-50);border:1px solid var(--brand-200);">{{ ca.goesTo }}</span></div>
+                      <div style="display:flex;align-items:center;justify-content:flex-end;gap:16px;padding:14px 22px;">
                         <button onClick="{{ ca.onAddEmployee }}" style="display:inline-flex;align-items:center;gap:8px;background:transparent;border:none;cursor:pointer;font-family:var(--font-body);font-size:14.5px;font-weight:700;color:var(--brand-700);transition:color 120ms ease;" style-hover="color:var(--brand-800);">
                           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                           Add Employee
@@ -461,6 +470,7 @@
                               <div style="font-size:13px;color:var(--fg-tertiary);margin-top:4px;">{{ cd.freqText }}</div>
                             </div>
                           </div>
+                          <div style="margin-top:12px;display:flex;align-items:center;gap:10px;font-size:14.5px;color:var(--fg-tertiary);">Goes to:<span style="display:inline-flex;align-items:center;padding:4px 12px;font-size:13px;font-weight:600;border-radius:999px;color:var(--brand-700);background:var(--brand-50);border:1px solid var(--brand-200);">{{ cd.goesTo }}</span></div>
                         </div>
                         <div style="position:relative;flex-shrink:0;">
                           <button onClick="{{ cd.onMenu }}" aria-label="Options" style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:9px;background:transparent;border:none;color:var(--fg-quaternary);cursor:pointer;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
@@ -473,6 +483,11 @@
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>
                                 Edit
                               </button>
+                              <button onClick="{{ cd.onAddEmployee }}" style="display:flex;align-items:center;gap:10px;width:100%;box-sizing:border-box;padding:10px 12px;background:transparent;border:none;border-radius:8px;cursor:pointer;font-family:var(--font-body);font-size:14.5px;font-weight:600;color:var(--fg-secondary);text-align:left;transition:background 120ms ease;" style-hover="background:var(--bg-tertiary);">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" y1="8" x2="19" y2="14"></line><line x1="22" y1="11" x2="16" y2="11"></line></svg>
+                                Add employee
+                              </button>
+                              <div style="height:1px;background:var(--border-secondary);margin:5px 6px;"></div>
                               <button onClick="{{ cd.onRemove }}" style="display:flex;align-items:center;gap:10px;width:100%;box-sizing:border-box;padding:10px 12px;background:transparent;border:none;border-radius:8px;cursor:pointer;font-family:var(--font-body);font-size:14.5px;font-weight:600;color:var(--error-600);text-align:left;transition:background 120ms ease;" style-hover="background:var(--error-50);">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                                 Remove
@@ -482,8 +497,7 @@
                         </div>
                       </div>
                       <div style="border-top:1px dashed var(--border-secondary);margin:0 22px;"></div>
-                      <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 22px;">
-                        <div style="display:flex;align-items:center;gap:10px;font-size:14.5px;color:var(--fg-tertiary);">Goes to:<span style="display:inline-flex;align-items:center;padding:4px 12px;font-size:13px;font-weight:600;border-radius:999px;color:var(--brand-700);background:var(--brand-50);border:1px solid var(--brand-200);">{{ cd.goesTo }}</span></div>
+                      <div style="display:flex;align-items:center;justify-content:flex-end;gap:16px;padding:14px 22px;">
                         <button onClick="{{ cd.onAddEmployee }}" style="display:inline-flex;align-items:center;gap:8px;background:transparent;border:none;cursor:pointer;font-family:var(--font-body);font-size:14.5px;font-weight:700;color:var(--brand-700);transition:color 120ms ease;" style-hover="color:var(--brand-800);">
                           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                           Add Employee
@@ -3061,6 +3075,7 @@ class Component extends DCLogic {
         onCloseMenu: (ev) => { if (ev && ev.stopPropagation) ev.stopPropagation(); this.setState({ caMenuOpen: null }); },
         onRemove: (ev) => { if (ev && ev.stopPropagation) ev.stopPropagation(); this.setState({ caMenuOpen: null }); if (window.AppState && window.AppState.removeCompanyAddition) window.AppState.removeCompanyAddition(ca.id); this.forceUpdate(); },
         onEdit: () => { window.location.href = 'Add Pay Addition.dc.html?edit=' + encodeURIComponent(ca.id); },
+        onMenuEdit: (ev) => { if (ev && ev.stopPropagation) ev.stopPropagation(); this.setState({ caMenuOpen: null }); window.location.href = 'Add Pay Addition.dc.html?edit=' + encodeURIComponent(ca.id); },
         onAddEmployee: (ev) => { if (ev && ev.stopPropagation) ev.stopPropagation(); window.location.href = 'Add Pay Addition.dc.html?edit=' + encodeURIComponent(ca.id) + '&section=apply'; },
       };
     });

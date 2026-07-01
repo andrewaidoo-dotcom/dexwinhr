@@ -269,6 +269,8 @@
     var basic = _num(b.basic);
     var _ls = 0, _as = 0;
     try { (getLoans() || []).forEach(function (l) { if (l.empId === empId) { var m = _num(l.monthly); if (l.type === 'advance') _as += m; else _ls += m; } }); } catch (e) {}
+    // Per-employee loans/advances saved on the employee record (People → employee → Loans & advances).
+    (Array.isArray(b.loans) ? b.loans : []).forEach(function (l) { var m = _num(l.monthly); if (l.type === 'advance') _as += m; else _ls += m; });
 
     // ---- Build engine ADDITIONS: base allowances + per-period items + applicable company additions
     var additions = [];
@@ -277,11 +279,15 @@
     if (_num(b.overtime) > 0)  additions.push({ name: 'Overtime',              amount: _num(b.overtime),  kind: 'overtime' });
     (items.additions || []).forEach(function (a) { additions.push({ name: a.name, amount: _num(a.amount), kind: a.kind, tag: a.tag }); });
     getCompanyAdditions().forEach(function (ca) { if (_itemApplies(ca, empId, period)) additions.push({ name: ca.name, amount: _round2(_itemAmount(ca, basic)), kind: _addKind(ca) }); });
+    // Per-employee additions saved on the employee record (People → employee → Compensation).
+    (Array.isArray(b.additions) ? b.additions : []).forEach(function (ea) { if (_freqApplies(ea, period)) additions.push({ name: ea.name, amount: _round2(_itemAmount(ea, basic)), kind: _addKind(ea) }); });
 
     // ---- Build engine DEDUCTIONS: per-period items + applicable company deductions + Tier 3 (pretax, tax-deductible)
     var deductions = [];
     (items.deductions || []).forEach(function (d) { deductions.push({ name: d.name, amount: _num(d.amount), taxMode: d.taxMode || 'posttax', tag: d.tag }); });
     getCompanyDeductions().forEach(function (cd) { if (_itemApplies(cd, empId, period)) deductions.push({ name: cd.name, amount: _round2(_itemAmount(cd, basic)), taxMode: cd.taxMode || 'posttax' }); });
+    // Per-employee deductions saved on the employee record (People → employee → Pay deductions).
+    (Array.isArray(b.deductions) ? b.deductions : []).forEach(function (ed) { if (_freqApplies(ed, period)) deductions.push({ name: ed.name, amount: _round2(_itemAmount(ed, basic)), taxMode: ed.taxMode || 'posttax' }); });
     if (b.tier3 === 'yes' || b.tier3 === true) {
       var t3 = (b.tier3Mode === 'fixed') ? _num(b.tier3Amount) : basic * _num(b.tier3Amount) / 100;
       if (t3 > 0) deductions.push({ name: 'Tier 3 pension', amount: _round2(t3), taxMode: 'pretax' });
@@ -355,12 +361,13 @@
   // cell becomes a row error, not a guess.
   var EMP_TYPE_VALUES = ['Full-Time-Resident', 'Resident-Part-Time-Resident', 'Casual-Resident', 'Independent Contractor', 'Contractor-Full-Time', 'NSS', 'Intern', 'Non-Resident', 'Secondary@5%', 'Secondary@10%', 'Secondary@17.5%', 'Secondary@25%'];
   var POSITION_VALUES = ['Management', 'Senior', 'Junior', 'Expatriate', 'Other'];
-  var CSV_HEADERS = ['First Name', 'Last Name', 'Other Name', 'Email', 'Phone Number', 'Employment Type', 'Position', 'Contributes SSNIT', 'Basic Salary / Contract Amount', 'Tier 3 Percentage Paid', 'Bank Name', 'Bank Branch', 'Bank Account Number', 'Employee Address', 'Date of Birth', 'Ghana Card', 'SSNIT Number', 'TIN', 'Beneficiary Name', 'Beneficiary Contact', 'Beneficiary Relationship'];
+  var CSV_HEADERS = ['First Name', 'Last Name', 'Other Name', 'Email', 'Phone Number', 'Employment Type', 'Position', 'Contributes SSNIT', 'Basic Salary / Contract Amount', 'Tier 3 Percentage Paid', 'Job Role', 'Department', 'Bank Name', 'Bank Branch', 'Bank Account Number', 'Employee Address', 'Date of Birth', 'Ghana Card', 'SSNIT Number', 'TIN', 'Beneficiary Name', 'Beneficiary Contact', 'Beneficiary Relationship'];
   var COLMAP = {
     firstname: 'firstName', lastname: 'surname', surname: 'surname', othername: 'otherNames', othernames: 'otherNames',
     email: 'email', phonenumber: 'phone', phone: 'phone', employmenttype: 'employmentType', position: 'position',
     contributesssnit: 'ssnit', ssnit: 'ssnit', basicsalarycontractamount: 'basicSalary', basicsalary: 'basicSalary',
-    tier3percentagepaid: 'tier3Amount', tier3: 'tier3Amount', bankname: 'bankName', bankbranch: 'bankBranch',
+    tier3percentagepaid: 'tier3Amount', tier3: 'tier3Amount', jobrole: 'jobRole', role: 'jobRole', department: 'department', dept: 'department',
+    bankname: 'bankName', bankbranch: 'bankBranch',
     bankaccountnumber: 'accountNumber', accountnumber: 'accountNumber', employeeaddress: 'address', address: 'address',
     dateofbirth: 'dob', dob: 'dob', ghanacard: 'ghanaCard', ssnitnumber: 'ssnitNumber', tin: 'tin',
     beneficiaryname: 'beneficiaryName', beneficiarycontact: 'beneficiaryContact', beneficiaryrelationship: 'beneficiaryRelationship',
